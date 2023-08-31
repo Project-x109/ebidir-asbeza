@@ -570,87 +570,26 @@
 
             <div class="container-xxl flex-grow-1 container-p-y">
               <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span>Economic Information</h4>
-
+              <!-- Toast with Placements -->
+              <div
+              class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0"
+              role="alert"
+              aria-live="assertive"
+              aria-atomic="true"
+              data-delay="2000"
+            >
+              <div class="toast-header">
+                <i class="bx bx-bell me-2"></i>
+                <div class="me-auto toast-title fw-semibold">Error</div>
+                <small>11 mins ago</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+              </div>
+              <div class="toast-body">Fruitcake chocolate bar tootsie roll gummies gummies jelly beans cake.</div>
+            </div>
+            <!-- Toast with Placements -->
               <!-- Basic Layout & Basic with Icons -->
               <div class="row">
-                <!-- Basic Layout -->
-               <!--  <div class="col-xxl">
-                  <div class="card mb-4">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                      <h5 class="mb-0">Basic Layout</h5>
-                      <small class="text-muted float-end">Default label</small>
-                    </div>
-                    <div class="card-body">
-                      <form>
-                        <div class="row mb-3">
-                          <label class="col-sm-2 col-form-label" for="basic-default-name">Name</label>
-                          <div class="col-sm-10">
-                            <input type="text" class="form-control" id="basic-default-name" placeholder="John Doe" />
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label class="col-sm-2 col-form-label" for="basic-default-company">Company</label>
-                          <div class="col-sm-10">
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="basic-default-company"
-                              placeholder="ACME Inc."
-                            />
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label class="col-sm-2 col-form-label" for="basic-default-email">Email</label>
-                          <div class="col-sm-10">
-                            <div class="input-group input-group-merge">
-                              <input
-                                type="text"
-                                id="basic-default-email"
-                                class="form-control"
-                                placeholder="john.doe"
-                                aria-label="john.doe"
-                                aria-describedby="basic-default-email2"
-                              />
-                              <span class="input-group-text" id="basic-default-email2">@example.com</span>
-                            </div>
-                            <div class="form-text">You can use letters, numbers & periods</div>
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label class="col-sm-2 col-form-label" for="basic-default-phone">Phone No</label>
-                          <div class="col-sm-10">
-                            <input
-                              type="text"
-                              id="basic-default-phone"
-                              class="form-control phone-mask"
-                              placeholder="658 799 8941"
-                              aria-label="658 799 8941"
-                              aria-describedby="basic-default-phone"
-                            />
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label class="col-sm-2 col-form-label" for="basic-default-message">Message</label>
-                          <div class="col-sm-10">
-                            <textarea
-                              id="basic-default-message"
-                              class="form-control"
-                              placeholder="Hi, Do you have a moment to talk Joe?"
-                              aria-label="Hi, Do you have a moment to talk Joe?"
-                              aria-describedby="basic-icon-default-message2"
-                            ></textarea>
-                          </div>
-                        </div>
-                        <div class="row justify-content-end">
-                          <div class="col-sm-10">
-                            <button type="submit" class="btn btn-primary">Send</button>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div> -->
-                <!-- Basic with Icons -->
+              <!-- Basic with Icons -->
                 <div class="col-xxl">
                   <div class="card mb-4">
                     <div class="card-header d-flex align-items-center justify-content-between">
@@ -660,32 +599,32 @@
                     <div class="card-body">
                       <form>
                         <div class="row mb-4">
-                          <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Field of Employment :<span class="text-danger">*</span></label>
+                          <label class="col-sm-2 col-form-label" for="basic-icon-default-fieldofEmployment">Field of Employment :<span class="text-danger">*</span></label>
                           <div class="col-sm-4">
                             <div class="input-group input-group-merge">
-                              <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-award"></i></span>
+                              <span id="basic-icon-default-fieldofEmployment2" class="input-group-text"><i class="bx bx-award"></i></span>
                               <input
                                 type="text"
                                 class="form-control"
-                                id="basic-icon-default-fullname"
+                                id="basic-icon-default-fieldofEmployment"
                                 placeholder="John Doe"
                                 aria-label="John Doe"
-                                aria-describedby="basic-icon-default-fullname2"
+                                aria-describedby="basic-icon-default-fieldofEmployment2"
                               />
                             </div>
                           </div>
                       
-                          <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Number of Income :<span class="text-danger">*</span></label>
+                          <label class="col-sm-2 col-form-label" for="basic-icon-default-numberofincome">Number of Income :<span class="text-danger">*</span></label>
                           <div class="col-sm-4">
                             <div class="input-group input-group-merge">
-                              <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-archive-in"></i></span>
+                              <span id="basic-icon-default-numberofincome2" class="input-group-text"><i class="bx bx-archive-in"></i></span>
                               <input
-                                type="text"
+                                type="number"
                                 class="form-control"
-                                id="basic-icon-default-fullname"
+                                id="basic-icon-default-numberofincome"
                                 placeholder="John Doe"
                                 aria-label="John Doe"
-                                aria-describedby="basic-icon-default-fullname2"
+                                aria-describedby="basic-icon-default-numberofincome2"
                               />
                             </div>
                           </div>
@@ -695,27 +634,27 @@
                             <label for="html5-datetime-local-input" class="col-md-2 col-form-label">Year of Employment :<span class="text-danger">*</span></label>
                             <div class="col-sm-4">
                               <div class="input-group input-group-merge">
-                                <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-calendar"></i></span>
+                                <span id="basic-icon-default-YearofEmployment2" class="input-group-text"><i class="bx bx-calendar"></i></span>
                                 <input
                                 class="form-control"
                                 type="date"
                                 value="2021-06-18"
-                                id="html5-datetime-local-input"
+                                id="html5-datetime-local-input-YearofEmployment"
                               />
                               </div>
                             </div>     
                             
-                            <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Company Name :<span class="text-danger">*</span></label>
+                            <label class="col-sm-2 col-form-label" for="basic-icon-default-companyname">Company Name :<span class="text-danger">*</span></label>
                             <div class="col-sm-4">
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text"><i class="bx bx-grid-small"></i></span>
                                     <input
                                         type="text"
-                                        id="basic-icon-default-email"
+                                        id="basic-icon-default-companyname"
                                         class="form-control"
                                         placeholder="BEAEKA General Business"
                                         aria-label="BEAEKA General Business"
-                                        aria-describedby="basic-icon-default-email2"
+                                        aria-describedby="basic-icon-default-companyname2"
                                     />
                                 </div>
                             </div>
@@ -727,14 +666,14 @@
                             <label for="html5-datetime-local-input" class="col-md-2 col-form-label">Current Number of credit :<span class="text-danger">*</span></label>
                             <div class="col-sm-4">
                               <div class="input-group input-group-merge">
-                                <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-credit-card"></i></span>
+                                <span id="basic-icon-default-NumberofCredit2" class="input-group-text"><i class="bx bx-credit-card"></i></span>
                                 <input
                                         type="number"
-                                        id="basic-icon-default-email"
+                                        id="basic-icon-default-NumberofCredit"
                                         class="form-control"
                                         placeholder="2"
                                         aria-label="2"
-                                        aria-describedby="basic-icon-default-email2"
+                                        aria-describedby="basic-icon-default-NumberofCredit2"
                                     />
                               </div>
                             </div>     
@@ -744,12 +683,12 @@
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text"><i class="bx bx-credit-card"></i></span>
                                     <input
-                                        type="text"
-                                        id="basic-icon-default-email"
+                                        type="number"
+                                        id="basic-icon-default-fullNumberofCredit"
                                         class="form-control"
                                         placeholder="BEAEKA General Business"
                                         aria-label="BEAEKA General Business"
-                                        aria-describedby="basic-icon-default-email2"
+                                        aria-describedby="basic-icon-default-fullyNumberofCredit2"
                                     />
                                 </div>
                             </div>
@@ -760,14 +699,14 @@
                             <label for="html5-datetime-local-input" class="col-md-2 col-form-label">Position :<span class="text-danger">*</span></label>
                             <div class="col-sm-4">
                               <div class="input-group input-group-merge">
-                                <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-chair"></i></span>
+                                <span id="basic-icon-default-position2" class="input-group-text"><i class="bx bx-chair"></i></span>
                                 <input
                                         type="number"
-                                        id="basic-icon-default-email"
+                                        id="basic-icon-default-position"
                                         class="form-control"
                                         placeholder="2"
                                         aria-label="2"
-                                        aria-describedby="basic-icon-default-email2"
+                                        aria-describedby="basic-icon-default-position2"
                                     />
                               </div>
                             </div>     
@@ -778,7 +717,7 @@
                        
                         <div class="row justify-content-end">
                           <div class="col-sm-10">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="button" onclick="validateForm()" class="btn btn-primary">Submit</button>
                           </div>
                         </div>
                       </form>
@@ -859,7 +798,7 @@
     <script src="../assets/js/main.js"></script>
 
     <!-- Page JS -->
-
+    <script src="../assets/js/ui-toasts-economic.js"></script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
   </body>

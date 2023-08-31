@@ -571,86 +571,26 @@
             <div class="container-xxl flex-grow-1 container-p-y">
               <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span>General Information</h4>
 
-              <!-- Basic Layout & Basic with Icons -->
+              
+              <!-- Toast with Placements -->
+              <div
+                class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0"
+                role="alert"
+                aria-live="assertive"
+                aria-atomic="true"
+                data-delay="2000"
+              >
+                <div class="toast-header">
+                  <i class="bx bx-bell me-2"></i>
+                  <div class="me-auto toast-title fw-semibold">Error</div>
+                  <small>11 mins ago</small>
+                  <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">Fruitcake chocolate bar tootsie roll gummies gummies jelly beans cake.</div>
+              </div>
+              <!-- Toast with Placements -->
+              <!-- Basic with Icons -->
               <div class="row">
-                <!-- Basic Layout -->
-               <!--  <div class="col-xxl">
-                  <div class="card mb-4">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                      <h5 class="mb-0">Basic Layout</h5>
-                      <small class="text-muted float-end">Default label</small>
-                    </div>
-                    <div class="card-body">
-                      <form>
-                        <div class="row mb-3">
-                          <label class="col-sm-2 col-form-label" for="basic-default-name">Name</label>
-                          <div class="col-sm-10">
-                            <input type="text" class="form-control" id="basic-default-name" placeholder="John Doe" />
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label class="col-sm-2 col-form-label" for="basic-default-company">Company</label>
-                          <div class="col-sm-10">
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="basic-default-company"
-                              placeholder="ACME Inc."
-                            />
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label class="col-sm-2 col-form-label" for="basic-default-email">Email</label>
-                          <div class="col-sm-10">
-                            <div class="input-group input-group-merge">
-                              <input
-                                type="text"
-                                id="basic-default-email"
-                                class="form-control"
-                                placeholder="john.doe"
-                                aria-label="john.doe"
-                                aria-describedby="basic-default-email2"
-                              />
-                              <span class="input-group-text" id="basic-default-email2">@example.com</span>
-                            </div>
-                            <div class="form-text">You can use letters, numbers & periods</div>
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label class="col-sm-2 col-form-label" for="basic-default-phone">Phone No</label>
-                          <div class="col-sm-10">
-                            <input
-                              type="text"
-                              id="basic-default-phone"
-                              class="form-control phone-mask"
-                              placeholder="658 799 8941"
-                              aria-label="658 799 8941"
-                              aria-describedby="basic-default-phone"
-                            />
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label class="col-sm-2 col-form-label" for="basic-default-message">Message</label>
-                          <div class="col-sm-10">
-                            <textarea
-                              id="basic-default-message"
-                              class="form-control"
-                              placeholder="Hi, Do you have a moment to talk Joe?"
-                              aria-label="Hi, Do you have a moment to talk Joe?"
-                              aria-describedby="basic-icon-default-message2"
-                            ></textarea>
-                          </div>
-                        </div>
-                        <div class="row justify-content-end">
-                          <div class="col-sm-10">
-                            <button type="submit" class="btn btn-primary">Send</button>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div> -->
-                <!-- Basic with Icons -->
                 <div class="col-xxl">
                   <div class="card mb-4">
                     <div class="card-header d-flex align-items-center justify-content-between">
@@ -675,17 +615,19 @@
                             </div>
                           </div>
                       
-                          <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">TIN /ID Number :<span class="text-danger">*</span></label>
+                          <label class="col-sm-2 col-form-label" for="basic-icon-default-TIN">TIN /ID Number :<span class="text-danger">*</span></label>
                           <div class="col-sm-4">
                             <div class="input-group input-group-merge">
-                              <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-credit-card-front"></i></span>
+                              <span id="basic-icon-default-TIN2" class="input-group-text"><i class="bx bx-credit-card-front"></i></span>
                               <input
-                                type="text"
+                                type="number"
+                                max="10"
+                                min="10"
                                 class="form-control"
-                                id="basic-icon-default-fullname"
+                                id="basic-icon-default-TIN"
                                 placeholder="1234567890"
                                 aria-label="John Doe"
-                                aria-describedby="basic-icon-default-fullname2"
+                                aria-describedby="basic-icon-default-TIN2"
                               />
                             </div>
                           </div>
@@ -695,11 +637,11 @@
                             <label class="col-sm-2 col-form-label" for="basic-icon-default-company">Job Status :<span class="text-danger">*</span></label>
                             <div class="col-sm-4">
                               <div class="input-group input-group-merge">
-                                <span id="basic-icon-default-company2" class="input-group-text"
+                                <span id="basic-icon-default-Job2" class="input-group-text"
                                   ><i class="bx bx-buildings"></i
                                 ></span>
-                                  <select  id="basic-icon-default-fullname" class="form-select">
-                                    <option>Default select</option>
+                                  <select  id="basic-icon-default-Job" class="form-select">
+                                    <option value="">Default select</option>
                                     <option value="Employed">Employed </option>
                                     <option value="Unemployed">Unemployed</option>
                                     <option value="Self Emplyed">Self Employed</option>
@@ -709,12 +651,12 @@
                             <label for="html5-datetime-local-input" class="col-md-2 col-form-label">Date of Birth:<span class="text-danger">*</span></label>
                             <div class="col-sm-4">
                               <div class="input-group input-group-merge">
-                                <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-calendar"></i></span>
+                                <span id="basic-icon-default-dateOfBirth2" class="input-group-text"><i class="bx bx-calendar"></i></span>
                                 <input
                                 class="form-control"
                                 type="date"
                                 value="2021-06-18"
-                                id="html5-datetime-local-input"
+                                id="basic-icon-default-dateOfBirth"
                               />
                               </div>
                             </div>
@@ -757,7 +699,8 @@
                        
                         <div class="row justify-content-end">
                           <div class="col-sm-10">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                           
+                            <button type="button" onclick="validateForm()"  class="btn btn-primary">Submit</button>
                           </div>
                         </div>
                       </form>
@@ -838,6 +781,8 @@
     <script src="../assets/js/main.js"></script>
 
     <!-- Page JS -->
+    <script src="../assets/js/ui-toasts-user.js"></script>
+
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
