@@ -9,8 +9,6 @@ function validateForm() {
     { id: 'basic-icon-default-numberofincome', error: 'Number of Income Number is required.' },
     { id: 'html5-datetime-local-input-YearofEmployment', error: 'Year of Employment is required.' },
     { id: 'basic-icon-default-companyname', error: 'Company Name is required.' },
-    { id: 'basic-icon-default-NumberofCredit', error: 'Number of Credit is required.' },
-    { id: 'basic-icon-default-fullNumberofCredit', error: 'Fully Repaid Credit is required.' },
     { id: 'basic-icon-default-position', error: 'Position is required.' }
   ];
   const numberRegex = /^[0-9]+$/;
@@ -33,30 +31,6 @@ function validateForm() {
       if (!numberRegex.test(value)) {
         const toastPlacementExample = document.querySelector('.toast-placement-ex');
         toastPlacementExample.querySelector('.toast-body').textContent = 'Number of Income should be Number only';
-        toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
-        const toastPlacement = new bootstrap.Toast(toastPlacementExample);
-        toastPlacement.show();
-        return; // Stop further validation if TIN Number is invalid
-      }
-    }
-
-    if (field.id === 'basic-icon-default-NumberofCredit') {
-      // Check if TIN Number field contains only numbers
-      if (!numberRegex.test(value)) {
-        const toastPlacementExample = document.querySelector('.toast-placement-ex');
-        toastPlacementExample.querySelector('.toast-body').textContent = 'Number of Credit should be Number only';
-        toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
-        const toastPlacement = new bootstrap.Toast(toastPlacementExample);
-        toastPlacement.show();
-        return; // Stop further validation if TIN Number is invalid
-      }
-    }
-
-    if (field.id === 'basic-icon-default-fullNumberofCredit') {
-      // Check if TIN Number field contains only numbers
-      if (!numberRegex.test(value)) {
-        const toastPlacementExample = document.querySelector('.toast-placement-ex');
-        toastPlacementExample.querySelector('.toast-body').textContent = 'Fully Repaid Credit should be Number only';
         toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
         const toastPlacement = new bootstrap.Toast(toastPlacementExample);
         toastPlacement.show();
