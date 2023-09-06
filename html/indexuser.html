@@ -884,196 +884,53 @@
                             </div>
                             <h5 class="card-header">List of Current Credit Accounts/Loans</h5>
                             <div class="table-responsive text-nowrap">
-                                <table class="table table-striped" id="table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Account Name</th>
-                                            <th>ID</th>
-                                            <th>Loan Amount</th>
-                                            <th>Payment Date</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="table-border-bottom-0">
-                                        <tr>
-                                            <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Amanuel Girma</strong></td>
-                                            <td>eb01234442</td>
-                                            <td>$2,200</td>
-                                            <td>Jan,23 2023</td>
-                                            <td><span class="badge bg-label-danger me-1">overdue</span></td>
-                                            <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                    ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                                                >
-                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                    ><i class="bx bx-trash me-1"></i> Delete</a
-                                                >
+                              <table class="table table-striped" id="table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Account Name</th>
+                                        <th>ID</th>
+                                        <th>Loan Amount</th>
+                                        <th>Payment Date</th>
+                                        <th>Status</th>
+                                        <th>Detail</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                </tbody>
+                            </table>
+
+                            <!-- Modal Structure (empty modal) -->
+                                <div
+                                class="modal fade"
+                                id="modalToggle"
+                                aria-labelledby="modalToggleLabel"
+                                tabindex="-1"
+                                style="display: none"
+                                aria-hidden="true"
+                                >
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalToggleLabel">Loan Details</h5>
+                                            <button
+                                                type="button"
+                                                class="btn-close"
+                                                data-bs-dismiss="modal"
+                                                aria-label="Close"
+                                            ></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="card">
+                                                <div class="card-body" id="modalContent">
+                                                    <!-- Modal content will be dynamically generated here -->
                                                 </div>
                                             </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Amanuel Girma</strong></td>
-                                            <td>eb01234442</td>
-                                            <td>$2,200</td>
-                                            <td>Jan,23 2023</td>
-                                            <td><span class="badge bg-label-success me-1">Completed</span></td>
-                                            <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                    ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                                                >
-                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                    ><i class="bx bx-trash me-1"></i> Delete</a
-                                                >
-                                                </div>
-                                            </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Amanuel Girma</strong></td>
-                                            <td>eb01234442</td>
-                                            <td>$2,200</td>
-                                            <td>Jan,23 2023</td>
-                                            <td><span class="badge bg-label-info me-1">Scheduled</span></td>
-                                            <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                    ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                                                >
-                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                    ><i class="bx bx-trash me-1"></i> Delete</a
-                                                >
-                                                </div>
-                                            </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Amanuel Girma</strong></td>
-                                            <td>eb01234442</td>
-                                            <td>$2,200</td>
-                                            <td>Jan,23 2023</td>
-                                            <td><span class="badge bg-label-warning me-1">Pending</span></td>
-                                            <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                    ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                                                >
-                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                    ><i class="bx bx-trash me-1"></i> Delete</a
-                                                >
-                                                </div>
-                                            </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Amanuel Girma</strong></td>
-                                            <td>eb01234442</td>
-                                            <td>$2,200</td>
-                                            <td>Jan,23 2023</td>
-                                            <td><span class="badge bg-label-danger me-1">overdue</span></td>
-                                            <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                    ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                                                >
-                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                    ><i class="bx bx-trash me-1"></i> Delete</a
-                                                >
-                                                </div>
-                                            </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Amanuel Girma</strong></td>
-                                            <td>eb01234442</td>
-                                            <td>$2,200</td>
-                                            <td>Jan,23 2023</td>
-                                            <td><span class="badge bg-label-success me-1">Completed</span></td>
-                                            <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                    ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                                                >
-                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                    ><i class="bx bx-trash me-1"></i> Delete</a
-                                                >
-                                                </div>
-                                            </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Amanuel Girma</strong></td>
-                                            <td>eb01234442</td>
-                                            <td>$2,200</td>
-                                            <td>Jan,23 2023</td>
-                                            <td><span class="badge bg-label-info me-1">Scheduled</span></td>
-                                            <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                    ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                                                >
-                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                    ><i class="bx bx-trash me-1"></i> Delete</a
-                                                >
-                                                </div>
-                                            </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Amanuel Girma</strong></td>
-                                            <td>eb01234442</td>
-                                            <td>$2,200</td>
-                                            <td>Jan,23 2023</td>
-                                            <td><span class="badge bg-label-warning me-1">Pending</span></td>
-                                            <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                    ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                                                >
-                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                    ><i class="bx bx-trash me-1"></i> Delete</a
-                                                >
-                                                </div>
-                                            </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            
                             </div>
                              <!-- Pagination and Search Controls -->
                         <div class="d-flex justify-content-between mt-3">
@@ -1277,7 +1134,7 @@
                 <div class="col-md-6 col-lg-4 order-2 mb-4">
                   <div class="card h-100">
                     <div class="card-header d-flex align-items-center justify-content-between">
-                      <h5 class="card-title m-0 me-2">Transactions</h5>
+                      <h5 class="card-title m-0 me-2">Repayment Status</h5>
                       <div class="dropdown">
                         <button
                           class="btn p-0"
@@ -1304,8 +1161,8 @@
                           </div>
                           <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                             <div class="me-2">
-                              <small class="text-muted d-block mb-1">Paypal</small>
-                              <h6 class="mb-0">Send money</h6>
+                              <small class="text-muted d-block mb-1">Loans Paid On Time</small>
+                              <h6 class="mb-0">5</h6>
                             </div>
                             <div class="user-progress d-flex align-items-center gap-1">
                               <h6 class="mb-0">+82.6</h6>
@@ -1319,12 +1176,12 @@
                           </div>
                           <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                             <div class="me-2">
-                              <small class="text-muted d-block mb-1">Wallet</small>
-                              <h6 class="mb-0">Mac'D</h6>
+                              <small class="text-muted d-block mb-1">Loans Past Due</small>
+                              <h6 class="mb-0">2</h6>
                             </div>
                             <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0">+270.69</h6>
-                              <span class="text-muted">USD</span>
+                              <h6 class="mb-0">+1,250</h6>
+                              <span class="text-muted">ETB</span>
                             </div>
                           </div>
                         </li>
@@ -1334,12 +1191,12 @@
                           </div>
                           <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                             <div class="me-2">
-                              <small class="text-muted d-block mb-1">Transfer</small>
-                              <h6 class="mb-0">Refund</h6>
+                              <small class="text-muted d-block mb-1">Total Repaid</small>
+                              <h6 class="mb-0">3</h6>
                             </div>
                             <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0">+637.91</h6>
-                              <span class="text-muted">USD</span>
+                              <h6 class="mb-0">+1,250</h6>
+                              <span class="text-muted">ETB</span>
                             </div>
                           </div>
                         </li>
@@ -1469,7 +1326,9 @@
 
     <!-- Page JS -->
     <script src="../assets/js/dashboards-analytics.js"></script>
-
+    <script src="../assets/js/mark-Notification-read.js"></script>
+    <script src="../assets/js/populatetable.js"></script>
+    
     <script src="../assets/js/tablefunctionalities.js">// JavaScript for pagination and search functionality</script>
 
     <!-- Place this tag in your head or just before your close body tag. -->
