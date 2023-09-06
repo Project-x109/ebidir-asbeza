@@ -90,7 +90,7 @@ function populateTable() {
                 <div class="mt-1">
                     <button
                         type="button"
-                        class="btn btn-primary"
+                        class="btn rounded-pill btn-icon btn-outline-primary"
                         data-bs-toggle="modal"
                         data-bs-target="#modalToggle"
                         data-bs-toggle="modal"
@@ -99,7 +99,7 @@ function populateTable() {
       data.amountPaid
     }')"
                     >
-                        See Detail
+                    <i class='bx bx-link-external'></i>
                     </button>
                 </div>
             </td>
