@@ -5,15 +5,12 @@
 function validateForm() {
   // An array of field IDs and their corresponding error messages
   const fields = [
-    { id: 'basic-icon-default-fullname', error: 'Name is required.' },
-    { id: 'basic-icon-default-TIN', error: 'TIN Number is required.' },
-    { id: 'basic-icon-default-Job', error: 'Job Status is required.' },
-    { id: 'basic-icon-default-dateOfBirth', error: 'Date of Birth is required.' },
+    { id: 'basic-icon-default-branchname', error: 'Branch Name is required.' },
     { id: 'basic-icon-default-email', error: 'Email is required.' },
     { id: 'basic-icon-default-phone', error: 'Phone is required.' },
-    { id: 'basic-icon-default-photo', error: 'Image is required.' }
+    { id: 'basic-icon-default-location', error: 'Location is required.' },
+    { id: 'basic-icon-default-logo', error: 'logo is required.' }
   ];
-  const numberRegex = /^[0-9]+$/;
   const nameRegex = /^[A-Za-z\s]+$/;
   const validPhoneRegex = RegExp(
     /(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(0\s*9\s*(([0-9]\s*){8}))|(0\s*7\s*(([0-9]\s*){8}))/
@@ -35,19 +32,7 @@ function validateForm() {
       return; // Stop further validation on the first empty field
     }
 
-    if (field.id === 'basic-icon-default-TIN') {
-      // Check if TIN Number field contains only numbers
-      if (!numberRegex.test(value) || value.length !== 10) {
-        const toastPlacementExample = document.querySelector('.toast-placement-ex');
-        toastPlacementExample.querySelector('.toast-body').textContent = 'TIN Number must contain numbers length should be Ten(0-9).';
-        toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
-        const toastPlacement = new bootstrap.Toast(toastPlacementExample);
-        toastPlacement.show();
-        return; // Stop further validation if TIN Number is invalid
-      }
-    }
-
-    if (field.id === 'basic-icon-default-fullname') {
+    if (field.id === 'basic-icon-default-branchname') {
       // Check if TIN Number field contains only numbers
       if (!nameRegex.test(value)) {
         const toastPlacementExample = document.querySelector('.toast-placement-ex');

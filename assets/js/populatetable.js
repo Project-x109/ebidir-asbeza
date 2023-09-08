@@ -1,68 +1,48 @@
-// Dummy data
-var dummyData = [
-  {
-    accountName: 'Amanuel Girma',
-    id: 'eb01234442',
-    loanAmount: '$2,200',
-    paymentDate: 'Jan,23 2023',
-    status: 'overdue',
-    loanID: 'eb01234442',
-    originalAmount: '$3,000',
-    amountPaid: '$2,000'
-  },
-  {
-    accountName: 'Amanuel Girma',
-    id: 'eb01234442',
-    loanAmount: '$2,200',
-    paymentDate: 'Jan,23 2023',
-    status: 'completed',
-    loanID: 'eb01234442',
-    originalAmount: '$3,000',
-    amountPaid: '$2,000'
-  },
-  {
-    accountName: 'Amanuel Girma',
-    id: 'eb01234442',
-    loanAmount: '$2,200',
-    paymentDate: 'Jan,23 2023',
-    status: 'overdue',
-    loanID: 'eb01234442',
-    originalAmount: '$3,000',
-    amountPaid: '$2,000'
-  },
-  {
-    accountName: 'Amanuel Girma',
-    id: 'eb01234442',
-    loanAmount: '$2,200',
-    paymentDate: 'Jan,23 2023',
-    status: 'scheduled',
-    loanID: 'eb01234442',
-    originalAmount: '$3,000',
-    amountPaid: '$2,000'
-  },
-  {
-    accountName: 'Amanuel Girma',
-    id: 'eb01234442',
-    loanAmount: '$2,200',
-    paymentDate: 'Jan,23 2023',
-    status: 'scheduled',
-    loanID: 'eb01234442',
-    originalAmount: '$3,000',
-    amountPaid: '$2,000'
-  },
-  {
-    accountName: 'Amanuel Girma',
-    id: 'eb01234442',
-    loanAmount: '$2,200',
-    paymentDate: 'Jan,23 2023',
-    status: 'completed',
-    loanID: 'eb01234442',
-    originalAmount: '$3,000',
-    amountPaid: '$520,000'
-  }
+// Function to generate a random number between min and max (inclusive)
+function getRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
-  // Add more data objects as needed
+// Function to generate a random date within a range of years
+function getRandomDate(startYear, endYear) {
+  const year = getRandomNumber(startYear, endYear);
+  const month = getRandomNumber(1, 12);
+  const day = getRandomNumber(1, 28); // Assuming all months have up to 28 days
+  return `${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}-${year}`;
+}
+
+// Function to generate random status
+function getRandomStatus() {
+  const statuses = ['overdue', 'completed', 'scheduled'];
+  return statuses[getRandomNumber(0, 2)];
+}
+
+// Array of random account names
+const randomAccountNames = [
+  'Amanuel Girma',
+  'John Doe',
+  'Jane Smith',
+  'Alice Johnson',
+  'Bob Wilson'
+  // Add more names as needed
 ];
+
+// Generate up to 100 records
+const dummyData = [];
+
+for (let i = 0; i < 100; i++) {
+  const record = {
+    accountName: randomAccountNames[getRandomNumber(0, randomAccountNames.length - 1)],
+    id: `eb0${getRandomNumber(1000000, 9999999)}`,
+    loanAmount: `$${getRandomNumber(1000, 5000)}`,
+    paymentDate: getRandomDate(2020, 2023),
+    status: getRandomStatus(),
+    loanID: `eb0${getRandomNumber(1000000, 9999999)}`,
+    originalAmount: `$${getRandomNumber(3000, 10000)}`,
+    amountPaid: `$${getRandomNumber(0, 5000)}`
+  };
+  dummyData.push(record);
+}
 
 // Function to populate the table with dummy data
 function populateTable() {
