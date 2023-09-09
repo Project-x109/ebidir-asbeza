@@ -7,13 +7,15 @@ if($result->num_rows)
 {
 $row=$result->fetch_assoc();
 $_SESSION['role']=$row['role'];
+echo $_SESSION['role'];
 switch($_SESSION['role']){
     case "Admin":
         $loc="Admin/index.php";
 }
-include $loc;
+echo $loc;
+header("location:".$loc);
 }else{
   $_SESSION['error']="Username or password is not correct";
-  include "index.php";
+  header("index.php");
 }
 ?>

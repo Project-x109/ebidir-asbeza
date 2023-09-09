@@ -1,7 +1,7 @@
 <?php
 session_start();
 include "./common/head.php";
-if($_SESSION['role']){
+if(isset($_SESSION['role'])){
 header($_SESSION['role']."/index.php");
 }
 ?>
