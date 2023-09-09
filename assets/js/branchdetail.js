@@ -163,46 +163,19 @@ function renderStatusModalRows() {
 renderStatusModalRows();
 
 function updateStatus(loanID) {
-  // Get the selected status value from the radio buttons
-  const selectedStatus = document.querySelector('input[name="statusRadio"]:checked');
-
-  if (!selectedStatus) {
-    alert('Please select a status.');
-    return;
-  }
-
-  const newStatus = selectedStatus.value;
+  // Get the modal's status radio buttons
+  const statusRadioButtons = document.querySelectorAll('input[name="statusRadio"]');
 
   // Find the record with the specified loan ID in your dummy data
   const record = dummyData.find(data => data.loanID === loanID);
-
   if (record) {
-    // Update the status property
-    record.status = newStatus;
+    // Set the checked property based on the record's status
+    statusRadioButtons.forEach(radio => {
+      radio.checked = radio.value === record.status;
+    });
 
-    // Close the status update modal
-    const statusModal = new bootstrap.Modal(document.getElementById('statusModal'));
-    statusModal.hide();
-
-    // Update the status cell in the table
-    const statusCell = document.querySelector(`#statusCell-${loanID}`);
-    statusCell.innerHTML = `
-      <span class="badge bg-label-${
-        newStatus === 'completed'
-          ? 'success'
-          : newStatus === 'overdue'
-          ? 'danger'
-          : newStatus === 'scheduled'
-          ? 'info'
-          : 'warning'
-      } me-1">${newStatus}</span>
-    `;
-    console.log('hello');
-
-    // Display a success message or perform any other action as needed
-    alert(`Status updated to: ${newStatus}`);
-  } else {
-    alert('Loan record not found.');
+    // Set the loanID in the hidden input field
+    document.getElementById('loanID').value = loanID;
   }
 }
 
@@ -217,6 +190,28 @@ function saveStatus() {
 
   const newStatus = selectedStatus.value;
 
+  // Find the record with the specified loan ID in your dummy data
+  const loanID = document.getElementById('loanID').value;
+  const record = dummyData.find(data => data.loanID === loanID);
+  if (record) {
+    // Update the status in the record
+    record.status = newStatus;
+
+    // Update the status cell in the table
+    const statusCell = document.getElementById(`statusCell-${record.loanID}`);
+    statusCell.innerHTML = `
+      <span class="badge bg-label-${
+        newStatus === 'completed'
+          ? 'success'
+          : newStatus === 'overdue'
+          ? 'danger'
+          : newStatus === 'scheduled'
+          ? 'info'
+          : 'warning'
+      } me-1">${newStatus}</span>
+    `;
+  }
+
   // Close the status update modal
   const statusModal = new bootstrap.Modal(document.getElementById('statusModal'));
   statusModal.hide();
@@ -224,5 +219,3 @@ function saveStatus() {
   // Display a success message or perform any other action as needed
   alert(`Status updated to: ${newStatus}`);
 }
-
-// Make sure to call the `saveStatus` function when the "Save Changes" button is clicked in the modal.
