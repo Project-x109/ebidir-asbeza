@@ -138,24 +138,23 @@ function renderStatusModalRows() {
     { label: 'Scheduled', value: 'scheduled' }
   ];
 
-  // Clear the modal body before rendering
   modalBody.innerHTML = '';
 
   statusRows.forEach(row => {
     modalBody.innerHTML += `
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="statusRadio"
-            id="${row.value}Radio"
-            value="${row.value}"
-          >
-          <label class="form-check-label" for="${row.value}Radio">
-            ${row.label}
-          </label>
-        </div>
-      `;
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          name="statusRadio"
+          id="${row.value}Radio"
+          value="${row.value}"
+        >
+        <label class="form-check-label" for="${row.value}Radio">
+          ${row.label}
+        </label>
+      </div>
+    `;
   });
 }
 
