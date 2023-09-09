@@ -1,5 +1,9 @@
 <?php
+session_start();
 include "./common/head.php";
+if($_SESSION['role']){
+header($_SESSION['role']."/index.php");
+}
 ?>
   <body>
     <!-- Content -->
@@ -74,14 +78,14 @@ include "./common/head.php";
               <h4 class="mb-2">Welcome to Sneat! 👋</h4>
               <p class="mb-4">Please sign-in to your account</p>
 
-              <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
+              <form id="formAuthentication" class="mb-3" action="login.php" method="POST">
                 <div class="mb-3">
-                  <label for="email" class="form-label">Email or Username</label>
+                  <label for="email" class="form-label">Phone</label>
                   <input
                     type="text"
                     class="form-control"
                     id="email"
-                    name="email-username"
+                    name="phone"
                     placeholder="Enter your email or username"
                     autofocus
                   />
@@ -113,6 +117,7 @@ include "./common/head.php";
                 </div>
                 <div class="mb-3">
                   <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
+                  <div class="my-2 mx-auto center"><?php echo isset($_SESSION['error'])?$_SESSION['error']:"";?></div>
                 </div>
               </form>
 
@@ -128,13 +133,7 @@ include "./common/head.php";
         </div>
       </div>
     </div>
-
-    <!-- / Content -->
-
-   
-
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
   <?php
+  $_SESSION['error']="";
   include "common/footer.php";
   ?>
