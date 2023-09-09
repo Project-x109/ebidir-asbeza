@@ -409,7 +409,7 @@ include "./common/head.php";
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="form-layouts-horizontal.html" class="menu-link">
+                  <a href="form-layouts-userregistrtion.html" class="menu-link">
                     <div data-i18n="Horizontal Form">User Form</div>
                   </a>
                 </li>
