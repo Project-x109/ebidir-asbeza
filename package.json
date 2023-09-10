@@ -42,6 +42,10 @@
     "serve": "npx gulp serve"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.8",
+    "@mui/material": "^5.14.8",
     "@popperjs/core": "^2.9.2",
     "apexcharts-clevision": "^3.28.3",
     "bootstrap": "~5.1.3",
@@ -49,6 +53,7 @@
     "highlight.js": "~9.17.1",
     "jquery": "~3.5.1",
     "masonry-layout": "~4.2.1",
+    "mui-datatables": "^4.3.0",
     "perfect-scrollbar": "~1.5.1"
   },
   "devDependencies": {
