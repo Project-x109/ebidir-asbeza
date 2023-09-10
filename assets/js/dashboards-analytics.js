@@ -274,7 +274,7 @@
     totalRevenueChart.render();
   }
 
-  // Growth Chart - Radial Bar Chart
+  /* // Growth Chart - Radial Bar Chart
   // --------------------------------------------------------------------
   const growthChartEl = document.querySelector('#growthChart'),
     growthChartOptions = {
@@ -353,7 +353,7 @@
   if (typeof growthChartEl !== undefined && growthChartEl !== null) {
     const growthChart = new ApexCharts(growthChartEl, growthChartOptions);
     growthChart.render();
-  }
+  } */
 
   // Profit Report Line Chart
   // --------------------------------------------------------------------
