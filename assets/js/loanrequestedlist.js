@@ -287,7 +287,7 @@ $('#statusModal').on('show.bs.modal', function (event) {
 
     // Create radio buttons for each status option
     statusOptions.forEach(statusOption => {
-      const radioInput = `<div class="form-check">
+      const radioInput = `<div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="statusRadio" id="${statusOption}" value="${statusOption}" ${
         statusOption === selectedStatus ? 'checked' : ''
       }>
