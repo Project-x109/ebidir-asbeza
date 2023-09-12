@@ -418,7 +418,7 @@
     profileReportChart.render();
   }
 
-  // Order Statistics Chart
+  /* // Order Statistics Chart
   // --------------------------------------------------------------------
   const chartOrderStatistics = document.querySelector('#orderStatisticsChart'),
     orderChartConfig = {
@@ -486,7 +486,7 @@
   if (typeof chartOrderStatistics !== undefined && chartOrderStatistics !== null) {
     const statisticsChart = new ApexCharts(chartOrderStatistics, orderChartConfig);
     statisticsChart.render();
-  }
+  } */
 
   // Income Chart - Area chart
   // --------------------------------------------------------------------
