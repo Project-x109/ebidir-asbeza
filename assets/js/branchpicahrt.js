@@ -113,7 +113,7 @@ function createPieChart() {
         },
         title: {
           display: true,
-          text: 'Loan Status',
+          text: '',
           fontSize: 28,
           fontColor: 'rgba(255, 255, 255, 0.9)'
         }

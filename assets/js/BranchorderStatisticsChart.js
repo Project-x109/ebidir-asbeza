@@ -139,6 +139,141 @@ if (typeof chartOrderStatistics !== undefined && chartOrderStatistics !== null) 
   statisticsChart.render();
 }
 
+// Get the current year and month
+const currentDate = new Date();
+const currentYear = currentDate.getFullYear();
+const currentMonth = currentDate.getMonth() + 1; // Months are 0-based
+
+// Calculate the start month and year for the last 6 months
+let startMonth = currentMonth - 5;
+let startYear = currentYear;
+
+if (startMonth <= 0) {
+  // Adjust for negative months by subtracting from the year
+  startMonth += 12;
+  startYear -= 1;
+}
+
+// Create an array of month names for x-axis labels
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+// Initialize an array to store monthly data
+const monthlyData = Array(6).fill(0);
+
+// Filter the dummyDataStat array to include only records for the last 6 months
+const recordsForLast6Months = dummyDataStat.filter(record => {
+  const paymentDate = new Date(record.paymentDate);
+  const paymentYear = paymentDate.getFullYear();
+  const paymentMonth = paymentDate.getMonth() + 1; // Months are 0-based
+  return paymentYear === currentYear && paymentMonth >= startMonth && paymentMonth <= currentMonth;
+});
+
+// Calculate the number of loan applications for each month
+recordsForLast6Months.forEach(record => {
+  const paymentDate = new Date(record.paymentDate);
+  const paymentMonth = paymentDate.getMonth() + 1; // Months are 0-based
+  monthlyData[paymentMonth - startMonth] += 1;
+});
+
+// Income Chart - Area chart
+// --------------------------------------------------------------------
+const incomeChartEl = document.querySelector('#incomeChart'),
+  incomeChartConfig = {
+    series: [
+      {
+        data: ['', ...monthlyData]
+      }
+    ],
+    chart: {
+      height: 215,
+      parentHeightOffset: 0,
+      parentWidthOffset: 0,
+      toolbar: {
+        show: false
+      },
+      type: 'area'
+    },
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      width: 2,
+      curve: 'smooth'
+    },
+    legend: {
+      show: false
+    },
+    markers: {
+      size: 6,
+      colors: 'transparent',
+      strokeColors: 'transparent',
+      strokeWidth: 4,
+      discrete: [
+        {
+          fillColor: config.colors.white,
+          seriesIndex: 0,
+          dataPointIndex: 7,
+          strokeColor: config.colors.primary,
+          strokeWidth: 2,
+          size: 6,
+          radius: 8
+        }
+      ],
+      hover: {
+        size: 7
+      }
+    },
+    colors: [config.colors.primary],
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shade: shadeColor,
+        shadeIntensity: 0.6,
+        opacityFrom: 0.5,
+        opacityTo: 0.25,
+        stops: [0, 95, 100]
+      }
+    },
+    grid: {
+      borderColor: borderColor,
+      strokeDashArray: 3,
+      padding: {
+        top: -20,
+        bottom: -8,
+        left: -10,
+        right: 8
+      }
+    },
+    xaxis: {
+      categories: ['', ...months.slice(startMonth - 1, currentMonth)],
+      axisBorder: {
+        show: false
+      },
+      axisTicks: {
+        show: false
+      },
+      labels: {
+        show: true,
+        style: {
+          fontSize: '13px',
+          colors: axisColor
+        }
+      }
+    },
+    yaxis: {
+      labels: {
+        show: false
+      },
+      min: 0,
+      max: Math.max(...monthlyData) + 1,
+      tickAmount: 4
+    }
+  };
+if (typeof incomeChartEl !== undefined && incomeChartEl !== null) {
+  const incomeChart = new ApexCharts(incomeChartEl, incomeChartConfig);
+  incomeChart.render();
+}
+
 // Update the credit score element with the total dummyDataStat length
 const creditScoreElement = document.getElementById('creditScore');
 creditScoreElement.textContent = dummyDataStat.length;
@@ -207,3 +342,54 @@ completedLoanAmountElement.textContent = `$${formattedStatusCounts.completed}`;
 overdueLoanAmountElement.textContent = `$${formattedStatusCounts.overdue}`;
 scheduledLoanAmountElement.textContent = `$${formattedStatusCounts.scheduled}`;
 totalForAll.textContent = `$${formattedStatusCounts.total}`;
+
+// 1. Filter the records for the last 6 months
+const lastSixMonthsDate = new Date(currentDate);
+lastSixMonthsDate.setMonth(currentDate.getMonth() - 5);
+
+const lastSixMonthsRecords = dummyDataStat.filter(record => {
+  const requestedDate = new Date(record.paymentDate);
+  return requestedDate >= lastSixMonthsDate && requestedDate <= currentDate;
+});
+
+// 2. Calculate the total originalAmount for the last 6 months
+const totalOriginalAmountLastSixMonths = lastSixMonthsRecords.reduce((total, record) => {
+  return total + parseFloat(record.originalAmount.replace(/[^\d.-]/g, ''));
+}, 0);
+
+// 3. Filter the records for the first 6 months
+const firstSixMonthsRecords = dummyDataStat.filter(record => {
+  const requestedDate = new Date(record.paymentDate);
+  return requestedDate.getMonth() < currentDate.getMonth() - 5;
+});
+
+// 4. Calculate the total originalAmount for the first 6 months
+const totalOriginalAmountFirstSixMonths = firstSixMonthsRecords.reduce((total, record) => {
+  return total + parseFloat(record.originalAmount.replace(/[^\d.-]/g, ''));
+}, 0);
+
+// 5. Calculate the percentage increase or decrease
+const percentageChange =
+  ((totalOriginalAmountLastSixMonths - totalOriginalAmountFirstSixMonths) / totalOriginalAmountFirstSixMonths) * 100;
+
+console.log('Total Original Amount Last 6 Months:', totalOriginalAmountLastSixMonths);
+console.log('Percentage Change:', percentageChange);
+
+// Display the values in your HTML elements
+const totalOriginalAmountElement = document.getElementById('totalOriginalAmount');
+const percentageChangeElement = document.getElementById('percentageChange');
+
+totalOriginalAmountElement.textContent = `${totalOriginalAmountLastSixMonths.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD'
+  })}`;
+percentageChangeElement.textContent = `${percentageChange.toFixed(2)}%`;
+
+// Determine whether it's an increase or decrease and set the appropriate class
+if (percentageChange > 0) {
+  percentageChangeElement.classList.add('text-success');
+  percentageChangeElement.innerHTML += '<i class="bx bx-chevron-up"></i>';
+} else if (percentageChange < 0) {
+  percentageChangeElement.classList.add('text-danger');
+  percentageChangeElement.innerHTML += '<i class="bx bx-chevron-down"></i>';
+}

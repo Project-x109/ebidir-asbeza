@@ -490,7 +490,7 @@
 
   // Income Chart - Area chart
   // --------------------------------------------------------------------
-  const incomeChartEl = document.querySelector('#incomeChart'),
+ /*  const incomeChartEl = document.querySelector('#incomeChart'),
     incomeChartConfig = {
       series: [
         {
@@ -585,7 +585,7 @@
   if (typeof incomeChartEl !== undefined && incomeChartEl !== null) {
     const incomeChart = new ApexCharts(incomeChartEl, incomeChartConfig);
     incomeChart.render();
-  }
+  } */
 
   // Expenses Mini Chart - Radial Chart
   // --------------------------------------------------------------------
