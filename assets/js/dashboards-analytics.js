@@ -12,7 +12,7 @@
   axisColor = config.colors.axisColor;
   borderColor = config.colors.borderColor;
 
-  /* // Total Revenue Report Chart - Bar Chart
+  // Total Revenue Report Chart - Bar Chart
   // --------------------------------------------------------------------
   const totalRevenueChartEl = document.querySelector('#totalRevenueChart'),
     totalRevenueChartOptions = {
@@ -272,9 +272,9 @@
   if (typeof totalRevenueChartEl !== undefined && totalRevenueChartEl !== null) {
     const totalRevenueChart = new ApexCharts(totalRevenueChartEl, totalRevenueChartOptions);
     totalRevenueChart.render();
-  } */
+  } 
 
-  /* // Growth Chart - Radial Bar Chart
+  // Growth Chart - Radial Bar Chart
   // --------------------------------------------------------------------
   const growthChartEl = document.querySelector('#growthChart'),
     growthChartOptions = {
@@ -353,7 +353,7 @@
   if (typeof growthChartEl !== undefined && growthChartEl !== null) {
     const growthChart = new ApexCharts(growthChartEl, growthChartOptions);
     growthChart.render();
-  } */
+  } 
 
   // Profit Report Line Chart
   // --------------------------------------------------------------------
@@ -418,7 +418,7 @@
     profileReportChart.render();
   }
 
-  /* // Order Statistics Chart
+   // Order Statistics Chart
   // --------------------------------------------------------------------
   const chartOrderStatistics = document.querySelector('#orderStatisticsChart'),
     orderChartConfig = {
@@ -486,11 +486,11 @@
   if (typeof chartOrderStatistics !== undefined && chartOrderStatistics !== null) {
     const statisticsChart = new ApexCharts(chartOrderStatistics, orderChartConfig);
     statisticsChart.render();
-  } */
+  } 
 
   // Income Chart - Area chart
   // --------------------------------------------------------------------
- /*  const incomeChartEl = document.querySelector('#incomeChart'),
+   const incomeChartEl = document.querySelector('#incomeChart'),
     incomeChartConfig = {
       series: [
         {
@@ -585,7 +585,7 @@
   if (typeof incomeChartEl !== undefined && incomeChartEl !== null) {
     const incomeChart = new ApexCharts(incomeChartEl, incomeChartConfig);
     incomeChart.render();
-  } */
+  }
 
   // Expenses Mini Chart - Radial Chart
   // --------------------------------------------------------------------
