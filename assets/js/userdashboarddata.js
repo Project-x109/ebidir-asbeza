@@ -107,7 +107,7 @@ function generateRandomCreditLimit(salary) {
 // Generate up to 100 records
 const dummyDataLoan = [];
 for (let i = 0; i < 100; i++) {
-  const salary = getRandomNumber(1000, 5000); // Generate a random salary
+  const salary = getRandomNumber(1000, 500000); // Generate a random salary
   const record = {
     accountName: randomAccountNamesLoan[getRandomNumber(0, randomAccountNamesLoan.length - 1)],
     branchName: randomBranchNames[getRandomNumber(0, randomBranchNames.length - 1)],
@@ -161,41 +161,68 @@ const creditLimitIncreased = randomlyChosenCreditLimit > selectedRecord.creditli
 
 // Get the StatusIndicator element by its ID
 const statusIndicator = document.getElementById('Statusindicator');
+const CreditLimitCardID = document.getElementById('CreditLimitCardID');
+const AvailableCreditID = document.getElementById('AvailableCreditID');
 
 // Create a new div element to hold the card content
 const cardContainer = document.createElement('div');
+console.log(selectedRecord);
 // Display the appropriate card based on the result
 if (creditLimitIncreased) {
   // Credit limit increased
   const increasedCard = `
-    
-              <h5 class="card-title text-primary">Congratulations ${selectedRecord.accountName}! 🎉</h5>
-              <p class="mb-4">
-                Your Credit Limit has increased by <span class="fw-bold">${percentageChange}%</span>
-                Check The table below
-              </p>
-              <a href="#table-striped" class="btn btn-sm btn-outline-primary">View Table</a>
-     
+                    <h5 class="card-title text-primary">Congratulations ${selectedRecord.accountName}! 🎉</h5>
+                    <p class="mb-4">Your Credit Limit has increased by <span class="fw-bold">${percentageChange}%</span>Check The table below</p>
+                    <a href="#table-striped" class="btn btn-sm btn-outline-primary">View Table</a>
     `;
-
+  const CreditLimitCard = `
+                    <span class="fw-semibold d-block mb-1">Credit Level</span>
+                    <h3 class="card-title mb-2">${selectedRecord.creditlimit.toLocaleString('en-US', {
+                      style: 'currency',
+                      currency: 'USD'
+                    })}</h3>
+                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +${percentageChange}</small>
+                              `;
+  const AvailableCredit = `
+                    <span class="fw-semibold d-block mb-1">Available Credit</span>
+                    <h3 class="card-title text-nowrap mb-2">${(selectedRecord.creditlimit * 0.5).toLocaleString(
+                      'en-US',
+                      { style: 'currency', currency: 'USD' }
+                    )}</h3>
+                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +${
+                      ((selectedRecord.creditlimit * 0.5) / selectedRecord.creditlimit) * 100
+                    }%</small>
+                      `;
   cardContainer.innerHTML = increasedCard;
-  console.log(increasedCard);
+  CreditLimitCardID.innerHTML = CreditLimitCard;
+  AvailableCreditID.innerHTML = AvailableCredit;
 } else {
   // Credit limit decreased
   const decreasedCard = `
-      
-           
-              <h5 class="card-title text-primary">Too Bad ${selectedRecord.accountName}! </h5>
-              <p class="mb-4">
-                Your Credit Limit has decreased by <span class="fw-bold">${percentageChange}%</span>
-                Check The table below
-              </p>
-              <a href="#table-striped" class="btn btn-sm btn-outline-primary">View Table</a>
-        
-         
-    `;
-  console.log(decreasedCard);
+                    <h5 class="card-title text-primary">Too Bad ${selectedRecord.accountName}! </h5><p class="mb-4">Your Credit Limit has decreased by <span class="fw-bold">${percentageChange}%</span>Check The table below</p>
+                    <a href="#table-striped" class="btn btn-sm btn-outline-primary">View Table</a>
+                    `;
+
+  const CreditLimitCard = `
+                    <span class="fw-semibold d-block mb-1">Credit Level</span>
+                    <h3 class="card-title mb-2">${selectedRecord.creditlimit.toLocaleString('en-US', {
+                      style: 'currency',
+                      currency: 'USD'
+                    })}</h3>
+                    <small class="text-danger fw-semibold"><i class="bx bx-down-arrow-alt"></i> ${percentageChange}</small>
+                              `;
+  const AvailableCredit = `
+                    <span class="fw-semibold d-block mb-1">Available Credit</span>
+                    <h3 class="card-title text-nowrap mb-2">${(selectedRecord.creditlimit * 0.5).toLocaleString(
+                      'en-US',
+                      { style: 'currency', currency: 'USD' }
+                    )}</h3>
+                    <small class="text-danger fw-semibold"><i class="bx bx-down-arrow-alt"></i> ${
+                      ((selectedRecord.creditlimit * 0.5) / selectedRecord.creditlimit) * 100
+                    }%</small>`;
   cardContainer.innerHTML = decreasedCard;
+  CreditLimitCardID.innerHTML = CreditLimitCard;
+  AvailableCreditID.innerHTML = AvailableCredit;
 }
 
 // Append the card container to the StatusIndicator div
