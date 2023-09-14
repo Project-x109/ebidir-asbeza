@@ -60,7 +60,6 @@ function getStatusCounts(data) {
 
 // Calculate the status counts
 const statusCounts = getStatusCounts(dummyDataStat);
-console.log(statusCounts);
 
 let cardColor, headingColor, axisColor, shadeColor, borderColor;
 
@@ -336,7 +335,6 @@ const status1 = {
 // Example usage:
 
 const formattedStatusCounts = formatNumbersWithAbbreviations(status1);
-console.log(formattedStatusCounts);
 // Update the HTML elements with the total loan amounts
 completedLoanAmountElement.textContent = `$${formattedStatusCounts.completed}`;
 overdueLoanAmountElement.textContent = `$${formattedStatusCounts.overdue}`;
@@ -372,8 +370,6 @@ const totalOriginalAmountFirstSixMonths = firstSixMonthsRecords.reduce((total, r
 const percentageChange =
   ((totalOriginalAmountLastSixMonths - totalOriginalAmountFirstSixMonths) / totalOriginalAmountFirstSixMonths) * 100;
 
-console.log('Total Original Amount Last 6 Months:', totalOriginalAmountLastSixMonths);
-console.log('Percentage Change:', percentageChange);
 
 // Display the values in your HTML elements
 const totalOriginalAmountElement = document.getElementById('totalOriginalAmount');

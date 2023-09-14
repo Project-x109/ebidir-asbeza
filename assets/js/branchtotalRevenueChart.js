@@ -105,7 +105,6 @@ document.addEventListener('DOMContentLoaded', function () {
     dummyData2s.push(record);
   }
 
-  console.log(dummyData2s);
 
   // Initialize an object to store loan counts for each year
   const loanCountsByYear = {};
@@ -147,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
       plotOptions: {
         bar: {
           horizontal: false,
-          columnWidth: '80%',
+          columnWidth: '33.3.%',
           borderRadius: 12,
           startingShape: 'rounded',
           endingShape: 'rounded'

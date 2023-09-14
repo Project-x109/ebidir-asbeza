@@ -85,7 +85,6 @@ function getStatusCounts(data) {
 
 // Calculate the status counts
 const statusCounts = getStatusCounts(dummyData);
-console.log(statusCounts);
 
 
 // Update the pieChartData with the calculated counts

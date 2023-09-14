@@ -68,7 +68,6 @@
   // Calculate the status counts
   const statusCounts = getStatusCounts(dummyData1);
 
-  console.log(statusCounts);
   let cardColor, headingColor, axisColor, shadeColor, borderColor;
 
   cardColor = config.colors.white;
@@ -103,7 +102,6 @@
 
   // Function to update the growth chart based on the selected year and status
   function updateGrowthChart(selectedYear, selectedStatus) {
-    console.log('Updating chart for year:', selectedYear, 'and status:', selectedStatus); // Debugging line
 
     // Filter the dummyData1 based on the selected year and status
     const filteredData = dummyData1.filter(record => {
@@ -111,12 +109,10 @@
       return paymentYear === selectedYear;
     });
 
-    console.log('Filtered data:', filteredData); // Debugging line
 
     // Calculate the status counts for the filtered data
     const filteredStatusCounts = getStatusCounts(filteredData);
 
-    console.log('Filtered status counts:', filteredStatusCounts); // Debugging line
 
     // Calculate the percentage for the selected status
     let percentage;
@@ -138,7 +134,6 @@
       // percentage = ...
     }
 
-    console.log('Percentage:', percentage); // Debugging line
 
     // Destroy the previous chart instance
     if (growthChart) {
@@ -233,7 +228,6 @@
   if (uniqueYears.length > 0) {
     updateGrowthChart(uniqueYears[0], 'completed');
   } else {
-    console.log('No data available for chart.');
   }
 
   // Function to extract unique years from the dummy data

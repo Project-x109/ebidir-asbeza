@@ -1,4 +1,4 @@
-const dummyData = [];
+const dummyDataLoan = [];
 document.addEventListener('DOMContentLoaded', function () {
   function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -90,10 +90,10 @@ document.addEventListener('DOMContentLoaded', function () {
       jobStatus: jobStatuses[getRandomNumber(0, jobStatuses.length - 1)],
       educationalStatus: education[getRandomNumber(0, education.length - 1)]
     };
-    dummyData.push(record);
+    dummyDataLoan.push(record);
   }
 
-  console.log(dummyData);
+  console.log(dummyDataLoan);
 
   // Function to populate the MUI DataTable with dummy data
 
@@ -121,8 +121,8 @@ document.addEventListener('DOMContentLoaded', function () {
       return `<span class="badge bg-label-${getStatusBadgeClass(data)}">${data}</span>`;
     }
 
-    for (let i = 0; i < dummyData.length; i++) {
-      const data = dummyData[i];
+    for (let i = 0; i < dummyDataLoan.length; i++) {
+      const data = dummyDataLoan[i];
       const rowData = [
         data.accountName,
         data.branchName,
@@ -238,8 +238,8 @@ function updateStatus(loanID) {
   const selectedStatus = $("input[name='statusRadio']:checked").val();
   console.log('Selected Status:', selectedStatus);
 
-  // Update the status in the dummyData array
-  const loan = dummyData.find(item => item.loanID === loanID);
+  // Update the status in the dummyDataLoan array
+  const loan = dummyDataLoan.find(item => item.loanID === loanID);
 
   if (loan) {
     console.log('Loan object found:', loan);
@@ -258,7 +258,7 @@ function updateStatus(loanID) {
       console.log('Row not found in DataTable.');
     }
   } else {
-    console.log('Loan object not found in dummyData.');
+    console.log('Loan object not found in dummyDataLoan.');
   }
 
   // Close the status modal
@@ -272,7 +272,7 @@ $('#statusModal').on('show.bs.modal', function (event) {
   const loanID = button.data('loan-id'); // Extract loan ID from data-loan-id attribute
   console.log('Modal clicked');
   // Find the loan with the given loanID
-  const loan = dummyData.find(item => item.loanID === loanID);
+  const loan = dummyDataLoan.find(item => item.loanID === loanID);
   console.log(loan + "hello");
   if (loan) {
     // Set the selected status based on the loan's status
