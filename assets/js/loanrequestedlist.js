@@ -93,7 +93,6 @@ document.addEventListener('DOMContentLoaded', function () {
     dummyDataLoan.push(record);
   }
 
-  console.log(dummyDataLoan);
 
   // Function to populate the MUI DataTable with dummy data
 
@@ -232,28 +231,23 @@ function populateModal(
 }
 
 function updateStatus(loanID) {
-  console.log('Updating status for Loan ID:', loanID);
 
   // Get the selected status from the radio buttons
   const selectedStatus = $("input[name='statusRadio']:checked").val();
-  console.log('Selected Status:', selectedStatus);
 
   // Update the status in the dummyDataLoan array
   const loan = dummyDataLoan.find(item => item.loanID === loanID);
 
   if (loan) {
-    console.log('Loan object found:', loan);
     loan.status = selectedStatus;
 
     // Update the DataTable cell with the new status
     const table = $('#table-striped').DataTable();
     const row = table.row(`[data-loan-id="${loanID}"]`);
     if (row) {
-      console.log('Updating DataTable cell...');
       row.data()[8] = `<span class="badge bg-label-${getStatusBadgeClass(selectedStatus)}">${selectedStatus}</span>`;
       row.invalidate(); // Mark the row as needing a redraw
       row.draw(); // Redraw the row
-      console.log('DataTable cell updated.');
     } else {
       console.log('Row not found in DataTable.');
     }

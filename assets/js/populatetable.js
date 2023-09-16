@@ -3,6 +3,7 @@
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
 // Function to generate a random date within a range of years
 function getRandomDate(startYear, endYear) {
   const year = getRandomNumber(startYear, endYear);
@@ -16,6 +17,7 @@ function getRandomStatus() {
   const statuses = ['overdue', 'completed', 'scheduled'];
   return statuses[getRandomNumber(0, 2)];
 }
+
 function getRandomItem() {
   const items = ['item1', 'item2', 'item3', 'item4', 'item5']; // Add more items as needed
   return items[getRandomNumber(0, items.length - 1)];
@@ -25,10 +27,10 @@ function getRandomItem() {
 function getRandomQuantity() {
   return getRandomNumber(1, 10); // Adjust the range as needed
 }
+
 // Array of random account names
 const randomAccountNames = [
   'Amanuel Girma'
-
   // Add more names as needed
 ];
 
@@ -59,7 +61,7 @@ function generateRandomCartData() {
 // Generate up to 100 records with cart data
 const dummyDataWithCart = [];
 
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 1; i++) {
   const record = {
     accountName: randomAccountNames[getRandomNumber(0, randomAccountNames.length - 1)],
     id: `eb0${getRandomNumber(1000000, 9999999)}`,
@@ -74,100 +76,81 @@ for (let i = 0; i < 100; i++) {
   dummyDataWithCart.push(record);
 }
 
-console.log(dummyDataWithCart); // Display the data with cart information
-
-// Function to populate the table with dummy data
 function populateTable() {
-  var tbody = document.querySelector('#table-striped tbody');
+  const tbody = document.querySelector('#table-striped tbody');
 
-  dummyDataWithCart.forEach(function (data) {
-    var row = document.createElement('tr');
-    var main = JSON.stringify(data.cartData);
-    console.log(main);
+  dummyDataWithCart.forEach(function (data, index) {
+    const row = document.createElement('tr');
+
     row.innerHTML = `
-            <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>${data.accountName}</strong></td>
-            <td>${data.id}</td>
-            <td>${data.loanAmount}</td>
-            <td>${data.paymentDate}</td>
-            <td><span class="badge bg-label-${
-              data.status === 'completed'
-                ? 'success'
-                : data.status === 'overdue'
-                ? 'danger'
-                : data.status === 'scheduled'
-                ? 'info'
-                : 'warning'
-            } me-1">${data.status}</span></td>
-            <td>
-                <!-- Toggle Between Modals -->
-                <div class="mt-1">
-                    <button
-                        type="button"
-                        class="btn rounded-pill btn-icon btn-outline-primary"
-                        data-bs-toggle="modal"
-                        data-bs-target="#modalToggle"
-                        onclick="populateModal(
-                          '${data.loanID}', 
-                          '${data.originalAmount}', 
-                          '${data.paymentDate}', 
-                          '${data.amountPaid}',
-                          ${data.cartData}  
-                          )"
-                    >
-                    <i class='bx bx-link-external'></i>
-                    </button>
-                </div>
-            </td>
-            <td>
-                <div class="dropdown">
-                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                        <i class="bx bx-dots-vertical-rounded"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                        <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
-                    </div>
-                </div>
-            </td>
-        `;
+      <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>${data.accountName}</strong></td>
+      <td>${data.id}</td>
+      <td>${data.loanAmount}</td>
+      <td>${data.paymentDate}</td>
+      <td><span class="badge bg-label-${
+        data.status === 'completed'
+          ? 'success'
+          : data.status === 'overdue'
+          ? 'danger'
+          : data.status === 'scheduled'
+          ? 'info'
+          : 'warning'
+      } me-1">${data.status}</span></td>
+      <td>
+        <div class="mt-1">
+          <button 
+            type="button"
+            class="btn rounded-pill btn-icon btn-outline-primary" 
+            data-bs-toggle="modal"
+            data-bs-target="#modalToggle"
+            onclick="populateModal(${index})">
+            <i class='bx bx-link-external'></i>
+          </button>
+        </div>
+      </td>
+      <td>
+        <div class="dropdown">
+          <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+            <i class="bx bx-dots-vertical-rounded"></i>
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
+          </div>
+        </div>
+      </td>
+    `;
 
     tbody.appendChild(row);
   });
 }
 
-// Function to populate the modal with dynamic data
-function populateModal(loanID, originalAmount, paymentDate, amountPaid, cartData) {
-  var modalContent = document.getElementById('modalContent');
-  // Create a string to hold the HTML representation of cart items
-  var cartHTML = '';
+function populateModal(index) {
+  const modalContent = document.getElementById('modalContent');
+  const data = dummyDataWithCart[index];
+  let cartHTML = '';
 
-  cartData.forEach(function (cartItem) {
-    // Log each cart item
-    console.log('Cart Item:', cartItem);
-
+  data.cartData.forEach(cartItem => {
     cartHTML += `
-        <div class="card mt-2">
-          <div class="card-body">
-            <p class="card-text"><strong>Item:</strong> ${cartItem.item}</p>
-            <p class="card-text"><strong>Quantity:</strong> ${cartItem.quantity}</p>
-            <p class="card-text"><strong>Price Per Item:</strong> ${cartItem.pricePerItem}</p>
-            <p class="card-text"><strong>Total Price for Item:</strong> ${cartItem.totalPriceForItem}</p>
-          </div>
+      <div class="card mt-2">
+        <div class="card-body">
+          <p class="card-text"><strong>Item:</strong> ${cartItem.item}</p>
+          <p class="card-text"><strong>Quantity:</strong> ${cartItem.quantity}</p>
+          <p class="card-text"><strong>Price Per Item:</strong> ${cartItem.pricePerItem}</p>
+          <p class="card-text"><strong>Total Price for Item:</strong> ${cartItem.totalPriceForItem}</p>
         </div>
-      `;
+      </div>
+    `;
   });
 
-  console.log(cartHTML);
-
   modalContent.innerHTML = `
-        <p class="card-text"><strong>Loan ID:</strong> ${loanID}</p>
-        <p class="card-text"><strong>Original Amount:</strong> ${originalAmount}</p>
-        <p class="card-text"><strong>Payment Date:</strong> ${paymentDate}</p>
-        <p class="card-text"><strong>Amount Paid:</strong> ${amountPaid}</p>
-        <!-- Display cart items -->
-        ${cartHTML}
+    <p class="card-text"><strong>Loan ID:</strong> ${data.loanID}</p>
+    <p class="card-text"><strong>Original Amount:</strong> ${data.originalAmount}</p>
+    <p class="card-text"><strong>Payment Date:</strong> ${data.paymentDate}</p>
+    <p class="card-text"><strong>Amount Paid:</strong> ${data.amountPaid}</p>
+    <p class="card-text"><strong>Cart Data:</strong></p>
+    ${cartHTML}
   `;
 }
 
-// Call the function to populate the table
 populateTable();

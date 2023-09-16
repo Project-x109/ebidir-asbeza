@@ -139,7 +139,6 @@ for (let i = 0; i < 100; i++) {
   dummyDataLoan.push(record);
 }
 
-console.log(dummyDataLoan);
 
 // Function to calculate the percentage change
 function calculatePercentageChange(oldValue, newValue) {
@@ -166,7 +165,6 @@ const AvailableCreditID = document.getElementById('AvailableCreditID');
 
 // Create a new div element to hold the card content
 const cardContainer = document.createElement('div');
-console.log(selectedRecord);
 // Display the appropriate card based on the result
 if (creditLimitIncreased) {
   // Credit limit increased
