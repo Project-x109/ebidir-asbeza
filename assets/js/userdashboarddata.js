@@ -177,20 +177,20 @@ if (creditLimitIncreased) {
     `;
   const CreditLimitCard = `
                     <span class="fw-semibold d-block mb-1">Credit Level</span>
-                    <h3 class="card-title mb-2">${selectedRecord.creditlimit.toLocaleString('en-US', {
+                    <h5 class="card-title mb-2">${selectedRecord.creditlimit.toLocaleString('en-US', {
                       style: 'currency',
                       currency: 'USD'
-                    })}</h3>
+                    })}</h5>
                     <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +${percentageChange}</small>
                               `;
   const AvailableCredit = `
                     <span class="fw-semibold d-block mb-1">Available Credit</span>
-                    <h3 class="card-title text-nowrap mb-2">${(selectedRecord.creditlimit * 0.5).toLocaleString(
+                    <h5 class="card-title text-nowrap mb-2">${(selectedRecord.creditlimit * 1.5).toLocaleString(
                       'en-US',
                       { style: 'currency', currency: 'USD' }
-                    )}</h3>
+                    )}</h5>
                     <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +${
-                      ((selectedRecord.creditlimit * 0.5) / selectedRecord.creditlimit) * 100
+                      ((selectedRecord.creditlimit * 1.5) / selectedRecord.creditlimit) * 100
                     }%</small>
                       `;
   cardContainer.innerHTML = increasedCard;
@@ -205,18 +205,18 @@ if (creditLimitIncreased) {
 
   const CreditLimitCard = `
                     <span class="fw-semibold d-block mb-1">Credit Level</span>
-                    <h3 class="card-title mb-2">${selectedRecord.creditlimit.toLocaleString('en-US', {
+                    <h5 class="card-title mb-2">${selectedRecord.creditlimit.toLocaleString('en-US', {
                       style: 'currency',
                       currency: 'USD'
-                    })}</h3>
+                    })}</h5>
                     <small class="text-danger fw-semibold"><i class="bx bx-down-arrow-alt"></i> ${percentageChange}</small>
                               `;
   const AvailableCredit = `
                     <span class="fw-semibold d-block mb-1">Available Credit</span>
-                    <h3 class="card-title text-nowrap mb-2">${(selectedRecord.creditlimit * 0.5).toLocaleString(
+                    <h5 class="card-title text-nowrap mb-2">${(selectedRecord.creditlimit * 0.5).toLocaleString(
                       'en-US',
                       { style: 'currency', currency: 'USD' }
-                    )}</h3>
+                    )}</h5>
                     <small class="text-danger fw-semibold"><i class="bx bx-down-arrow-alt"></i> ${
                       ((selectedRecord.creditlimit * 0.5) / selectedRecord.creditlimit) * 100
                     }%</small>`;
