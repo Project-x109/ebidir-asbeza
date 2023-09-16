@@ -1,4 +1,3 @@
-// Function to generate a random item
 // Function to generate a random number between min and max (inclusive)
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -58,20 +57,63 @@ function generateRandomCartData() {
   return cartData;
 }
 
+// Function to calculate totalSpent from cartData
+function calculateTotalSpent(cartData) {
+  let total = 0;
+  cartData.forEach(cartItem => {
+    total += parseFloat(cartItem.totalPriceForItem.replace('$', ''));
+  });
+  return `$${total.toFixed(2)}`;
+}
+const creditLimits = [
+  0, 100, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 8000, 9000, 10000
+];
 // Generate up to 100 records with cart data
 const dummyDataWithCart = [];
 
-for (let i = 0; i < 1; i++) {
+for (let i = 0; i < 10; i++) {
+  // Calculate loanAmount ensuring loanAmount >= 100
+  let loanAmount;
+  do {
+    loanAmount = creditLimits[getRandomNumber(0, creditLimits.length - 1)]; // Adjust the loanAmount range as needed
+  } while (loanAmount < 100);
+
+  let remainingLoan = loanAmount;
+  const cartData = generateRandomCartData();
+  let totalSpent = 0;
+
+  // Ensure totalSpent <= loanAmount
+  for (let j = 0; j < cartData.length; j++) {
+    const cartItem = cartData[j];
+    const itemTotal = parseFloat(cartItem.totalPriceForItem.replace('$', ''));
+
+    if (totalSpent + itemTotal <= loanAmount) {
+      totalSpent += itemTotal;
+    } else {
+      cartItem.quantity = Math.floor((loanAmount - totalSpent) / parseFloat(cartItem.pricePerItem.replace('$', '')));
+      cartItem.totalPriceForItem = `$${(cartItem.quantity * parseFloat(cartItem.pricePerItem.replace('$', ''))).toFixed(
+        2
+      )}`;
+      totalSpent = loanAmount;
+      break;
+    }
+  }
+
+  // Calculate creditLeft as loanAmount - totalSpent
+  const creditLeft = `$${(loanAmount - totalSpent).toFixed(2)}`;
+
   const record = {
     accountName: randomAccountNames[getRandomNumber(0, randomAccountNames.length - 1)],
     id: `eb0${getRandomNumber(1000000, 9999999)}`,
-    loanAmount: `$${getRandomNumber(1000, 5000)}`,
+    loanAmount: `$${loanAmount.toFixed(2)}`,
+    totalSpent: `$${totalSpent.toFixed(2)}`,
+    creditLeft: creditLeft,
     paymentDate: getRandomDate(2020, 2023),
     status: getRandomStatus(),
     loanID: `eb0${getRandomNumber(1000000, 9999999)}`,
     originalAmount: `$${getRandomNumber(3000, 10000)}`,
     amountPaid: `$${getRandomNumber(0, 5000)}`,
-    cartData: generateRandomCartData()
+    cartData: cartData
   };
   dummyDataWithCart.push(record);
 }
@@ -86,6 +128,8 @@ function populateTable() {
       <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>${data.accountName}</strong></td>
       <td>${data.id}</td>
       <td>${data.loanAmount}</td>
+      <td>${data.totalSpent}</td>
+      <td>${data.creditLeft}</td>
       <td>${data.paymentDate}</td>
       <td><span class="badge bg-label-${
         data.status === 'completed'
@@ -131,26 +175,21 @@ function populateModal(index) {
   let cartHTML = '';
 
   data.cartData.forEach(cartItem => {
-    cartHTML += `
-      <div class="card mt-2">
-        <div class="card-body">
-          <p class="card-text"><strong>Item:</strong> ${cartItem.item}</p>
-          <p class="card-text"><strong>Quantity:</strong> ${cartItem.quantity}</p>
-          <p class="card-text"><strong>Price Per Item:</strong> ${cartItem.pricePerItem}</p>
-          <p class="card-text"><strong>Total Price for Item:</strong> ${cartItem.totalPriceForItem}</p>
-        </div>
-      </div>
-    `;
+    cartHTML += ` 
+    <small class="text-light fw-semibold">Naming a source</small>
+    <figure class="mt-2">
+      <p class="card-text"><strong>Item:</strong> ${cartItem.item}</p>
+      <p class="card-text"><strong>Quantity:</strong> ${cartItem.quantity}</p>
+      <p class="card-text"><strong>Price Per Item:</strong> ${cartItem.pricePerItem}</p>
+      <p class="card-text"><strong>Total Price for Item:</strong> ${cartItem.totalPriceForItem}</p>
+      <figcaption class="blockquote-footer">
+        Someone famous in <cite title="Source Title">Source Title</cite>
+      </figcaption>
+    </figure>
+  <hr class="m-0" />`;
   });
 
-  modalContent.innerHTML = `
-    <p class="card-text"><strong>Loan ID:</strong> ${data.loanID}</p>
-    <p class="card-text"><strong>Original Amount:</strong> ${data.originalAmount}</p>
-    <p class="card-text"><strong>Payment Date:</strong> ${data.paymentDate}</p>
-    <p class="card-text"><strong>Amount Paid:</strong> ${data.amountPaid}</p>
-    <p class="card-text"><strong>Cart Data:</strong></p>
-    ${cartHTML}
-  `;
+  modalContent.innerHTML = `${cartHTML}`;
 }
 
 populateTable();
