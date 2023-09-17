@@ -25,7 +25,7 @@
   }
 
   function getRandomItem() {
-    const items = ['item1', 'item2', 'item3', 'item4', 'item5']; // Add more items as needed
+    const items = ['apple', 'orange', 'banana', 'strawberry'];
     return items[getRandomNumber(0, items.length - 1)];
   }
 
@@ -245,6 +245,77 @@
     const totalSpent = parseFloat(record.totalSpent.replace('$', ''));
     statusTotals[status] += totalSpent;
   });
+
+  // Analyze cartData to find the top 4 purchased items
+  function findTopPurchasedItems(cartData) {
+    const itemQuantityMap = {};
+
+    // Calculate the quantity of each item
+    cartData.forEach(cartItem => {
+      const itemName = cartItem.item;
+      const itemQuantity = cartItem.quantity;
+      const itemPrice = parseFloat(cartItem.pricePerItem.replace('$', ''));
+      const itemTotalPrice = itemQuantity * itemPrice;
+
+      if (itemQuantityMap[itemName]) {
+        itemQuantityMap[itemName] += itemTotalPrice;
+      } else {
+        itemQuantityMap[itemName] = itemTotalPrice;
+      }
+    });
+
+    // Sort items by total amount spent in descending order
+    const sortedItems = Object.keys(itemQuantityMap).sort((a, b) => itemQuantityMap[b] - itemQuantityMap[a]);
+
+    // Get the top 4 items
+    return sortedItems.slice(0, 4);
+  }
+
+  // Calculate the total amount spent on each top item
+  function calculateTotalAmountSpent(cartData, topItems) {
+    const itemTotalAmounts = {};
+
+    cartData.forEach(cartItem => {
+      const itemName = cartItem.item;
+      const itemQuantity = cartItem.quantity;
+      const itemPrice = parseFloat(cartItem.pricePerItem.replace('$', ''));
+      const itemTotalPrice = itemQuantity * itemPrice;
+
+      if (topItems.includes(itemName)) {
+        if (itemTotalAmounts[itemName]) {
+          itemTotalAmounts[itemName] += itemTotalPrice;
+        } else {
+          itemTotalAmounts[itemName] = itemTotalPrice;
+        }
+      }
+    });
+
+    return itemTotalAmounts;
+  }
+
+  // Find the top 4 purchased items
+  const topPurchasedItems = findTopPurchasedItems(dummyDataWithCartstat.flatMap(record => record.cartData));
+
+  // Calculate the total amount spent on each top item
+  const totalAmountSpentOnTopItems = calculateTotalAmountSpent(
+    dummyDataWithCartstat.flatMap(record => record.cartData),
+    topPurchasedItems
+  );
+
+  const topItemsList = document.getElementById('topItemsList'); // Get the existing list
+
+  // Iterate through the existing list items and update their content
+  const listItems = topItemsList.querySelectorAll('li');
+  topPurchasedItems.forEach((itemName, index) => {
+    const listItem = listItems[index];
+
+    // Update the item name
+    listItem.querySelector('h6').textContent = itemName.toUpperCase();
+
+    // Update the total amount
+    listItem.querySelector('.fw-semibold').textContent = `$${formatNumberWithAbbreviation(totalAmountSpentOnTopItems[itemName])}`;
+  });
+
   // Order Statistics Chart
   // --------------------------------------------------------------------
   const chartOrderStatistics = document.querySelector('#orderStatisticsChart'),
@@ -289,7 +360,7 @@
                 color: headingColor,
                 offsetY: -15,
                 formatter: function (val) {
-                  return formatNumberWithAbbreviation(val) ;
+                  return formatNumberWithAbbreviation(val);
                 }
               },
               name: {
@@ -302,7 +373,9 @@
                 color: axisColor,
                 label: 'Total',
                 formatter: function (w) {
-                  return formatNumberWithAbbreviation(statusTotals.overdue+statusTotals.completed+statusTotals.scheduled);
+                  return formatNumberWithAbbreviation(
+                    statusTotals.overdue + statusTotals.completed + statusTotals.scheduled
+                  );
                 }
               }
             }
@@ -316,7 +389,9 @@
   }
 
   const TotalCreditbystatus = document.getElementById('TotalCreditbystatus');
-  TotalCreditbystatus.textContent = `$${formatNumberWithAbbreviation(statusTotals.overdue+statusTotals.completed+statusTotals.scheduled)}`;
+  TotalCreditbystatus.textContent = `$${formatNumberWithAbbreviation(
+    statusTotals.overdue + statusTotals.completed + statusTotals.scheduled
+  )}`;
 
   // Income Chart - Last six month purchase report
   // --------------------------------------------------------------------
