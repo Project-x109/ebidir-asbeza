@@ -64,17 +64,17 @@
     return cartData;
   }
 
-  // Function to calculate totalSpent from cartData
-  function calculateTotalSpent(cartData) {
-    let total = 0;
-    cartData.forEach(cartItem => {
-      total += parseFloat(cartItem.totalPriceForItem.replace('$', ''));
-    });
-    return `$${total.toFixed(2)}`;
-  }
   const creditLimits = [
     0, 100, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 8000, 9000, 10000
   ];
+
+  // Function to calculate credit repayment date (one month ahead)
+  function calculateCreditRepaymentDate(paymentDate) {
+    const [month, day, year] = paymentDate.split('-').map(Number);
+    const nextMonth = month === 12 ? 1 : month + 1;
+    const nextYear = month === 12 ? year + 1 : year;
+    return `${nextMonth.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}-${nextYear}`;
+  }
   // Generate up to 100 records with cart data
   const dummyDataWithCartstat = [];
 
@@ -108,14 +108,15 @@
 
     // Calculate creditLeft as loanAmount - totalSpent
     const creditLeft = `$${(loanAmount - totalSpent).toFixed(2)}`;
-
+    const paymentDate = getRandomDate(2020, 2023);
     const record = {
       accountName: randomAccountNames[getRandomNumber(0, randomAccountNames.length - 1)],
       id: `eb0${getRandomNumber(1000000, 9999999)}`,
       loanAmount: `$${loanAmount.toFixed(2)}`,
       totalSpent: `$${totalSpent.toFixed(2)}`,
       creditLeft: creditLeft,
-      paymentDate: getRandomDate(2020, 2023),
+      creditrepaymentdate: calculateCreditRepaymentDate(paymentDate), // Calculate credit repayment date
+      paymentDate: paymentDate,
       status: getRandomStatus(),
       loanID: `eb0${getRandomNumber(1000000, 9999999)}`,
       originalAmount: `$${getRandomNumber(3000, 10000)}`,
@@ -124,8 +125,6 @@
     };
     dummyDataWithCartstat.push(record);
   }
-
-  console.log(dummyDataWithCartstat);
 
   // Adjust the calculation of x-axis categories and totalSpentLast6Months
   function calculateTotalSpentLast6Months(data) {
@@ -163,8 +162,6 @@
   const xAxisCategories = getXAxisCategories();
   // Insert the totalSpentLast6Months array into the chart data
   const totalSpentLast6Months = calculateTotalSpentLast6Months(dummyDataWithCartstat);
-
-  console.log(totalSpentLast6Months);
 
   // Calculate total spent for the current 6 months and the past 6 months
   function calculateTotalSpentFor6Months(data) {
@@ -222,69 +219,32 @@
   axisColor = config.colors.axisColor;
   borderColor = config.colors.borderColor;
 
-  // Profit Report Line Chart
-  // --------------------------------------------------------------------
-  const profileReportChartEl = document.querySelector('#profileReportChart'),
-    profileReportChartConfig = {
-      chart: {
-        height: 80,
-        // width: 175,
-        type: 'line',
-        toolbar: {
-          show: false
-        },
-        dropShadow: {
-          enabled: true,
-          top: 10,
-          left: 5,
-          blur: 3,
-          color: config.colors.warning,
-          opacity: 0.15
-        },
-        sparkline: {
-          enabled: true
-        }
-      },
-      grid: {
-        show: false,
-        padding: {
-          right: 8
-        }
-      },
-      colors: [config.colors.warning],
-      dataLabels: {
-        enabled: false
-      },
-      stroke: {
-        width: 5,
-        curve: 'smooth'
-      },
-      series: [
-        {
-          data: [110, 270, 145, 245, 205, 285]
-        }
-      ],
-      xaxis: {
-        show: false,
-        lines: {
-          show: false
-        },
-        labels: {
-          show: false
-        },
-        axisBorder: {
-          show: false
-        }
-      },
-      yaxis: {
-        show: false
+  // Helper function to format numbers with commas and abbreviations
+  function formatNumberWithAbbreviation(value) {
+    const abbreviations = ['K', 'M', 'B', 'T'];
+
+    for (let i = abbreviations.length - 1; i >= 0; i--) {
+      const factor = Math.pow(10, (i + 1) * 3);
+      if (value >= factor) {
+        return (value / factor).toFixed(1).replace(/\.0$/, '') + abbreviations[i];
       }
-    };
-  if (typeof profileReportChartEl !== undefined && profileReportChartEl !== null) {
-    const profileReportChart = new ApexCharts(profileReportChartEl, profileReportChartConfig);
-    profileReportChart.render();
+    }
+
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
+  // Group the dummy data by "status" and calculate the total spent for each status
+  const statusTotals = {
+    overdue: 0,
+    completed: 0,
+    scheduled: 0
+  };
+
+  dummyDataWithCartstat.forEach(record => {
+    const status = record.status.toLowerCase();
+    const totalSpent = parseFloat(record.totalSpent.replace('$', ''));
+    statusTotals[status] += totalSpent;
+  });
   // Order Statistics Chart
   // --------------------------------------------------------------------
   const chartOrderStatistics = document.querySelector('#orderStatisticsChart'),
@@ -294,8 +254,8 @@
         width: 130,
         type: 'donut'
       },
-      labels: ['Electronic', 'Sports', 'Decor', 'Fashion'],
-      series: [85, 15, 50, 50],
+      labels: ['Overdue', 'Completed', 'Scheduled'],
+      series: [statusTotals.overdue, statusTotals.completed, statusTotals.scheduled],
       colors: [config.colors.primary, config.colors.secondary, config.colors.info, config.colors.success],
       stroke: {
         width: 5,
@@ -329,7 +289,7 @@
                 color: headingColor,
                 offsetY: -15,
                 formatter: function (val) {
-                  return parseInt(val) + '%';
+                  return formatNumberWithAbbreviation(val) ;
                 }
               },
               name: {
@@ -340,9 +300,9 @@
                 show: true,
                 fontSize: '0.8125rem',
                 color: axisColor,
-                label: 'Weekly',
+                label: 'Total',
                 formatter: function (w) {
-                  return '38%';
+                  return formatNumberWithAbbreviation(statusTotals.overdue+statusTotals.completed+statusTotals.scheduled);
                 }
               }
             }
@@ -354,6 +314,9 @@
     const statisticsChart = new ApexCharts(chartOrderStatistics, orderChartConfig);
     statisticsChart.render();
   }
+
+  const TotalCreditbystatus = document.getElementById('TotalCreditbystatus');
+  TotalCreditbystatus.textContent = `$${formatNumberWithAbbreviation(statusTotals.overdue+statusTotals.completed+statusTotals.scheduled)}`;
 
   // Income Chart - Last six month purchase report
   // --------------------------------------------------------------------

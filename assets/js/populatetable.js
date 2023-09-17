@@ -71,6 +71,13 @@ const creditLimits = [
 // Generate up to 100 records with cart data
 const dummyDataWithCart = [];
 
+// Function to calculate credit repayment date (one month ahead)
+function calculateCreditRepaymentDate(paymentDate) {
+  const [month, day, year] = paymentDate.split('-').map(Number);
+  const nextMonth = month === 12 ? 1 : month + 1;
+  const nextYear = month === 12 ? year + 1 : year;
+  return `${nextMonth.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}-${nextYear}`;
+}
 for (let i = 0; i < 10; i++) {
   // Calculate loanAmount ensuring loanAmount >= 100
   let loanAmount;
@@ -98,7 +105,7 @@ for (let i = 0; i < 10; i++) {
       break;
     }
   }
-
+  const paymentDate = getRandomDate(2020, 2023);
   // Calculate creditLeft as loanAmount - totalSpent
   const creditLeft = `$${(loanAmount - totalSpent).toFixed(2)}`;
 
@@ -108,7 +115,8 @@ for (let i = 0; i < 10; i++) {
     loanAmount: `$${loanAmount.toFixed(2)}`,
     totalSpent: `$${totalSpent.toFixed(2)}`,
     creditLeft: creditLeft,
-    paymentDate: getRandomDate(2020, 2023),
+    paymentDate: paymentDate,
+    creditrepaymentdate: calculateCreditRepaymentDate(paymentDate), // Calculate credit repayment date
     status: getRandomStatus(),
     loanID: `eb0${getRandomNumber(1000000, 9999999)}`,
     originalAmount: `$${getRandomNumber(3000, 10000)}`,
@@ -131,6 +139,7 @@ function populateTable() {
       <td>${data.totalSpent}</td>
       <td>${data.creditLeft}</td>
       <td>${data.paymentDate}</td>
+      <td>${data.creditrepaymentdate}</td>
       <td><span class="badge bg-label-${
         data.status === 'completed'
           ? 'success'

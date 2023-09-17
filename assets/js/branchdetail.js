@@ -18,7 +18,7 @@ function getRandomStatus() {
 }
 
 // Array of random account names
-const randomAccountNames = [
+const randomAccountNamesBranch = [
   'Amanuel Girma',
   'John Doe',
   'Jane Smith',
@@ -32,7 +32,7 @@ const dummyData = [];
 
 for (let i = 0; i < 100; i++) {
   const record = {
-    accountName: randomAccountNames[getRandomNumber(0, randomAccountNames.length - 1)],
+    accountName: randomAccountNamesBranch[getRandomNumber(0, randomAccountNamesBranch.length - 1)],
     id: `eb0${getRandomNumber(1000000, 9999999)}`,
     loanAmount: `$${getRandomNumber(1000, 5000)}`,
     paymentDate: getRandomDate(2020, 2023),
