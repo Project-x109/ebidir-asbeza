@@ -1,4 +1,3 @@
-// Function to generate a random number between min and max (inclusive)
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -69,9 +68,9 @@ const creditLimits = [
   0, 100, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 8000, 9000, 10000
 ];
 // Generate up to 100 records with cart data
-const dummyDataWithCart = [];
+const dummyDataWithCartstatcommon = [];
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 2000; i++) {
   // Calculate loanAmount ensuring loanAmount >= 100
   let loanAmount;
   do {
@@ -115,77 +114,27 @@ for (let i = 0; i < 10; i++) {
     amountPaid: `$${getRandomNumber(0, 5000)}`,
     cartData: cartData
   };
-  dummyDataWithCart.push(record);
+  dummyDataWithCartstatcommon.push(record);
 }
 
-function populateTable() {
-  const tbody = document.querySelector('#table-striped tbody');
+function findLatestCreditLeft(data) {
+  let latestCreditLeft = 0;
+  let latestPaymentDate = new Date(0); // Initialize with the earliest date
 
-  dummyDataWithCart.forEach(function (data, index) {
-    const row = document.createElement('tr');
+  for (const payment of data) {
+    const paymentDate = new Date(payment.paymentDate);
+    if (paymentDate > latestPaymentDate) {
+      latestPaymentDate = paymentDate;
+      latestCreditLeft = parseFloat(payment.creditLeft.replace('$', ''));
+    }
+  }
 
-    row.innerHTML = `
-      <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>${data.accountName}</strong></td>
-      <td>${data.id}</td>
-      <td>${data.loanAmount}</td>
-      <td>${data.totalSpent}</td>
-      <td>${data.creditLeft}</td>
-      <td>${data.paymentDate}</td>
-      <td><span class="badge bg-label-${
-        data.status === 'completed'
-          ? 'success'
-          : data.status === 'overdue'
-          ? 'danger'
-          : data.status === 'scheduled'
-          ? 'info'
-          : 'warning'
-      } me-1">${data.status}</span></td>
-      <td>
-        <div class="mt-1">
-          <button 
-            type="button"
-            class="btn rounded-pill btn-icon btn-outline-primary" 
-            data-bs-toggle="modal"
-            data-bs-target="#modalToggle"
-            onclick="populateModal(${index})">
-            <i class='bx bx-link-external'></i>
-          </button>
-        </div>
-      </td>
-      <td>
-        <div class="dropdown">
-          <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-            <i class="bx bx-dots-vertical-rounded"></i>
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
-          </div>
-        </div>
-      </td>
-    `;
-
-    tbody.appendChild(row);
-  });
+  return latestCreditLeft;
 }
 
-function populateModal(index) {
-  const modalContent = document.getElementById('modalContent');
-  const data = dummyDataWithCart[index];
-  let cartHTML = '';
+// Get the latest credit left value
+const latestCreditLeft = findLatestCreditLeft(dummyDataWithCartstatcommon);
 
-  data.cartData.forEach(cartItem => {
-    cartHTML += ` 
-    <figure class="mt-2">
-      <p class="card-text"><strong>Item:</strong> ${cartItem.item}</p>
-      <p class="card-text"><strong>Quantity:</strong> ${cartItem.quantity}</p>
-      <p class="card-text"><strong>Price Per Item:</strong> ${cartItem.pricePerItem}</p>
-      <p class="card-text"><strong>Total Price for Item:</strong> ${cartItem.totalPriceForItem}</p>
-    </figure>
-  <hr class="m-0" />`;
-  });
-
-  modalContent.innerHTML = `${cartHTML}`;
-}
-
-populateTable();
+// Display the remaining credit limit
+const creditLimitElement = document.getElementById('creditLimit');
+creditLimitElement.textContent = `$${latestCreditLeft.toFixed(2)}`;
