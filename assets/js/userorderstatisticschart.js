@@ -313,9 +313,22 @@
     listItem.querySelector('h6').textContent = itemName.toUpperCase();
 
     // Update the total amount
-    listItem.querySelector('.fw-semibold').textContent = `$${formatNumberWithAbbreviation(totalAmountSpentOnTopItems[itemName])}`;
+    listItem.querySelector('.fw-semibold').textContent = `$${formatNumberWithAbbreviation(
+      totalAmountSpentOnTopItems[itemName]
+    )}`;
   });
 
+  const todaysDate = document.getElementById('todaysdate');
+  const today = new Date();
+
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1; // Months are zero-based, so add 1
+
+  // Create a formatted date string
+  const formattedDate = `${'As of '}${year}-${month.toString().padStart(2, '0')}`;
+
+  // Set the text content of the element
+  todaysDate.textContent = formattedDate;
   // Order Statistics Chart
   // --------------------------------------------------------------------
   const chartOrderStatistics = document.querySelector('#orderStatisticsChart'),
