@@ -191,7 +191,7 @@ function populateTable() {
               <a href="transactionrecordDetail.html" class="menu-link" onclick="showDetails(${index})">
                   <div data-i18n="Without menu">Details</div>
               </a>
-          </td>
+              </td>
               
               <td>
                   <div class="dropdown">
