@@ -178,3 +178,35 @@ for (let i = 0; i < 100; i++) {
   dummyData.push(record);
 }
 console.log(dummyData);
+
+// Sort the dummyData array by creditrepaymentdate in descending order
+dummyData.sort((a, b) => new Date(b.creditrepaymentdate) - new Date(a.creditrepaymentdate));
+
+// The record with the latest creditrepaymentdate will be the first record in the sorted array
+const latestRecord = dummyData[0];
+document.getElementById('availablelimit').textContent = latestRecord.creditLeft;
+
+// Find the index of the latest record in the sorted array
+const latestRecordIndex = 0;
+
+// Find the closest record to the latest record based on creditrepaymentdate
+let closestRecordIndex = -1;
+let closestDateDifference = Infinity;
+
+for (let i = 1; i < dummyData.length; i++) {
+  const currentDate = new Date(dummyData[i].creditrepaymentdate);
+  const latestDate = new Date(dummyData[latestRecordIndex].creditrepaymentdate);
+  const dateDifference = Math.abs(currentDate - latestDate);
+
+  if (dateDifference < closestDateDifference) {
+    closestRecordIndex = i;
+    closestDateDifference = dateDifference;
+  }
+}
+
+// Calculate the percentage change
+const latestCreditLeft1 = parseFloat(dummyData[latestRecordIndex].creditLeft.replace('$', ''));
+const closestCreditLeft = parseFloat(dummyData[closestRecordIndex].creditLeft.replace('$', ''));
+const percentageChange = (((latestCreditLeft1 - closestCreditLeft) / closestCreditLeft) * 100).toFixed(2);
+
+document.getElementById('changebetweenclosesrecords').textContent=percentageChange;
