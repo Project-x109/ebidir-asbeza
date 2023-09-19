@@ -184,7 +184,24 @@ dummyData.sort((a, b) => new Date(b.creditrepaymentdate) - new Date(a.creditrepa
 
 // The record with the latest creditrepaymentdate will be the first record in the sorted array
 const latestRecord = dummyData[0];
-document.getElementById('availablelimit').textContent = latestRecord.creditLeft;
+
+function formatNumberWithAbbreviation(value) {
+  const abbreviations = ['', 'K', 'M', 'B', 'T'];
+
+  for (let i = abbreviations.length - 1; i >= 0; i--) {
+    const factor = Math.pow(10, i * 3);
+    if (value >= factor) {
+      return (value / factor).toFixed(1).replace(/\.0$/, '') + abbreviations[i];
+    }
+  }
+
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+const latestRecord1 = formatNumberWithAbbreviation(latestRecord.creditLeft);
+
+console.log(latestRecord.creditLeft, latestRecord1);
+document.getElementById('availablelimit').textContent = latestRecord1;
 
 // Find the index of the latest record in the sorted array
 const latestRecordIndex = 0;
@@ -207,6 +224,30 @@ for (let i = 1; i < dummyData.length; i++) {
 // Calculate the percentage change
 const latestCreditLeft1 = parseFloat(dummyData[latestRecordIndex].creditLeft.replace('$', ''));
 const closestCreditLeft = parseFloat(dummyData[closestRecordIndex].creditLeft.replace('$', ''));
-const percentageChange = (((latestCreditLeft1 - closestCreditLeft) / closestCreditLeft) * 100).toFixed(2);
+const percentageChange = ((latestCreditLeft1 - closestCreditLeft) / closestCreditLeft) * 100;
 
-document.getElementById('changebetweenclosesrecords').textContent=percentageChange;
+const changeBetweenClosestRecordsElement = document.getElementById('changebetweenclosesrecords');
+
+// Determine the arrow icon class based on the percentageChange
+const arrowIconClass = percentageChange >= 0 ? 'bx-up-arrow-alt' : 'bx-down-arrow-alt';
+
+// Determine the text class based on the percentageChange
+const textClass = percentageChange >= 0 ? 'text-success' : 'text-danger';
+
+// Create an <i> element with the appropriate arrow icon class
+const arrowIconElement = document.createElement('i');
+arrowIconElement.classList.add('bx', textClass, arrowIconClass);
+
+// Create a <span> element for the percentageChange with the appropriate text class
+const percentageChangeElement = document.createElement('span');
+percentageChangeElement.id = 'percentage-change';
+percentageChangeElement.textContent = `${percentageChange.toFixed(2)}%`;
+percentageChangeElement.classList.add(textClass);
+
+// Clear existing content
+changeBetweenClosestRecordsElement.innerHTML = '';
+
+// Add the arrow icon element and percentageChange element as children of the changeBetweenClosestRecordsElement
+changeBetweenClosestRecordsElement.appendChild(arrowIconElement);
+changeBetweenClosestRecordsElement.appendChild(document.createTextNode(' ')); // Add space
+changeBetweenClosestRecordsElement.appendChild(percentageChangeElement);
