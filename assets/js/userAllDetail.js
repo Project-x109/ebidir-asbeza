@@ -7,7 +7,6 @@ const selectedRecord = JSON.parse(selectedRecordJSON);
 document.getElementById('fullname').textContent = selectedRecord.accountName;
 document.getElementById('email').textContent = selectedRecord.email;
 document.getElementById('phone').textContent = selectedRecord.phone;
-document.getElementById('jobstatus').textContent = selectedRecord.jobStatus;
 console.log(selectedRecord);
 
 function getRandomNumber(min, max) {
