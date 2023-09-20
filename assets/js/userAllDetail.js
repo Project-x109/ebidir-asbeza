@@ -7,7 +7,6 @@ const selectedRecord = JSON.parse(selectedRecordJSON);
 document.getElementById('fullname').textContent = selectedRecord.accountName;
 document.getElementById('email').textContent = selectedRecord.email;
 document.getElementById('phone').textContent = selectedRecord.phone;
-console.log(selectedRecord);
 
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -127,8 +126,14 @@ function calculateCreditRepaymentDate(paymentDate) {
   const nextYear = month === 12 ? year + 1 : year;
   return `${nextMonth.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}-${nextYear}`;
 }
+function getRandomDate1(startYear, endYear) {
+  const year = getRandomNumber(startYear, endYear);
+  const month = getRandomNumber(1, 12);
+  const day = getRandomNumber(1, 28); // Assuming all months have up to 28 days
+  return `${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}-${year}`;
+}
 
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 1000; i++) {
   // Calculate loanAmount ensuring loanAmount >= 100
   let loanAmount;
   do {
@@ -161,6 +166,7 @@ for (let i = 0; i < 100; i++) {
   const record = {
     accountName: selectedRecord.accountName,
     id: selectedRecord.id,
+    loanprovideddate: getRandomDate1(2020, 2023),
     loanAmount: `$${loanAmount.toFixed(2)}`,
     totalSpent: `$${totalSpent.toFixed(2)}`,
     creditLeft: creditLeft,
@@ -177,7 +183,6 @@ for (let i = 0; i < 100; i++) {
   };
   dummyData.push(record);
 }
-console.log(dummyData);
 
 // Sort the dummyData array by creditrepaymentdate in descending order
 dummyData.sort((a, b) => new Date(b.creditrepaymentdate) - new Date(a.creditrepaymentdate));
@@ -200,7 +205,6 @@ function formatNumberWithAbbreviation(value) {
 
 const latestRecord1 = formatNumberWithAbbreviation(latestRecord.creditLeft);
 
-console.log(latestRecord.creditLeft, latestRecord1);
 document.getElementById('availablelimit').textContent = latestRecord1;
 
 // Find the index of the latest record in the sorted array
@@ -251,3 +255,335 @@ changeBetweenClosestRecordsElement.innerHTML = '';
 changeBetweenClosestRecordsElement.appendChild(arrowIconElement);
 changeBetweenClosestRecordsElement.appendChild(document.createTextNode(' ')); // Add space
 changeBetweenClosestRecordsElement.appendChild(percentageChangeElement);
+
+// Step 1: Calculate totalSpent for all records
+let totalSpentAllRecords = 0;
+
+dummyData.forEach(record => {
+  const totalSpentValue = parseFloat(record.amountPaid.replace('$', ''));
+  totalSpentAllRecords += totalSpentValue;
+});
+const formattedTotalSpent = formatNumberWithAbbreviation(totalSpentAllRecords);
+
+document.getElementById('alltotalspent').textContent = `$${formattedTotalSpent}`;
+
+// calculate total paid
+
+// Step 1: Calculate totalSpent for all records
+let totalPaidAllRecords = 0;
+
+dummyData.forEach(record => {
+  const totalPaidValue = parseFloat(record.totalSpent.replace('$', ''));
+  totalPaidAllRecords += totalPaidValue;
+});
+const formattedTotalPaid = formatNumberWithAbbreviation(totalPaidAllRecords);
+
+document.getElementById('alltotalpaid').textContent = `$${formattedTotalPaid}`;
+
+//calculate total borrowed
+
+// Step 1: Calculate totalBorrowed for all records
+let totalLoanAllRecords = 0;
+
+dummyData.forEach(record => {
+  const totalLoanValue = parseFloat(record.loanAmount.replace('$', ''));
+  totalLoanAllRecords += totalLoanValue;
+});
+const formattedLoanSpent = formatNumberWithAbbreviation(totalLoanAllRecords);
+
+document.getElementById('totalborrowed').textContent = `$${formattedLoanSpent}`;
+
+const today = new Date();
+const year = today.getFullYear();
+const month = today.getMonth() + 1; // Months are zero-based, so add 1
+const formattedDate = `${'As of '}${year}-${month.toString().padStart(2, '0')}`;
+document.getElementById('latestdate').textContent = formattedDate;
+document.getElementById('latestdate1').textContent = formattedDate;
+document.getElementById('latestdate2').textContent = formattedDate;
+
+let cardColor, headingColor, axisColor, shadeColor, borderColor;
+
+cardColor = config.colors.white;
+headingColor = config.colors.headingColor;
+axisColor = config.colors.axisColor;
+borderColor = config.colors.borderColor;
+
+// Step 1: Calculate loanAmount data for the entire current year, split into two halves
+const currentYear = new Date().getFullYear();
+
+// Initialize data arrays for the first and second half of the year
+const dataFirstHalf = Array(6).fill(0); // 6 months in the first half
+const dataSecondHalf = Array(6).fill(0); // 6 months in the second half
+
+dummyData.forEach(record => {
+  const loanDate = new Date(record.loanprovideddate);
+  const loanAmount = parseFloat(record.loanAmount.replace('$', ''));
+
+  // Determine if the loan is in the first or second half of the year
+  if (loanDate.getFullYear() === currentYear) {
+    const monthIndex = loanDate.getMonth();
+    if (monthIndex >= 0 && monthIndex < 6) {
+      dataFirstHalf[monthIndex] += loanAmount;
+    } else if (monthIndex >= 6 && monthIndex < 12) {
+      dataSecondHalf[monthIndex - 6] += loanAmount;
+    }
+  }
+});
+
+const loanChartEl = document.querySelector('#totalRevenueChart');
+const loanChartOptions = {
+  series: [
+    {
+      name: `${currentYear}`,
+      data: [...dataFirstHalf, ...dataSecondHalf]
+    }
+  ],
+  chart: {
+    height: 300,
+    type: 'bar',
+    toolbar: { show: false }
+  },
+  plotOptions: {
+    bar: {
+      horizontal: false,
+      columnWidth: '33%',
+      borderRadius: 12,
+      startingShape: 'rounded',
+      endingShape: 'rounded'
+    }
+  },
+  colors: [config.colors.primary, config.colors.info],
+  dataLabels: {
+    enabled: false
+  },
+  stroke: {
+    curve: 'smooth',
+    width: 6,
+    lineCap: 'round',
+    colors: [cardColor]
+  },
+  legend: {
+    show: true,
+    horizontalAlign: 'left',
+    position: 'top',
+    markers: {
+      height: 8,
+      width: 8,
+      radius: 12,
+      offsetX: -3
+    },
+    labels: {
+      colors: axisColor
+    },
+    itemMargin: {
+      horizontal: 10
+    }
+  },
+  grid: {
+    borderColor: borderColor,
+    padding: {
+      top: 0,
+      bottom: -8,
+      left: 20,
+      right: 20
+    }
+  },
+  xaxis: {
+    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    labels: {
+      style: {
+        fontSize: '13px',
+        colors: axisColor
+      }
+    },
+    axisTicks: {
+      show: false
+    },
+    axisBorder: {
+      show: false
+    }
+  },
+  yaxis: {
+    labels: {
+      style: {
+        fontSize: '13px',
+        colors: axisColor
+      }
+    }
+  },
+  responsive: [
+    {
+      breakpoint: 1700,
+      options: {
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: '32%'
+          }
+        }
+      }
+    },
+    {
+      breakpoint: 1580,
+      options: {
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: '35%'
+          }
+        }
+      }
+    },
+    {
+      breakpoint: 1440,
+      options: {
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: '42%'
+          }
+        }
+      }
+    },
+    {
+      breakpoint: 1300,
+      options: {
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: '48%'
+          }
+        }
+      }
+    },
+    {
+      breakpoint: 1200,
+      options: {
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: '40%'
+          }
+        }
+      }
+    },
+    {
+      breakpoint: 1040,
+      options: {
+        plotOptions: {
+          bar: {
+            borderRadius: 11,
+            columnWidth: '48%'
+          }
+        }
+      }
+    },
+    {
+      breakpoint: 991,
+      options: {
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: '30%'
+          }
+        }
+      }
+    },
+    {
+      breakpoint: 840,
+      options: {
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: '35%'
+          }
+        }
+      }
+    },
+    {
+      breakpoint: 768,
+      options: {
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: '28%'
+          }
+        }
+      }
+    },
+    {
+      breakpoint: 640,
+      options: {
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: '32%'
+          }
+        }
+      }
+    },
+    {
+      breakpoint: 576,
+      options: {
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: '37%'
+          }
+        }
+      }
+    },
+    {
+      breakpoint: 480,
+      options: {
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: '45%'
+          }
+        }
+      }
+    },
+    {
+      breakpoint: 420,
+      options: {
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: '52%'
+          }
+        }
+      }
+    },
+    {
+      breakpoint: 380,
+      options: {
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: '60%'
+          }
+        }
+      }
+    }
+  ],
+  states: {
+    hover: {
+      filter: {
+        type: 'none'
+      }
+    },
+    active: {
+      filter: {
+        type: 'none'
+      }
+    }
+  }
+};
+let loanChart;
+
+if (typeof loanChartEl !== 'undefined' && loanChartEl !== null) {
+  loanChart = new ApexCharts(loanChartEl, loanChartOptions);
+  loanChart.render();
+}
+

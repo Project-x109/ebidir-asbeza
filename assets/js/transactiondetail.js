@@ -3,7 +3,6 @@ const selectedRecordJSON = localStorage.getItem('selectedRecord');
 
 // Parse the JSON data back to an object
 const selectedRecord = JSON.parse(selectedRecordJSON);
-console.log(selectedRecord);
 // Display the selected record's data on the detail.html page as needed
 // For example:
 document.getElementById('UserfullName').textContent = selectedRecord.accountName;

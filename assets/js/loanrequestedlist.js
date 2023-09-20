@@ -264,10 +264,8 @@ function updateStatus(loanID) {
 $('#statusModal').on('show.bs.modal', function (event) {
   const button = $(event.relatedTarget); // Button that triggered the modal
   const loanID = button.data('loan-id'); // Extract loan ID from data-loan-id attribute
-  console.log('Modal clicked');
   // Find the loan with the given loanID
   const loan = dummyDataLoan.find(item => item.loanID === loanID);
-  console.log(loan + "hello");
   if (loan) {
     // Set the selected status based on the loan's status
     const selectedStatus = loan.status;
@@ -287,7 +285,6 @@ $('#statusModal').on('show.bs.modal', function (event) {
       }>
         <label class="form-check-label" for="${statusOption}">${statusOption}</label>
       </div>`;
-      console.log(radioInput);
       statusRadioContainer.append(radioInput);
     });
 

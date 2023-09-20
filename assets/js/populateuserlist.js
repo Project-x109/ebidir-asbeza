@@ -167,7 +167,7 @@ for (let i = 0; i < 100; i++) {
   };
   dummyData.push(record);
 }
-console.log(dummyData)
+
 
 // Function to populate the table with dummy data
 function populateTable() {
@@ -245,8 +245,6 @@ populateTable();
 function showDetails(index) {
   // Get the selected record's data from the `dummyData` array
   const selectedRecord = dummyData[index];
-
-  console.log(selectedRecord);
   // Convert the selected record to a JSON string
   const selectedRecordJSON = JSON.stringify(selectedRecord);
 
