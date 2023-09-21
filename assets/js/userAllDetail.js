@@ -22,7 +22,7 @@ function getRandomDate(startYear, endYear) {
 
 // Function to generate random status
 function getRandomStatus() {
-  const statuses = ['active', 'inactive', 'waiting'];
+  const statuses = ['completed', 'scheduled', 'overdue'];
   return statuses[getRandomNumber(0, 2)];
 }
 function getJobStatus() {
@@ -587,3 +587,193 @@ if (typeof loanChartEl !== 'undefined' && loanChartEl !== null) {
   loanChart.render();
 }
 
+function populateTable() {
+  var tbody = document.querySelector('#table-striped tbody');
+
+  dummyData.forEach(function (data, index) {
+    var row = document.createElement('tr');
+
+    row.innerHTML = `
+                <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>${data.accountName}</strong></td>
+                <td>${data.id}</td>
+                <td>${data.loanAmount}</td>
+                <td>${data.totalSpent}</td>
+                <td>${data.creditLeft}</td>
+                <td>${data.paymentDate}</td>
+                <td id="statusCell-${data.loanID}">
+                  <span class="badge bg-label-${
+                    data.status === 'completed'
+                      ? 'success'
+                      : data.status === 'overdue'
+                      ? 'danger'
+                      : data.status === 'scheduled'
+                      ? 'info'
+                      : 'warning'
+                  } me-1">${data.status}</span>
+                </td>
+                <td>
+                    <!-- Toggle Between Modals -->
+                    <div class="mt-1">
+                        <button
+                            type="button"
+                            class="btn rounded-pill btn-icon btn-outline-primary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalToggle"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalToggle"
+                            onclick="populateModal(${index})"
+                        >
+                        <i class='bx bx-link-external'></i>
+                        </button>
+                    </div>
+                </td>
+                <td>
+                  <button
+                      type="button"
+                      class="btn btn-icon btn-outline-primary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#statusModal"
+                      onclick="updateStatus('${data.loanID}')"
+                  >
+                  <i class='bx bx-transfer'></i>
+                  </button>
+                </td>
+  
+                <td>
+                <a href="transactionrecordDetail.html" class="menu-link" onclick="showDetails(${index})">
+                    <div data-i18n="Without menu">Details</div>
+                </a>
+                </td>
+                
+                <td>
+                    <div class="dropdown">
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                            <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                            <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
+                        </div>
+                    </div>
+                </td>
+            `;
+
+    tbody.appendChild(row);
+  });
+}
+
+// Function to populate the modal with dynamic data
+function populateModal(index) {
+  var modalContent = document.getElementById('modalContent');
+  const data = dummyData[index];
+  modalContent.innerHTML = `
+            <p class="card-text"><strong>Loan ID:</strong> ${data.loanID}</p>
+            <p class="card-text"><strong>Original Amount:</strong> ${data.originalAmount}</p>
+            <p class="card-text"><strong>Payment Date:</strong> ${data.paymentDate}</p>
+            <p class="card-text"><strong>Amount Paid:</strong> ${data.amountPaid}</p>
+        `;
+}
+
+// Call the function to populate the table
+populateTable();
+
+// Function to render the rows for the status update modal
+function renderStatusModalRows() {
+  const modalBody = document.querySelector('#statusModal .modal-body');
+
+  const statusRows = [
+    { label: 'Completed', value: 'completed' },
+    { label: 'Overdue', value: 'overdue' },
+    { label: 'Scheduled', value: 'scheduled' }
+  ];
+
+  modalBody.innerHTML = '';
+
+  statusRows.forEach(row => {
+    modalBody.innerHTML += `
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="statusRadio"
+            id="${row.value}Radio"
+            value="${row.value}"
+          >
+          <label class="form-check-label" for="${row.value}Radio">
+            ${row.label}
+          </label>
+        </div>
+      `;
+  });
+}
+
+// Call the function to render the status modal rows
+renderStatusModalRows();
+
+function updateStatus(loanID) {
+  // Get the modal's status radio buttons
+  const statusRadioButtons = document.querySelectorAll('input[name="statusRadio"]');
+
+  // Find the record with the specified loan ID in your dummy data
+  const record = dummyData.find(data => data.loanID === loanID);
+  if (record) {
+    // Set the checked property based on the record's status
+    statusRadioButtons.forEach(radio => {
+      radio.checked = radio.value === record.status;
+    });
+
+    // Set the loanID in the hidden input field
+    document.getElementById('loanID').value = loanID;
+  }
+}
+
+function saveStatus() {
+  // Get the selected status value from the radio buttons
+  const selectedStatus = document.querySelector('input[name="statusRadio"]:checked');
+
+  if (!selectedStatus) {
+    alert('Please select a status.');
+    return;
+  }
+
+  const newStatus = selectedStatus.value;
+
+  // Find the record with the specified loan ID in your dummy data
+  const loanID = document.getElementById('loanID').value;
+  const record = dummyData.find(data => data.loanID === loanID);
+  if (record) {
+    // Update the status in the record
+    record.status = newStatus;
+
+    // Update the status cell in the table
+    const statusCell = document.getElementById(`statusCell-${record.loanID}`);
+    statusCell.innerHTML = `
+        <span class="badge bg-label-${
+          newStatus === 'completed'
+            ? 'success'
+            : newStatus === 'overdue'
+            ? 'danger'
+            : newStatus === 'scheduled'
+            ? 'info'
+            : 'warning'
+        } me-1">${newStatus}</span>
+      `;
+  }
+
+  // Close the status update modal
+  const statusModal = new bootstrap.Modal(document.getElementById('statusModal'));
+  statusModal.hide();
+
+  // Display a success message or perform any other action as needed
+  alert(`Status updated to: ${newStatus}`);
+}
+
+function showDetails(index) {
+  // Get the selected record's data from the `dummyData` array
+  const selectedRecord = dummyData[index];
+  // Convert the selected record to a JSON string
+  const selectedRecordJSON = JSON.stringify(selectedRecord);
+
+  // Store the selected record data in localStorage
+  localStorage.setItem('selectedRecord', selectedRecordJSON);
+}
