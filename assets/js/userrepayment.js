@@ -36,15 +36,23 @@ document.addEventListener('DOMContentLoaded', function () {
         style: 'currency',
         currency: 'USD'
       })}`,
-      term: 'One Month',
+      amountdue: `${getRandomNumber(1000, 5000).toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      })}`,
+      actualamountpaid: `${getRandomNumber(1000, 5000).toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      })}`,
       requesteddate: getRandomDate(2020, 2023),
+      duedate: getRandomDate(2020, 2023),
       status: getRandomStatus(),
       loanID: `eb0${getRandomNumber(1000000, 9999999)}`,
       originalAmount: `$${getRandomNumber(3000, 10000)}`
     };
     dummyDataLoan.push(record);
   }
-
+  console.log(dummyDataLoan);
   // Function to populate the MUI DataTable with dummy data
 
   function populateTable() {
@@ -54,10 +62,12 @@ document.addEventListener('DOMContentLoaded', function () {
         { title: 'Branch Name' },
         { title: 'User ID' },
         { title: 'Loan ID' },
-        { title: 'Amount' },
-        { title: 'Status' },
-        { title: 'Term' },
-        { title: 'Date Closed' }
+        { title: 'Loan Amount' },
+        { title: 'Due Date' },
+        { title: 'Amount Due' },
+        { title: 'Actual Amount paid' },
+        { title: 'Date Paid' },
+        { title: 'Current Status' }
       ]
     });
     function renderStatus(data, type, full, meta) {
@@ -72,9 +82,12 @@ document.addEventListener('DOMContentLoaded', function () {
         data.id,
         data.loanID,
         data.loanAmount,
+        data.duedate,
+        data.amountdue,
+        data.actualamountpaid,
+        data.requesteddate,
         `<span class="badge bg-label-${getStatusBadgeClass(data.status)}">${data.status}</span>`,
-        data.term,
-        data.requesteddate
+        data.status
       ];
 
       // Add the row to the table

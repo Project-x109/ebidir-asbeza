@@ -8,7 +8,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Dashboard - Analytics | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+    <title>Dashboard - Analytics | e-bidir - Bootstrap 5 HTML Admin Template - Pro</title>
 
     <meta name="description" content="" />
 
@@ -306,9 +306,9 @@ include "./common/head.php";
                             </li>
                             <!-- Place this tag where you want the button to render. -->
                            <li class="nav-item lh-1 me-3 ms-4">
-                <a class="github-button" href="https://github.com/themeselection/sneat-html-admin-template-free"
+                <a class="github-button" href="https://github.com/themeselection/e-bidir-html-admin-template-free"
                   data-icon="octicon-star" data-size="large" data-show-count="false" 
-                  aria-label="Star themeselection/sneat-html-admin-template-free on GitHub">Remaining Credit
+                  aria-label="Star themeselection/e-bidir-html-admin-template-free on GitHub">Remaining Credit
                   <span id="creditLimit">4</span>
                 </a>
               </li>
@@ -940,14 +940,14 @@ include "./common/head.php";
                   <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More Themes</a>
 
                   <a
-                    href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
+                    href="https://themeselection.com/demo/e-bidir-bootstrap-html-admin-template/documentation/"
                     target="_blank"
                     class="footer-link me-4"
                     >Documentation</a
                   >
 
                   <a
-                    href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
+                    href="https://github.com/themeselection/e-bidir-html-admin-template-free/issues"
                     target="_blank"
                     class="footer-link me-4"
                     >Support</a
@@ -971,7 +971,7 @@ include "./common/head.php";
 
     <div class="buy-now">
       <a
-        href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/"
+        href="https://themeselection.com/products/e-bidir-bootstrap-html-admin-template/"
         target="_blank"
         class="btn btn-danger btn-buy-now"
         >Upgrade to Pro</a

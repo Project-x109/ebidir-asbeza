@@ -1,28 +1,28 @@
 <p align="center">
-   <a href="https://themeselection.com/item/sneat-free-bootstrap-html-admin-template/" target="_blank">
-      <img src="https://user-images.githubusercontent.com/749684/150333149-805037bc-8874-4a1f-876a-61a9683f8ef5.png" alt="sneat-logo" width="30px" height="auto">
+   <a href="https://themeselection.com/item/e-bidir-free-bootstrap-html-admin-template/" target="_blank">
+      <img src="https://user-images.githubusercontent.com/749684/150333149-805037bc-8874-4a1f-876a-61a9683f8ef5.png" alt="e-bidir-logo" width="30px" height="auto">
    </a>
 </p>
 
 <h1 align="center">
-   <a href="https://themeselection.com/item/sneat-free-bootstrap-html-admin-template/" target="_blank" align="center">
-      Sneat - Free Bootstrap 5 HTML Admin Template
+   <a href="https://themeselection.com/item/e-bidir-free-bootstrap-html-admin-template/" target="_blank" align="center">
+      e-bidir - Free Bootstrap 5 HTML Admin Template
    </a>
 </h1>
 
 <p align="center">Most Powerful & Comprehensive Free Bootstrap 5 HTML Admin Dashboard Template built for developers!</p>
 
-![GitHub](https://img.shields.io/github/license/themeselection/sneat-html-admin-template-free) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/themeselection/sneat-html-admin-template-free) ![GitHub issues](https://img.shields.io/github/issues/themeselection/sneat-html-admin-template-free) ![GitHub closed issues](https://img.shields.io/github/issues-closed/themeselection/sneat-html-admin-template-free) ![Twitter Follow](https://img.shields.io/twitter/follow/Theme_Selection?style=social)
+![GitHub](https://img.shields.io/github/license/themeselection/e-bidir-html-admin-template-free) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/themeselection/e-bidir-html-admin-template-free) ![GitHub issues](https://img.shields.io/github/issues/themeselection/e-bidir-html-admin-template-free) ![GitHub closed issues](https://img.shields.io/github/issues-closed/themeselection/e-bidir-html-admin-template-free) ![Twitter Follow](https://img.shields.io/twitter/follow/Theme_Selection?style=social)
 
-[![Sneat - Bootstrap 5 HTML Admin Template Demo Screenshot](https://user-images.githubusercontent.com/80033712/153581472-452394ee-327a-4d00-a41a-c6e8036b7096.png)](https://themeselection.com/products/sneat-free-bootstrap-html-admin-template/)
+[![e-bidir - Bootstrap 5 HTML Admin Template Demo Screenshot](https://user-images.githubusercontent.com/80033712/153581472-452394ee-327a-4d00-a41a-c6e8036b7096.png)](https://themeselection.com/products/e-bidir-free-bootstrap-html-admin-template/)
 
 ## Introduction 🚀
 
-If you’re a developer looking for most Powerful & comprehensive [**Free Bootstrap 5 HTML Admin Template**](https://themeselection.com/item/sneat-free-bootstrap-html-admin-template/) built for developers, rich with features, and highly customizable look no further than Sneat. We’ve followed the highest industry standards to bring you the very best admin template that is not only fast and easy to use but highly scalable. Offering ultimate convenience and flexibility, you’ll be able to build whatever application you want with very little hassle.
+If you’re a developer looking for most Powerful & comprehensive [**Free Bootstrap 5 HTML Admin Template**](https://themeselection.com/item/e-bidir-free-bootstrap-html-admin-template/) built for developers, rich with features, and highly customizable look no further than e-bidir. We’ve followed the highest industry standards to bring you the very best admin template that is not only fast and easy to use but highly scalable. Offering ultimate convenience and flexibility, you’ll be able to build whatever application you want with very little hassle.
 
 Build premium quality applications with ease. Use our innovative [bootstrap admin templates](https://themeselection.com/item/category/bootstrap-admin-templates/) to create eye-catching, high-quality WebApps. Your apps will be completely responsive, ensuring they’ll look stunning and function flawlessly on desktops, tablets, and mobile devices.
 
-[View Demo](https://demos.themeselection.com/sneat-bootstrap-html-admin-template-free/html/)
+[View Demo](https://demos.themeselection.com/e-bidir-bootstrap-html-admin-template-free/html/)
 
 ## Installation ⚒️
 
@@ -30,7 +30,7 @@ Automate time-consuming or repetitive tasks in your development workflow using G
 
 > Please note, the use of Node, Webpack & Gulp and their advanced settings are totally optional. You can use and customize the template without using them too.
 
-Installing Node & Gulp and running it is super easy in Sneat, please follow these steps and you should be ready to rock 🤘
+Installing Node & Gulp and running it is super easy in e-bidir, please follow these steps and you should be ready to rock 🤘
 
 1. First of all, make sure you have installed [Node](https://nodejs.org/en/) (LTS). If Node.js is already installed in your system, make sure the installed version is `LTS` and jump to step 2
 
@@ -40,7 +40,7 @@ Installing Node & Gulp and running it is super easy in Sneat, please follow thes
 npm install --global gulp-cli
 ```
 
-3. Navigate to the Sneat root directory and run following command to install our local dependencies listed in `package.json`. You can use `npm` OR `yarn` as per your preference.
+3. Navigate to the e-bidir root directory and run following command to install our local dependencies listed in `package.json`. You can use `npm` OR `yarn` as per your preference.
 
 > It is recommended to use Yarn
 
@@ -64,7 +64,7 @@ yarn serve
 
 ## Available Tasks 🧑‍💻
 
-Open console/terminal, go to the Sneat root directory and run `npm run {task_name}`.i.e To generate build run `npm run build`.
+Open console/terminal, go to the e-bidir root directory and run `npm run {task_name}`.i.e To generate build run `npm run build`.
 
 Run a task with specified environment(development/production) just execute the task with `--env={environment}` option, i.e. `npm run build --env=production`.
 
@@ -103,10 +103,10 @@ Run a task with specified environment(development/production) just execute the t
 
 ## What's in Premium Version 💎
 
-| Sneat Free Version                                                                        | Sneat Premium Version                                                                                                            |
+| e-bidir Free Version                                                                        | e-bidir Premium Version                                                                                                            |
 | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| [Demo](https://themeselection.com/demo/sneat-bootstrap-html-admin-template-free/html/)    | [Demo](https://themeselection.com/demo/sneat-bootstrap-html-admin-template/html/vertical-menu-template/)                         |
-| [Download](https://themeselection.com/products/sneat-free-bootstrap-html-admin-template/) | [Purchase](https://themeselection.com/products/sneat-bootstrap-html-admin-template/)                                             |
+| [Demo](https://themeselection.com/demo/e-bidir-bootstrap-html-admin-template-free/html/)    | [Demo](https://themeselection.com/demo/e-bidir-bootstrap-html-admin-template/html/vertical-menu-template/)                         |
+| [Download](https://themeselection.com/products/e-bidir-free-bootstrap-html-admin-template/) | [Purchase](https://themeselection.com/products/e-bidir-bootstrap-html-admin-template/)                                             |
 | Single vertical Menu                                                                      | Vertical Menu + Horizontal Menu                                                                                                  |
 | Simple Light Style                                                                        | Light & Dark Style                                                                                                               |
 | Default Theme                                                                             | Default, Semi Dark & Bordered Themes                                                                                             |
@@ -133,7 +133,7 @@ Run a task with specified environment(development/production) just execute the t
 
 ## Documentation 📜
 
-Check out our live [Documentation](https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/)
+Check out our live [Documentation](https://themeselection.com/demo/e-bidir-bootstrap-html-admin-template/documentation/)
 
 ## Browser Support 🖥️
 
@@ -155,12 +155,12 @@ At present, we officially aim to support the last two versions of the following 
 
 We use GitHub issues as support tickets to manage Item support.
 
-1. In order to raise the GitHub issue, you must have a github account. [Raise a Issue](https://github.com/themeselection/sneat-html-admin-template-free/issues)
+1. In order to raise the GitHub issue, you must have a github account. [Raise a Issue](https://github.com/themeselection/e-bidir-html-admin-template-free/issues)
 
 ## License ©
 
 - Copyright © [ThemeSelection](https://themeselection.com/)
-- Licensed under [MIT](https://github.com/themeselection/sneat-html-admin-template-free/blob/master/LICENSE.md)
+- Licensed under [MIT](https://github.com/themeselection/e-bidir-html-admin-template-free/blob/master/LICENSE.md)
 
 ## Contributing 🦸
 
@@ -183,7 +183,7 @@ Contribution are always welcome and recommended! Here is how:
 
 ## Changelog 📆
 
-Please refer to the [CHANGELOG](https://themeselection.com/demo/sneat-bootstrap-html-admin-template-free/changelog.html) file. We will add a detailed release notes to each new release.
+Please refer to the [CHANGELOG](https://themeselection.com/demo/e-bidir-bootstrap-html-admin-template-free/changelog.html) file. We will add a detailed release notes to each new release.
 
 ## Social Media 🌍
 
