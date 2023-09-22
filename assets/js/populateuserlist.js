@@ -51,6 +51,14 @@ const randomAccountNames = [
   'Bob Wilson'
   // Add more names as needed
 ];
+const randombranchname = [
+  'Purposeblack ETH',
+  'Purposeblack ETH2',
+  'Purposeblack ETH3',
+  'Purposeblack ETH4',
+  'Purposeblack ETH5'
+  // Add more names as needed
+];
 function getRandomItem() {
   const items = ['item1', 'item2', 'item3', 'item4', 'item5']; // Add more items as needed
   return items[getRandomNumber(0, items.length - 1)];
@@ -150,6 +158,7 @@ for (let i = 0; i < 100; i++) {
   const creditLeft = `$${(loanAmount - totalSpent).toFixed(2)}`;
   const record = {
     accountName: randomAccountNames[getRandomNumber(0, randomAccountNames.length - 1)],
+    branchname:randombranchname[getRandomNumber(0,randombranchname.length-1)],
     id: `eb0${getRandomNumber(1000000, 9999999)}`,
     loanAmount: `$${loanAmount.toFixed(2)}`,
     totalSpent: `$${totalSpent.toFixed(2)}`,
@@ -163,11 +172,10 @@ for (let i = 0; i < 100; i++) {
     cartData: cartData,
     jobStatus: getJobStatus(),
     email: generateRandomEmail(),
-    phone: generateRandomPhoneNumber()
+    phone: generateRandomPhoneNumber(),
   };
   dummyData.push(record);
 }
-
 
 // Function to populate the table with dummy data
 function populateTable() {
@@ -178,6 +186,7 @@ function populateTable() {
 
     row.innerHTML = `
               <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>${data.accountName}</strong></td>
+              <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>${data.branchname}</strong></td>
               <td>${data.id}</td>
               <td>${data.loanAmount}</td>
               <td>${data.paymentDate}</td>
