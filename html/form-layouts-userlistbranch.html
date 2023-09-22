@@ -8,7 +8,7 @@
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-  <title>Horizontal Layouts - Forms | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+  <title>Dashboard - Analytics | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
 
   <meta name="description" content="" />
 
@@ -32,6 +32,8 @@
 
   <!-- Vendors CSS -->
   <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+  <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
 
   <!-- Page CSS -->
 
@@ -96,7 +98,7 @@
                 </g>
               </svg>
             </span>
-            <span class="app-brand-text demo menu-text fw-bolder ms-2">e-bidir</span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">Sneat</span>
           </a>
 
           <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -108,33 +110,33 @@
 
         <ul class="menu-inner py-1">
           <!-- Dashboard -->
-          <li class="menu-item">
-            <a href="index.html" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-home-circle"></i>
-              <div data-i18n="Analytics">Sample Dashboard</div>
-            </a>
-          </li>
+         <li class="menu-item">
+              <a href="index.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Analytics">Sample Dashboard</div>
+              </a>
+            </li>
+            
+            <li class="menu-item">
+              <a href="indexuser.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Analytics">User Dashboard</div>
+              </a>
+            </li>
 
-          <li class="menu-item">
-            <a href="indexuser.html" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-home-circle"></i>
-              <div data-i18n="Analytics">User Dashboard</div>
-            </a>
-          </li>
+            <li class="menu-item">
+              <a href="indexadmin.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Analytics">AdminDashboard</div>
+              </a>
+            </li>
 
-          <li class="menu-item">
-            <a href="indexadmin.html" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-home-circle"></i>
-              <div data-i18n="Analytics">AdminDashboard</div>
-            </a>
-          </li>
-
-          <li class="menu-item">
-            <a href="branchdetails.html" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-home-circle"></i>
-              <div data-i18n="Analytics">Branch Dashboard</div>
-            </a>
-          </li>
+            <li class="menu-item">
+              <a href="branchdetails.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Analytics">Branch Dashboard</div>
+              </a>
+            </li>
           <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Pages</span>
           </li>
@@ -202,58 +204,53 @@
               </li>
             </ul>
           </li>
-
           <!-- Forms & Tables -->
-          <li class="menu-header small text-uppercase"><span class="menu-header-text">User Pages</span></li>
-          <!-- Forms -->
-
-          <li class="menu-item active open">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-detail"></i>
-              <div data-i18n="Form Layouts">Registarion Forms</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item active">
-                <a href="form-layouts-personal.html" class="menu-link">
-                  <div data-i18n="Vertical Form">Personal Form</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="form-layouts-economic.html" class="menu-link">
-                  <div data-i18n="Horizontal Form">Economic Form</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-detail"></i>
-              <div data-i18n="Form Layouts">User Tables</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="credithistory.html" class="menu-link">
-                  <div data-i18n="Vertical Form">Credit History</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="repaymenthistory.html" class="menu-link">
-                  <div data-i18n="Horizontal Form">Repayment History</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="support.html" class="menu-link">
-                  <div data-i18n="Horizontal Form">Support</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-
-
-         <li class="menu-header small text-uppercase"><span class="menu-header-text">Admin Pages</span></li>
+           <!-- Forms & Tables -->
+           <li class="menu-header small text-uppercase"><span class="menu-header-text">User Pages</span></li>
+           <!-- Forms -->
+           <li class="menu-item">
+             <a href="javascript:void(0);" class="menu-link menu-toggle">
+               <i class="menu-icon tf-icons bx bx-detail"></i>
+               <div data-i18n="Form Layouts">Registration Forms</div>
+             </a>
+             <ul class="menu-sub">
+               <li class="menu-item">
+                 <a href="form-layouts-personal.html" class="menu-link">
+                   <div data-i18n="Vertical Form">Personal Form</div>
+                 </a>
+               </li>
+               <li class="menu-item">
+                 <a href="form-layouts-economic.html" class="menu-link">
+                   <div data-i18n="Horizontal Form">Economic Form</div>
+                 </a>
+               </li>
+             </ul>
+           </li>
+           <li class="menu-item">
+             <a href="javascript:void(0);" class="menu-link menu-toggle">
+               <i class="menu-icon tf-icons bx bx-detail"></i>
+               <div data-i18n="Form Layouts">User Tables</div>
+             </a>
+             <ul class="menu-sub">
+               <li class="menu-item">
+                 <a href="credithistory.html" class="menu-link">
+                   <div data-i18n="Vertical Form">Credit History</div>
+                 </a>
+               </li>
+               <li class="menu-item">
+                 <a href="repaymenthistory.html" class="menu-link">
+                   <div data-i18n="Horizontal Form">Repayment History</div>
+                 </a>
+               </li>
+               <li class="menu-item">
+                 <a href="support.html" class="menu-link">
+                   <div data-i18n="Horizontal Form">Support</div>
+                 </a>
+               </li>
+             </ul>
+           </li>
+ 
+          <li class="menu-header small text-uppercase"><span class="menu-header-text">Admin Pages</span></li>
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-table"></i>
@@ -270,7 +267,7 @@
                   <div data-i18n="Horizontal Form">User Lists</div>
                 </a>
               </li>
-              <li class="menu-item active">
+              <li class="menu-item">
                 <a href="form-layouts-loanrequsestlist.html" class="menu-link">
                   <div data-i18n="Horizontal Form">Credit Applications</div>
                 </a>
@@ -317,8 +314,6 @@
               </li>
             </ul>
           </li>
-
-
           <li class="menu-header small text-uppercase"><span class="menu-header-text">Branch Pages</span></li>
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -326,13 +321,13 @@
               <div data-i18n="Form Layouts">Branch Tables</div>
             </a>
             <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="form-layouts-userlist.html" class="menu-link">
+              <li class="menu-item active">
+                <a href="form-layouts-userlistbranch.html" class="menu-link">
                   <div data-i18n="Horizontal Form">User Lists</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="form-layouts-loanrequsestlist.html" class="menu-link">
+                <a href="form-layouts-loanrequsestlistbranch.html" class="menu-link">
                   <div data-i18n="Horizontal Form">Credit Applications</div>
                 </a>
               </li>
@@ -358,10 +353,6 @@
               </li>
             </ul>
           </li>
-
-
-          <!-- Misc -->
-
         </ul>
       </aside>
       <!-- / Menu -->
@@ -439,7 +430,7 @@
               <!-- Place this tag where you want the button to render. -->
               <li class="nav-item lh-1 me-3 ms-4">
                 <a class="github-button" href="https://github.com/themeselection/sneat-html-admin-template-free"
-                  data-icon="octicon-star" data-size="large" data-show-count="false"
+                  data-icon="octicon-star" data-size="large" data-show-count="false" 
                   aria-label="Star themeselection/sneat-html-admin-template-free on GitHub">Remaining Credit
                   <span id="creditLimit">4</span>
                 </a>
@@ -517,104 +508,94 @@
         <div class="content-wrapper">
           <!-- Content -->
 
-          <div class="container-xxl flex-grow-1 container-p-y">
-            <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span>Personal Information</h4>
-
-            <!-- Toast with Placements -->
-            <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive"
-              aria-atomic="true" data-delay="2000">
-              <div class="toast-header">
-                <i class="bx bx-bell me-2"></i>
-                <div class="me-auto toast-title fw-semibold">Error</div>
-                <small>11 mins ago</small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-              </div>
-              <div class="toast-body">Fruitcake chocolate bar tootsie roll gummies gummies jelly beans cake.</div>
-            </div>
-            <!-- Toast with Placements -->
-
-            <!-- Basic Layout & Basic with Icons -->
+          <div class="container-xxl flex-grow-1  container-p-y">
+            
             <div class="row">
-              <div class="col-xxl">
-                <div class="card mb-4">
-                  <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="mb-0">1.Personal Information</h5>
-                    <small class="text-muted float-end">Merged input group</small>
+              <!-- Striped Rows -->
+              <div class="col-md-6 col-lg-12 col-xl-12 order-0 mb-4">
+                <div class="card">
+                  <div class="d-flex  mt-3">
+                    <div style="margin-left: 20px;">
+                      <input type="text" class="form-control form-control-sm" id="tableSearch"
+                        placeholder="Search..." />
+                    </div>
                   </div>
-                  <div class="card-body">
-                    <form>
-                      <div class="row mb-4">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-dependetents">Number of
-                          Dependents:<span class="text-danger">*</span></label>
-                        <div class="col-sm-4">
-                          <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-dependetents2" class="input-group-text"><i
-                                class="bx bx-user"></i></span>
-                            <input type="number" name="number_of_dependents" class="form-control"
-                              id="basic-icon-default-dependetents" placeholder="John Doe" aria-label="John Doe"
-                              aria-describedby="basic-icon-default-dependetents2" />
-                          </div>
-                        </div>
+                  <h5 class="card-header">Lists of Users</h5>
+                  <div class="table-responsive text-nowrap">
+                    <table class="table table-striped" id="table-striped">
+                      <thead>
+                        <tr>
+                          <th>User Full Name</th>
+                          <th>ID</th>
+                          <th>TIN Number</th>
+                          <th>Date of Birth</th>
+                          <th>Status</th>
+                          <th>Job Status</th>
+                          <th>Email</th>
+                          <th>Phone Number</th>
+                          <th>Image</th>
+                          <th>Detail</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody class="table-border-bottom-0">
+                      </tbody>
+                    </table>
 
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-marriagestatus">Marriage
-                          Status:<span class="text-danger">*</span></label>
-                        <div class="col-sm-4">
-                          <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-marriagestatus2" class="input-group-text"><i
-                                class="bx bx-map-pin"></i></span>
-                            <select name="Marriage_Status" id="basic-icon-default-marriagestatus" class="form-select">
-                              <option value="">Default select</option>
-                              <option value="Married">Married</option>
-                              <option value="Single">Single</option>
-                              <option value="Divorced">Divorced</option>
-                            </select>
+                    <!-- Modal Structure (empty modal) -->
+                    <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel" tabindex="-1"
+                      style="display: none" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="modalToggleLabel">Loan Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="card">
+                              <div class="card-body" id="modalContent">
+                                <!-- Modal content will be dynamically generated here -->
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
+                    </div>
 
-                      <div class="row mb-4">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-educationalstatus">Educational
-                          Status:<span class="text-danger">*</span></label>
-                        <div class="col-sm-4">
-                          <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-educationalstatus2" class="input-group-text"><i
-                                class="bx bx-book-reader"></i></span>
-                            <select name="educational_status" id="basic-icon-default-educationalstatus"
-                              class="form-select">
-                              <option value="">Default select</option>
-                              <option value="Below highSchool">Below highSchool </option>
-                              <option value="Dipoma">Diploma</option>
-                              <option value="Degree">Degree</option>
-                              <option value="Masters">Masters</option>
-                              <option value="PHD">PHD</option>
-                            </select>
-                          </div>
-                        </div>
-
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-criminalrecord">Criminal
-                          Records:<span class="text-danger">*</span></label>
-                        <div class="col-sm-4">
-                          <div class="input-group input-group-merge">
-                            <span class="input-group-text"><i class="bx bx-video-recording"></i></span>
-                            <input type="text" name="criminal_record" id="basic-icon-default-criminalrecord"
-                              class="form-control" placeholder="john.doe" aria-label="john.doe"
-                              aria-describedby="basic-icon-default-criminalrecord2" />
-                          </div>
-
-                        </div>
-
-                      </div>
-
-
-                      <div class="row justify-content-end">
-                        <div class="col-sm-10">
-                          <button type="button" onclick="validateForm()" class="btn btn-primary">Submit</button>
-                        </div>
-                      </div>
-                    </form>
+                  </div>
+                  <!-- Pagination and Search Controls -->
+                  <div class="d-flex justify-content-between mt-3">
+                    <div style="margin-left: 20px;">
+                      <!--   <label for="recordsPerPage">Records per page:</label> -->
+                      <select id="recordsPerPage" class="form-select form-select-sm">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                      </select>
+                    </div>
+                    <div style="margin-right: 20px;">
+                      <nav aria-label="Page navigation">
+                        <ul class="pagination pagination-sm">
+                          <li class="page-item">
+                            <a class="page-link btn btn-xs btn-dark" href="#" id="prevPage">
+                              Previous
+                            </a>
+                          </li>
+                          <li class="page-item">
+                            <a class="page-link btn btn-xs btn-primary" href="#" id="nextPage">
+                              Next
+                            </a>
+                          </li>
+                        </ul>
+                      </nav>
+                    </div>
                   </div>
                 </div>
+
+
               </div>
+
+              <!--/ Striped Rows -->
             </div>
           </div>
           <!-- / Content -->
@@ -670,16 +651,20 @@
 
   <script src="../assets/vendor/js/menu.js"></script>
   <!-- endbuild -->
-  <script src="../assets/js/common.js"></script>
 
   <!-- Vendors JS -->
-
+  <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
 
   <!-- Main JS -->
   <script src="../assets/js/main.js"></script>
 
   <!-- Page JS -->
-  <script src="../assets/js/ui-toasts-personal.js"></script>
+  <script src="../assets/js/dashboards-analytics.js"></script>
+  <script src="../assets/js/mark-Notification-read.js"></script>
+  <script src="../assets/js/populateuserlist.js"></script>
+
+  <script src="../assets/js/tablefunctionalities.js">// JavaScript for pagination and search functionality</script>
+
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
