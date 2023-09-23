@@ -238,7 +238,7 @@
                                     <div data-i18n="Vertical Form">Credit History</div>
                                 </a>
                             </li>
-                            <li class="menu-item active">
+                            <li class="menu-item">
                                 <a href="repaymenthistory.html" class="menu-link">
                                     <div data-i18n="Horizontal Form">Repayment History</div>
                                 </a>
@@ -296,7 +296,7 @@
                         </ul>
                     </li>
 
-                  <li class="menu-item">
+                    <li class="menu-item">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bxs-credit-card-alt"></i>
 
@@ -317,24 +317,24 @@
                     </li>
 
                     <li class="menu-header small text-uppercase"><span class="menu-header-text">Branch Pages</span></li>
-                       <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-table"></i>
-              <div data-i18n="Form Layouts">Branch Tables</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="form-layouts-userlistbranch.html" class="menu-link">
-                  <div data-i18n="Horizontal Form">User Lists</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="form-layouts-loanrequsestlist.html" class="menu-link">
-                  <div data-i18n="Horizontal Form">Credit Applications</div>
-                </a>
-              </li>
-            </ul>
-          </li>
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="menu-icon tf-icons bx bx-table"></i>
+                            <div data-i18n="Form Layouts">Branch Tables</div>
+                        </a>
+                        <ul class="menu-sub">
+                            <li class="menu-item">
+                                <a href="form-layouts-userlist.html" class="menu-link">
+                                    <div data-i18n="Horizontal Form">User Lists</div>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="form-layouts-loanrequsestlist.html" class="menu-link">
+                                    <div data-i18n="Horizontal Form">Credit Applications</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
                     <li class="menu-item">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -343,12 +343,12 @@
                             <div data-i18n="Form Layouts">Branch Related</div>
                         </a>
                         <ul class="menu-sub">
-                            <li class="menu-item">
-                                <a href="transaction.html" class="menu-link">
+                            <li class="menu-item active">
+                                <a href="transactionbranch.html" class="menu-link">
                                     <div data-i18n="Horizontal Form">Transactions</div>
                                 </a>
                             </li>
-                            <li class="menu-item active">
+                            <li class="menu-item">
                                 <a href="branchrepayments.html" class="menu-link">
                                     <div data-i18n="Horizontal Form">Repayments</div>
                                 </a>
@@ -521,21 +521,19 @@
                             <!-- Striped Rows -->
                             <div class="col-md-6 col-lg-12 col-xl-12 order-0 mb-4">
                                 <div class="card">
-                                    <h5 class="card-header">Credit History</h5>
+                                    <h5 class="card-header">All Transactions</h5>
                                     <div class="table-responsive text-nowrap ms-3 me-3">
                                         <table class="table table-striped" id="table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th class="sortable" data-column="userName">User Name</th>
-                                             
+                                                    <th class="sortable" data-column="userName">Transaction ID</th>
+                                                    <th>Date</th>
                                                     <th>User ID</th>
-                                                    <th>Loan ID</th>
-                                                    <th>Loan Amount</th>
-                                                    <th>Due Date</th>
-                                                    <th>Amount Due</th>
-                                                    <th>Actual Amount paid</th>
-                                                    <th>Date Paid</th>
-                                                    <th>Current Status</th>
+                                                    <th>User Name</th>
+                                                    <th>Transaction Type</th>
+                                                    <th>Amount</th>
+                                                    <th>Status</th>
+                                                    <th>Description</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="table-border-bottom-0">
@@ -545,6 +543,56 @@
                                 </div>
                             </div>
                             <!--/ Striped Rows -->
+                        </div>
+
+
+
+                        <!-- Modal Structure (empty modal) -->
+                        <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel" tabindex="-1"
+                            style="display: none;" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalToggleLabel">Loan Details</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="card">
+                                            <div class="card-body" id="modalContent">
+                                                <!-- Modal content will be dynamically generated here -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status Update Modal -->
+                        <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="statusModalLabel">Update Status</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Status update radio buttons will be dynamically generated here -->
+                                        <div id="statusRadioContainer">
+                                            <!-- Radio buttons will be generated here dynamically using JavaScript -->
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="loanID">
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" onclick="saveStatus()">Save
+                                            Changes</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- / Content -->
@@ -616,7 +664,7 @@
     <!-- Page JS -->
     <script src="../assets/js/dashboards-analytics.js"></script>
     <script src="../assets/js/mark-Notification-read.js"></script>
-    <script src="../assets/js/branchrepayment.js"></script>
+    <script src="../assets/js/branchtrasaction.js"></script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
