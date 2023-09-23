@@ -36,10 +36,11 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <?php
+if(isset($_SESSION['success'])){
+  echo "<script>alert(".$_SESSION['success'].")</script>";
+ unset($_SESSION['success']);
+}
+?>
   </body>
 </html>
-<?php
-if($_SESSION['error'])
-unset($_SESSION['error']);
-
-?>

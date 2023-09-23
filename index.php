@@ -1,8 +1,8 @@
 <?php
 session_start();
 include "./common/head.php";
-if($_SESSION['role']){
-header($_SESSION['role']."/index.php");
+if(isset($_SESSION['role'])){
+header("Location:".$_SESSION['role']."/index.php");
 }
 ?>
   <body>
@@ -129,7 +129,6 @@ header($_SESSION['role']."/index.php");
               </p>
             </div>
           </div>
-          <!-- /Register -->
         </div>
       </div>
     </div>
