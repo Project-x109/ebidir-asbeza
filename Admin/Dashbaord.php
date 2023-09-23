@@ -138,7 +138,12 @@ include "../common/head.php";
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Layouts">Add Users</div>
               </a>
-
+              <li class="menu-item">
+              <a href="users.php" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Analytics">Users</div>
+              </a>
+            </li>
               <ul class="menu-sub">
                 <li class="menu-item">
                   <a href="layouts-without-menu.html" class="menu-link">
