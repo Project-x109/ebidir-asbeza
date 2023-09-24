@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function () {
   const updateButton = document.getElementById('updateButton');
   const form = document.getElementById('formAccountSettings');
@@ -10,6 +9,11 @@ document.addEventListener('DOMContentLoaded', function () {
       inputFields.forEach(function (input) {
         input.removeAttribute('readonly');
       });
+      // Remove the readonly attribute from the dropdown
+      const educationalStatusDropdown = document.getElementById('educationalStatus');
+      const marrigeStatusDropdown = document.getElementById('marrigeStatus');
+      educationalStatusDropdown.removeAttribute('readonly');
+      marrigeStatusDropdown.removeAttribute('readonly');
       updateButton.innerText = 'Save changes';
     } else {
       validateForm();

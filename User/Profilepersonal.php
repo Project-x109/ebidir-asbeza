@@ -430,41 +430,31 @@ include "../connect.php";
                 $row2 = $res2->fetch_assoc();
                 ?>
                 <?php
-                if (isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER["HTTP_X_REQUESTED_WITH"]) === "xmlhttprequest") {
-                  // This is an AJAX request
-                  // Retrieve form data and update the database
-                  $numberOfDependents = $_POST['numberOfDependents'] ?? '';
-                  $marrigeStatus = $_POST['marrigeStatus'] ?? '';
-                  $educationalStatus = $_POST['educationalStatus'] ?? '';
-                  $criminalRecord = $_POST['criminalRecord'] ?? '';
+                if ($_SERVER["REQUEST_METHOD"] === "POST") {
+                  // Retrieve form data
+                  $numberOfDependents = $_POST['numberOfDependents'];
+                  $marrigeStatus = $_POST['marrigeStatus'];
+                  $educationalStatus = $_POST['educationalStatus'];
+                  $criminalRecord = $_POST['criminalRecord'];
 
-                  // Update the database records
+                  // Update the database record
                   $id = $_SESSION['id'];
                   $sqlUpdate = "UPDATE personal SET
-                                Number_of_dependents='$numberOfDependents',
-                                Marriage_Status='$marrigeStatus',
-                                Educational_Status='$educationalStatus',
-                                Criminal_record='$criminalRecord'
-                                WHERE user_id=$id";
-
+                  Number_of_dependents='$numberOfDependents',
+                  Marriage_Status='$marrigeStatus',
+                  Educational_Status='$educationalStatus',
+                  Criminal_record='$criminalRecord'
+                  WHERE user_id=$id";
                   if ($conn->query($sqlUpdate) === TRUE) {
                     // Record updated successfully
-                    // Retrieve the updated data
-                    $sql = "SELECT * FROM personal WHERE user_id = $id";
-                    $result = $conn->query($sql);
-                    $updatedData = $result->fetch_assoc();
-                    echo json_encode($updatedData);
-                    exit; // Terminate the script
+                    // You can redirect or show a success message here
                   } else {
                     // Error updating record
-                    echo json_encode(['error' => 'Update failed']);
-                    exit;
+                    // You can handle errors here
                   }
-                } else {
-                  // Handle non-AJAX requests here (e.g., displaying the HTML form)
                 }
-
                 ?>
+
 
                 <div class="card">
                   <div class="card-body">
@@ -475,17 +465,54 @@ include "../connect.php";
                           <input class="form-control" type="text" id="numberOfDependents" name="numberOfDependents"
                             value=" <?php echo $row2['Number_of_dependents']; ?>" readonly autofocus />
                         </div>
+
+
+
                         <div class="mb-3 col-md-6">
                           <label for="Marrige Status" class="form-label">Marrige Status</label>
-                          <input class="form-control" type="text" name="marrigeStatus" id="marrigeStatus"
-                            value="<?php echo $row2['Marriage_Status']; ?>" autofocus readonly />
+                          <select class="form-control" type="text" name="marrigeStatus" id="marrigeStatus" autofocus
+                            readonly>
+                            <option value="">Default select</option>
+                            <option <?php if ($row2['Marriage_Status'] === 'Married')
+                              echo ' selected'; ?>>Married</option>
+                            <option <?php if ($row2['Marriage_Status'] === 'Single')
+                              echo ' selected'; ?>>Single</option>
+                            <option <?php if ($row2['Marriage_Status'] === 'Divorced')
+                              echo ' selected'; ?>>Divorced
+                            </option>
+                          </select>
                         </div>
+
+
+
                         <div class="mb-3 col-md-6">
                           <label for="educationalStatus" class="form-label">Educational Status</label>
-                          <input class="form-control" type="text" id="educationalStatus" name="educationalStatus"
-                            value=" <?php echo $row2['Educational_Status']; ?>" placeholder="Degree" autofocus
-                            readonly />
+                          <select class="form-control" type="text" id="educationalStatus" name="educationalStatus"
+                            autofocus readonly>
+
+                            <option value="Below highSchool" id="educationalStatus" <?php if ($row2['Educational_Status'] === 'Below highSchool')
+                              echo ' selected'; ?>>
+                              Below highSchool
+                            </option>
+                            <option value="Diploma" <?php if ($row2['Educational_Status'] === 'Diploma')
+                              echo ' selected'; ?>>
+                              Diploma
+                            </option>
+                            <option value="Degree" <?php if ($row2['Educational_Status'] === 'Degree')
+                              echo ' selected'; ?>>
+                              Degree
+                            </option>
+                            <option value="Masters" <?php if ($row2['Educational_Status'] === 'Masters')
+                              echo ' selected'; ?>>
+                              Masters
+                            </option>
+                            <option value="PHD" <?php if ($row2['Educational_Status'] === 'PHD')
+                              echo ' selected'; ?>>
+                              PHD
+                            </option>
+                          </select>
                         </div>
+
                         <div class="mb-3 col-md-6">
                           <label for="criminalRecord" class="form-label">Criminal Record</label>
                           <input type="text" class="form-control" id="criminalRecord" name="criminalRecord"
