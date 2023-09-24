@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "../connect.php";
+
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +14,7 @@ include "../connect.php";
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-  <title>Horizontal Layouts - Forms | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+  <title>Account settings - Account | e-bidir - Bootstrap 5 HTML Admin Template - Pro</title>
 
   <meta name="description" content="" />
 
@@ -113,24 +114,23 @@ include "../connect.php";
 
         <ul class="menu-inner py-1">
           <!-- Dashboard -->
-          
 
- <li class="menu-item">
-                        <a href="indexuser.html" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Analytics">User Dashboard</div>
-                        </a>
-                    </li>
+          <li class="menu-item">
+            <a href="Dashbaord.php" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-home-circle"></i>
+              <div data-i18n="Analytics">User Dashboard</div>
+            </a>
+          </li>
           <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Pages</span>
           </li>
-          <li class="menu-item">
+          <li class="menu-item active open">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-dock-top"></i>
               <div data-i18n="Account Settings">Account Settings</div>
             </a>
             <ul class="menu-sub">
-              <li class="menu-item">
+              <li class="menu-item active open">
                 <a href="Profileuser.php" class="menu-link">
                   <div data-i18n="Account">Account Informtion</div>
                 </a>
@@ -191,7 +191,8 @@ include "../connect.php";
 
           <!-- Forms & Tables -->
           <li class="menu-header small text-uppercase"><span class="menu-header-text">User Pages</span></li>
-          <li class="menu-item active open">
+          <!-- Forms -->
+          <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-detail"></i>
               <div data-i18n="Form Layouts">Registration Forms</div>
@@ -202,15 +203,13 @@ include "../connect.php";
                   <div data-i18n="Vertical Form">Personal Form</div>
                 </a>
               </li>
-
-              <li class="menu-item active open">
+              <li class="menu-item">
                 <a href="economic.php" class="menu-link">
-                  <div data-i18n="Vertical Form">Economic Form</div>
+                  <div data-i18n="Horizontal Form">Economic Form</div>
                 </a>
               </li>
             </ul>
           </li>
-
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-detail"></i>
@@ -234,9 +233,6 @@ include "../connect.php";
               </li>
             </ul>
           </li>
-
-         
-
         </ul>
       </aside>
       <!-- / Menu -->
@@ -393,154 +389,113 @@ include "../connect.php";
           <!-- Content -->
 
           <div class="container-xxl flex-grow-1 container-p-y">
-            <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span>Economic Information</h4>
-            <!-- Toast with Placements -->
-            <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive"
-              aria-atomic="true" data-delay="2000">
-              <div class="toast-header">
-                <i class="bx bx-bell me-2"></i>
-                <div class="me-auto toast-title fw-semibold">Error</div>
-                <small>11 mins ago</small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-              </div>
-              <div class="toast-body">Fruitcake chocolate bar tootsie roll gummies gummies jelly beans cake.</div>
-            </div>
-            <!-- Toast with Placements -->
-            <!-- Basic Layout & Basic with Icons -->
+            <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span> Account</h4>
+
             <div class="row">
-              <!-- Basic with Icons -->
-              <div class="col-xxl">
+              <div class="col-md-12">
+                <ul class="nav nav-pills flex-column flex-md-row mb-3">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user me-1"></i> Account</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="Profilepersonal.php"><i class="bx bx-bell me-1"></i> Personal Info</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="Profileeconomic.php"><i class="bx bx-link-alt me-1"></i> Economic
+                      Information</a>
+                  </li>
+                </ul>
+
+                <?php
+                $id = $_SESSION['id'];
+                $sql1 = "SELECT * from users where id=$id";
+                $res = $conn->query($sql1);
+                $row = $res->fetch_assoc();
+                ?>
                 <div class="card mb-4">
-                  <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="mb-0">2.Economic Information</h5>
-                  </div>
-                  <?php
-                    $sql="SELECT * from economic where user_id=".$_SESSION['id'];
-                    $res=$conn->query($sql);
-                    $found=$res->num_rows;
-                    $field_of_employeement="";
-                    $number_of_income="";
-                    $year="";
-                    $branch="";
-                    $position="";
-                    $salary="";
-                    if($res->num_rows){
-                        $row=$res->fetch_assoc();
-                        $field_of_employeement=$row['field_of_employeement'];
-                        $number_of_income=$row['number_of_income'];
-                        $year=$row['year'];
-                        $branch=$row['branch'];
-                        $position=$row['position'];
-                        $salary=$row['salary'];
-                    }
-?>
+                  <h5 class="card-header">Profile Details</h5>
+                  <!-- Account -->
                   <div class="card-body">
-                    <form action="backend.php" method="POST">
-                    <input type="hidden" name="id" value='<?php echo $_SESSION['id']?>' />
-                      <div class="row mb-4">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-fieldofEmployment">Field of
-                          Employment :<span class="text-danger">*</span></label>
-                        <div class="col-sm-4">
+                    <div class="d-flex align-items-start align-items-sm-center gap-4">
+                      <img src="<?php echo $row['profile']; ?>" alt="user-avatar" class="d-block rounded" height="100"
+                        width="100" id="uploadedAvatar" />
+                      <div class="button-wrapper">
+                        <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                          <span class="d-none d-sm-block">Upload new photo</span>
+                          <i class="bx bx-upload d-block d-sm-none"></i>
+                          <input type="file" id="upload" class="account-file-input" hidden
+                            accept="image/png, image/jpeg" />
+                        </label>
+                        <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+                          <i class="bx bx-reset d-block d-sm-none"></i>
+                          <span class="d-none d-sm-block">Reset</span>
+                        </button>
+
+                        <p class="text-muted mb-0"><small class="text-muted">Account Created on
+                            <?php echo $row['createdOn'] ?>
+                          </small></p>
+                      </div>
+                    </div>
+                  </div>
+                  <hr class="my-0" />
+
+                  <div class="card-body">
+                    <form id="formAccountSettings" method="POST" onsubmit="return false">
+                      <div class="row">
+                        <div class="mb-3 col-md-6">
+                          <label for="fullName" class="form-label">Full Name</label>
+                          <input class="form-control" type="text" id="fullName" name="fullName"
+                            value="<?php echo $row['name'] ?>" autofocus />
+                        </div>
+                        <div class="mb-3 col-md-6">
+                          <label for="tinNumber" class="form-label">TIN Number</label>
+                          <input class="form-control" type="text" name="tinNumber" id="tinNumber"
+                            value=" <?php echo $row['TIN_Number']; ?>" />
+                        </div>
+                        <div class="mb-3 col-md-6">
+                          <label for="email" class="form-label">E-mail</label>
+                          <input class="form-control" type="text" id="email" name="email" value="john.doe@example.com"
+                            placeholder="john.doe@example.com" />
+                        </div>
+                        <div class="mb-3 col-md-6">
+                          <label class="form-label" for="phoneNumber">Phone Number</label>
                           <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-fieldofEmployment2" class="input-group-text"><i
-                                class="bx bx-award"></i></span>
-                            <input type="text" class="form-control" id="basic-icon-default-fieldofEmployment"
-                              placeholder="John Doe" aria-label="John Doe"
-                              aria-describedby="basic-icon-default-fieldofEmployment2"
-                              name="field_of_employeement"
-                              value='<?php echo $field_of_employeement?>'
-                              />
+                            <span class="input-group-text">ET (+251)</span>
+                            <input type="text" id="phoneNumber" value="<?php echo $row['phone']; ?>" name="phoneNumber"
+                              class="form-control" placeholder="202 555 0111" />
                           </div>
                         </div>
-
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-numberofincome">Number of Income
-                          :<span class="text-danger">*</span></label>
-                        <div class="col-sm-4">
-                          <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-numberofincome2" class="input-group-text"><i
-                                class="bx bx-archive-in"></i></span>
-                            <input type="number" class="form-control" id="basic-icon-default-numberofincome"
-                              placeholder="John Doe" aria-label="John Doe"
-                              aria-describedby="basic-icon-default-numberofincome2" 
-                              name="number_of_income"
-                              value='<?php echo $number_of_income?>'
-                              />
-                          </div>
+                        <div class="mb-3 col-md-6">
+                          <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                          <input class="form-control" type="text" id="dateOfBirth" value="<?php echo $row['dob']; ?>"
+                            name="dateOfBirth" placeholder="01-12-2023" />
                         </div>
                       </div>
-
-                      <div class="row mb-4">
-                        <label for="html5-datetime-local-input" class="col-md-2 col-form-label">Year of Employment
-                          :<span class="text-danger">*</span></label>
-                        <div class="col-sm-4">
-                          <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-YearofEmployment2" class="input-group-text"><i
-                                class="bx bx-calendar"></i></span>
-                            <input class="form-control" type="date" value="2021-06-18"
-                              id="html5-datetime-local-input-YearofEmployment" 
-                              name="year"
-                              value='<?php echo $year?>'
-                              />
-                          </div>
-                        </div>
-
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-companyname">Branch :<span
-                            class="text-danger">*</span></label>
-                        <div class="col-sm-4">
-                          <div class="input-group input-group-merge">
-                            <span class="input-group-text"><i class="bx bx-grid-small"></i></span>
-                            <input type="text" id="basic-icon-default-companyname" class="form-control"
-                              placeholder="BEAEKA General Business" aria-label="BEAEKA General Business"
-                              aria-describedby="basic-icon-default-companyname2" 
-                              name="branch"
-                              value='<?php echo $branch?>'
-                              />
-                          </div>
-                        </div>
-
+                      <div class="mt-2">
+                        <button type="submit" class="btn btn-primary me-2">Save changes</button>
+                        <button type="reset" class="btn btn-outline-secondary">Cancel</button>
                       </div>
-
-                      <div class="row mb-4">
-                      <label for="html5-datetime-local-input" class="col-md-2 col-form-label">Position :<span
-                            class="text-danger">*</span></label>
-                        <div class="col-sm-4">
-                          <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-position2" class="input-group-text"><i
-                                class="bx bx-chair"></i></span>
-                            <input type="text" id="basic-icon-default-position" class="form-control"
-                              placeholder="Manger" aria-label="Manger"
-                              aria-describedby="basic-icon-default-position2"
-                              name="position" 
-                              value='<?php echo $position?>'/>
-                              
-                          </div>
-                        </div>
-
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-salary">Salary :<span
-                            class="text-danger">*</span></label>
-                        <div class="col-sm-4">
-                          <div class="input-group input-group-merge">
-                            <span class="input-group-text"><i class="bx bx-grid-small"></i></span>
-                            <input type="text" id="basic-icon-default-salary" class="form-control"
-                              placeholder="56790" aria-label="salary"
-                              aria-describedby="basic-icon-default-salary"
-                              name="salary" 
-                              value='<?php echo $salary?>'
-                              />
-                          </div>
-                        </div>
-
+                    </form>
+                  </div>
+                  <!-- /Account -->
+                </div>
+                <div class="card">
+                  <h5 class="card-header">Delete Account</h5>
+                  <div class="card-body">
+                    <div class="mb-3 col-12 mb-0">
+                      <div class="alert alert-warning">
+                        <h6 class="alert-heading fw-bold mb-1">Are you sure you want to delete your account?</h6>
+                        <p class="mb-0">Once you delete your account, there is no going back. Please be certain.</p>
                       </div>
-
-
+                    </div>
+                    <form id="formAccountDeactivation" onsubmit="return false">
+                      <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" name="accountActivation"
+                          id="accountActivation" />
+                        <label class="form-check-label" for="accountActivation">I confirm my account
+                          deactivation</label>
                       </div>
-
-
-                      <div class="row justify-content-end">
-                        <div class="col-sm-10">
-                          <button type="submit" name='<?php echo $found?"update_economic":"add_economic"?>' class="btn btn-primary"><?php echo $found?"Update":"Submit"?></button>
-                        </div>
-                      </div>
+                      <button type="submit" class="btn btn-danger deactivate-account">Deactivate Account</button>
                     </form>
                   </div>
                 </div>
@@ -564,10 +519,10 @@ include "../connect.php";
                 <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>
                 <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More Themes</a>
 
-                <a href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
+                <a href="https://themeselection.com/demo/e-bidir-bootstrap-html-admin-template/documentation/"
                   target="_blank" class="footer-link me-4">Documentation</a>
 
-                <a href="https://github.com/themeselection/sneat-html-admin-template-free/issues" target="_blank"
+                <a href="https://github.com/themeselection/e-bidir-html-admin-template-free/issues" target="_blank"
                   class="footer-link me-4">Support</a>
               </div>
             </div>
@@ -586,10 +541,12 @@ include "../connect.php";
   </div>
   <!-- / Layout wrapper -->
 
-  <div class="buy-now">
-    <a href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/" target="_blank"
+  <!-- 
+<div class="buy-now">
+    <a href="https://themeselection.com/products/e-bidir-bootstrap-html-admin-template/" target="_blank"
       class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
   </div>
+-->
 
   <!-- Core JS -->
   <!-- build:js assets/vendor/js/core.js -->
@@ -600,14 +557,17 @@ include "../connect.php";
 
   <script src="../assets/vendor/js/menu.js"></script>
   <!-- endbuild -->
+  <script src="../assets/js/common.js"></script>
 
   <!-- Vendors JS -->
 
+
   <!-- Main JS -->
   <script src="../assets/js/main.js"></script>
-
+  <!--   <script src="../assets/js/populateuserlistprofile.js"></script>-->
   <!-- Page JS -->
-  <script src="../assets/js/ui-toasts-economic.js"></script>
+  <script src="../assets/js/pages-account-settings-account.js"></script>
+
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>

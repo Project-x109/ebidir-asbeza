@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "../connect.php";
+
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +14,7 @@ include "../connect.php";
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-  <title>Horizontal Layouts - Forms | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+  <title>Account settings - Pages | e-bidir - Bootstrap 5 HTML Admin Template - Pro</title>
 
   <meta name="description" content="" />
 
@@ -113,18 +114,18 @@ include "../connect.php";
 
         <ul class="menu-inner py-1">
           <!-- Dashboard -->
-          
+          <li class="menu-item">
+            <a href="Dashbaord.php" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-home-circle"></i>
+              <div data-i18n="Analytics">User Dashboard</div>
+            </a>
+          </li>
 
- <li class="menu-item">
-                        <a href="indexuser.html" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Analytics">User Dashboard</div>
-                        </a>
-                    </li>
+
           <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Pages</span>
           </li>
-          <li class="menu-item">
+          <li class="menu-item active open">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-dock-top"></i>
               <div data-i18n="Account Settings">Account Settings</div>
@@ -135,7 +136,7 @@ include "../connect.php";
                   <div data-i18n="Account">Account Informtion</div>
                 </a>
               </li>
-              <li class="menu-item">
+              <li class="menu-item active open">
                 <a href="Profilepersonal.php" class="menu-link">
                   <div data-i18n="Notifications">Personal Informtion</div>
                 </a>
@@ -191,7 +192,8 @@ include "../connect.php";
 
           <!-- Forms & Tables -->
           <li class="menu-header small text-uppercase"><span class="menu-header-text">User Pages</span></li>
-          <li class="menu-item active open">
+          <!-- Forms -->
+          <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-detail"></i>
               <div data-i18n="Form Layouts">Registration Forms</div>
@@ -202,15 +204,13 @@ include "../connect.php";
                   <div data-i18n="Vertical Form">Personal Form</div>
                 </a>
               </li>
-
-              <li class="menu-item active open">
+              <li class="menu-item">
                 <a href="economic.php" class="menu-link">
-                  <div data-i18n="Vertical Form">Economic Form</div>
+                  <div data-i18n="Horizontal Form">Economic Form</div>
                 </a>
               </li>
             </ul>
           </li>
-
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-detail"></i>
@@ -235,7 +235,8 @@ include "../connect.php";
             </ul>
           </li>
 
-         
+
+
 
         </ul>
       </aside>
@@ -393,7 +394,9 @@ include "../connect.php";
           <!-- Content -->
 
           <div class="container-xxl flex-grow-1 container-p-y">
-            <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span>Economic Information</h4>
+            <h4 class="fw-bold py-3 mb-4">
+              <span class="text-muted fw-light">Account Settings /</span> Personal Information
+            </h4>
             <!-- Toast with Placements -->
             <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive"
               aria-atomic="true" data-delay="2000">
@@ -406,141 +409,93 @@ include "../connect.php";
               <div class="toast-body">Fruitcake chocolate bar tootsie roll gummies gummies jelly beans cake.</div>
             </div>
             <!-- Toast with Placements -->
-            <!-- Basic Layout & Basic with Icons -->
             <div class="row">
-              <!-- Basic with Icons -->
-              <div class="col-xxl">
-                <div class="card mb-4">
-                  <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="mb-0">2.Economic Information</h5>
-                  </div>
-                  <?php
-                    $sql="SELECT * from economic where user_id=".$_SESSION['id'];
-                    $res=$conn->query($sql);
-                    $found=$res->num_rows;
-                    $field_of_employeement="";
-                    $number_of_income="";
-                    $year="";
-                    $branch="";
-                    $position="";
-                    $salary="";
-                    if($res->num_rows){
-                        $row=$res->fetch_assoc();
-                        $field_of_employeement=$row['field_of_employeement'];
-                        $number_of_income=$row['number_of_income'];
-                        $year=$row['year'];
-                        $branch=$row['branch'];
-                        $position=$row['position'];
-                        $salary=$row['salary'];
-                    }
-?>
+              <div class="col-md-12">
+                <ul class="nav nav-pills flex-column flex-md-row mb-3">
+                  <li class="nav-item">
+                    <a class="nav-link" href="Profileuser.php"><i class="bx bx-user me-1"></i> Account</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-bell me-1"></i> Personal
+                      Info</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="Profileeconomic.php"><i class="bx bx-link-alt me-1"></i> Economic Info</a>
+                  </li>
+                </ul>
+                <?php
+                $id = $_SESSION['id'];
+                $sql2 = "SELECT * from personal where user_id=$id";
+                $res2 = $conn->query($sql2);
+                $row2 = $res2->fetch_assoc();
+                ?>
+                <?php
+                if (isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER["HTTP_X_REQUESTED_WITH"]) === "xmlhttprequest") {
+                  // This is an AJAX request
+                  // Retrieve form data and update the database
+                  $numberOfDependents = $_POST['numberOfDependents'] ?? '';
+                  $marrigeStatus = $_POST['marrigeStatus'] ?? '';
+                  $educationalStatus = $_POST['educationalStatus'] ?? '';
+                  $criminalRecord = $_POST['criminalRecord'] ?? '';
+
+                  // Update the database records
+                  $id = $_SESSION['id'];
+                  $sqlUpdate = "UPDATE personal SET
+                                Number_of_dependents='$numberOfDependents',
+                                Marriage_Status='$marrigeStatus',
+                                Educational_Status='$educationalStatus',
+                                Criminal_record='$criminalRecord'
+                                WHERE user_id=$id";
+
+                  if ($conn->query($sqlUpdate) === TRUE) {
+                    // Record updated successfully
+                    // Retrieve the updated data
+                    $sql = "SELECT * FROM personal WHERE user_id = $id";
+                    $result = $conn->query($sql);
+                    $updatedData = $result->fetch_assoc();
+                    echo json_encode($updatedData);
+                    exit; // Terminate the script
+                  } else {
+                    // Error updating record
+                    echo json_encode(['error' => 'Update failed']);
+                    exit;
+                  }
+                } else {
+                  // Handle non-AJAX requests here (e.g., displaying the HTML form)
+                }
+
+                ?>
+
+                <div class="card">
                   <div class="card-body">
-                    <form action="backend.php" method="POST">
-                    <input type="hidden" name="id" value='<?php echo $_SESSION['id']?>' />
-                      <div class="row mb-4">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-fieldofEmployment">Field of
-                          Employment :<span class="text-danger">*</span></label>
-                        <div class="col-sm-4">
-                          <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-fieldofEmployment2" class="input-group-text"><i
-                                class="bx bx-award"></i></span>
-                            <input type="text" class="form-control" id="basic-icon-default-fieldofEmployment"
-                              placeholder="John Doe" aria-label="John Doe"
-                              aria-describedby="basic-icon-default-fieldofEmployment2"
-                              name="field_of_employeement"
-                              value='<?php echo $field_of_employeement?>'
-                              />
-                          </div>
+                    <form id="formAccountSettings" method="POST" onsubmit="return false">
+                      <div class="row">
+                        <div class="mb-3 col-md-6">
+                          <label for="numberOfDependents" class="form-label">Number of Dependents</label>
+                          <input class="form-control" type="text" id="numberOfDependents" name="numberOfDependents"
+                            value=" <?php echo $row2['Number_of_dependents']; ?>" readonly autofocus />
                         </div>
-
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-numberofincome">Number of Income
-                          :<span class="text-danger">*</span></label>
-                        <div class="col-sm-4">
-                          <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-numberofincome2" class="input-group-text"><i
-                                class="bx bx-archive-in"></i></span>
-                            <input type="number" class="form-control" id="basic-icon-default-numberofincome"
-                              placeholder="John Doe" aria-label="John Doe"
-                              aria-describedby="basic-icon-default-numberofincome2" 
-                              name="number_of_income"
-                              value='<?php echo $number_of_income?>'
-                              />
-                          </div>
+                        <div class="mb-3 col-md-6">
+                          <label for="Marrige Status" class="form-label">Marrige Status</label>
+                          <input class="form-control" type="text" name="marrigeStatus" id="marrigeStatus"
+                            value="<?php echo $row2['Marriage_Status']; ?>" autofocus readonly />
                         </div>
-                      </div>
-
-                      <div class="row mb-4">
-                        <label for="html5-datetime-local-input" class="col-md-2 col-form-label">Year of Employment
-                          :<span class="text-danger">*</span></label>
-                        <div class="col-sm-4">
-                          <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-YearofEmployment2" class="input-group-text"><i
-                                class="bx bx-calendar"></i></span>
-                            <input class="form-control" type="date" value="2021-06-18"
-                              id="html5-datetime-local-input-YearofEmployment" 
-                              name="year"
-                              value='<?php echo $year?>'
-                              />
-                          </div>
+                        <div class="mb-3 col-md-6">
+                          <label for="educationalStatus" class="form-label">Educational Status</label>
+                          <input class="form-control" type="text" id="educationalStatus" name="educationalStatus"
+                            value=" <?php echo $row2['Educational_Status']; ?>" placeholder="Degree" autofocus
+                            readonly />
                         </div>
-
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-companyname">Branch :<span
-                            class="text-danger">*</span></label>
-                        <div class="col-sm-4">
-                          <div class="input-group input-group-merge">
-                            <span class="input-group-text"><i class="bx bx-grid-small"></i></span>
-                            <input type="text" id="basic-icon-default-companyname" class="form-control"
-                              placeholder="BEAEKA General Business" aria-label="BEAEKA General Business"
-                              aria-describedby="basic-icon-default-companyname2" 
-                              name="branch"
-                              value='<?php echo $branch?>'
-                              />
-                          </div>
+                        <div class="mb-3 col-md-6">
+                          <label for="criminalRecord" class="form-label">Criminal Record</label>
+                          <input type="text" class="form-control" id="criminalRecord" name="criminalRecord"
+                            value="<?php echo $row2['Criminal_record']; ?>" autofocus readonly />
                         </div>
-
-                      </div>
-
-                      <div class="row mb-4">
-                      <label for="html5-datetime-local-input" class="col-md-2 col-form-label">Position :<span
-                            class="text-danger">*</span></label>
-                        <div class="col-sm-4">
-                          <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-position2" class="input-group-text"><i
-                                class="bx bx-chair"></i></span>
-                            <input type="text" id="basic-icon-default-position" class="form-control"
-                              placeholder="Manger" aria-label="Manger"
-                              aria-describedby="basic-icon-default-position2"
-                              name="position" 
-                              value='<?php echo $position?>'/>
-                              
-                          </div>
+                        <div class="mt-2">
+                          <!-- Change the button text -->
+                          <button type="submit" class="btn btn-primary me-2" id="updateButton">Update</button>
+                          <button type="reset" class="btn btn-outline-secondary">Cancel</button>
                         </div>
-
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-salary">Salary :<span
-                            class="text-danger">*</span></label>
-                        <div class="col-sm-4">
-                          <div class="input-group input-group-merge">
-                            <span class="input-group-text"><i class="bx bx-grid-small"></i></span>
-                            <input type="text" id="basic-icon-default-salary" class="form-control"
-                              placeholder="56790" aria-label="salary"
-                              aria-describedby="basic-icon-default-salary"
-                              name="salary" 
-                              value='<?php echo $salary?>'
-                              />
-                          </div>
-                        </div>
-
-                      </div>
-
-
-                      </div>
-
-
-                      <div class="row justify-content-end">
-                        <div class="col-sm-10">
-                          <button type="submit" name='<?php echo $found?"update_economic":"add_economic"?>' class="btn btn-primary"><?php echo $found?"Update":"Submit"?></button>
-                        </div>
-                      </div>
                     </form>
                   </div>
                 </div>
@@ -564,10 +519,10 @@ include "../connect.php";
                 <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>
                 <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More Themes</a>
 
-                <a href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
+                <a href="https://themeselection.com/demo/e-bidir-bootstrap-html-admin-template/documentation/"
                   target="_blank" class="footer-link me-4">Documentation</a>
 
-                <a href="https://github.com/themeselection/sneat-html-admin-template-free/issues" target="_blank"
+                <a href="https://github.com/themeselection/e-bidir-html-admin-template-free/issues" target="_blank"
                   class="footer-link me-4">Support</a>
               </div>
             </div>
@@ -586,10 +541,12 @@ include "../connect.php";
   </div>
   <!-- / Layout wrapper -->
 
-  <div class="buy-now">
-    <a href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/" target="_blank"
+  <!-- 
+<div class="buy-ዝow">
+    <a href="https://themeselection.com/products/e-bidir-bootstrap-html-admin-template/" target="_blank"
       class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
   </div>
+-->
 
   <!-- Core JS -->
   <!-- build:js assets/vendor/js/core.js -->
@@ -600,14 +557,17 @@ include "../connect.php";
 
   <script src="../assets/vendor/js/menu.js"></script>
   <!-- endbuild -->
-
+  <script src="../assets/js/common.js"></script>
   <!-- Vendors JS -->
+
 
   <!-- Main JS -->
   <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/Updatefunctionlity.js"></script>
+  <!--   <script src="../assets/js/populateuserlistprofilepersonal.js"></script> -->
 
   <!-- Page JS -->
-  <script src="../assets/js/ui-toasts-economic.js"></script>
+
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>

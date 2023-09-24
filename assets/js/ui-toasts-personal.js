@@ -5,10 +5,10 @@
 function validateForm() {
   // An array of field IDs and their corresponding error messages
   const fields = [
-    { id: 'basic-icon-default-dependetents', error: 'Number of Dependents is required.' },
-    { id: 'basic-icon-default-marriagestatus', error: 'Marriage Status is required.' },
-    { id: 'basic-icon-default-educationalstatus', error: 'Educational Status is required.' },
-    { id: 'basic-icon-default-criminalrecord', error: 'Criminal Record is required.' }
+    { id: 'numberOfDependents', error: 'Number of Dependents is required.' },
+    { id: 'marrigeStatus', error: 'Marriage Status is required.' },
+    { id: 'educationalStatus', error: 'Educational Status is required.' },
+    { id: 'criminalRecord', error: 'Criminal Record is required.' }
   ];
   // Iterate through the fields and check their values
   const numberRegex = /^[0-9]+$/;
@@ -25,7 +25,7 @@ function validateForm() {
       return; // Stop further validation on the first empty field
     }
 
-    if (field.id === 'basic-icon-default-dependetents') {
+    if (field.id === 'numberOfDependents') {
       // Check if Dependetents Number field contains only numbers
       if (!numberRegex.test(value)) {
         const toastPlacementExample = document.querySelector('.toast-placement-ex');
@@ -38,7 +38,7 @@ function validateForm() {
       }
     }
 
-    if (field.id === 'basic-icon-default-criminalrecord') {
+    if (field.id === 'criminalRecord') {
       // Check if Criminal Record field contains only numbers
       if (!numberRegex.test(value)) {
         const toastPlacementExample = document.querySelector('.toast-placement-ex');
