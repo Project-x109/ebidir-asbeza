@@ -139,7 +139,6 @@ for (let i = 0; i < 100; i++) {
   dummyDataLoan.push(record);
 }
 
-
 // Function to calculate the percentage change
 function calculatePercentageChange(oldValue, newValue) {
   const percentageChange = ((newValue - oldValue) / oldValue) * 100;
@@ -159,7 +158,7 @@ const percentageChange = calculatePercentageChange(selectedRecord.creditlimit, r
 const creditLimitIncreased = randomlyChosenCreditLimit > selectedRecord.creditlimit;
 
 // Get the StatusIndicator element by its ID
-const statusIndicator = document.getElementById('Statusindicator');
+const statusIndicator = document.getElementById('');
 const CreditLimitCardID = document.getElementById('CreditLimitCardID');
 const AvailableCreditID = document.getElementById('AvailableCreditID');
 

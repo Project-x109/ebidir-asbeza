@@ -1,5 +1,9 @@
-<!DOCTYPE html>
+<?php
+session_start();
+include "../connect.php";
 
+?>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -385,6 +389,12 @@ include "../common/head.php";
         <div class="content-wrapper">
           <!-- Content -->
 
+          <?php
+          $id = $_SESSION['id'];
+          $sql1 = "SELECT * from users where id=$id";
+          $res = $conn->query($sql1);
+          $row = $res->fetch_assoc();
+          ?>
           <div class="container-xxl flex-grow-1  container-p-y">
             <div class="row">
               <div class="col-lg-8 mb-4 order-0">
@@ -392,7 +402,12 @@ include "../common/head.php";
                   <div class="d-flex align-items-end row">
                     <div class="col-sm-7">
                       <div class="card-body" id="Statusindicator">
-
+                        <h5 class="card-title text-primary">Congratulations
+                          <?php echo $row['name']; ?>! 🎉
+                        </h5>
+                        <p class="mb-4">Your Credit Limit has increased by <span
+                            class="fw-bold">72%</span>Check The table below</p>
+                        <a href="#table-striped" class="btn btn-sm btn-outline-primary">View Table</a>
                       </div>
                     </div>
                     <div class="col-sm-5 text-center text-sm-left">
