@@ -21,7 +21,9 @@ echo $sql;
     $res=$conn->query($sql);
 if($res){
 $_SESSION['success']="Economic information created Successfully";
-    header("location:report.php");
+$sql="update users set form_done=1 WHERE id=$_POST[id]";
+$res=$conn->query($sql);
+    header("location:Loan.php");
 }
 }
 if(isset($_POST['update_economic'])){
@@ -34,6 +36,16 @@ $_SESSION['success']="Economic information created Successfully";
     header("location:report.php");
 }
 }
+if(isset($_POST['update_personal'])){
+    $sql="UPDATE `personal` SET `Number_of_dependents`='$_POST[Number_of_dependents]',`Marriage_Status`='$_POST[Marriage_Status]',`Educational_Status`='$_POST[Educational_Status]',`Criminal_record`='$_POST[Criminal_record]' WHERE user_id=$_POST[id]";
+
+     $res=$conn->query($sql);
+ if($res){
+ $_SESSION['success']="Personal information created Successfully";
+ header("location:economic.php");
+ }
+ }
+
 ?>
 
 

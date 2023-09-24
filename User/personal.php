@@ -414,18 +414,17 @@ include "../connect.php";
             </div>
             <!-- Toast with Placements -->
 
-            <!-- Basic Layout & Basic with Icons -->
-            <div class="row">
-              <div class="col-xxl">
-                <div class="card mb-4">
-                  <div class="card-header d-flex align-items-center justify-content-between">
-                    <?php
-                    $sql = "SELECT * from personal where user_id=" . $_SESSION['id'];
-                    $res = $conn->query($sql);
-                    $found = $res->num_rows;
-                    echo $found;
-                    if ($res->num_rows) {
-                      $row = $res->fetch_assoc();
+              <!-- Basic Layout & Basic with Icons -->
+              <div class="row">
+                <div class="col-xxl">
+                  <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <?php
+                    $sql="SELECT * from personal where user_id=".$_SESSION['id'];
+                    $res=$conn->query($sql);
+                    $found=$res->num_rows;
+                    if($res->num_rows){
+                        $row=$res->fetch_assoc();
                     }
                     ?>
                     <h5 class="mb-0">1.Personal Information</h5>
