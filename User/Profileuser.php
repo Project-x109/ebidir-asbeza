@@ -27,7 +27,7 @@ include "../connect.php";
   <link
     href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
     rel="stylesheet" />
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <!-- Icons. Uncomment required icon fonts -->
   <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
 
@@ -390,7 +390,19 @@ include "../connect.php";
 
           <div class="container-xxl flex-grow-1 container-p-y">
             <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span> Account</h4>
-
+            <!-- Toast with Placements -->
+            <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive"
+              aria-atomic="true" data-delay="2000">
+              <div class="toast-header">
+                <i class="bx bx-bell me-2"></i>
+                <div class="me-auto toast-title fw-semibold">Error</div>
+                <small>11 mins ago</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+              </div>
+              <div class="toast-body">Fruitcake chocolate bar tootsie roll gummies gummies jelly beans
+                cake.</div>
+            </div>
+            <!-- Toast with Placements -->
             <div class="row">
               <div class="col-md-12">
                 <ul class="nav nav-pills flex-column flex-md-row mb-3">
@@ -412,6 +424,35 @@ include "../connect.php";
                 $res = $conn->query($sql1);
                 $row = $res->fetch_assoc();
                 ?>
+
+                <?php
+                if ($_SERVER["REQUEST_METHOD"] === "POST") {
+                  // Retrieve form data
+                  $fullName = $_POST['fullName'];
+                  $tinNumber = $_POST['tinNumber'];
+                  $phoneNumber = $_POST['phoneNumber'];
+                  $dateOfBirth = $_POST['dateOfBirth'];
+
+                  // Update the database record
+                  $id = $_SESSION['id'];
+                  $sqlUpdate = "UPDATE users SET
+                  name='$fullName',
+                  TIN_Number='$tinNumber',
+                  phone='$phoneNumber',
+                  dob='$dateOfBirth'
+                  WHERE id=$id";
+                  if ($conn->query($sqlUpdate) === TRUE) {
+                    // Record updated successfully
+                    // You can redirect or show a success message here
+                  } else {
+                    // Error updating record
+                    // You can handle errors here
+                  }
+                }
+                ?>
+
+
+
                 <div class="card mb-4">
                   <h5 class="card-header">Profile Details</h5>
                   <!-- Account -->
@@ -444,35 +485,37 @@ include "../connect.php";
                       <div class="row">
                         <div class="mb-3 col-md-6">
                           <label for="fullName" class="form-label">Full Name</label>
-                          <input class="form-control" type="text" id="fullName" name="fullName"
+                          <input class="form-control" autofocus readonly type="text" id="fullName" name="fullName"
                             value="<?php echo $row['name'] ?>" autofocus />
                         </div>
                         <div class="mb-3 col-md-6">
                           <label for="tinNumber" class="form-label">TIN Number</label>
-                          <input class="form-control" type="text" name="tinNumber" id="tinNumber"
+                          <input class="form-control" autofocus readonly type="text" name="tinNumber" id="tinNumber"
                             value=" <?php echo $row['TIN_Number']; ?>" />
                         </div>
-                        <div class="mb-3 col-md-6">
+                        <!-- <div class="mb-3 col-md-6">
                           <label for="email" class="form-label">E-mail</label>
-                          <input class="form-control" type="text" id="email" name="email" value="john.doe@example.com"
+                          <input class="form-control" autofocus readonly type="text" id="email" name="email" value="john.doe@example.com"
                             placeholder="john.doe@example.com" />
-                        </div>
+                        </div> -->
                         <div class="mb-3 col-md-6">
                           <label class="form-label" for="phoneNumber">Phone Number</label>
                           <div class="input-group input-group-merge">
                             <span class="input-group-text">ET (+251)</span>
-                            <input type="text" id="phoneNumber" value="<?php echo $row['phone']; ?>" name="phoneNumber"
-                              class="form-control" placeholder="202 555 0111" />
+                            <input type="text" autofocus readonly id="phoneNumber" value="<?php echo $row['phone']; ?>"
+                              name="phoneNumber" class="form-control" placeholder="202 555 0111" />
                           </div>
                         </div>
                         <div class="mb-3 col-md-6">
-                          <label for="dateOfBirth" class="form-label">Date of Birth</label>
-                          <input class="form-control" type="text" id="dateOfBirth" value="<?php echo $row['dob']; ?>"
-                            name="dateOfBirth" placeholder="01-12-2023" />
+                          <label for="dateOfBirth" class="form-label">Year of
+                            Employment</label>
+                          <input class="form-control date-picker" type="text" id="dateOfBirth" name="dateOfBirth"
+                            value="<?php echo $row['dob']; ?>" placeholder="Select a date" autofocus readonly
+                            data-toggle="flatpickr" data-enable-time="false">
                         </div>
                       </div>
                       <div class="mt-2">
-                        <button type="submit" class="btn btn-primary me-2">Save changes</button>
+                        <button type="submit" id="updateButton" class="btn btn-primary me-2">Update</button>
                         <button type="reset" class="btn btn-outline-secondary">Cancel</button>
                       </div>
                     </form>
@@ -564,9 +607,11 @@ include "../connect.php";
 
   <!-- Main JS -->
   <script src="../assets/js/main.js"></script>
-  <!--   <script src="../assets/js/populateuserlistprofile.js"></script>-->
+  <script src="../assets/js/Updatefunctionalityaccount.js"></script>
   <!-- Page JS -->
   <script src="../assets/js/pages-account-settings-account.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>

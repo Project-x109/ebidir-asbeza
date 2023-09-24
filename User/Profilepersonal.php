@@ -465,9 +465,6 @@ include "../connect.php";
                           <input class="form-control" type="text" id="numberOfDependents" name="numberOfDependents"
                             value=" <?php echo $row2['Number_of_dependents']; ?>" readonly autofocus />
                         </div>
-
-
-
                         <div class="mb-3 col-md-6">
                           <label for="Marrige Status" class="form-label">Marrige Status</label>
                           <select class="form-control" type="text" name="marrigeStatus" id="marrigeStatus" autofocus
@@ -482,9 +479,6 @@ include "../connect.php";
                             </option>
                           </select>
                         </div>
-
-
-
                         <div class="mb-3 col-md-6">
                           <label for="educationalStatus" class="form-label">Educational Status</label>
                           <select class="form-control" type="text" id="educationalStatus" name="educationalStatus"

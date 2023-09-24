@@ -27,6 +27,7 @@ include "../connect.php";
     <link
         href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
         rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
@@ -403,6 +404,20 @@ include "../connect.php";
                         <h4 class="fw-bold py-3 mb-4">
                             <span class="text-muted fw-light">Account Settings / </span> Economic Information
                         </h4>
+                        <!-- Toast with Placements -->
+                        <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert"
+                            aria-live="assertive" aria-atomic="true" data-delay="2000">
+                            <div class="toast-header">
+                                <i class="bx bx-bell me-2"></i>
+                                <div class="me-auto toast-title fw-semibold">Error</div>
+                                <small>11 mins ago</small>
+                                <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="toast-body">Fruitcake chocolate bar tootsie roll gummies gummies jelly beans
+                                cake.</div>
+                        </div>
+                        <!-- Toast with Placements -->
 
                         <div class="row">
                             <div class="col-md-12">
@@ -426,6 +441,34 @@ include "../connect.php";
                                 $res3 = $conn->query($sql3);
                                 $row3 = $res3->fetch_assoc();
                                 ?>
+                                <?php
+                                if ($_SERVER["REQUEST_METHOD"] === "POST") {
+                                    // Retrieve form data
+                                    $fieldOfEmployment = $_POST['fieldOfEmployment'];
+                                    $branch = $_POST['branch'];
+                                    $yearOfEmployment = $_POST['yearOfEmployment'];
+                                    $numberOfIncome = $_POST['numberOfIncome'];
+                                    $position = $_POST['position'];
+
+                                    // Update the database record
+                                    $id = $_SESSION['id'];
+                                    $sqlUpdate = "UPDATE economic SET
+                                    field_of_employeement='$fieldOfEmployment',
+                                    number_of_income='$numberOfIncome',
+                                    year='$yearOfEmployment',
+                                    branch='$branch',
+                                    position='$position'
+                                    WHERE user_id=$id";
+                                    if ($conn->query($sqlUpdate) === TRUE) {
+                                        // Record updated successfully
+                                        // You can redirect or show a success message here
+                                    } else {
+                                        // Error updating record
+                                        // You can handle errors here
+                                    }
+                                }
+                                ?>
+
                                 <div class="card">
                                     <div class="card-body">
                                         <form id="formAccountSettings" method="POST" onsubmit="return false">
@@ -435,44 +478,60 @@ include "../connect.php";
                                                         Employement</label>
                                                     <input class="form-control" type="text" id="fieldOfEmployment"
                                                         name="fieldOfEmployment"
-                                                        value=" <?php echo $row3['field_of_employeement']; ?>"
-                                                        autofocus />
+                                                        value=" <?php echo $row3['field_of_employeement']; ?>" autofocus
+                                                        readonly />
                                                 </div>
                                                 <div class="mb-3 col-md-6">
                                                     <label for="numberOfIncome" class="form-label">Number of
                                                         Income</label>
                                                     <input class="form-control" type="text" name="numberOfIncome"
                                                         id="numberOfIncome"
-                                                        value="<?php echo $row3['number_of_income']; ?>" />
+                                                        value="<?php echo $row3['number_of_income']; ?>" autofocus
+                                                        readonly />
                                                 </div>
                                                 <div class="mb-3 col-md-6">
                                                     <label for="yearOfEmployment" class="form-label">Year of
                                                         Employment</label>
-                                                    <input class="form-control" type="text" id="yearOfEmployment"
-                                                        name="yearOfEmployment" value="<?php echo $row3['year']; ?>"
-                                                        placeholder="2010" />
+                                                    <input class="form-control date-picker" type="text"
+                                                        id="yearOfEmployment" name="yearOfEmployment"
+                                                        value="<?php echo $row3['year']; ?>" placeholder="Select a date"
+                                                        autofocus readonly data-toggle="flatpickr"
+                                                        data-enable-time="false">
                                                 </div>
                                                 <div class="mb-3 col-md-6">
                                                     <label for="branch" class="form-label">Branch Name</label>
-                                                    <input type="text" class="form-control" id="branch" name="branch"
-                                                        value="<?php echo $row3['branch']; ?>" />
+                                                    <select type="text" class="form-control" id="branch" name="branch"
+                                                        autofocus readonly>
+                                                        <option value="Purposeblack ETH" <?php if ($row3['branch'] === 'Purposeblack ETH')
+                                                            echo ' selected'; ?>>
+                                                            Purposeblack ETH</option>
+                                                        <option value="Purposeblack ETH2" <?php if ($row3['branch'] === 'Purposeblack ETH2')
+                                                            echo ' selected'; ?>>Purposeblack ETH2</option>
+                                                        <option value="Purposeblack ETH3" <?php if ($row3['branch'] === 'Purposeblack ETH3')
+                                                            echo ' selected'; ?>>Purposeblack ETH3</option>
+                                                        <option value="Purposeblack ETH4" <?php if ($row3['branch'] === 'Purposeblack ETH4')
+                                                            echo ' selected'; ?>>Purposeblack ETH4</option>
+                                                        <option value="Purposeblack ETH5" <?php if ($row3['branch'] === 'Purposeblack ETH5')
+                                                            echo ' selected'; ?>>Purposeblack ETH5</option>
+                                                    </select>
                                                 </div>
                                                 <div class="mb-3 col-md-6">
                                                     <label class="form-label" for="position">Position</label>
                                                     <div class="input-group input-group-merge">
                                                         <input type="text" id="position"
                                                             value="<?php echo $row3['position']; ?>" name="position"
-                                                            class="form-control" placeholder="CEO" />
+                                                            class="form-control" placeholder="CEO" autofocus readonly />
                                                     </div>
                                                 </div>
-                                                <div class="mb-3 col-md-6">
+                                                <!-- <div class="mb-3 col-md-6">
                                                     <label for="jobStatus" class="form-label">Job Status</label>
                                                     <input type="text" class="form-control" id="jobStatus"
                                                         name="jobStatus" value="Unemployed" />
-                                                </div>
+                                                </div> -->
                                             </div>
                                             <div class="mt-2">
-                                                <button type="submit" class="btn btn-primary me-2">Save changes</button>
+                                                <button type="submit" id="updateButton"
+                                                    class="btn btn-primary me-2">Update</button>
                                                 <button type="reset" class="btn btn-outline-secondary">Cancel</button>
                                             </div>
                                         </form>
@@ -547,12 +606,14 @@ include "../connect.php";
 
     <!-- Main JS -->
     <script src="../assets/js/main.js"></script>
-<!--     <script src="../assets/js/populateuserlistprofileeconomic.js"></script> -->
+    <!--     <script src="../assets/js/populateuserlistprofileeconomic.js"></script> -->
 
     <!-- Page JS -->
+    <script src="../assets/js/Updatefunctionlityeconomic.js"></script>
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </body>
 
 </html>
