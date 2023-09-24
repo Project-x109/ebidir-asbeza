@@ -637,82 +637,38 @@
                       <!-- <small class="text-muted float-end">Merged input group</small> -->
                     </div>
                     <div class="card-body">
-                    <form action="backend.php" method="POST" enctype="multipart/form-data">
+                    <form action="backend.php" method="POST">
                         <input type="hidden" name="id" value='<?php echo $_SESSION['id']?>' />
                         <div>
-<?php   
-echo   "Total price :".$_POST['totalprice'];
-// echo "Credit Limit:".$_POST[''] 
+<?php  
+if(isset($_POST['totalprice'])){
+  $_SESSION['price']=$_POST['totalprice'];
+} 
+echo   "Total price :".$_SESSION['price'];
+$sql="SELECT * from users where id=$_SESSION[id]";
+$res=$conn->query($sql);
+$row=$res->fetch_assoc();
+echo "<br>Credit Limit:".$row['credit_limit'];
+$valid=$row['credit_limit']>=$_SESSION['price'];
+$found=$row['form_done'];
+
 ?>
 
-                  </div>
-                        <div class="row mb-4">
-                          <label class="col-sm-2 col-form-label" for="basic-icon-default-dependetents">Number of Dependents:<span class="text-danger">*</span></label>
-                          <div class="col-sm-4">
-                            <div class="input-group input-group-merge">
-                              <span id="basic-icon-default-dependetents2" class="input-group-text"><i class="bx bx-user"></i></span>
-                              <input
-                                type="number"
-                                class="form-control"
-                                id="basic-icon-default-dependetents"
-                                name="Number_of_dependents"
-                                placeholder="John Doe"
-                                aria-label="John Doe"
-                                aria-describedby="basic-icon-default-dependetents2"
-                              />
-                            </div>
-                          </div>
-                          <label class="col-sm-2 col-form-label" for="basic-icon-default-marriagestatus">Marriage Status:<span class="text-danger">*</span></label>
-                          <div class="col-sm-4">
-                            <div class="input-group input-group-merge">
-                              <span id="basic-icon-default-marriagestatus2" class="input-group-text"
-                                ><i class="bx bx-map-pin"></i
-                              ></span>
-                                <select  id="basic-icon-default-marriagestatus" class="form-select" name="Marriage_Status">
-                                  <option value="">Default select</option>
-                                  <option value="Married">Married</option>
-                                  <option value="Single">Single</option>
-                                  <option value="Divorced">Divorced</option>
-                                </select>
-                            </div>
-                          </div> 
-                        </div>
-                        <div class="row mb-4">
-                            <label class="col-sm-2 col-form-label" for="basic-icon-default-educationalstatus">Educational Status:<span class="text-danger">*</span></label>
-                            <div class="col-sm-4">
-                              <div class="input-group input-group-merge">
-                                <span id="basic-icon-default-educationalstatus2" class="input-group-text"
-                                  ><i class="bx bx-book-reader"></i
-                                ></span>
-                                  <select  id="basic-icon-default-educationalstatus" class="form-select" name="Educational_Status">
-                                    <option value="">Default select</option>
-                                    <option value="Below highSchool">Below highSchool </option>
-                                    <option value="Dipoma">Diploma</option>
-                                    <option value="Degree">Degree</option>
-                                    <option value="Masters">Masters</option>
-                                    <option value="PHD">PHD</option>
-                                  </select>
-                              </div>
-                            </div>     
-                            <label class="col-sm-2 col-form-label" for="basic-icon-default-criminalrecord">Criminal Records:<span class="text-danger">*</span></label>
-                          <div class="col-sm-4">
-                            <div class="input-group input-group-merge">
-                              <span class="input-group-text"><i class="bx bx-video-recording"></i></span>
-                              <input
-                                type="text"
-                                id="basic-icon-default-criminalrecord"
-                                class="form-control"
-                                placeholder="john.doe"
-                                name="Criminal_record"
-                                aria-label="john.doe"
-                                aria-describedby="basic-icon-default-criminalrecord2"
-                              />
-                            </div>
-                          </div>
-                        </div>                       
+                  </div>                   
                         <div class="row justify-content-end">
                           <div class="col-sm-10">
-                            <button type="submit" name='<?php echo $found?"update_personal":"add_personal"?>' class="btn btn-primary"><?php echo $found?"Update":"Submit"?></button>
+                            <?php if(!$found)
+                                 echo "<a type='".(!$found?'':"submit")."".($found?'':"href='./personal.php")."name='".($found?'checkout':'add_personal')."class='btn btn-primary text-white'>".($found?"Complete checkout":"Complete profile")."</a>";
+                                 else{
+                                  if($valid)
+                                  echo '<button type="submit" name="checkout" class="btn btn-primary">proceed to checkout</button>';
+                                else
+                                echo '<button type="button" class="btn btn-danger">Insufficent balance</button>';
+                          
+                                }
+                      
+
+                                         ?>
                           </div>
                         </div>
                       </form>

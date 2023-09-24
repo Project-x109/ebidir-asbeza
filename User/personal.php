@@ -629,7 +629,6 @@
                     $sql="SELECT * from personal where user_id=".$_SESSION['id'];
                     $res=$conn->query($sql);
                     $found=$res->num_rows;
-                    echo $found;
                     if($res->num_rows){
                         $row=$res->fetch_assoc();
                     }
