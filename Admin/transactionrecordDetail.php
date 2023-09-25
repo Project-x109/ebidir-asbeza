@@ -127,12 +127,12 @@
                             <div data-i18n="Form Layouts">Admin Tables</div>
                         </a>
                         <ul class="menu-sub">
-                            <li class="menu-item">
+                            <li class="menu-item active">
                                 <a href="branches.php" class="menu-link">
                                     <div data-i18n="Vertical Form">Branch Lists</div>
                                 </a>
                             </li>
-                            <li class="menu-item active">
+                            <li class="menu-item">
                                 <a href="users.php" class="menu-link">
                                     <div data-i18n="Horizontal Form">User Lists</div>
                                 </a>
