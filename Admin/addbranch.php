@@ -349,7 +349,7 @@
                                     document.write(new Date().getFullYear());
                                 </script>
                                 , made with ❤️ by
-                                <a href="https://ThemeSelection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
+                                <a href="https://ThemeSelection.com" target="_blank" class="footer-link fw-bolder">E-bidir</a>
                             </div>
                             <div>
                                 <a href="https://ThemeSelection.com/license/" class="footer-link me-4" target="_blank">License</a>

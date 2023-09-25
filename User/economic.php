@@ -102,7 +102,7 @@ include "../connect.php";
 
 
           <li class="menu-item">
-            <a href="indexuser.html" class="menu-link">
+            <a href="Dashbaord.php" class="menu-link">
               <i class="menu-icon tf-icons bx bx-home-circle"></i>
               <div data-i18n="Analytics">User Dashboard</div>
             </a>
@@ -491,7 +491,6 @@ include "../connect.php";
   <!-- / Layout wrapper -->
 
   <div class="buy-now">
-    <a href="https://ThemeSelection.com/products/sneat-bootstrap-html-admin-template/" target="_blank" class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
   </div>
 
   <!-- Core JS -->
