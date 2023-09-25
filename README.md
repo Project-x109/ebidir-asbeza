@@ -1,28 +1,28 @@
 <p align="center">
-   <a href="https://E-bidir.com/item/e-bidir-free-bootstrap-html-admin-template/" target="_blank">
+   <a href="https://ThemeSelection.com/item/e-bidir-free-bootstrap-html-admin-template/" target="_blank">
       <img src="https://user-images.githubusercontent.com/749684/150333149-805037bc-8874-4a1f-876a-61a9683f8ef5.png" alt="e-bidir-logo" width="30px" height="auto">
    </a>
 </p>
 
 <h1 align="center">
-   <a href="https://E-bidir.com/item/e-bidir-free-bootstrap-html-admin-template/" target="_blank" align="center">
+   <a href="https://ThemeSelection.com/item/e-bidir-free-bootstrap-html-admin-template/" target="_blank" align="center">
       e-bidir - Free Bootstrap 5 HTML Admin Template
    </a>
 </h1>
 
 <p align="center">Most Powerful & Comprehensive Free Bootstrap 5 HTML Admin Dashboard Template built for developers!</p>
 
-![GitHub](https://img.shields.io/github/license/E-bidir/e-bidir-html-admin-template-free) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/E-bidir/e-bidir-html-admin-template-free) ![GitHub issues](https://img.shields.io/github/issues/E-bidir/e-bidir-html-admin-template-free) ![GitHub closed issues](https://img.shields.io/github/issues-closed/E-bidir/e-bidir-html-admin-template-free) ![Twitter Follow](https://img.shields.io/twitter/follow/Theme_Selection?style=social)
+![GitHub](https://img.shields.io/github/license/ThemeSelection/e-bidir-html-admin-template-free) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/ThemeSelection/e-bidir-html-admin-template-free) ![GitHub issues](https://img.shields.io/github/issues/ThemeSelection/e-bidir-html-admin-template-free) ![GitHub closed issues](https://img.shields.io/github/issues-closed/ThemeSelection/e-bidir-html-admin-template-free) ![Twitter Follow](https://img.shields.io/twitter/follow/Theme_Selection?style=social)
 
-[![e-bidir - Bootstrap 5 HTML Admin Template Demo Screenshot](https://user-images.githubusercontent.com/80033712/153581472-452394ee-327a-4d00-a41a-c6e8036b7096.png)](https://E-bidir.com/products/e-bidir-free-bootstrap-html-admin-template/)
+[![e-bidir - Bootstrap 5 HTML Admin Template Demo Screenshot](https://user-images.githubusercontent.com/80033712/153581472-452394ee-327a-4d00-a41a-c6e8036b7096.png)](https://ThemeSelection.com/products/e-bidir-free-bootstrap-html-admin-template/)
 
 ## Introduction 🚀
 
-If you’re a developer looking for most Powerful & comprehensive [**Free Bootstrap 5 HTML Admin Template**](https://E-bidir.com/item/e-bidir-free-bootstrap-html-admin-template/) built for developers, rich with features, and highly customizable look no further than e-bidir. We’ve followed the highest industry standards to bring you the very best admin template that is not only fast and easy to use but highly scalable. Offering ultimate convenience and flexibility, you’ll be able to build whatever application you want with very little hassle.
+If you’re a developer looking for most Powerful & comprehensive [**Free Bootstrap 5 HTML Admin Template**](https://ThemeSelection.com/item/e-bidir-free-bootstrap-html-admin-template/) built for developers, rich with features, and highly customizable look no further than e-bidir. We’ve followed the highest industry standards to bring you the very best admin template that is not only fast and easy to use but highly scalable. Offering ultimate convenience and flexibility, you’ll be able to build whatever application you want with very little hassle.
 
-Build premium quality applications with ease. Use our innovative [bootstrap admin templates](https://E-bidir.com/item/category/bootstrap-admin-templates/) to create eye-catching, high-quality WebApps. Your apps will be completely responsive, ensuring they’ll look stunning and function flawlessly on desktops, tablets, and mobile devices.
+Build premium quality applications with ease. Use our innovative [bootstrap admin templates](https://ThemeSelection.com/item/category/bootstrap-admin-templates/) to create eye-catching, high-quality WebApps. Your apps will be completely responsive, ensuring they’ll look stunning and function flawlessly on desktops, tablets, and mobile devices.
 
-[View Demo](https://demos.E-bidir.com/e-bidir-bootstrap-html-admin-template-free/html/)
+[View Demo](https://demos.ThemeSelection.com/e-bidir-bootstrap-html-admin-template-free/html/)
 
 ## Installation ⚒️
 
@@ -105,8 +105,8 @@ Run a task with specified environment(development/production) just execute the t
 
 | e-bidir Free Version                                                                        | e-bidir Premium Version                                                                                                            |
 | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| [Demo](https://E-bidir.com/demo/e-bidir-bootstrap-html-admin-template-free/html/)    | [Demo](https://E-bidir.com/demo/e-bidir-bootstrap-html-admin-template/html/vertical-menu-template/)                         |
-| [Download](https://E-bidir.com/products/e-bidir-free-bootstrap-html-admin-template/) | [Purchase](https://E-bidir.com/products/e-bidir-bootstrap-html-admin-template/)                                             |
+| [Demo](https://ThemeSelection.com/demo/e-bidir-bootstrap-html-admin-template-free/html/)    | [Demo](https://ThemeSelection.com/demo/e-bidir-bootstrap-html-admin-template/html/vertical-menu-template/)                         |
+| [Download](https://ThemeSelection.com/products/e-bidir-free-bootstrap-html-admin-template/) | [Purchase](https://ThemeSelection.com/products/e-bidir-bootstrap-html-admin-template/)                                             |
 | Single vertical Menu                                                                      | Vertical Menu + Horizontal Menu                                                                                                  |
 | Simple Light Style                                                                        | Light & Dark Style                                                                                                               |
 | Default Theme                                                                             | Default, Semi Dark & Bordered Themes                                                                                             |
@@ -133,7 +133,7 @@ Run a task with specified environment(development/production) just execute the t
 
 ## Documentation 📜
 
-Check out our live [Documentation](https://E-bidir.com/demo/e-bidir-bootstrap-html-admin-template/documentation/)
+Check out our live [Documentation](https://ThemeSelection.com/demo/e-bidir-bootstrap-html-admin-template/documentation/)
 
 ## Browser Support 🖥️
 
@@ -147,20 +147,20 @@ At present, we officially aim to support the last two versions of the following 
 
 ## Useful Links 🎁
 
-- [Freebies](https://E-bidir.com/item/category/freebies/)
-- [Free Admin Templates](https://E-bidir.com/item/category/free-admin-templates/)
-- [Bootstrap 5 CheatSheet](https://bootstrap-cheatsheet.E-bidir.com/)
+- [Freebies](https://ThemeSelection.com/item/category/freebies/)
+- [Free Admin Templates](https://ThemeSelection.com/item/category/free-admin-templates/)
+- [Bootstrap 5 CheatSheet](https://bootstrap-cheatsheet.ThemeSelection.com/)
 
 ## Support 👨‍💻
 
 We use GitHub issues as support tickets to manage Item support.
 
-1. In order to raise the GitHub issue, you must have a github account. [Raise a Issue](https://github.com/E-bidir/e-bidir-html-admin-template-free/issues)
+1. In order to raise the GitHub issue, you must have a github account. [Raise a Issue](https://github.com/ThemeSelection/e-bidir-html-admin-template-free/issues)
 
 ## License ©
 
-- Copyright © [E-bidir](https://E-bidir.com/)
-- Licensed under [MIT](https://github.com/E-bidir/e-bidir-html-admin-template-free/blob/master/LICENSE.md)
+- Copyright © [ThemeSelection](https://ThemeSelection.com/)
+- Licensed under [MIT](https://github.com/ThemeSelection/e-bidir-html-admin-template-free/blob/master/LICENSE.md)
 
 ## Contributing 🦸
 
@@ -172,22 +172,22 @@ Contribution are always welcome and recommended! Here is how:
 
 ### Contribution Requirements 🧰
 
-- When you contribute, you agree to give a non-exclusive license to E-bidir to use that contribution in any context as we (E-bidir) see appropriate.
+- When you contribute, you agree to give a non-exclusive license to ThemeSelection to use that contribution in any context as we (ThemeSelection) see appropriate.
 - If you use content provided by another party, it must be appropriately licensed using an open source license.
 - Contributions are only accepted through Github pull requests.
 - Finally, contributed code must work in all supported browsers.
 
 ## Creators 😇
 
-- [E-bidir](https://E-bidir.com)
+- [ThemeSelection](https://ThemeSelection.com)
 
 ## Changelog 📆
 
-Please refer to the [CHANGELOG](https://E-bidir.com/demo/e-bidir-bootstrap-html-admin-template-free/changelog.html) file. We will add a detailed release notes to each new release.
+Please refer to the [CHANGELOG](https://ThemeSelection.com/demo/e-bidir-bootstrap-html-admin-template-free/changelog.html) file. We will add a detailed release notes to each new release.
 
 ## Social Media 🌍
 
 - Twitter : [https://twitter.com/Theme_Selection](https://twitter.com/Theme_Selection)
-- Facebook : [https://www.facebook.com/E-bidirs/](https://www.facebook.com/E-bidirs/)
+- Facebook : [https://www.facebook.com/ThemeSelections/](https://www.facebook.com/ThemeSelections/)
 - Pinterest : [https://pinterest.com/themeselect/](https://pinterest.com/themeselect/)
-- Instagram : [https://www.instagram.com/E-bidir/](https://www.instagram.com/E-bidir/)
+- Instagram : [https://www.instagram.com/ThemeSelection/](https://www.instagram.com/ThemeSelection/)

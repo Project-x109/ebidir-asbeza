@@ -313,9 +313,9 @@ include "../connect.php";
                             <!-- Place this tag where you want the button to render. -->
                             <li class="nav-item lh-1 me-3 ms-4">
                                 <a class="github-button"
-                                    href="https://github.com/E-bidir/e-bidir-html-admin-template-free"
+                                    href="https://github.com/ThemeSelection/e-bidir-html-admin-template-free"
                                     data-icon="octicon-star" data-size="large" data-show-count="false"
-                                    aria-label="Star E-bidir/e-bidir-html-admin-template-free on GitHub">Remaining
+                                    aria-label="Star ThemeSelection/e-bidir-html-admin-template-free on GitHub">Remaining
                                     Credit
                                     <span id="creditLimit">4</span>
                                 </a>
@@ -442,19 +442,19 @@ include "../connect.php";
                                     document.write(new Date().getFullYear());
                                 </script>
                                 , made with ❤️ by
-                                <a href="https://E-bidir.com" target="_blank"
-                                    class="footer-link fw-bolder">E-bidir</a>
+                                <a href="https://ThemeSelection.com" target="_blank"
+                                    class="footer-link fw-bolder">ThemeSelection</a>
                             </div>
                             <div>
-                                <a href="https://E-bidir.com/license/" class="footer-link me-4"
+                                <a href="https://ThemeSelection.com/license/" class="footer-link me-4"
                                     target="_blank">License</a>
-                                <a href="https://E-bidir.com/" target="_blank" class="footer-link me-4">More
+                                <a href="https://ThemeSelection.com/" target="_blank" class="footer-link me-4">More
                                     Themes</a>
 
-                                <a href="https://E-bidir.com/demo/e-bidir-bootstrap-html-admin-template/documentation/"
+                                <a href="https://ThemeSelection.com/demo/e-bidir-bootstrap-html-admin-template/documentation/"
                                     target="_blank" class="footer-link me-4">Documentation</a>
 
-                                <a href="https://github.com/E-bidir/e-bidir-html-admin-template-free/issues"
+                                <a href="https://github.com/ThemeSelection/e-bidir-html-admin-template-free/issues"
                                     target="_blank" class="footer-link me-4">Support</a>
                             </div>
                         </div>
@@ -475,7 +475,7 @@ include "../connect.php";
 
     <!-- 
 <div class="buy-now">
-    <a href="https://E-bidir.com/products/e-bidir-bootstrap-html-admin-template/" target="_blank"
+    <a href="https://ThemeSelection.com/products/e-bidir-bootstrap-html-admin-template/" target="_blank"
       class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
   </div>
 -->

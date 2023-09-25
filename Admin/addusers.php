@@ -188,7 +188,7 @@ session_start();
             <ul class="navbar-nav flex-row align-items-center ms-auto">
               <!-- Place this tag where you want the button to render. -->
               <li class="nav-item lh-1 me-3">
-                <a class="github-button" href="https://github.com/E-bidir/sneat-html-admin-template-free" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star E-bidir/sneat-html-admin-template-free on GitHub">Star</a>
+                <a class="github-button" href="https://github.com/ThemeSelection/sneat-html-admin-template-free" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star ThemeSelection/sneat-html-admin-template-free on GitHub">Star</a>
               </li>
 
               <!-- User -->
@@ -377,15 +377,15 @@ session_start();
                   document.write(new Date().getFullYear());
                 </script>
                 , made with ❤️ by
-                <a href="https://E-bidir.com" target="_blank" class="footer-link fw-bolder">E-bidir</a>
+                <a href="https://ThemeSelection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
               </div>
               <div>
-                <a href="https://E-bidir.com/license/" class="footer-link me-4" target="_blank">License</a>
-                <a href="https://E-bidir.com/" target="_blank" class="footer-link me-4">More Themes</a>
+                <a href="https://ThemeSelection.com/license/" class="footer-link me-4" target="_blank">License</a>
+                <a href="https://ThemeSelection.com/" target="_blank" class="footer-link me-4">More Themes</a>
 
-                <a href="https://E-bidir.com/demo/sneat-bootstrap-html-admin-template/documentation/" target="_blank" class="footer-link me-4">Documentation</a>
+                <a href="https://ThemeSelection.com/demo/sneat-bootstrap-html-admin-template/documentation/" target="_blank" class="footer-link me-4">Documentation</a>
 
-                <a href="https://github.com/E-bidir/sneat-html-admin-template-free/issues" target="_blank" class="footer-link me-4">Support</a>
+                <a href="https://github.com/ThemeSelection/sneat-html-admin-template-free/issues" target="_blank" class="footer-link me-4">Support</a>
               </div>
             </div>
           </footer>

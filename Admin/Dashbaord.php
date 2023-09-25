@@ -38,7 +38,8 @@
 
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="../assets/js/config.js"></script>
+    <!-- <script src="../assets/js/config.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <?php
 
@@ -130,7 +131,7 @@ include "../common/head.php";
 
 
 
-                   
+
 
                     <li class="menu-header small text-uppercase"><span class="menu-header-text">Admin Pages</span></li>
                     <li class="menu-item">
@@ -156,12 +157,6 @@ include "../common/head.php";
                             </li>
                         </ul>
                     </li>
-
-
-
-
-
-
                 </ul>
             </aside>
             <!-- / Menu -->
@@ -235,7 +230,7 @@ include "../common/head.php";
                             </li>
                             <!-- Place this tag where you want the button to render. -->
                             <li class="nav-item lh-1 me-3 ms-4">
-                                <a class="github-button" href="https://github.com/E-bidir/e-bidir-html-admin-template-free" data-icon="octicon-star" data-size="large" data-show-count="false" aria-label="Star E-bidir/e-bidir-html-admin-template-free on GitHub">Remaining
+                                <a class="github-button" href="https://github.com/ThemeSelection/e-bidir-html-admin-template-free" data-icon="octicon-star" data-size="large" data-show-count="false" aria-label="Star ThemeSelection/e-bidir-html-admin-template-free on GitHub">Remaining
                                     Credit
                                     <span id="creditLimit">4</span>
                                 </a>
@@ -748,16 +743,16 @@ include "../common/head.php";
                                     document.write(new Date().getFullYear());
                                 </script>
                                 , made with ❤️ by
-                                <a href="https://E-bidir.com" target="_blank" class="footer-link fw-bolder">E-bidir</a>
+                                <a href="https://ThemeSelection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
                             </div>
                             <div>
-                                <a href="https://E-bidir.com/license/" class="footer-link me-4" target="_blank">License</a>
-                                <a href="https://E-bidir.com/" target="_blank" class="footer-link me-4">More
+                                <a href="https://ThemeSelection.com/license/" class="footer-link me-4" target="_blank">License</a>
+                                <a href="https://ThemeSelection.com/" target="_blank" class="footer-link me-4">More
                                     Themes</a>
 
-                                <a href="https://E-bidir.com/demo/e-bidir-bootstrap-html-admin-template/documentation/" target="_blank" class="footer-link me-4">Documentation</a>
+                                <a href="https://ThemeSelection.com/demo/e-bidir-bootstrap-html-admin-template/documentation/" target="_blank" class="footer-link me-4">Documentation</a>
 
-                                <a href="https://github.com/E-bidir/e-bidir-html-admin-template-free/issues" target="_blank" class="footer-link me-4">Support</a>
+                                <a href="https://github.com/ThemeSelection/e-bidir-html-admin-template-free/issues" target="_blank" class="footer-link me-4">Support</a>
                             </div>
                         </div>
                     </footer>
@@ -777,7 +772,7 @@ include "../common/head.php";
 
     <!-- 
 <div class="buy-now">
-    <a href="https://E-bidir.com/products/e-bidir-bootstrap-html-admin-template/" target="_blank"
+    <a href="https://ThemeSelection.com/products/e-bidir-bootstrap-html-admin-template/" target="_blank"
       class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
   </div>
 -->
