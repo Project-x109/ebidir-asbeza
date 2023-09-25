@@ -107,7 +107,7 @@ include "../common/head.php";
                                 </g>
                             </svg>
                         </span>
-                        <span class="app-brand-text demo menu-text fw-bolder ms-2">ThemeSelection</span>
+                        <span class="app-brand-text demo menu-text fw-bolder ms-2">e-bidir</span>
                     </a>
 
                     <a href="javascript:void(0);"
