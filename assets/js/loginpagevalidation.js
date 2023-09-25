@@ -1,0 +1,73 @@
+// Function to create and show a toast notification
+function showToast(message, type) {
+  var toast = document.createElement('div');
+  toast.className = 'bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0 bg-' + type;
+  toast.setAttribute('role', 'alert');
+  toast.setAttribute('aria-live', 'assertive');
+  toast.setAttribute('aria-atomic', 'true');
+  toast.setAttribute('data-delay', '2000');
+
+  var toastHeader = document.createElement('div');
+  toastHeader.className = 'toast-header';
+  toastHeader.innerHTML =
+    '<i class="bx bx-bell me-2"></i>' +
+    '<div class="me-auto toast-title fw-semibold">' +
+    (type == 'danger' ? 'Error' : 'Success') +
+    '</div>' +
+    '<small>Now</small>' +
+    '<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>';
+
+  var toastBody = document.createElement('div');
+  toastBody.className = 'toast-body';
+  toastBody.textContent = message;
+
+  toast.appendChild(toastHeader);
+  toast.appendChild(toastBody);
+
+  var container = document.getElementById('toast-container');
+  container.appendChild(toast);
+
+  var bsToast = new bootstrap.Toast(toast);
+  bsToast.show();
+}
+
+// Modify your validateLoginForm function to show toast messages
+function validateLoginForm() {
+  var phone = document.getElementById('email').value;
+  var password = document.getElementById('password').value;
+
+  if (!isValidPhoneNumber(phone)) {
+    showToast('Please enter a valid phone number.', 'danger');
+    return false;
+  }
+
+  if (password.length < 3) {
+    showToast('Password must be at least 6 characters long.', 'danger');
+    return false;
+  }
+
+  return true;
+}
+
+// Define the isValidPhoneNumber function in the global scope
+function isValidPhoneNumber(phone) {
+  const validPhoneRegex = RegExp(
+    /(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(0\s*9\s*(([0-9]\s*){8}))|(0\s*7\s*(([0-9]\s*){8}))/ // Your regex pattern
+  );
+
+  if (!validPhoneRegex.test(phone)) {
+    showToast('Please enter a valid Ethiopian phone number.', 'danger');
+    return false;
+  }
+
+  return true;
+}
+
+// Add an event listener to the form
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('formAuthentication').addEventListener('submit', function (event) {
+    if (!validateLoginForm()) {
+      event.preventDefault(); // Prevent form submission if validation fails
+    }
+  });
+});

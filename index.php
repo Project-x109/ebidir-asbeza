@@ -26,7 +26,7 @@ if (isset($_SESSION['role'])) {
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
 
   <!-- Icons. Uncomment required icon fonts -->
-  <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
+  <link rel="stylesheet" href="./assets/vendor/fonts/boxicons.css" />
 
   <!-- Core CSS -->
   <link rel="stylesheet" href="./assets/vendor/css/core.css" class="template-customizer-core-css" />
@@ -50,6 +50,11 @@ if (isset($_SESSION['role'])) {
 <body>
   <!-- Content -->
   <div class="container-xxl">
+    <!-- Toast with Placements -->
+    <div id="toast-container" class="" style="z-index: 11">
+      <!-- Toast notifications will be added here -->
+    </div>
+    <!-- Toast with Placements -->
     <div class="authentication-wrapper authentication-basic container-p-y">
       <div class="authentication-inner">
         <!-- Register -->
@@ -102,7 +107,7 @@ if (isset($_SESSION['role'])) {
             <form id="formAuthentication" class="mb-3" action="login.php" method="POST">
               <div class="mb-3">
                 <label for="email" class="form-label">Phone</label>
-                <input required title="Please Insert You Phone Number" type="text" class="form-control" id="email" name="phone" placeholder="Enter your email or username" autofocus />
+                <input type="text" class="form-control" id="email" name="phone" placeholder="Enter your email or username" autofocus />
               </div>
               <div class="mb-3 form-password-toggle">
                 <div class="d-flex justify-content-between">
@@ -112,7 +117,7 @@ if (isset($_SESSION['role'])) {
                   </a>
                 </div>
                 <div class="input-group input-group-merge">
-                  <input required title="Please Insert You Password" type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
+                  <input type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
                   <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                 </div>
               </div>
@@ -158,6 +163,7 @@ if (isset($_SESSION['role'])) {
 
   <!-- Main JS -->
   <script src="./assets/js/main.js"></script>
+  <script src="./assets/js/loginpagevalidation.js"></script>
 
   <!-- Page JS -->
 
