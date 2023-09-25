@@ -162,13 +162,13 @@ include "../common/head.php";
                             </li>
                         </ul>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item active open">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bx-detail"></i>
                             <div data-i18n="Form Layouts">User Tables</div>
                         </a>
                         <ul class="menu-sub">
-                            <li class="menu-item active open">
+                            <li class="menu-item active">
                                 <a href="credithistory.php" class="menu-link">
                                     <div data-i18n="Vertical Form">Credit History</div>
                                 </a>
