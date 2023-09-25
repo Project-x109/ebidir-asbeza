@@ -86,7 +86,7 @@ session_start();
                 </g>
               </svg>
             </span>
-            <span class="app-brand-text demo menu-text fw-bolder ms-2">e-bidir</span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">ThemeSelection</span>
           </a>
 
           <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -128,7 +128,7 @@ session_start();
 
 
 
-        
+
 
           <li class="menu-header small text-uppercase"><span class="menu-header-text">Admin Pages</span></li>
           <li class="menu-item">
@@ -420,8 +420,6 @@ session_start();
 
   <!-- Page JS -->
   <script src="../assets/js/ui-toasts-user.js"></script>
-
-
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <?php

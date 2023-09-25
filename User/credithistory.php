@@ -12,7 +12,7 @@ include "../connect.php";
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Dashboard - Analytics | e-bidir - Bootstrap 5 HTML Admin Template - Pro</title>
+    <title>Dashboard - Analytics | ThemeSelection - Bootstrap 5 HTML Admin Template - Pro</title>
 
     <meta name="description" content="" />
 
@@ -107,7 +107,7 @@ include "../common/head.php";
                                 </g>
                             </svg>
                         </span>
-                        <span class="app-brand-text demo menu-text fw-bolder ms-2">e-bidir</span>
+                        <span class="app-brand-text demo menu-text fw-bolder ms-2">ThemeSelection</span>
                     </a>
 
                     <a href="javascript:void(0);"
@@ -315,9 +315,9 @@ include "../common/head.php";
                             <!-- Place this tag where you want the button to render. -->
                             <li class="nav-item lh-1 me-3 ms-4">
                                 <a class="github-button"
-                                    href="https://github.com/ThemeSelection/e-bidir-html-admin-template-free"
+                                    href="https://github.com/ThemeSelection/ThemeSelection-html-admin-template-free"
                                     data-icon="octicon-star" data-size="large" data-show-count="false"
-                                    aria-label="Star ThemeSelection/e-bidir-html-admin-template-free on GitHub">Remaining
+                                    aria-label="Star ThemeSelection/ThemeSelection-html-admin-template-free on GitHub">Remaining
                                     Credit
                                     <span id="creditLimit">4</span>
                                 </a>
@@ -502,10 +502,10 @@ include "../common/head.php";
                                 <a href="https://ThemeSelection.com/" target="_blank" class="footer-link me-4">More
                                     Themes</a>
 
-                                <a href="https://ThemeSelection.com/demo/e-bidir-bootstrap-html-admin-template/documentation/"
+                                <a href="https://ThemeSelection.com/demo/ThemeSelection-bootstrap-html-admin-template/documentation/"
                                     target="_blank" class="footer-link me-4">Documentation</a>
 
-                                <a href="https://github.com/ThemeSelection/e-bidir-html-admin-template-free/issues"
+                                <a href="https://github.com/ThemeSelection/ThemeSelection-html-admin-template-free/issues"
                                     target="_blank" class="footer-link me-4">Support</a>
                             </div>
                         </div>
@@ -526,7 +526,7 @@ include "../common/head.php";
 
     <!-- 
 <div class="buy-now">
-    <a href="https://ThemeSelection.com/products/e-bidir-bootstrap-html-admin-template/" target="_blank"
+    <a href="https://ThemeSelection.com/products/ThemeSelection-bootstrap-html-admin-template/" target="_blank"
       class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
   </div>
 -->
