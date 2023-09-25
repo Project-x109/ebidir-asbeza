@@ -1,21 +1,21 @@
 {
-  "name": "e-bidir-bootstrap-html-admin-template-free",
+  "name": "ThemeSelection-bootstrap-html-admin-template-free",
   "description": "Most Powerful & Comprehensive Free Bootstrap 5 HTML Admin Dashboard Template built for developers! 🚀",
   "license": "MIT",
   "version": "1.0.0",
   "author": {
-    "name": "E-bidir",
-    "url": "https://E-bidir.com/"
+    "name": "ThemeSelection",
+    "url": "https://ThemeSelection.com/"
   },
   "bugs": {
-    "url": "https://github.com/E-bidir/e-bidir-html-admin-template-free/issues"
+    "url": "https://github.com/ThemeSelection/ThemeSelection-html-admin-template-free/issues"
   },
   "private": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/E-bidir/e-bidir-html-admin-template-free.git"
+    "url": "git+https://github.com/ThemeSelection/ThemeSelection-html-admin-template-free.git"
   },
-  "homepage": "https://E-bidir.com/products/e-bidir-free-bootstrap-html-admin-template/",
+  "homepage": "https://ThemeSelection.com/products/ThemeSelection-free-bootstrap-html-admin-template/",
   "keywords": [
     "bootstrap",
     "front-end",
@@ -24,7 +24,7 @@
     "admin-dashboard",
     "webapp",
     "bootstrap5",
-    "E-bidir",
+    "ThemeSelection",
     "freebies"
   ],
   "scripts": {

@@ -113,7 +113,7 @@ include "../connect.php";
                 </g>
               </svg>
             </span>
-            <span class="app-brand-text demo menu-text fw-bolder ms-2">e-bidir</span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">ThemeSelection</span>
           </a>
 
           <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -318,9 +318,9 @@ include "../connect.php";
               </li>
               <!-- Place this tag where you want the button to render. -->
               <li class="nav-item lh-1 me-3 ms-4">
-                <a class="github-button" href="https://github.com/E-bidir/e-bidir-html-admin-template-free"
+                <a class="github-button" href="https://github.com/ThemeSelection/ThemeSelection-html-admin-template-free"
                   data-icon="octicon-star" data-size="large" data-show-count="false"
-                  aria-label="Star E-bidir/e-bidir-html-admin-template-free on GitHub">Remaining Credit
+                  aria-label="Star ThemeSelection/ThemeSelection-html-admin-template-free on GitHub">Remaining Credit
                   <span id="creditLimit">4</span>
                 </a>
               </li>
@@ -653,18 +653,18 @@ include "../connect.php";
                           document.write(new Date().getFullYear());
                         </script>
                         , made with ❤️ by
-                        <a href="https://E-bidir.com" target="_blank"
-                          class="footer-link fw-bolder">E-bidir</a>
+                        <a href="https://ThemeSelection.com" target="_blank"
+                          class="footer-link fw-bolder">ThemeSelection</a>
                       </div>
                       <div>
-                        <a href="https://E-bidir.com/license/" class="footer-link me-4"
+                        <a href="https://ThemeSelection.com/license/" class="footer-link me-4"
                           target="_blank">License</a>
-                        <a href="https://E-bidir.com/" target="_blank" class="footer-link me-4">More Themes</a>
+                        <a href="https://ThemeSelection.com/" target="_blank" class="footer-link me-4">More Themes</a>
 
-                        <a href="https://E-bidir.com/demo/sneat-bootstrap-html-admin-template/documentation/"
+                        <a href="https://ThemeSelection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
                           target="_blank" class="footer-link me-4">Documentation</a>
 
-                        <a href="https://github.com/E-bidir/sneat-html-admin-template-free/issues"
+                        <a href="https://github.com/ThemeSelection/sneat-html-admin-template-free/issues"
                           target="_blank" class="footer-link me-4">Support</a>
                       </div>
                     </div>
