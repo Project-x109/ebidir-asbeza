@@ -71,3 +71,26 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+// Get references to the modal and close button
+const modal = document.getElementById('modal');
+const closeButton = document.getElementById('closeButton');
+
+// Get a reference to the "Create an account" link
+const createAccountLink = document.getElementById('createAccountLink');
+
+// When the user clicks the link, show the modal
+createAccountLink.addEventListener('click', () => {
+  modal.style.display = 'block';
+});
+
+// When the user clicks the close button or outside the modal, hide the modal
+closeButton.addEventListener('click', () => {
+  modal.style.display = 'none';
+});
+
+window.addEventListener('click', event => {
+  if (event.target === modal) {
+    modal.style.display = 'none';
+  }
+});

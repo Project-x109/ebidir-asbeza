@@ -32,6 +32,7 @@ if (isset($_SESSION['role'])) {
   <link rel="stylesheet" href="./assets/vendor/css/core.css" class="template-customizer-core-css" />
   <link rel="stylesheet" href="./assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
   <link rel="stylesheet" href="./assets/css/demo.css" />
+  <link rel="stylesheet" href="./main.css" />
 
   <!-- Vendors CSS -->
   <link rel="stylesheet" href="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
@@ -133,42 +134,71 @@ if (isset($_SESSION['role'])) {
               </div>
             </form>
 
+            <div class="modal fade" id="smallModal" tabindex="-1" aria-hidden="true">
+              <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel2">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <p>Show the message here</p>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                      Close
+                    </button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
             <p class="text-center">
               <span>New on our platform?</span>
-              <a href="auth-register-basic.html">
+              <a href="javascript:void(0)" id="createAccountLink">
                 <span>Create an account</span>
               </a>
             </p>
+
+            <div id="modal" class="modal">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <span class="close-button" id="closeButton">&times;</span>
+                </div>
+                <div class="modal-body">
+                  <p>Please contact the admin to create an account:</p>
+                  <p>Email: <a href="mailto:amanuelgirma@gmail.com">amanuelgirma@gmail.com</a></p>
+                  <p>Phone: 0923562323</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <?php
-  $_SESSION['error'] = "";
-  include "common/footer.php";
-  ?>
+    <?php
+    $_SESSION['error'] = "";
+    include "common/footer.php";
+    ?>
 
-  <script src="./assets/vendor/libs/jquery/jquery.js"></script>
-  <script src="./assets/vendor/libs/popper/popper.js"></script>
-  <script src="./assets/vendor/js/bootstrap.js"></script>
-  <script src="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="./assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="./assets/vendor/libs/popper/popper.js"></script>
+    <script src="./assets/vendor/js/bootstrap.js"></script>
+    <script src="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
-  <script src="./assets/vendor/js/menu.js"></script>
-  <!-- endbuild -->
-  <script src="./assets/js/common.js"></script>
+    <script src="./assets/vendor/js/menu.js"></script>
+    <!-- endbuild -->
+    <script src="./assets/js/common.js"></script>
 
-  <!-- Vendors JS -->
+    <!-- Vendors JS -->
 
 
-  <!-- Main JS -->
-  <script src="./assets/js/main.js"></script>
-  <script src="./assets/js/loginpagevalidation.js"></script>
+    <!-- Main JS -->
+    <script src="./assets/js/main.js"></script>
+    <script src="./assets/js/loginpagevalidation.js"></script>
 
-  <!-- Page JS -->
+    <!-- Page JS -->
 
-  <!-- Place this tag in your head or just before your close body tag. -->
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 
 </html>

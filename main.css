@@ -1,0 +1,84 @@
+/* Styles for the modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: white;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%;
+  text-align: center;
+  position: relative;
+  font-family: Arial, sans-serif;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.modal-header {
+  text-align: right;
+  margin-bottom: 5px;
+  font-size: 20px; /* Adjust the font size as needed */
+}
+h4 {
+  padding-left: 40%;
+}
+
+/* Styles for the email and phone */
+.modal-body p {
+  font-weight: bold;
+}
+
+/* Styles for the link */
+.text-center {
+  text-align: center;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 80%; /* Adjust the width for smaller screens */
+  }
+
+  .modal-header {
+    text-align: center; /* Center the header text on smaller screens */
+  }
+
+  h4 {
+    padding-left: 20%; /* Remove padding on smaller screens */
+  }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+  .modal-content {
+    width: 50%; /* Adjust the width for medium-sized screens */
+  }
+
+  h4 {
+    padding-left: 10%; /* Adjust padding for medium-sized screens */
+  }
+}
+
+@media (min-width: 993px) {
+  .modal-content {
+    width: 30%; /* Adjust the width for larger screens */
+  }
+
+  h4 {
+    padding-left: 5%; /* Adjust padding for larger screens */
+  }
+}
