@@ -128,7 +128,7 @@ function populateTable() {
                 </div>
                 </td>
                 <td>
-                    <a href="branchdetails.html" class="menu-link">
+                    <a href="branchdetails.php" class="menu-link">
                         <div data-i18n="Without menu">Details</div>
                     </a>
                 </td>

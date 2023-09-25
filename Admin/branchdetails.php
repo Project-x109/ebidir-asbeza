@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
 
 <head>
     <meta charset="utf-8" />
@@ -11,7 +11,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="./assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -39,11 +39,9 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
-</head>
-<?php
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-include "../common/head.php";
-?>
+</head>
 
 <body>
     <!-- Layout wrapper -->
@@ -100,7 +98,7 @@ include "../common/head.php";
                 <ul class="menu-inner py-1">
                     <!-- Dashboard -->
 
-                    <li class="menu-item active open">
+                    <li class="menu-item">
                         <a href="Dashbaord.php" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Analytics">AdminDashboard</div>
@@ -130,16 +128,16 @@ include "../common/head.php";
 
 
 
-                   
+
 
                     <li class="menu-header small text-uppercase"><span class="menu-header-text">Admin Pages</span></li>
-                    <li class="menu-item">
+                    <li class="menu-item active open">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bx-table"></i>
                             <div data-i18n="Form Layouts">Admin Tables</div>
                         </a>
                         <ul class="menu-sub">
-                            <li class="menu-item">
+                            <li class="menu-item active">
                                 <a href="branches.php" class="menu-link">
                                     <div data-i18n="Vertical Form">Branch Lists</div>
                                 </a>
@@ -314,42 +312,38 @@ include "../common/head.php";
                     <!-- Content -->
 
                     <div class="container-xxl flex-grow-1  container-p-y">
-                        <div class="row">
-                            <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
-                                <div class="card">
-                                    <div class="row row-bordered g-0">
-                                        <div class="col-md-8">
-                                            <h5 class="card-header m-0 me-2 pb-3">Credit Status</h5>
-                                            <div id="totalRevenueChart" class="px-2"></div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="card-body">
-                                                <div class="text-center">
-                                                    <!-- Remove static options and add an id for the select element -->
-                                                    <select class="form-select" id="growthReportSelect" aria-label="Select a year"></select>
-                                                </div>
+                        <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
+                            <div class="card">
+                                <div class="row row-bordered g-0">
+                                    <div class="col-md-8">
+                                        <h5 class="card-header m-0 me-2 pb-3">Credit Status</h5>
+                                        <div id="totalRevenueChart" class="px-2"></div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card-body">
+                                            <div class="text-center">
+                                                <!-- Remove static options and add an id for the select element -->
+                                                <select class="form-select" id="growthReportSelect" aria-label="Select a year"></select>
                                             </div>
-                                            <!-- Add an empty div with an id for rendering the chart -->
-                                            <div id="growthChart"></div>
-                                            <div class="d-flex px-xxl-4 px-lg-2 p-4 gap-xxl-3 gap-lg-1 gap-3 justify-content-between">
-                                                <div class="text-center">
-                                                    <select class="form-select" id="statusSelect" aria-label="Select a status">
-                                                        <option value="completed">Completed</option>
-                                                        <option value="overdue">Overdue</option>
-                                                        <option value="scheduled">Scheduled</option>
-                                                    </select>
-                                                </div>
+                                        </div>
+                                        <!-- Add an empty div with an id for rendering the chart -->
+                                        <div id="growthChart"></div>
+                                        <div class="d-flex px-xxl-4 px-lg-2 p-4 gap-xxl-3 gap-lg-1 gap-3 justify-content-between">
+                                            <div class="text-center">
+                                                <select class="form-select" id="statusSelect" aria-label="Select a status">
+                                                    <option value="completed">Completed</option>
+                                                    <option value="overdue">Overdue</option>
+                                                    <option value="scheduled">Scheduled</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!--/ Total Revenue -->
-
                         </div>
+                        <!--/ Total Revenue -->
 
-
-                        <div class="row">
+                        <div class="row ">
                             <!-- Striped Rows -->
                             <div class="col-md-6 col-lg-12 col-xl-12 order-0 mb-4">
                                 <div class="card">
@@ -737,41 +731,45 @@ include "../common/head.php";
                             <!--/ Transactions -->
                         </div>
                     </div>
-                    <!-- / Content -->
 
-                    <!-- Footer -->
-                    <footer class="content-footer footer bg-footer-theme">
-                        <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-                            <div class="mb-2 mb-md-0">
-                                ©
-                                <script>
-                                    document.write(new Date().getFullYear());
-                                </script>
-                                , made with ❤️ by
-                                <a href="https://E-bidir.com" target="_blank" class="footer-link fw-bolder">E-bidir</a>
-                            </div>
-                            <div>
-                                <a href="https://E-bidir.com/license/" class="footer-link me-4" target="_blank">License</a>
-                                <a href="https://E-bidir.com/" target="_blank" class="footer-link me-4">More
-                                    Themes</a>
 
-                                <a href="https://E-bidir.com/demo/e-bidir-bootstrap-html-admin-template/documentation/" target="_blank" class="footer-link me-4">Documentation</a>
 
-                                <a href="https://github.com/E-bidir/e-bidir-html-admin-template-free/issues" target="_blank" class="footer-link me-4">Support</a>
-                            </div>
-                        </div>
-                    </footer>
-                    <!-- / Footer -->
-
-                    <div class="content-backdrop fade"></div>
                 </div>
-                <!-- Content wrapper -->
-            </div>
-            <!-- / Layout page -->
-        </div>
+                <!-- / Content -->
 
-        <!-- Overlay -->
-        <div class="layout-overlay layout-menu-toggle"></div>
+                <!-- Footer -->
+                <footer class="content-footer footer bg-footer-theme">
+                    <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                        <div class="mb-2 mb-md-0">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>
+                            , made with ❤️ by
+                            <a href="https://E-bidir.com" target="_blank" class="footer-link fw-bolder">E-bidir</a>
+                        </div>
+                        <div>
+                            <a href="https://E-bidir.com/license/" class="footer-link me-4" target="_blank">License</a>
+                            <a href="https://E-bidir.com/" target="_blank" class="footer-link me-4">More
+                                Themes</a>
+
+                            <a href="https://E-bidir.com/demo/e-bidir-bootstrap-html-admin-template/documentation/" target="_blank" class="footer-link me-4">Documentation</a>
+
+                            <a href="https://github.com/E-bidir/e-bidir-html-admin-template-free/issues" target="_blank" class="footer-link me-4">Support</a>
+                        </div>
+                    </div>
+                </footer>
+                <!-- / Footer -->
+
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
 

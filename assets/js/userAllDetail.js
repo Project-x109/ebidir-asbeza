@@ -640,7 +640,7 @@ function populateTable() {
                 </td>
   
                 <td>
-                <a href="transactionrecordDetail.html" class="menu-link" onclick="showDetails(${index})">
+                <a href="transactionrecordDetail.php" class="menu-link" onclick="showDetails(${index})">
                     <div data-i18n="Without menu">Details</div>
                 </a>
                 </td>

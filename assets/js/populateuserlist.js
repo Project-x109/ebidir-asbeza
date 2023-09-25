@@ -167,6 +167,7 @@ for (let i = 0; i < 100; i++) {
     creditrepaymentdate: calculateCreditRepaymentDate(paymentDate), // Calculate credit repayment date
     status: getRandomStatus(),
     loanID: `eb0${getRandomNumber(1000000, 9999999)}`,
+    tinnumber:getRandomNumber(100000000,2000000000),
     originalAmount: `$${getRandomNumber(3000, 10000)}`,
     amountPaid: `$${getRandomNumber(0, 5000)}`,
     cartData: cartData,
@@ -188,7 +189,7 @@ function populateTable() {
               <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>${data.accountName}</strong></td>
               <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>${data.branchname}</strong></td>
               <td>${data.id}</td>
-              <td>${data.loanAmount}</td>
+              <td>${data.tinnumber}</td>
               <td>${data.paymentDate}</td>
               <td><span class="badge bg-label-${
                 data.status === 'active'
@@ -220,7 +221,7 @@ function populateTable() {
               </div>
               </td>
               <td>
-              <a href="userAllDetail.html" class="menu-link" onclick="showDetails(${index})">
+              <a href="userAllDetail.php" class="menu-link" onclick="showDetails(${index})">
                   <div data-i18n="Without menu">Details</div>
               </a>
           </td>
