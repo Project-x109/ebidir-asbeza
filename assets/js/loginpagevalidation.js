@@ -94,3 +94,49 @@ window.addEventListener('click', event => {
     modal.style.display = 'none';
   }
 });
+
+// Function to save user credentials to localStorage
+function saveUserCredentials(username, password) {
+  localStorage.setItem('rememberedUsername', username);
+  localStorage.setItem('rememberedPassword', password);
+}
+
+// Function to retrieve user credentials from localStorage
+function getRememberedUserCredentials() {
+  const rememberedUsername = localStorage.getItem('rememberedUsername');
+  const rememberedPassword = localStorage.getItem('rememberedPassword');
+  return { username: rememberedUsername, password: rememberedPassword };
+}
+
+// Function to clear user credentials from localStorage
+function clearRememberedUserCredentials() {
+  localStorage.removeItem('rememberedUsername');
+  localStorage.removeItem('rememberedPassword');
+}
+
+// Modify your form submission handler
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('formAuthentication');
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const rememberMeCheckbox = document.getElementById('remember-me');
+
+  // Load remembered credentials and populate the form fields
+  const rememberedCredentials = getRememberedUserCredentials();
+  if (rememberedCredentials.username && rememberedCredentials.password) {
+    emailInput.value = rememberedCredentials.username;
+    passwordInput.value = rememberedCredentials.password;
+    rememberMeCheckbox.checked = true;
+  }
+
+  form.addEventListener('submit', function (event) {
+    if (rememberMeCheckbox.checked) {
+      // Save user credentials to localStorage
+      saveUserCredentials(emailInput.value, passwordInput.value);
+    } else {
+      // Clear any previously remembered credentials
+      clearRememberedUserCredentials();
+    }
+    // Continue with form submission
+  });
+});

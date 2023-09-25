@@ -34,9 +34,6 @@
   margin-bottom: 5px;
   font-size: 20px; /* Adjust the font size as needed */
 }
-h4 {
-  padding-left: 40%;
-}
 
 /* Styles for the email and phone */
 .modal-body p {
@@ -58,9 +55,7 @@ h4 {
     text-align: center; /* Center the header text on smaller screens */
   }
 
-  h4 {
-    padding-left: 20%; /* Remove padding on smaller screens */
-  }
+  
 }
 
 @media (min-width: 769px) and (max-width: 992px) {
@@ -78,7 +73,4 @@ h4 {
     width: 30%; /* Adjust the width for larger screens */
   }
 
-  h4 {
-    padding-left: 5%; /* Adjust padding for larger screens */
-  }
 }
