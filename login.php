@@ -8,6 +8,7 @@ if($result->num_rows)
 $row=$result->fetch_assoc();
 $_SESSION['role']=$row['role'];
 $_SESSION['id']=$row['id'];
+$_SESSION['dob']=$row['dob'];
 echo $_SESSION['role'];
  
   $loc=$_SESSION['role']."/";

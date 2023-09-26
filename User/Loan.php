@@ -653,12 +653,13 @@ $valid=$row['credit_limit']>=$_SESSION['price'];
 $found=$row['form_done'];
 
 ?>
+<input type="hidden" name="price" value='<?php echo $_SESSION['price']?>' />
 
                   </div>                   
                         <div class="row justify-content-end">
                           <div class="col-sm-10">
                             <?php if(!$found)
-                                 echo "<a type='".(!$found?'':"submit")."".($found?'':"href='./personal.php")."name='".($found?'checkout':'add_personal')."class='btn btn-primary text-white'>".($found?"Complete checkout":"Complete profile")."</a>";
+                                 echo "<a ".(!$found?'':"type='submit' " )."".($found?'':"href='./personal.php'").($found?"name='checkout'":"name='add_personal'")." class='btn btn-primary text-white'>".($found?"Complete checkout":"Complete profile")."</a>";
                                  else{
                                   if($valid)
                                   echo '<button type="submit" name="checkout" class="btn btn-primary">proceed to checkout</button>';

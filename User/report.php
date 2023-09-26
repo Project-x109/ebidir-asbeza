@@ -428,7 +428,7 @@ include "../connect.php";
                                   <?php echo $row['name'] ?>! 🎉
                                 </h5>
                                 <p class="mb-4">
-                                  Your Loan has been applied. Your current credit is <span class="fw-bold">4500
+                                  Your Loan has been applied. Your current credit is <span class="fw-bold"> <?php echo $row['credit_limit']?>
                                     Birr</span>. Check your new level badge in
                                   your profile.
                                 </p>

@@ -104,59 +104,40 @@ include "../common/head.php";
                     <li class="menu-item active open">
                         <a href="Dashbaord.php" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                            <div data-i18n="Analytics">AdminDashboard</div>
+                            <div data-i18n="Analytics">Admin Dashboard</div>
                         </a>
                     </li>
-                    <li class="menu-header small text-uppercase"><span class="menu-header-text">Registarion Forms</span></li>
                     <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bx-detail"></i>
-                            <div data-i18n="Form Layouts">Registration Forms</div>
-                        </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item">
                                 <a href="addbranch.php" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-home-circle"></i>
                                     <div data-i18n="Horizontal Form">Branch Registarion</div>
                                 </a>
                             </li>
                             <li class="menu-item">
                                 <a href="addusers.php" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-home-circle"></i>
                                     <div data-i18n="Horizontal Form">User Registarion</div>
                                 </a>
                             </li>
 
-                        </ul>
-                    </li>
-
-
-
-
-
-
-                    <li class="menu-header small text-uppercase"><span class="menu-header-text">Admin Pages</span></li>
-                    <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bx-table"></i>
-                            <div data-i18n="Form Layouts">Admin Tables</div>
-                        </a>
-                        <ul class="menu-sub">
                             <li class="menu-item">
                                 <a href="branches.php" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-home-circle"></i>
                                     <div data-i18n="Vertical Form">Branch Lists</div>
                                 </a>
                             </li>
                             <li class="menu-item">
                                 <a href="users.php" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-home-circle"></i>
                                     <div data-i18n="Horizontal Form">User Lists</div>
                                 </a>
                             </li>
                             <li class="menu-item">
                                 <a href="Creditapplitcation.php" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-home-circle"></i>
                                     <div data-i18n="Horizontal Form">Credit Applications</div>
                                 </a>
                             </li>
-                        </ul>
-                    </li>
                 </ul>
             </aside>
             <!-- / Menu -->
@@ -290,7 +271,7 @@ include "../common/head.php";
                                         <div class="dropdown-divider"></div>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="auth-login-basic.html">
+                                        <a class="dropdown-item" href="../logout.php">
                                             <i class="bx bx-power-off me-2"></i>
                                             <span class="align-middle">Log Out</span>
                                         </a>
