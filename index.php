@@ -113,7 +113,7 @@ if (isset($_SESSION['role'])) {
               <div class="mb-3 form-password-toggle">
                 <div class="d-flex justify-content-between">
                   <label class="form-label" for="password">Password</label>
-                  <a href="auth-forgot-password-basic.html">
+                  <a href="auth-forgot-password-basic.php">
                     <small>Forgot Password?</small>
                   </a>
                 </div>
@@ -134,23 +134,6 @@ if (isset($_SESSION['role'])) {
               </div>
             </form>
 
-            <div class="modal fade" id="smallModal" tabindex="-1" aria-hidden="true">
-              <div class="modal-dialog modal-sm" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel2">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <p>Show the message here</p>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                      Close
-                    </button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                  </div>
-                </div>
-              </div>
-            </div>
             <p class="text-center">
               <span>New on our platform?</span>
               <a href="javascript:void(0)" id="createAccountLink">
@@ -168,6 +151,12 @@ if (isset($_SESSION['role'])) {
                   <p>Email: <a href="mailto:amanuelgirma@gmail.com">amanuelgirma@gmail.com</a></p>
                   <p>Phone: 0923562323</p>
                 </div>
+                <p class="text-center">
+                  <span>New on our platform?</span>
+                  <a href="./support.php">
+                    <span>Contact Us</span>
+                  </a>
+                </p>
               </div>
             </div>
           </div>

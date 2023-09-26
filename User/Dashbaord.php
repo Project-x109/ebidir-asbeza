@@ -140,12 +140,7 @@ include "../common/head.php";
               <div data-i18n="Horizontal Form">Repayment History</div>
             </a>
           </li>
-          <li class="menu-item">
-            <a href="support.php" class="menu-link">
-              <i class='menu-icon bx bx-support'></i>
-              <div data-i18n="Horizontal Form">Support</div>
-            </a>
-          </li>
+       
         </ul>
       </aside>
       <!-- / Menu -->
