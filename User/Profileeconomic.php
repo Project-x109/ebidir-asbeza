@@ -131,7 +131,12 @@ include "../connect.php";
                             <div data-i18n="Vertical Form">Credit History</div>
                         </a>
                     </li>
-               
+                    <li class="menu-item">
+                        <a href="repaymenthistory.php" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-history"></i>
+                            <div data-i18n="Horizontal Form">Repayment History</div>
+                        </a>
+                    </li>
                 
                 </ul>
             </aside>
@@ -206,7 +211,7 @@ include "../connect.php";
                             </li>
                             <!-- Place this tag where you want the button to render. -->
                             <li class="nav-item lh-1 me-3 ms-4">
-                                <a class="github-button" href="https://github.com/ThemeSelection/ThemeSelection-html-admin-template-free" data-icon="octicon-star" data-size="large" data-show-count="false" aria-label="Star ThemeSelection/ThemeSelection-html-admin-template-free on GitHub">Remaining
+                                <a class="github-button" href="https://github.com/ThemeSelection/ThemeSelection-html-admin-template-free" data-icon="octicon-star" data-size="large" data-show-count="false" aria-label="Star ThemeSelection/ThemeSelection-html-admin-template-free on GitHub">
                                     Credit
                                     <span id="creditLimit">4</span>
                                 </a>

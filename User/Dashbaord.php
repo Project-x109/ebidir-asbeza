@@ -107,7 +107,7 @@ include "../common/head.php";
           <li class="menu-item active open">
             <a href="Dashbaord.php" class="menu-link">
               <i class="menu-icon tf-icons bx bxs-dashboard"></i>
-              <div data-i18n="Analytics">User Dashboard</div>
+              <div data-i18n="Analytics">Dashboard</div>
             </a>
           </li>
           <li class="menu-item">
@@ -214,7 +214,7 @@ include "../common/head.php";
               </li>
               <!-- Place this tag where you want the button to render. -->
               <li class="nav-item lh-1 me-3 ms-4">
-                <a class="github-button" href="https://github.com/ThemeSelection/e-bidir-html-admin-template-free" data-icon="octicon-star" data-size="large" data-show-count="false" aria-label="Star ThemeSelection/e-bidir-html-admin-template-free on GitHub">Remaining Credit
+                <a class="github-button" href="https://github.com/ThemeSelection/e-bidir-html-admin-template-free" data-icon="octicon-star" data-size="large" data-show-count="false" aria-label="Star ThemeSelection/e-bidir-html-admin-template-free on GitHub"> Credit
                   <span id="creditLimit">4</span>
                 </a>
               </li>
@@ -582,7 +582,7 @@ include "../common/head.php";
                             <div id="expensesOfWeek"></div>
                           </div>
                           <div>
-                            <p class="mb-n1 mt-1">Remaining Credit Amount</p>
+                            <p class="mb-n1 mt-1"> Credit Amount</p>
                             <small class="text-muted"></small>
                           </div>
                         </div>

@@ -49,7 +49,7 @@
 
       <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
         <div class="app-brand demo">
-          <a href="index.html" class="app-brand-link">
+          <a href="Dashbaord.php" class="app-brand-link">
             <span class="app-brand-logo demo">
               <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <defs>
@@ -86,63 +86,58 @@
             </span>
             <span class="app-brand-text demo menu-text fw-bolder ms-2">e-bidir</span>
           </a>
+
           <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
             <i class="bx bx-chevron-left bx-sm align-middle"></i>
           </a>
         </div>
+
         <div class="menu-inner-shadow"></div>
         <ul class="menu-inner py-1">
           <!-- Dashboard -->
+
           <li class="menu-item">
             <a href="Dashbaord.php" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-home-circle"></i>
-              <div data-i18n="Analytics">AdminDashboard</div>
+              <i class="menu-icon tf-icons bx bxs-dashboard"></i>
+              <div data-i18n="Analytics">Dashboard</div>
             </a>
           </li>
-          <li class="menu-header small text-uppercase"><span class="menu-header-text">Registarion Forms</span></li>
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-detail"></i>
-              <div data-i18n="Form Layouts">Registration Forms</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="addbranch.php" class="menu-link">
-                  <div data-i18n="Horizontal Form">Branch Registarion</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="addusers.php" class="menu-link">
-                  <div data-i18n="Horizontal Form">User Registarion</div>
-                </a>
-              </li>
 
-            </ul>
-          </li>
-        
-          <li class="menu-header small text-uppercase"><span class="menu-header-text">Admin Pages</span></li>
-          <li class="menu-item active open">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-table"></i>
-              <div data-i18n="Form Layouts">Admin Tables</div>
+          <li class="menu-item">
+            <a href="addbranch.php" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-detail"></i>
+              <div data-i18n="Analytics">Branch Registarion</div>
             </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="branches.php" class="menu-link">
-                  <div data-i18n="Vertical Form">Branch Lists</div>
-                </a>
-              </li>
-              <li class="menu-item active" >
-                <a href="users.php" class="menu-link">
-                  <div data-i18n="Horizontal Form">User Lists</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="Creditapplitcation.php" class="menu-link">
-                  <div data-i18n="Horizontal Form">Credit Applications</div>
-                </a>
-              </li>
-            </ul>
+          </li>
+
+          <li class="menu-item">
+            <a href="addusers.php" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-detail"></i>
+              <div data-i18n="Analytics">User Registarion</div>
+            </a>
+          </li>
+
+
+
+          <li class="menu-item">
+            <a href="branches.php" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-table"></i>
+              <div data-i18n="Analytics">Branch Lists</div>
+            </a>
+          </li>
+
+          <li class="menu-item active open">
+            <a href="users.php" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-table"></i>
+              <div data-i18n="Analytics">User Lists</div>
+            </a>
+          </li>
+
+          <li class="menu-item">
+            <a href="users.php" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-table"></i>
+              <div data-i18n="Analytics">Credit Applications</div>
+            </a>
           </li>
         </ul>
       </aside>

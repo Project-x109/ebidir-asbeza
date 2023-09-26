@@ -219,7 +219,7 @@ include "../connect.php";
               <li class="nav-item lh-1 me-3 ms-4">
                 <a class="github-button" href="https://github.com/ThemeSelection/ThemeSelection-html-admin-template-free"
                   data-icon="octicon-star" data-size="large" data-show-count="false"
-                  aria-label="Star ThemeSelection/ThemeSelection-html-admin-template-free on GitHub">Remaining Credit
+                  aria-label="Star ThemeSelection/ThemeSelection-html-admin-template-free on GitHub"> Credit
                   <span id="creditLimit">4</span>
                 </a>
               </li>
