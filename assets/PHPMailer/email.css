@@ -1,0 +1,171 @@
+.notificationCard {
+  width: 280px;
+  height: 350px;
+  background: rgb(245, 245, 245);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 35px;
+  gap: 10px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.123);
+  border-radius: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.bellIcon {
+  width: 70px;
+  margin: 20px 0px;
+  height: 80px;
+}
+.bellIconerror {
+  width: 70px;
+  margin: 20px 0px;
+  height: 80px;
+}
+.bellIcon path {
+  fill: rgb(168, 131, 255);
+}
+.bellIconerror {
+  fill: rgb(201, 3, 4);
+}
+
+.notificationHeading {
+  color: black;
+  font-weight: 600;
+  font-size: 1.2em;
+}
+
+.notificationPara {
+  color: rgb(133, 133, 133);
+  font-size: 0.8em;
+  font-weight: 600;
+  text-align: center;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.AllowBtn {
+  width: 120px;
+  height: 35px;
+  background-color: rgb(168, 131, 255);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.NotnowBtn {
+  width: 120px;
+  height: 25px;
+  color: rgb(168, 131, 255);
+  border: none;
+  background-color: transparent;
+  font-weight: 600;
+  font-size: 0.7em;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.NotnowBtn:hover {
+  background-color: rgb(239, 227, 255);
+}
+
+.AllowBtn:hover {
+  background-color: rgb(153, 110, 255);
+}
+
+/* Add media query for smaller screens (e.g., tablets and phones) */
+@media (max-width: 768px) {
+  .notificationCard {
+    width: 90%; /* Use full width for smaller screens */
+    height: auto; /* Allow height to adjust based on content */
+    padding: 15px; /* Adjust padding for smaller screens */
+  }
+
+  .bellIcon {
+    width: 50px; /* Adjust icon size for smaller screens */
+    height: 60px;
+    margin: 10px 0;
+  }
+
+  .notificationHeading {
+    font-size: 1em; /* Adjust font size for smaller screens */
+  }
+
+  .notificationPara {
+    font-size: 0.8em; /* Adjust font size for smaller screens */
+  }
+
+  .AllowBtn {
+    width: 100px; /* Adjust button width for smaller screens */
+    height: 30px; /* Adjust button height for smaller screens */
+    font-size: 0.9em; /* Adjust font size for smaller screens */
+  }
+
+  .NotnowBtn {
+    width: 100px; /* Adjust button width for smaller screens */
+    height: 25px; /* Adjust button height for smaller screens */
+    font-size: 0.7em; /* Adjust font size for smaller screens */
+  }
+}
+
+/* Media query for small screens (e.g., smartphones) */
+@media (max-width: 576px) {
+  .notificationCard {
+    width: 90%; /* Use full width for smaller screens */
+    height: auto; /* Allow height to adjust based on content */
+    padding: 15px; /* Adjust padding for smaller screens */
+  }
+
+  .bellIcon {
+    width: 50px; /* Adjust icon size for smaller screens */
+    height: 60px;
+    margin: 10px 0;
+  }
+
+  .notificationHeading {
+    font-size: 1em; /* Adjust font size for smaller screens */
+  }
+
+  .notificationPara {
+    font-size: 0.8em; /* Adjust font size for smaller screens */
+  }
+
+  .AllowBtn {
+    width: 100px; /* Adjust button width for smaller screens */
+    height: 30px; /* Adjust button height for smaller screens */
+    font-size: 0.9em; /* Adjust font size for smaller screens */
+  }
+
+  .NotnowBtn {
+    width: 100px; /* Adjust button width for smaller screens */
+    height: 25px; /* Adjust button height for smaller screens */
+    font-size: 0.7em; /* Adjust font size for smaller screens */
+  }
+}
+
+/* Media query for medium screens (e.g., tablets) */
+@media (min-width: 577px) and (max-width: 992px) {
+  .notificationCard {
+    width: 50%; /* Adjust card width for medium screens */
+    height: auto; /* Allow height to adjust based on content */
+    padding: 20px; /* Adjust padding for medium screens */
+  }
+
+  /* Other style adjustments for medium screens can be added here */
+}
+
+/* Media query for large screens (e.g., desktops) */
+@media (min-width: 993px) {
+  /* You can define styles for large screens here */
+}
