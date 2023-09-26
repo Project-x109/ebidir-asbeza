@@ -106,84 +106,47 @@ include "../common/head.php";
 
                 <ul class="menu-inner py-1">
                     <!-- Dashboard -->
-
                     <li class="menu-item">
                         <a href="Dashbaord.php" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <i class="menu-icon tf-icons bx bxs-dashboard"></i>
                             <div data-i18n="Analytics">User Dashboard</div>
                         </a>
                     </li>
-                    <li class="menu-header small text-uppercase">
-                        <span class="menu-header-text">Pages</span>
+                    <li class="menu-item">
+                        <a href="Profileuser.php" class="menu-link">
+                            <i class='menu-icon tf-icons bx bxs-user-account'></i>
+                            <div data-i18n="Account">Account Informtion</div>
+                        </a>
                     </li>
                     <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                            <div data-i18n="Account Settings">Account Settings</div>
+                        <a href="Profilepersonal.php" class="menu-link">
+                            <i class="menu-icon tf-icons bx bxs-user-detail"></i>
+                            <div data-i18n="Notifications">Personal Informtion</div>
                         </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item">
-                                <a href="Profileuser.php" class="menu-link">
-                                    <div data-i18n="Account">Account Informtion</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="Profilepersonal.php" class="menu-link">
-                                    <div data-i18n="Notifications">Personal Informtion</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="Profileeconomic.php" class="menu-link">
-                                    <div data-i18n="Connections">Economic Information</div>
-                                </a>
-                            </li>
-                        </ul>
                     </li>
-
-                    <!-- Forms & Tables -->
-                    <!-- Forms & Tables -->
-                    <li class="menu-header small text-uppercase"><span class="menu-header-text">User Pages</span></li>
-                    <!-- Forms -->
                     <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bx-detail"></i>
-                            <div data-i18n="Form Layouts">Registration Forms</div>
+                        <a href="Profileeconomic.php" class="menu-link">
+                            <i class="menu-icon tf-icons bx bxs-wallet"></i>
+                            <div data-i18n="Connections">Economic Information</div>
                         </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item">
-                                <a href="personal.php" class="menu-link">
-                                    <div data-i18n="Vertical Form">Personal Form</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="economic.php" class="menu-link">
-                                    <div data-i18n="Horizontal Form">Economic Form</div>
-                                </a>
-                            </li>
-                        </ul>
                     </li>
                     <li class="menu-item active open">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bx-detail"></i>
-                            <div data-i18n="Form Layouts">User Tables</div>
+                        <a href="credithistory.php" class="menu-link">
+                            <i class='menu-icon tf-icons bx bxs-credit-card'></i>
+                            <div data-i18n="Vertical Form">Credit History</div>
                         </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item active">
-                                <a href="credithistory.php" class="menu-link">
-                                    <div data-i18n="Vertical Form">Credit History</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="repaymenthistory.php" class="menu-link">
-                                    <div data-i18n="Horizontal Form">Repayment History</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="support.php" class="menu-link">
-                                    <div data-i18n="Horizontal Form">Support</div>
-                                </a>
-                            </li>
-                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="repaymenthistory.php" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-history"></i>
+                            <div data-i18n="Horizontal Form">Repayment History</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="support.php" class="menu-link">
+                            <i class='menu-icon bx bx-support'></i>
+                            <div data-i18n="Horizontal Form">Support</div>
+                        </a>
                     </li>
                 </ul>
             </aside>
