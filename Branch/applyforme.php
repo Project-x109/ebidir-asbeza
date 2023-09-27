@@ -242,11 +242,12 @@
                                     <input class="form-card-input" placeholder="______" maxlength="6" type="tel">
                                     <div class="form-card-input-bg"></div>
                                 </div>
-                                <p class="call-again"><span class="underlined">call again</span> in 0:30 seconds</p>
+                                <div class="mt-5">
+                                <p class="call-again"><span class="underlined"></span> </p>
                                 <button class="buttonapply">
-                                    Hover me
+                                    Apply
                                 </button>
-
+                                </div>
                             </form>
                         </div>
                     </div>
