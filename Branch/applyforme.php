@@ -232,23 +232,34 @@
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
                     <!-- Content -->
-
                     <div class="container-xxl flex-grow-1  container-p-y">
                         <div class="row justify-content-center align-items-center mt-5">
-                            <form class="form-card">
+                            <form class="form-card" id="creditForm">
                                 <p class="form-card-title">You can apply for credit here</p>
-                                <p class="form-card-prompt">Insert the user's six digit identification number</p>
+                                <p class="form-card-prompt">Insert the user's six-digit identification number</p>
                                 <div class="form-card-input-wrapper">
-                                    <input class="form-card-input" placeholder="______" maxlength="6" type="tel">
+                                    <input class="form-card-input" placeholder="______" maxlength="6" type="tel" id="identificationNumber">
                                     <div class="form-card-input-bg"></div>
                                 </div>
                                 <div class="mt-5">
-                                <p class="call-again"><span class="underlined"></span> </p>
-                                <button class="buttonapply">
-                                    Apply
-                                </button>
+                                    <p class="call-again"><span class="underlined"></span></p>
+                                    <button class="buttonapply" type="submit">
+                                        Apply
+                                    </button>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+
+                    <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="errorToast" style="display: none;">
+                        <div class="toast-header">
+                            <i class="bx bx-bell me-2"></i>
+                            <div class="me-auto toast-title fw-semibold">Error</div>
+                            <small>11 mins ago</small>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">Fruitcake chocolate bar tootsie roll gummies gummies jelly beans
+                            cake.
                         </div>
                     </div>
                     <!-- / Content -->
@@ -315,7 +326,7 @@
     <!-- Page JS -->
     <script src="../assets/js/dashboards-analytics.js"></script>
     <script src="../assets/js/mark-Notification-read.js"></script>
-    <script src="../assets/js/branchtrasaction.js"></script>
+    <script src="../assets/js/applyform.js"></script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>

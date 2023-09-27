@@ -56,7 +56,6 @@ function isValidPhoneNumber(phone) {
   );
 
   if (!validPhoneRegex.test(phone)) {
-    showToast('Please enter a valid Ethiopian phone number.', 'danger');
     return false;
   }
 

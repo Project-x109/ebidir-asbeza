@@ -8,15 +8,6 @@
   border-radius: 10px;
   position: relative;
 }
-.col-md-4 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-left: -10% !important;
-  height: 100vh; /* This sets the column height to 100% of the viewport height */
-}
-
 .message {
   color: rgba(88, 87, 87, 0.822);
   font-size: 14px;
