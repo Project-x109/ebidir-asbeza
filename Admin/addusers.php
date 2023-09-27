@@ -311,7 +311,7 @@ session_start();
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
                             <span class="input-group-text"><i class="bx bx-envelope"></i></span>
-                            <input type="text" id="basic-icon-default-email" class="form-control" placeholder="john.doe" aria-label="john.doe" aria-describedby="basic-icon-default-email2" />
+                            <input type="text" id="basic-icon-default-email" class="form-control" placeholder="john.doe" aria-label="john.doe" aria-describedby="basic-icon-default-email2" name="email" />
                           </div>
                           <!--<div class="form-text">You can use letters, numbers & periods</div> -->
                         </div>
@@ -405,7 +405,7 @@ session_start();
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <?php
   // echo $_SESSION['success'];
-  echo "<script>alert(" . $_SESSION['success'] . ")</script>";
+  echo "<script>alert('" . $_SESSION['success'] . "')</script>";
   include "../common/footer.php";
   ?>
 </body>
