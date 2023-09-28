@@ -50,7 +50,7 @@ include "../connect.php";
     <div class="layout-container">
       <!-- Menu -->
 
-    <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+      <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
         <div class="app-brand demo">
           <a href="Dashbaord.php" class="app-brand-link">
             <span class="app-brand-logo demo">
@@ -135,7 +135,7 @@ include "../connect.php";
               <div data-i18n="Horizontal Form">Repayment History</div>
             </a>
           </li>
-       
+
         </ul>
       </aside>
       <!-- / Menu -->
@@ -336,7 +336,7 @@ include "../connect.php";
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
                             <span id="basic-icon-default-fieldofEmployment2" class="input-group-text"><i class="bx bx-award"></i></span>
-                            <input type="text" class="form-control" id="basic-icon-default-fieldofEmployment" placeholder="John Doe" aria-label="John Doe" aria-describedby="basic-icon-default-fieldofEmployment2" name="field_of_employeement" value='<?php echo $field_of_employeement ?>' />
+                            <input type="text" class="form-control" id="basic-icon-default-fieldofEmployment" placeholder="Engineer" aria-label="Electrical Engineer" aria-describedby="basic-icon-default-fieldofEmployment2" name="field_of_employeement" value='<?php echo $field_of_employeement ?>' />
                           </div>
                         </div>
 
@@ -345,7 +345,7 @@ include "../connect.php";
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
                             <span id="basic-icon-default-numberofincome2" class="input-group-text"><i class="bx bx-archive-in"></i></span>
-                            <input type="number" class="form-control" id="basic-icon-default-numberofincome" placeholder="John Doe" aria-label="John Doe" aria-describedby="basic-icon-default-numberofincome2" name="number_of_income" value='<?php echo $number_of_income ?>' />
+                            <input type="number" class="form-control" id="basic-icon-default-numberofincome" placeholder="5" aria-label="6" aria-describedby="basic-icon-default-numberofincome2" name="number_of_income" value='<?php echo $number_of_income ?>' />
                           </div>
                         </div>
                       </div>
@@ -356,15 +356,22 @@ include "../connect.php";
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
                             <span id="basic-icon-default-YearofEmployment2" class="input-group-text"><i class="bx bx-calendar"></i></span>
-                            <input class="form-control" type="date" value="2021-06-18" id="html5-datetime-local-input-YearofEmployment" name="year" value='<?php echo $year ?>' />
+                            <input class="form-control" type="date" value="2021-06-18" id="html5-datetime-local-input-YearofEmployment" placeholder="5" name="year" value='<?php echo $year ?>' />
                           </div>
                         </div>
 
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-companyname">Branch :<span class="text-danger">*</span></label>
+                        <label class="col-sm-2 col-form-label" for="marrigeStatus">Branch Name:<span class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
-                            <span class="input-group-text"><i class="bx bx-grid-small"></i></span>
-                            <input type="text" id="basic-icon-default-companyname" class="form-control" placeholder="BEAEKA General Business" aria-label="BEAEKA General Business" aria-describedby="basic-icon-default-companyname2" name="branch" value='<?php echo $branch ?>' />
+                            <span id="basic-icon-default-companyname" class="input-group-text"><i class="bx bx-map-pin"></i></span>
+                            <select id="basic-icon-default-companyname" class="form-select" name="branch" value='<?php echo $branch ?>'>
+                              <option value="">Vhoose Branch</option>
+                              <option value="Purposeblack ETH">Purposeblack ETH</option>
+                              <option value="Purposeblack ETH2">Purposeblack ETH2</option>
+                              <option value="Purposeblack ETH3">Purposeblack ETH3</option>
+                              <option value="Purposeblack ETH4">Purposeblack ETH4</option>
+                              <option value="Purposeblack ETH5">Purposeblack ETH5</option>
+                            </select>
                           </div>
                         </div>
 
@@ -387,21 +394,17 @@ include "../connect.php";
                             <input type="text" id="basic-icon-default-salary" class="form-control" placeholder="56790" aria-label="salary" aria-describedby="basic-icon-default-salary" name="salary" value='<?php echo $salary ?>' />
                           </div>
                         </div>
-
                       </div>
 
 
+                      <div class="row justify-content-end">
+                        <div class="col-sm-10">
+                          <button type="submit" id="submit-btn" name='<?php echo $found ? "update_economic" : "add_economic" ?>' class="btn btn-primary mb-4"><?php echo $found ? "Update" : "Submit" ?>
+                          </button>
+                        </div>
+                      </div>
+                    </form>
                   </div>
-
-
-                  <div class="row justify-content-end">
-                    <div class="col-sm-10">
-                      <button type="submit" name='<?php echo $found ? "update_economic" : "add_economic" ?>'
-                       class="btn btn-primary mb-4"><?php echo $found ? "Update" : "Submit" ?>
-                      </button>
-                    </div>
-                  </div>
-                  </form>
                 </div>
               </div>
             </div>

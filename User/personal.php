@@ -6,13 +6,11 @@ include "../connect.php";
 
 <!DOCTYPE html>
 
-<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/"
-  data-template="vertical-menu-template-free">
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
 
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
   <title>Horizontal Layouts - Forms | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
 
@@ -24,9 +22,7 @@ include "../connect.php";
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
 
   <!-- Icons. Uncomment required icon fonts -->
   <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
@@ -140,7 +136,7 @@ include "../connect.php";
               <div data-i18n="Horizontal Form">Repayment History</div>
             </a>
           </li>
-       
+
         </ul>
       </aside>
       <!-- / Menu -->
@@ -149,9 +145,7 @@ include "../connect.php";
       <div class="layout-page">
         <!-- Navbar -->
 
-        <nav
-          class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
-          id="layout-navbar">
+        <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
           <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
             <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
               <i class="bx bx-menu bx-sm"></i>
@@ -163,8 +157,7 @@ include "../connect.php";
             <div class="navbar-nav align-items-center">
               <div class="nav-item d-flex align-items-center">
                 <i class="bx bx-search fs-4 lh-0"></i>
-                <input type="text" class="form-control border-0 shadow-none" placeholder="Search..."
-                  aria-label="Search..." />
+                <input type="text" class="form-control border-0 shadow-none" placeholder="Search..." aria-label="Search..." />
               </div>
             </div>
             <!-- /Search -->
@@ -217,9 +210,7 @@ include "../connect.php";
               </li>
               <!-- Place this tag where you want the button to render. -->
               <li class="nav-item lh-1 me-3 ms-4">
-                <a class="github-button" href="https://github.com/ThemeSelection/ThemeSelection-html-admin-template-free"
-                  data-icon="octicon-star" data-size="large" data-show-count="false"
-                  aria-label="Star ThemeSelection/ThemeSelection-html-admin-template-free on GitHub"> Credit
+                <a class="github-button" href="https://github.com/ThemeSelection/ThemeSelection-html-admin-template-free" data-icon="octicon-star" data-size="large" data-show-count="false" aria-label="Star ThemeSelection/ThemeSelection-html-admin-template-free on GitHub"> Credit
                   <span id="creditLimit">4</span>
                 </a>
               </li>
@@ -300,8 +291,7 @@ include "../connect.php";
             <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span>Personal Information</h4>
 
             <!-- Toast with Placements -->
-            <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive"
-              aria-atomic="true" data-delay="2000">
+            <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
               <div class="toast-header">
                 <i class="bx bx-bell me-2"></i>
                 <div class="me-auto toast-title fw-semibold">Error</div>
@@ -312,17 +302,17 @@ include "../connect.php";
             </div>
             <!-- Toast with Placements -->
 
-              <!-- Basic Layout & Basic with Icons -->
-              <div class="row">
-                <div class="col-xxl">
-                  <div class="card mb-4">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                        <?php
-                    $sql="SELECT * from personal where user_id=".$_SESSION['id'];
-                    $res=$conn->query($sql);
-                    $found=$res->num_rows;
-                    if($res->num_rows){
-                        $row=$res->fetch_assoc();
+            <!-- Basic Layout & Basic with Icons -->
+            <div class="row">
+              <div class="col-xxl">
+                <div class="card mb-4">
+                  <div class="card-header d-flex align-items-center justify-content-between">
+                    <?php
+                    $sql = "SELECT * from personal where user_id=" . $_SESSION['id'];
+                    $res = $conn->query($sql);
+                    $found = $res->num_rows;
+                    if ($res->num_rows) {
+                      $row = $res->fetch_assoc();
                     }
                     ?>
                     <h5 class="mb-0">1.Personal Information</h5>
@@ -336,11 +326,8 @@ include "../connect.php";
                           Dependents:<span class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
-                            <span id="numberOfDependents2" class="input-group-text"><i
-                                class="bx bx-user"></i></span>
-                            <input type="number" class="form-control" id="numberOfDependents"
-                              name="Number_of_dependents" placeholder="John Doe" aria-label="John Doe"
-                              aria-describedby="numberOfDependents2" />
+                            <span id="numberOfDependents2" class="input-group-text"><i class="bx bx-user"></i></span>
+                            <input type="number" class="form-control" id="numberOfDependents" name="Number_of_dependents" placeholder="John Doe" aria-label="John Doe" aria-describedby="numberOfDependents2" />
                           </div>
                         </div>
 
@@ -348,8 +335,7 @@ include "../connect.php";
                           Status:<span class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
-                            <span id="marrigeStatus2" class="input-group-text"><i
-                                class="bx bx-map-pin"></i></span>
+                            <span id="marrigeStatus2" class="input-group-text"><i class="bx bx-map-pin"></i></span>
                             <select id="marrigeStatus" class="form-select" name="Marriage_Status">
                               <option value="">Default select</option>
                               <option value="Married">Married</option>
@@ -365,10 +351,8 @@ include "../connect.php";
                           Status:<span class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
-                            <span id="educationalStatus2" class="input-group-text"><i
-                                class="bx bx-book-reader"></i></span>
-                            <select id="educationalStatus" class="form-select"
-                              name="Educational_Status">
+                            <span id="educationalStatus2" class="input-group-text"><i class="bx bx-book-reader"></i></span>
+                            <select id="educationalStatus" class="form-select" name="Educational_Status">
                               <option value="">Default select</option>
                               <option value="Below highSchool">Below highSchool </option>
                               <option value="Dipoma">Diploma</option>
@@ -384,9 +368,7 @@ include "../connect.php";
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
                             <span class="input-group-text"><i class="bx bx-video-recording"></i></span>
-                            <input type="text" id="criminalRecord" class="form-control"
-                              placeholder="john.doe" name="Criminal_record" aria-label="john.doe"
-                              aria-describedby="criminalRecord2" />
+                            <input type="text" id="criminalRecord" class="form-control" placeholder="john.doe" name="Criminal_record" aria-label="john.doe" aria-describedby="criminalRecord2" />
                           </div>
 
                         </div>
@@ -394,8 +376,7 @@ include "../connect.php";
                       </div>
                       <div class="row justify-content-end">
                         <div class="col-sm-10">
-                          <button type="submit" name='<?php echo $found ? "update_personal" : "add_personal" ?>'
-                            class="btn btn-primary">
+                          <button type="submit" name='<?php echo $found ? "update_personal" : "add_personal" ?>' class="btn btn-primary">
                             <?php echo $found ? "Update" : "Submit" ?>
                           </button>
                         </div>
@@ -423,11 +404,9 @@ include "../connect.php";
                 <a href="https://ThemeSelection.com/license/" class="footer-link me-4" target="_blank">License</a>
                 <a href="https://ThemeSelection.com/" target="_blank" class="footer-link me-4">More Themes</a>
 
-                <a href="https://ThemeSelection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
-                  target="_blank" class="footer-link me-4">Documentation</a>
+                <a href="https://ThemeSelection.com/demo/sneat-bootstrap-html-admin-template/documentation/" target="_blank" class="footer-link me-4">Documentation</a>
 
-                <a href="https://github.com/ThemeSelection/sneat-html-admin-template-free/issues" target="_blank"
-                  class="footer-link me-4">Support</a>
+                <a href="https://github.com/ThemeSelection/sneat-html-admin-template-free/issues" target="_blank" class="footer-link me-4">Support</a>
               </div>
             </div>
           </footer>

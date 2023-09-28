@@ -136,7 +136,7 @@ include "../connect.php";
               <div data-i18n="Horizontal Form">Repayment History</div>
             </a>
           </li>
-       
+
         </ul>
       </aside>
       <!-- / Menu -->
@@ -321,6 +321,16 @@ include "../connect.php";
                 $sql2 = "SELECT * from personal where user_id=$id";
                 $res2 = $conn->query($sql2);
                 $row2 = $res2->fetch_assoc();
+                // Check if data exists, if not, set default values
+                if (!$row2) {
+                  $row2 = array(
+                    'Number_of_dependents' => 'No data',
+                    'Marriage_Status' => 'No data',
+                    'Educational_Status' => 'No data',
+                    'Criminal_record' => 'No data',
+
+                  );
+                }
                 ?>
                 <?php
                 if ($_SERVER["REQUEST_METHOD"] === "POST") {

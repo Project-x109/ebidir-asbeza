@@ -615,7 +615,7 @@ function sendPasswordEmail($recipientEmail, $password)
                       <div class="row justify-content-end">
                         <div class="col-sm-10">
 
-                          <button  id="submit-btn" type="submit" name="add_user" class="btn btn-primary">Submit</button>
+                          <button id="submit-btn" type="submit" name="add_user" class="btn btn-primary">Submit</button>
                         </div>
                       </div>
                     </form>
