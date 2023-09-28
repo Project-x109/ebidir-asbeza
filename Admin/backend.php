@@ -5,11 +5,13 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-require '../assets./PHPMailer/PHPMailer.php';
-require '../assets./PHPMailer/SMTP.php';
-require '../assets./PHPMailer/Exception.php';
+require '../assets/PHPMailer/PHPMailer.php';
+require '../assets/PHPMailer/SMTP.php';
+require '../assets/PHPMailer/Exception.php';
 
 session_start();
+
+$validationErrors = array();
 
 if (isset($_POST['add_user'])) {
     // Validation functions
@@ -69,12 +71,59 @@ if (isset($_POST['add_user'])) {
         return in_array($fileExtension, $allowedExtensions) && $fileSize <= $maxFileSize;
     }
 
-    $filename = $_FILES["profile"]["name"];
-    $tempname = $_FILES["profile"]["tmp_name"];
-    $date = date("s-h-d-m-Y");
-    $folder = "../images/" . $date . $filename;
+    // Check if the phone number, TIN number, and email are already used
+    $phone = mysqli_real_escape_string($conn, $_POST['phone']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $TIN_Number = mysqli_real_escape_string($conn, $_POST['TIN_Number']);
 
-    // Check validation for phone, email, name, TIN number, job status, age, and image
+    $phoneQuery = "SELECT * FROM `users` WHERE `phone`='$phone'";
+    $emailQuery = "SELECT * FROM `users` WHERE `email`='$email'";
+    $TINQuery = "SELECT * FROM `users` WHERE `TIN_Number`='$TIN_Number'";
+
+    $phoneResult = $conn->query($phoneQuery);
+    $emailResult = $conn->query($emailQuery);
+    $TINResult = $conn->query($TINQuery);
+
+    if ($phoneResult->num_rows > 0) {
+        $validationErrors[] = "Phone number is already registered.";
+    }
+
+    if ($emailResult->num_rows > 0) {
+        $validationErrors[] = "Email is already registered.";
+    }
+
+    if ($TINResult->num_rows > 0) {
+        $validationErrors[] = "TIN number is already registered.";
+    }
+    // Check individual validation conditions and add specific errors to the array
+    if (!validatePhone($_POST['phone'])) {
+        $validationErrors[] = "Invalid phone number format.";
+    }
+
+    if (!validateEmail($_POST['email'])) {
+        $validationErrors[] = "Invalid email address.";
+    }
+
+    if (!validateName($_POST['name'])) {
+        $validationErrors[] = "Name can only contain letters and spaces.";
+    }
+
+    if (!validateTINNumber($_POST['TIN_Number'])) {
+        $validationErrors[] = "Invalid TIN number format.";
+    }
+
+    if (!validateJobStatus($_POST['Job_Status'])) {
+        $validationErrors[] = "Invalid job status.";
+    }
+
+    if (!validateAge($_POST['dob'])) {
+        $validationErrors[] = "You must be at least 18 years old.";
+    }
+
+    if (!validateImage($_FILES["profile"])) {
+        $validationErrors[] = "Invalid image format or file size exceeds the limit.";
+    }
+
     if (
         validatePhone($_POST['phone']) &&
         validateEmail($_POST['email']) &&
@@ -99,6 +148,11 @@ if (isset($_POST['add_user'])) {
         // Hash and salt the password
         $password = password_hash($randomPassword, PASSWORD_DEFAULT);
 
+        $filename = $_FILES["profile"]["name"];
+        $tempname = $_FILES["profile"]["tmp_name"];
+        $date = date("s-h-d-m-Y");
+        $folder = "../images/" . $date . $filename;
+
         $sql = "INSERT INTO `users`(`name`, `dob`, `phone`, `password`, `role`, `TIN_Number`, `profile`, `job_status`, `status`, `email`) 
                 VALUES ('$name', '$dob', '$phone', '$password', 'user', '$TIN_Number', '$folder', '$job_status', '$status', '$email')";
         $res = $conn->query($sql);
@@ -108,7 +162,7 @@ if (isset($_POST['add_user'])) {
                 // Send an email to the user with their unhashed password
                 sendPasswordEmail($email, $randomPassword);
 
-                $_SESSION['success'] = "User created Successfully";
+                $_SESSION['success'] = "User created successfully";
                 header("Location: addusers.php");
                 exit();
             } else {
@@ -118,13 +172,19 @@ if (isset($_POST['add_user'])) {
             $_SESSION['error'] = "Error creating user: " . $conn->error;
         }
     } else {
-        $_SESSION['error'] = "Validation failed for one or more fields.";
+        $_SESSION['error'] = implode("<br>", $validationErrors);
     }
 }
 
-// Handle errors (display them if needed)
+// Handle errors (display them in the toast if needed)
 if (isset($_SESSION['error'])) {
-    echo "<script>alert('" . $_SESSION['error'] . "')</script>";
+    echo '<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var errorToast = new bootstrap.Toast(document.getElementById("error-toast"));
+            errorToast.show();
+            document.querySelector("#error-toast .toast-body").innerHTML = "' . $_SESSION['error'] . '";
+        });
+      </script>';
     unset($_SESSION['error']); // Clear the error message
 }
 
@@ -172,3 +232,5 @@ function sendPasswordEmail($recipientEmail, $password)
         echo "<script>alert('Message could not be sent. Mailer Error: " . $mail->ErrorInfo . "')</script>";
     }
 }
+
+?>
