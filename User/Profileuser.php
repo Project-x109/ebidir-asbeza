@@ -31,6 +31,7 @@ include "../connect.php";
   <link rel="stylesheet" href="../assets/vendor/css/core.css" class="template-customizer-core-css" />
   <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
   <link rel="stylesheet" href="../assets/css/demo.css" />
+  <link rel="stylesheet" href="./star.css" />
 
   <!-- Vendors CSS -->
   <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
@@ -326,25 +327,37 @@ include "../connect.php";
                   <h5 class="card-header">Profile Details</h5>
                   <!-- Account -->
                   <div class="card-body">
-                    <div class="d-flex align-items-start align-items-sm-center gap-4">
-                      <img src="<?php echo $row['profile']; ?>" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar" />
-                      <div class="button-wrapper">
-                        <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-                          <span class="d-none d-sm-block">Upload new photo</span>
-                          <i class="bx bx-upload d-block d-sm-none"></i>
-                          <input type="file" id="upload" class="account-file-input" hidden accept="image/png, image/jpeg" />
-                        </label>
-                        <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
-                          <i class="bx bx-reset d-block d-sm-none"></i>
-                          <span class="d-none d-sm-block">Reset</span>
-                        </button>
+                    <div class="row">
+                      <div class="col-12 col-sm-8 d-flex align-items-start align-items-sm-center gap-4">
+                        <img src="<?php echo $row['profile']; ?>" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar" />
+                        <div class="button-wrapper">
+                          <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                            <span class="d-none d-sm-block">Upload new photo</span>
+                            <i class="bx bx-upload d-block d-sm-none"></i>
+                            <input type="file" id="upload" class="account-file-input" hidden accept="image/png, image/jpeg" />
+                          </label>
+                          <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+                            <i class="bx bx-reset d-block d-sm-none"></i>
+                            <span class="d-none d-sm-block">Reset</span>
+                          </button>
 
-                        <p class="text-muted mb-0"><small class="text-muted">Account Created on
-                            <?php echo $row['createdOn'] ?>
-                          </small></p>
+                          <p class="text-muted mb-0"><small class="text-muted">Account Created on
+                              <?php echo $row['createdOn'] ?>
+                            </small></p>
+                        </div>
                       </div>
+                      <div class=" d-none d-sm-block col-12 col-sm-4">
+                        <div class="container">
+                          <small class="svg-icon"><?php echo $row['level'] ?></small>
+                          <!--   <div class="container__star">
+                            <div class="star-eight"></div>
+                          </div> -->
+                        </div>
+                      </div>
+
                     </div>
                   </div>
+
                   <hr class="my-0" />
 
                   <div class="card-body">

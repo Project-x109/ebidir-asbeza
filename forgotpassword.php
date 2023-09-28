@@ -1,6 +1,100 @@
+<?php
+include "./connect.php";
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require './assets/PHPMailer/PHPMailer.php';
+require './assets/PHPMailer/SMTP.php';
+require './assets/PHPMailer/Exception.php';
+
+session_start();
+
+if (isset($_POST['forgot_password'])) {
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+
+    // Generate a unique token
+    $token = bin2hex(random_bytes(16));
+
+    // Calculate the expiration time (e.g., 1 hour from now)
+    $expireTime = date('Y-m-d H:i:s', strtotime('+1 hour'));
+
+    // Insert the token into the database
+    $updateTokenQuery = "UPDATE users SET token = '$token', expire_time = '$expireTime' WHERE email = '$email'";
+    $updateTokenResult = $conn->query($updateTokenQuery);
+
+    if ($updateTokenResult) {
+        // Send an email to the user with the reset password link
+        $resetLink = "http://localhost/sneat-bootstrap-html-admin-template-free/reset_password.php?token=$token";
+
+        // Create a new PHPMailer instance
+        $mail = new PHPMailer(true);
+
+        try {
+            // Server settings
+            $mail->SMTPDebug = SMTP::DEBUG_OFF; // Disable debugging
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com'; // Replace with your SMTP server
+            $mail->SMTPAuth = true;
+            $mail->Username = 'amanuelgirma108@gmail.com'; // Replace with your SMTP username
+            $mail->Password = 'nrrkhulliawwwiya'; // Replace with your SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587; // Port may vary depending on the service
+
+            // Sender info
+            $mail->setFrom('amanuelgirma108@gmail.com', 'E-Bidir'); // Replace with your name and email
+
+            // Recipient
+            $mail->addAddress($email);
+
+            // Content
+            $mail->isHTML(true);
+            $mail->Subject = 'Password Reset Request';
+            $mail->Body = "Click the following link to reset your password: <a href='$resetLink'>$resetLink</a>";
+
+            // Send the email
+            $mail->send();
+
+            $_SESSION['success'] = "Password reset link sent to your email";
+            header("Location: forgotpassword.php");
+            exit();
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
+    } else {
+        $_SESSION['error'] = "Error inserting token into the database: " . $conn->error;
+    }
+}
+
+// ... (the rest of your code)
+
+if (isset($_SESSION['success'])) {
+    echo '<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var successToast = new bootstrap.Toast(document.getElementById("success-toast"));
+            successToast.show();
+            document.querySelector("#success-toast .toast-body").innerHTML = "' . $_SESSION['success'] . '";
+        });
+      </script>';
+    unset($_SESSION['success']); // Clear the success message
+}
+// Add this part to display an error alert if $_SESSION['error'] is set
+if (isset($_SESSION['error'])) {
+    echo '<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var errorToast = new bootstrap.Toast(document.getElementById("error-toast"));
+            errorToast.show();
+            document.querySelector("#error-toast .toast-body").innerHTML = "' . $_SESSION['error'] . '";
+        });
+      </script>';
+    unset($_SESSION['error']); // Clear the error message
+}
+?>
+
 <!DOCTYPE html>
 
-<html lang="en" class="light-style customizer-hide" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
+<html lang="en" class="light-style customizer-hide" dir="ltr" data-theme="theme-default" data-assets-path="./assets/" data-template="vertical-menu-template-free">
 
 <head>
     <meta charset="utf-8" />
@@ -11,7 +105,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="./assets/img/favicon/favicon.ico" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -24,7 +118,7 @@
     <!-- Core CSS -->
     <link rel="stylesheet" href="./assets/vendor/css/core.css" class="template-customizer-core-css" />
     <link rel="stylesheet" href="./assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="../assets/css/demo.css" />
+    <link rel="stylesheet" href="./assets/css/demo.css" />
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
@@ -42,8 +136,26 @@
 
 <body>
     <!-- Content -->
+    <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="error-toast">
+        <div class="toast-header">
+            <i class="bx bx-error me-2"></i> <!-- Add an error icon if you have one -->
+            <div class="me-auto toast-title fw-semibold">Error</div>
+            <small>11 mins ago</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body"></div>
+    </div>
 
     <div class="container-xxl">
+        <div class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="success-toast">
+            <div class="toast-header">
+                <i class="bx bx-bell me-2"></i>
+                <div class="me-auto toast-title fw-semibold">success</div>
+                <small>11 mins ago</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body"></div>
+        </div>
         <div class="authentication-wrapper authentication-basic container-p-y">
             <div class="authentication-inner py-4">
                 <!-- Forgot Password -->
@@ -70,19 +182,16 @@
                                                         <use fill="#696cff" xlink:href="#path-1"></use>
                                                         <g id="Path-3" mask="url(#mask-2)">
                                                             <use fill="#696cff" xlink:href="#path-3"></use>
-                                                            <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-3">
-                                                            </use>
+                                                            <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-3"></use>
                                                         </g>
                                                         <g id="Path-4" mask="url(#mask-2)">
                                                             <use fill="#696cff" xlink:href="#path-4"></use>
-                                                            <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-4">
-                                                            </use>
+                                                            <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-4"></use>
                                                         </g>
                                                     </g>
                                                     <g id="Triangle" transform="translate(19.000000, 11.000000) rotate(-300.000000) translate(-19.000000, -11.000000) ">
                                                         <use fill="#696cff" xlink:href="#path-5"></use>
-                                                        <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-5">
-                                                        </use>
+                                                        <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-5"></use>
                                                     </g>
                                                 </g>
                                             </g>
@@ -95,12 +204,12 @@
                         <!-- /Logo -->
                         <h4 class="mb-2">Forgot Password? 🔒</h4>
                         <p class="mb-4">Enter your email and we'll send you instructions to reset your password</p>
-                        <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
+                        <form id="formAuthentication" class="mb-3" action="forgotpassword.php" method="POST">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email" autofocus />
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" autofocus required />
                             </div>
-                            <button class="btn btn-primary d-grid w-100">Send Reset Link</button>
+                            <button name="forgot_password" class="btn btn-primary d-grid w-100">Send Reset Link</button>
                         </form>
                         <div class="text-center">
                             <a href="index.php" class="d-flex align-items-center justify-content-center">
@@ -139,7 +248,7 @@
 
 
     <!-- Main JS -->
-    <script src="../assets/js/main.js"></script>
+    <script src="./assets/js/main.js"></script>
 
     <!-- Page JS -->
 
