@@ -20,8 +20,11 @@ if(isset($_POST['add_user'])){
 $_SESSION['success']="User created Successfully";
 
 echo $_SESSION['success'];
-    // header("location:addusers.php");"
-    echo "<script>document.location='addusers.php'</script>";
+    header("location:addusers.php");
 }
-echo "<script>alert(".$_SESSION['success'].")</script>";
+if(isset($_POST['addbranch'])){
+    $sql="INSERT INTO `branch`(`branch_name`, `phonenumber`,`location`,`profile`) 
+    VALUES ('$_POST[branch_name]','$_POST[phonenumber]','$_POST[email]','$_POST[location]','$folder')";
+
+}
 ?>

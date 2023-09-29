@@ -263,7 +263,7 @@
                                         <small class="text-muted float-end">Merged input group</small>
                                     </div>
                                     <div class="card-body">
-                                        <form>
+                                        <form action="backend.php" method="POST">
                                             <div class="row mb-4">
                                                 <label class="col-sm-2 col-form-label" for="basic-icon-default-branchname">Branch Name :<span class="text-danger">*</span></label>
                                                 <div class="col-sm-4">
@@ -294,18 +294,6 @@
                                                 </div>
 
 
-                                                <label class="col-sm-2 col-form-label" for="basic-icon-default-logo">Logo :<span class="text-danger">*</span></label>
-                                                <div class="col-sm-4">
-                                                    <div class="input-group input-group-merge">
-                                                        <span class="input-group-text"><i class="bx bx-image"></i></span>
-
-                                                        <input name="logo" id="basic-icon-default-photo" aria-describedby="basic-icon-default-photo2" class="form-control" type="file" id="formFile" />
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="row mb-4">
                                                 <label class="col-sm-2 col-form-label" for="basic-icon-default-location">Location :<span class="text-danger">*</span></label>
                                                 <div class="col-sm-4">
                                                     <div class="input-group input-group-merge">
@@ -314,13 +302,12 @@
                                                     </div>
                                                     <!--<div class="form-text">You can use letters, numbers & periods</div> -->
                                                 </div>
+
                                             </div>
-
-
                                             <div class="row justify-content-end">
                                                 <div class="col-sm-10">
 
-                                                    <button type="button" onclick="validateForm()" class="btn btn-primary">Submit</button>
+                                                    <button type="submit" name="addbranch" onclick="validateForm()" class="btn btn-primary">Submit</button>
                                                 </div>
                                             </div>
                                         </form>
