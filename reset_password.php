@@ -2,6 +2,16 @@
 session_start();
 include "./connect.php";
 
+// Include PHPMailer classes
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+// Require PHPMailer files
+require './assets/PHPMailer/PHPMailer.php';
+require './assets/PHPMailer/SMTP.php';
+require './assets/PHPMailer/Exception.php';
+
 if (isset($_GET['token'])) {
     $token = $_GET['token'];
 
@@ -44,6 +54,7 @@ if (isset($_GET['token'])) {
                     $newToken = generateRandomToken();
                     $updateTokenQuery = "UPDATE users SET token = '$newToken' WHERE token = '$token'";
                     $conn->query($updateTokenQuery);
+                    sendEmailNotification($newToken, $conn);
 
                     $_SESSION['success'] = "Password has been changed successfully!";
                     header("Location: index.php");
@@ -98,6 +109,200 @@ function isValidPassword($password)
 function generateRandomToken()
 {
     return bin2hex(random_bytes(32));
+}
+
+
+function sendEmailNotification($newToken, $conn)
+{
+    // Create a new PHPMailer instance
+    $mail = new PHPMailer(true);
+
+    try {
+        // Server settings
+        $mail->isSMTP(); // Send using SMTP
+        $mail->Host = 'smtp.gmail.com'; // Your SMTP server
+        $mail->SMTPAuth = true; // Enable SMTP authentication
+        $mail->Username = 'amanuelgirma108@gmail.com'; // SMTP username
+        $mail->Password = 'krqhhnyvdbjoqgkl'; // SMTP password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587; // TCP port to connect to
+        // Get recipient's email address from the database using the token
+        $recipientQuery = "SELECT email, name FROM users WHERE token = '$newToken'";
+        $recipientResult = $conn->query($recipientQuery);
+        if ($recipientResult->num_rows > 0) {
+            $row = $recipientResult->fetch_assoc();
+            $recipientEmail = $row['email'];
+            $recipientName = $row['name'];
+
+            // Recipients
+            $mail->setFrom('amanuelgirma108@gmail.com', 'E-bidir');
+            $mail->addAddress($recipientEmail, $recipientName); // Add recipient from the database
+        } else {
+            // If the token doesn't match any user, handle the error
+            throw new Exception("Recipient not found in the database.");
+        }
+
+        // Content
+        $mail->isHTML(true); // Set email format to HTML
+        $mail->Subject = 'Password Changed Successfully';
+        $mail->Body = '
+        <html>
+        <head>
+            <style>
+            @keyframes bounce {
+                0%, 100% {
+                    transform: translateY(-5px);
+                }
+                50% {
+                    transform: translateY(5px);
+                }
+            }
+            body {
+                font-family: Arial, sans-serif;
+                background: linear-gradient(to right, #a8e6cf, #dcedc1);
+                transition: background-color 5s;
+                height:700px;
+            }
+            .card {
+                padding: 20px;
+                width: 400px;
+                min-height: 700px;
+                border-radius: 20px;
+                background: #e8e8e8;
+                box-shadow: 5px 5px 6px #dadada,
+                            -5px -5px 6px #f6f6f6;
+                transition: 0.4s;
+                margin-left:10%
+            }
+            img {
+                    width: 200px;
+                    height: auto;
+                    margin-top: 40px;
+                    margin-left:80px;  
+                    
+                }
+            .card:hover {
+            translate: 0 -10px;
+            }
+            
+            .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2e54a7;
+            margin: 15px 0 0 10px;
+            }
+            .reason{
+                color:red;
+            }
+            
+            .card-image {
+            min-height: 170px;
+            background-color: #cfcfcf;
+            border-radius: 15px;
+            box-shadow: inset 8px 8px 10px #c3c3c3,
+                        inset -8px -8px 10px #cfcfcf;
+            }
+            
+            .card-body {
+            margin: 13px 0 0 10px;
+            color: rgb(31, 31, 31);
+            font-size: 14.5px;
+            }
+            
+            .footer {
+            float: right;
+            margin: 28px 0 0 18px;
+            font-size: 13px;
+            color: #636363;
+            }
+            
+            .by-name {
+            font-weight: 700;
+            }
+            
+            @keyframes bounce {
+                    0%, 100% {
+                        transform: translateY(-5px);
+                    }
+                    50% {
+                        transform: translateY(5px);
+                    }
+                }
+            
+            ul {
+                list-style-type: none;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+            }
+            a {
+                color: #337ab7;
+                text-decoration: none;
+                font-weight: bold;
+                transition: color 0.3s;
+            }
+            a:hover {
+                color: #ff8b94;
+            }
+            h2 {
+                font-family: Roboto, sans-serif;
+                font-size: 24px;
+            }
+            li {
+                display: flex;
+                align-items: center;
+                transition: transform 0.3s;
+                grid-column: span 2;
+            }
+            i {
+                margin-right: 10px;
+            }
+            li:hover {
+                transform: scale(1.1);
+            }
+            @media (max-width: 768px) {
+            body:hover {
+                background-color: #dcedc1;
+            }
+            .card {
+                padding: 20px;
+                width: 350px;
+                min-height: 800px;
+                margin-left:0%
+              }
+            img {
+                width: 200px;
+                height: auto;
+                margin-top: 40px;
+                margin-left:30px;  
+                
+            }
+            }
+            </style>
+            <link rel="stylesheet" href="https://www.bootstrapcdn.com/fontawesome/6.4.0/css/all.min.css">
+        </head>
+        <body>
+            <div class="card">
+                <div class="card-image">
+                    <img src="https://res.cloudinary.com/da8hdfiix/image/upload/v1690793326/profile/djyiwphuexckf0gkryxh.png" alt="Ebidir Logo" loading="lazy">
+                </div>
+                <p class="card-title">Hi ' . $recipientName . '</p>
+                <p class="card-body">Your Password has been changed.</p>
+                <p class="card-body">:</p>
+                <p class="card-body">Your password has been changed successfully. If you did not initiate this change, please contact us immediately.</p>
+                <p class="card-body">We\'re here for you if you need support:</p>
+                <p class="footer">Call us on: <span class="by-name">+251 925 882-8232</span></p>
+                <p class="footer">Email us on: <span class="by-name"><a href="mailto:support@e-bidir.com">support@e-bidir.com</a></span></p>
+                <p class="footer">Thank you for choosing Ebidir™.</p>
+            </div>
+        </body>
+        </html>';
+
+        // Send email
+        $mail->send();
+    } catch (Exception $e) {
+        // Handle email sending errors
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    }
 }
 
 // ... (the rest of your code)
