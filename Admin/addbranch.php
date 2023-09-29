@@ -307,7 +307,7 @@
                                             <div class="row justify-content-end">
                                                 <div class="col-sm-10">
 
-                                                    <button type="submit" name="addbranch" onclick="validateForm()" class="btn btn-primary">Submit</button>
+                                                    <button id="submit-btn"  type="submit" name="addbranch"  class="btn btn-primary">Submit</button>
                                                 </div>
                                             </div>
                                         </form>

@@ -74,19 +74,6 @@ function validateForm(event) {
     }
   }
   form.submit();
-  /* // Disable all input fields
-  const inputFields = document.querySelectorAll('input, select');
-  for (const inputField of inputFields) {
-    inputField.disabled = true;
-  }
 
-  // If all fields are valid, show a success message
-  const toastPlacementExample = document.querySelector('.toast-placement-ex');
-  toastPlacementExample.classList.add('bg-primary');
-  toastPlacementExample.classList.remove('bg-danger');
-  toastPlacementExample.querySelector('.toast-body').textContent = 'Form submitted successfully.';
-  toastPlacementExample.querySelector('.toast-title ').textContent = 'Success.';
-  const toastPlacement = new bootstrap.Toast(toastPlacementExample);
-  toastPlacement.show(); */
 }
 submitBtn.addEventListener('click', validateForm);
