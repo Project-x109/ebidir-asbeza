@@ -1,448 +1,17 @@
 <?php
 include "../connect.php";
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-
-require '../assets/PHPMailer/PHPMailer.php';
-require '../assets/PHPMailer/SMTP.php';
-require '../assets/PHPMailer/Exception.php';
-
-session_start();
-
-$validationErrors = array();
-
-if (isset($_POST['add_user'])) {
-  // Validation functions
-  function validatePhone($phone)
-  {
-    // Check if the input is empty
-    if (empty($phone)) {
-      return false;
-    }
-
-    // Use the provided regex pattern to validate phone numbers
-    $pattern = '/(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(0\s*9\s*(([0-9]\s*){8}))|(0\s*7\s*(([0-9]\s*){8}))/';
-    return preg_match($pattern, $phone);
-  }
-
-  function validateEmail($email)
-  {
-    // Check if the input is empty
-    if (empty($email)) {
-      return false;
-    }
-
-    // Use the provided regex pattern to validate emails
-    $pattern = '/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i';
-    return preg_match($pattern, $email);
-  }
-
-  function validateName($name)
-  {
-    // Check if the input is empty
-    if (empty($name)) {
-      return false;
-    }
-
-    // Use regex to validate that the name contains only letters and spaces
-    return preg_match('/^[A-Za-z\s]+$/', $name);
-  }
-
-  function validateTINNumber($tinNumber)
-  {
-    // Check if the input is empty
-    if (empty($tinNumber)) {
-      return false;
-    }
-
-    // Use regex to validate that TIN number contains exactly 10 digits
-    return preg_match('/^\d{10}$/', $tinNumber);
-  }
-
-  function validateJobStatus($jobStatus)
-  {
-    // Check if the input is empty
-    if (empty($jobStatus)) {
-      return false;
-    }
-
-    // Define an array of valid job statuses
-    $validStatuses = array('Employed', 'Unemployed', 'Self Employed');
-    return in_array($jobStatus, $validStatuses);
-  }
-
-  function validateAge($dob)
-  {
-    // Check if the input is empty
-    if (empty($dob)) {
-      return false;
-    }
-
-    // Calculate age from date of birth
-    $dobTimestamp = strtotime($dob);
-    $todayTimestamp = time();
-    $age = date('Y', $todayTimestamp) - date('Y', $dobTimestamp);
-    if (date('md', $todayTimestamp) < date('md', $dobTimestamp)) {
-      $age--;
-    }
-    return $age >= 18;
-  }
-
-  function validateImage($file)
-  {
-    // Check if the input is empty
-    if (empty($file['name'])) {
-      return false;
-    }
-
-    $allowedExtensions = array("jpg", "jpeg", "png");
-    $maxFileSize = 1024 * 1024; // 1MB
-
-    $fileExtension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-    $fileSize = $file['size'];
-
-    return in_array($fileExtension, $allowedExtensions) && $fileSize <= $maxFileSize;
-  }
-
-  // Check if the phone number, TIN number, and email are already used
-  $phone = mysqli_real_escape_string($conn, $_POST['phone']);
-  $email = mysqli_real_escape_string($conn, $_POST['email']);
-  $TIN_Number = mysqli_real_escape_string($conn, $_POST['TIN_Number']);
-
-  $phoneQuery = "SELECT * FROM `users` WHERE `phone`='$phone'";
-  $emailQuery = "SELECT * FROM `users` WHERE `email`='$email'";
-  $TINQuery = "SELECT * FROM `users` WHERE `TIN_Number`='$TIN_Number'";
-
-  $phoneResult = $conn->query($phoneQuery);
-  $emailResult = $conn->query($emailQuery);
-  $TINResult = $conn->query($TINQuery);
-
-  if ($phoneResult->num_rows > 0) {
-    $validationErrors[] = "Phone number is already registered.";
-  }
-  if ($emailResult->num_rows > 0) {
-    $validationErrors[] = "Email is already registered.";
-  }
-
-  if ($TINResult->num_rows > 0) {
-    $validationErrors[] = "TIN number is already registered.";
-  }
-  // Check individual validation conditions and add specific errors to the array
-  if (!validatePhone($_POST['phone'])) {
-    $validationErrors[] = "Invalid phone number format.";
-  }
-
-  if (!validateEmail($_POST['email'])) {
-    $validationErrors[] = "Invalid email address.";
-  }
-
-  if (!validateName($_POST['name'])) {
-    $validationErrors[] = "Name can only contain letters and spaces.";
-  }
-
-  if (!validateTINNumber($_POST['TIN_Number'])) {
-    $validationErrors[] = "Invalid TIN number format.";
-  }
-
-  if (!validateJobStatus($_POST['Job_Status'])) {
-    $validationErrors[] = "Invalid job status.";
-  }
-
-  if (!validateAge($_POST['dob'])) {
-    $validationErrors[] = "You must be at least 18 years old.";
-  }
-
-  if (!validateImage($_FILES["profile"])) {
-    $validationErrors[] = "Invalid image format or file size exceeds the limit.";
-  }
-
-  if (
-    validatePhone($_POST['phone']) &&
-    validateEmail($_POST['email']) &&
-    validateName($_POST['name']) &&
-    validateTINNumber($_POST['TIN_Number']) &&
-    validateJobStatus($_POST['Job_Status']) &&
-    validateAge($_POST['dob']) &&
-    validateImage($_FILES["profile"])
-  ) {
-    // Generate a random password
-    $randomPassword = generateRandomPassword();
-
-    // Sanitize user inputs
-    $name = mysqli_real_escape_string($conn, $_POST['name']);
-    $dob = mysqli_real_escape_string($conn, $_POST['dob']);
-    $phone = mysqli_real_escape_string($conn, $_POST['phone']);
-    $TIN_Number = mysqli_real_escape_string($conn, $_POST['TIN_Number']);
-    $job_status = mysqli_real_escape_string($conn, $_POST['Job_Status']);
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $status = 'waiting';
-
-    // Hash and salt the password
-    $password = password_hash($randomPassword, PASSWORD_DEFAULT);
-
-    $filename = $_FILES["profile"]["name"];
-    $tempname = $_FILES["profile"]["tmp_name"];
-    $date = date("s-h-d-m-Y");
-    $folder = "../images/" . $date . $filename;
-
-    $sql = "INSERT INTO `users`(`name`, `dob`, `phone`, `password`, `role`, `TIN_Number`, `profile`, `job_status`, `status`, `email`) 
-                VALUES ('$name', '$dob', '$phone', '$password', 'user', '$TIN_Number', '$folder', '$job_status', '$status', '$email')";
-    $res = $conn->query($sql);
-
-    if ($res) {
-      if (move_uploaded_file($tempname, $folder)) {
-        // Send an email to the user with their unhashed password
-        sendPasswordEmail($email, $randomPassword, $conn);
-
-        $_SESSION['success'] = "User created successfully";
-        header("Location: addusers.php");
-        exit();
-      } else {
-        $_SESSION['error'] = "Failed to upload image";
-      }
-    } else {
-      $_SESSION['error'] = "Error creating user: " . $conn->error;
-    }
-  } else {
-    $_SESSION['error'] = implode("<br>", $validationErrors);
-  }
-}
-
-// Handle errors (display them in the toast if needed)
-/* if (isset($_SESSION['error'])) {
-  echo '<script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var errorToast = new bootstrap.Toast(document.getElementById("error-toast"));
-            errorToast.show();
-            document.querySelector("#error-toast .toast-body").innerHTML = "' . $_SESSION['error'] . '";
-        });
-      </script>';
-  unset($_SESSION['error']); // Clear the error message
-} */
-
-if (isset($_SESSION['success'])) {
-  echo '<script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var successToast = new bootstrap.Toast(document.getElementById("success-toast"));
-            successToast.show();
-            document.querySelector("#success-toast .toast-body").innerHTML = "' . $_SESSION['success'] . '";
-        });
-      </script>';
-  unset($_SESSION['success']); // Clear the success message
-}
-// Function to generate a random password
-function generateRandomPassword($length = 8)
-{
-  $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  $password = '';
-  for ($i = 0; $i < $length; $i++) {
-    $password .= $characters[rand(0, strlen($characters) - 1)];
-  }
-  return $password;
-}
-
-// Function to send an email with the password
-function sendPasswordEmail($recipientEmail, $password, $conn)
-{
-  $mail = new PHPMailer(true);
-
-  try {
-    // Server settings
-    $mail->SMTPDebug = SMTP::DEBUG_OFF; // Disable debugging
-    $mail->isSMTP();
-    $mail->Host = 'smtp.gmail.com'; // Replace with your SMTP server
-    $mail->SMTPAuth = true;
-    $mail->Username = 'amanuelgirma108@gmail.com'; // Replace with your SMTP username
-    $mail->Password = 'gnojaxeqnsdekijh'; // Replace with your SMTP password
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = 587; // Port may vary depending on the service
-    $recipientQuery = "SELECT  name FROM users WHERE email = '$recipientEmail'";
-    $recipientResult = $conn->query($recipientQuery);
-    if ($recipientResult->num_rows > 0) {
-      $row = $recipientResult->fetch_assoc();
-      $recipientName = $row['name'];
-      // Sender info
-      $mail->setFrom('amanuelgirma108@gmail.com', 'E-Bidir'); // Replace with your name and email
-      $mail->addAddress($recipientEmail, $recipientName); // Add recipient from the database
-    } else {
-      // If the token doesn't match any user, handle the error
-      throw new Exception("Recipient not found in the database.");
-    }
-    // Content
-    $mail->isHTML(true);
-    $mail->Subject = 'Your Password';
-    $loginlink = "http://localhost/sneat-bootstrap-html-admin-template-free/index.php";
-    $mail->Body = '
-    <html>
-    <head>
-        <style>
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(-5px);
-            }
-            50% {
-                transform: translateY(5px);
-            }
-        }
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #a8e6cf, #dcedc1);
-            transition: background-color 5s;
-            height:700px;
-        }
-        .card {
-            padding: 20px;
-            width: 400px;
-            min-height: 700px;
-            border-radius: 20px;
-            background: #e8e8e8;
-            box-shadow: 5px 5px 6px #dadada,
-                        -5px -5px 6px #f6f6f6;
-            transition: 0.4s;
-            margin-left:10%
-        }
-        img {
-                width: 200px;
-                height: auto;
-                margin-top: 40px;
-                margin-left:80px;  
-                
-            }
-        .card:hover {
-        translate: 0 -10px;
-        }
-        
-        .card-title {
-        font-size: 18px;
-        font-weight: 600;
-        color: #2e54a7;
-        margin: 15px 0 0 10px;
-        }
-        .reason{
-            color:red;
-        }
-        
-        .card-image {
-        min-height: 170px;
-        background-color: #cfcfcf;
-        border-radius: 15px;
-        box-shadow: inset 8px 8px 10px #c3c3c3,
-                    inset -8px -8px 10px #cfcfcf;
-        }
-        
-        .card-body {
-        margin: 13px 0 0 10px;
-        color: rgb(31, 31, 31);
-        font-size: 14.5px;
-        }
-        
-        .footer {
-        float: right;
-        margin: 28px 0 0 18px;
-        font-size: 13px;
-        color: #636363;
-        }
-        
-        .by-name {
-        font-weight: 700;
-        }
-        
-        @keyframes bounce {
-                0%, 100% {
-                    transform: translateY(-5px);
-                }
-                50% {
-                    transform: translateY(5px);
-                }
-            }
-        
-        ul {
-            list-style-type: none;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-        }
-        a {
-            color: #337ab7;
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s;
-        }
-        a:hover {
-            color: #ff8b94;
-        }
-        h2 {
-            font-family: Roboto, sans-serif;
-            font-size: 24px;
-        }
-        li {
-            display: flex;
-            align-items: center;
-            transition: transform 0.3s;
-            grid-column: span 2;
-        }
-        i {
-            margin-right: 10px;
-        }
-        li:hover {
-            transform: scale(1.1);
-        }
-        @media (max-width: 768px) {
-        body:hover {
-            background-color: #dcedc1;
-        }
-        .card {
-            padding: 20px;
-            width: 350px;
-            min-height: 800px;
-            margin-left:0%
-          }
-        img {
-            width: 200px;
-            height: auto;
-            margin-top: 40px;
-            margin-left:30px;  
-            
-        }
-        }
-        </style>
-        <link rel="stylesheet" href="https://www.bootstrapcdn.com/fontawesome/6.4.0/css/all.min.css">
-    </head>
-    <body>
-        <div class="card">
-            <div class="card-image">
-                <img src="https://res.cloudinary.com/da8hdfiix/image/upload/v1690793326/profile/djyiwphuexckf0gkryxh.png" alt="Ebidir Logo" loading="lazy">
-            </div>
-            <p class="card-title">Hi ' . $recipientName . '</p>
-            <p class="card-body">Your E-bidir Asbeza Account has been created.</p>
-            <p class="card-body">Your Login password is ' . $password . '</p>
-            <p class="card-body">Login to your account with provided Link and Change Your Password<a href=' . $loginlink . '> Click Here to login</a></p>
-            <p class="card-body">Please Dont Share this Password with anyone even if tehy say they are rom E-bidir.</p>
-            <p class="card-body">We\'re here for you if you need support:</p>
-            <p class="footer">Call us on: <span class="by-name">+251 925 882-8232</span></p>
-            <p class="footer">Email us on: <span class="by-name"><a href="mailto:support@e-bidir.com">support@e-bidir.com</a></span></p>
-            <p class="footer">Thank you for choosing Ebidir™.</p>
-        </div>
-    </body>
-    </html>';
-
-    // Send the email
-    $mail->send();
-  } catch (Exception $e) {
-    echo "<script>alert('Message could not be sent. Mailer Error: " . $mail->ErrorInfo . "')</script>";
-  }
-}
-
-?>
+session_start()
+  ?>
 
 <!DOCTYPE html>
 
-<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/"
+  data-template="vertical-menu-template-free">
 
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
   <title>Horizontal Layouts - Forms | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
 
@@ -454,7 +23,9 @@ function sendPasswordEmail($recipientEmail, $password, $conn)
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet" />
 
   <!-- Icons. Uncomment required icon fonts -->
   <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
@@ -487,12 +58,21 @@ function sendPasswordEmail($recipientEmail, $password, $conn)
         <div class="app-brand demo">
           <a href="Dashbaord.php" class="app-brand-link">
             <span class="app-brand-logo demo">
-              <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink">
                 <defs>
-                  <path d="M13.7918663,0.358365126 L3.39788168,7.44174259 C0.566865006,9.69408886 -0.379795268,12.4788597 0.557900856,15.7960551 C0.68998853,16.2305145 1.09562888,17.7872135 3.12357076,19.2293357 C3.8146334,19.7207684 5.32369333,20.3834223 7.65075054,21.2172976 L7.59773219,21.2525164 L2.63468769,24.5493413 C0.445452254,26.3002124 0.0884951797,28.5083815 1.56381646,31.1738486 C2.83770406,32.8170431 5.20850219,33.2640127 7.09180128,32.5391577 C8.347334,32.0559211 11.4559176,30.0011079 16.4175519,26.3747182 C18.0338572,24.4997857 18.6973423,22.4544883 18.4080071,20.2388261 C17.963753,17.5346866 16.1776345,15.5799961 13.0496516,14.3747546 L10.9194936,13.4715819 L18.6192054,7.984237 L13.7918663,0.358365126 Z" id="path-1"></path>
-                  <path d="M5.47320593,6.00457225 C4.05321814,8.216144 4.36334763,10.0722806 6.40359441,11.5729822 C8.61520715,12.571656 10.0999176,13.2171421 10.8577257,13.5094407 L15.5088241,14.433041 L18.6192054,7.984237 C15.5364148,3.11535317 13.9273018,0.573395879 13.7918663,0.358365126 C13.5790555,0.511491653 10.8061687,2.3935607 5.47320593,6.00457225 Z" id="path-3"></path>
-                  <path d="M7.50063644,21.2294429 L12.3234468,23.3159332 C14.1688022,24.7579751 14.397098,26.4880487 13.008334,28.506154 C11.6195701,30.5242593 10.3099883,31.790241 9.07958868,32.3040991 C5.78142938,33.4346997 4.13234973,34 4.13234973,34 C4.13234973,34 2.75489982,33.0538207 2.37032616e-14,31.1614621 C-0.55822714,27.8186216 -0.55822714,26.0572515 -4.05231404e-15,25.8773518 C0.83734071,25.6075023 2.77988457,22.8248993 3.3049379,22.52991 C3.65497346,22.3332504 5.05353963,21.8997614 7.50063644,21.2294429 Z" id="path-4"></path>
-                  <path d="M20.6,7.13333333 L25.6,13.8 C26.2627417,14.6836556 26.0836556,15.9372583 25.2,16.6 C24.8538077,16.8596443 24.4327404,17 24,17 L14,17 C12.8954305,17 12,16.1045695 12,15 C12,14.5672596 12.1403557,14.1461923 12.4,13.8 L17.4,7.13333333 C18.0627417,6.24967773 19.3163444,6.07059163 20.2,6.73333333 C20.3516113,6.84704183 20.4862915,6.981722 20.6,7.13333333 Z" id="path-5"></path>
+                  <path
+                    d="M13.7918663,0.358365126 L3.39788168,7.44174259 C0.566865006,9.69408886 -0.379795268,12.4788597 0.557900856,15.7960551 C0.68998853,16.2305145 1.09562888,17.7872135 3.12357076,19.2293357 C3.8146334,19.7207684 5.32369333,20.3834223 7.65075054,21.2172976 L7.59773219,21.2525164 L2.63468769,24.5493413 C0.445452254,26.3002124 0.0884951797,28.5083815 1.56381646,31.1738486 C2.83770406,32.8170431 5.20850219,33.2640127 7.09180128,32.5391577 C8.347334,32.0559211 11.4559176,30.0011079 16.4175519,26.3747182 C18.0338572,24.4997857 18.6973423,22.4544883 18.4080071,20.2388261 C17.963753,17.5346866 16.1776345,15.5799961 13.0496516,14.3747546 L10.9194936,13.4715819 L18.6192054,7.984237 L13.7918663,0.358365126 Z"
+                    id="path-1"></path>
+                  <path
+                    d="M5.47320593,6.00457225 C4.05321814,8.216144 4.36334763,10.0722806 6.40359441,11.5729822 C8.61520715,12.571656 10.0999176,13.2171421 10.8577257,13.5094407 L15.5088241,14.433041 L18.6192054,7.984237 C15.5364148,3.11535317 13.9273018,0.573395879 13.7918663,0.358365126 C13.5790555,0.511491653 10.8061687,2.3935607 5.47320593,6.00457225 Z"
+                    id="path-3"></path>
+                  <path
+                    d="M7.50063644,21.2294429 L12.3234468,23.3159332 C14.1688022,24.7579751 14.397098,26.4880487 13.008334,28.506154 C11.6195701,30.5242593 10.3099883,31.790241 9.07958868,32.3040991 C5.78142938,33.4346997 4.13234973,34 4.13234973,34 C4.13234973,34 2.75489982,33.0538207 2.37032616e-14,31.1614621 C-0.55822714,27.8186216 -0.55822714,26.0572515 -4.05231404e-15,25.8773518 C0.83734071,25.6075023 2.77988457,22.8248993 3.3049379,22.52991 C3.65497346,22.3332504 5.05353963,21.8997614 7.50063644,21.2294429 Z"
+                    id="path-4"></path>
+                  <path
+                    d="M20.6,7.13333333 L25.6,13.8 C26.2627417,14.6836556 26.0836556,15.9372583 25.2,16.6 C24.8538077,16.8596443 24.4327404,17 24,17 L14,17 C12.8954305,17 12,16.1045695 12,15 C12,14.5672596 12.1403557,14.1461923 12.4,13.8 L17.4,7.13333333 C18.0627417,6.24967773 19.3163444,6.07059163 20.2,6.73333333 C20.3516113,6.84704183 20.4862915,6.981722 20.6,7.13333333 Z"
+                    id="path-5"></path>
                 </defs>
                 <g id="g-app-brand" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                   <g id="Brand-Logo" transform="translate(-27.000000, -15.000000)">
@@ -511,7 +91,8 @@ function sendPasswordEmail($recipientEmail, $password, $conn)
                           <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-4"></use>
                         </g>
                       </g>
-                      <g id="Triangle" transform="translate(19.000000, 11.000000) rotate(-300.000000) translate(-19.000000, -11.000000) ">
+                      <g id="Triangle"
+                        transform="translate(19.000000, 11.000000) rotate(-300.000000) translate(-19.000000, -11.000000) ">
                         <use fill="#696cff" xlink:href="#path-5"></use>
                         <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-5"></use>
                       </g>
@@ -583,7 +164,9 @@ function sendPasswordEmail($recipientEmail, $password, $conn)
       <div class="layout-page">
         <!-- Navbar -->
 
-        <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+        <nav
+          class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+          id="layout-navbar">
           <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
             <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
               <i class="bx bx-menu bx-sm"></i>
@@ -595,7 +178,8 @@ function sendPasswordEmail($recipientEmail, $password, $conn)
             <div class="navbar-nav align-items-center">
               <div class="nav-item d-flex align-items-center">
                 <i class="bx bx-search fs-4 lh-0"></i>
-                <input type="text" class="form-control border-0 shadow-none" placeholder="Search..." aria-label="Search..." />
+                <input type="text" class="form-control border-0 shadow-none" placeholder="Search..."
+                  aria-label="Search..." />
               </div>
             </div>
             <!-- /Search -->
@@ -603,7 +187,9 @@ function sendPasswordEmail($recipientEmail, $password, $conn)
             <ul class="navbar-nav flex-row align-items-center ms-auto">
               <!-- Place this tag where you want the button to render. -->
               <li class="nav-item lh-1 me-3">
-                <a class="github-button" href="https://github.com/ThemeSelection/sneat-html-admin-template-free" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star ThemeSelection/sneat-html-admin-template-free on GitHub">Star</a>
+                <a class="github-button" href="https://github.com/ThemeSelection/sneat-html-admin-template-free"
+                  data-icon="octicon-star" data-size="large" data-show-count="true"
+                  aria-label="Star ThemeSelection/sneat-html-admin-template-free on GitHub">Star</a>
               </li>
 
               <!-- User -->
@@ -679,17 +265,28 @@ function sendPasswordEmail($recipientEmail, $password, $conn)
             <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span>General Information</h4>
 
 
-            <!-- Toast with Placements -->
-            <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+            <div class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" role="alert" aria-live="assertive"
+              aria-atomic="true" data-delay="2000" id="success-toast">
+              <div class="toast-header">
+                <i class="bx bx-bell me-2"></i>
+                <div class="me-auto toast-title fw-semibold">Success</div>
+                <small></small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+              </div>
+              <div class="toast-body"></div>
+            </div>
+
+            <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive"
+              aria-atomic="true" data-delay="2000" id="error-toast">
               <div class="toast-header">
                 <i class="bx bx-bell me-2"></i>
                 <div class="me-auto toast-title fw-semibold">Error</div>
                 <small></small>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
               </div>
-              <div class="toast-body">Fruitcake chocolate bar tootsie roll gummies gummies jelly beans cake.</div>
+              <div class="toast-body"></div>
             </div>
-            <!-- Toast with Placements -->
+
             <!-- Basic with Icons -->
             <div class="row">
               <div class="col-xxl">
@@ -699,30 +296,40 @@ function sendPasswordEmail($recipientEmail, $password, $conn)
                     <!-- <small class="text-muted float-end">Merged input group</small> -->
                   </div>
                   <div class="card-body">
-                    <form action="addusers.php" method="POST" enctype="multipart/form-data">
+                    <form action="backend.php" method="POST" enctype="multipart/form-data">
                       <div class="row mb-4">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Name :<span class="text-danger">*</span></label>
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Name :<span
+                            class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
-                            <input type="text" class="form-control" id="basic-icon-default-fullname" placeholder="John Doe" aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" name="name" />
+                            <span id="basic-icon-default-fullname2" class="input-group-text"><i
+                                class="bx bx-user"></i></span>
+                            <input type="text" class="form-control" id="basic-icon-default-fullname"
+                              placeholder="John Doe" aria-label="John Doe"
+                              aria-describedby="basic-icon-default-fullname2" name="name" />
                           </div>
                         </div>
 
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-TIN">TIN /ID Number :<span class="text-danger">*</span></label>
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-TIN">TIN /ID Number :<span
+                            class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-TIN2" class="input-group-text"><i class="bx bx-credit-card-front"></i></span>
-                            <input type="number" maxLength="10" minLength="10" class="form-control" id="basic-icon-default-TIN" placeholder="1234567890" aria-label="John Doe" aria-describedby="basic-icon-default-TIN2" name="TIN_Number" />
+                            <span id="basic-icon-default-TIN2" class="input-group-text"><i
+                                class="bx bx-credit-card-front"></i></span>
+                            <input type="number" maxLength="10" minLength="10" class="form-control"
+                              id="basic-icon-default-TIN" placeholder="1234567890" aria-label="John Doe"
+                              aria-describedby="basic-icon-default-TIN2" name="TIN_Number" />
                           </div>
                         </div>
                       </div>
 
                       <div class="row mb-4">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-company">Job Status :<span class="text-danger">*</span></label>
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-company">Job Status :<span
+                            class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-Job2" class="input-group-text"><i class="bx bx-buildings"></i></span>
+                            <span id="basic-icon-default-Job2" class="input-group-text"><i
+                                class="bx bx-buildings"></i></span>
                             <select id="basic-icon-default-Job" class="form-select" name="Job_Status">
                               <option value="">Default select</option>
                               <option value="Employed">Employed </option>
@@ -731,41 +338,52 @@ function sendPasswordEmail($recipientEmail, $password, $conn)
                             </select>
                           </div>
                         </div>
-                        <label for="html5-datetime-local-input" class="col-md-2 col-form-label">Date of Birth:<span class="text-danger">*</span></label>
+                        <label for="html5-datetime-local-input" class="col-md-2 col-form-label">Date of Birth:<span
+                            class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-dateOfBirth2" class="input-group-text"><i class="bx bx-calendar"></i></span>
-                            <input class="form-control" type="date" value="2021-06-18" id="basic-icon-default-dateOfBirth" name="dob" />
+                            <span id="basic-icon-default-dateOfBirth2" class="input-group-text"><i
+                                class="bx bx-calendar"></i></span>
+                            <input class="form-control" type="date" value="2021-06-18"
+                              id="basic-icon-default-dateOfBirth" name="dob" />
                           </div>
                         </div>
                       </div>
 
                       <div class="row mb-4">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Email :<span class="text-danger">*</span></label>
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Email :<span
+                            class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
                             <span class="input-group-text"><i class="bx bx-envelope"></i></span>
-                            <input type="text" id="basic-icon-default-email" class="form-control" placeholder="john.doe" aria-label="john.doe" aria-describedby="basic-icon-default-email2" name="email" />
+                            <input type="text" id="basic-icon-default-email" class="form-control" placeholder="john.doe"
+                              aria-label="john.doe" aria-describedby="basic-icon-default-email2" name="email" />
                           </div>
                           <!--<div class="form-text">You can use letters, numbers & periods</div> -->
                         </div>
 
-                        <label class="col-sm-2 form-label" for="basic-icon-default-phone">Phone Number :<span class="text-danger">*</span></label>
+                        <label class="col-sm-2 form-label" for="basic-icon-default-phone">Phone Number :<span
+                            class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-phone2" class="input-group-text"><i class="bx bx-phone"></i></span>
-                            <input type="text" id="basic-icon-default-phone" class="form-control phone-mask" placeholder="658 799 8941" aria-label="658 799 8941" aria-describedby="basic-icon-default-phone2" name="phone" />
+                            <span id="basic-icon-default-phone2" class="input-group-text"><i
+                                class="bx bx-phone"></i></span>
+                            <input type="text" id="basic-icon-default-phone" class="form-control phone-mask"
+                              placeholder="658 799 8941" aria-label="658 799 8941"
+                              aria-describedby="basic-icon-default-phone2" name="phone" />
                           </div>
                         </div>
                       </div>
 
                       <div class="row mb-4">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Image :<span class="text-danger">*</span></label>
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Image :<span
+                            class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
                             <span class="input-group-text"><i class="bx bx-image"></i></span>
 
-                            <input id="basic-icon-default-photo" aria-describedby="basic-icon-default-photo2" class="form-control" type="file" id="formFile" name="profile" />
+                            <input id="basic-icon-default-photo" aria-describedby="basic-icon-default-photo2"
+                              class="form-control" type="file" id="formFile" name="profile" />
                           </div>
                         </div>
                       </div>
@@ -777,16 +395,9 @@ function sendPasswordEmail($recipientEmail, $password, $conn)
                       </div>
                     </form>
                     <!-- Display validation errors near form fields -->
-                    <?php if (!empty($validationErrors)) : ?>
-                      <div class="alert alert-danger">
-                        <ul>
-                          <?php foreach ($validationErrors as $error) : ?>
-                            <li><?php echo $error; ?></li>
-                          <?php endforeach; ?>
-                        </ul>
-                      </div>
-                    <?php endif; ?>
-                    <div class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="success-toast">
+                  
+                    <div class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" role="alert"
+                      aria-live="assertive" aria-atomic="true" data-delay="2000" id="success-toast">
                       <div class="toast-header">
                         <i class="bx bx-bell me-2"></i>
                         <div class="me-auto toast-title fw-semibold">success</div>
@@ -796,6 +407,21 @@ function sendPasswordEmail($recipientEmail, $password, $conn)
                       <div class="toast-body"></div>
                     </div>
                   </div>
+                    <?php
+                    // Rest of your code
+                    // Display validation errors near form fields
+                    if (!empty($_SESSION['validationErrors'])) {
+                      echo '<div class="alert alert-danger">';
+                      echo '<ul>';
+                      foreach ($_SESSION['validationErrors'] as $error) {
+                        echo '<li>' . htmlspecialchars($error) . '</li>';
+                      }
+                      echo '</ul>';
+                      echo '</div>';
+                      // Clear the validationErrors session variable
+                      unset($_SESSION['validationErrors']);
+                    }
+                    ?>
                 </div>
               </div>
             </div>
@@ -817,9 +443,11 @@ function sendPasswordEmail($recipientEmail, $password, $conn)
                 <a href="https://ThemeSelection.com/license/" class="footer-link me-4" target="_blank">License</a>
                 <a href="https://ThemeSelection.com/" target="_blank" class="footer-link me-4">More Themes</a>
 
-                <a href="https://ThemeSelection.com/demo/sneat-bootstrap-html-admin-template/documentation/" target="_blank" class="footer-link me-4">Documentation</a>
+                <a href="https://ThemeSelection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
+                  target="_blank" class="footer-link me-4">Documentation</a>
 
-                <a href="https://github.com/ThemeSelection/sneat-html-admin-template-free/issues" target="_blank" class="footer-link me-4">Support</a>
+                <a href="https://github.com/ThemeSelection/sneat-html-admin-template-free/issues" target="_blank"
+                  class="footer-link me-4">Support</a>
               </div>
             </div>
           </footer>
@@ -854,7 +482,7 @@ function sendPasswordEmail($recipientEmail, $password, $conn)
   <script src="../assets/js/main.js"></script>
 
   <!-- Page JS -->
-  <script src="../assets/js/ui-toasts-user.js"></script>
+  <!--   <script src="../assets/js/ui-toasts-user.js"></script> -->
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>

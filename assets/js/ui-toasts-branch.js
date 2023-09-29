@@ -2,14 +2,17 @@
  * UI Toasts
  */
 'use strict';
-function validateForm() {
-  // An array of field IDs and their corresponding error messages
+const form = document.querySelector('form');
+const submitBtn = document.getElementById('submit-btn');
+
+function validateForm(event) {
+  // An array of field IDs and their zcorresponding error messages
   const fields = [
     { id: 'basic-icon-default-branchname', error: 'Branch Name is required.' },
     { id: 'basic-icon-default-email', error: 'Email is required.' },
     { id: 'basic-icon-default-phone', error: 'Phone is required.' },
     { id: 'basic-icon-default-location', error: 'Location is required.' },
-    { id: 'basic-icon-default-logo', error: 'logo is required.' }
+
   ];
   const nameRegex = /^[A-Za-z\s]+$/;
   const validPhoneRegex = RegExp(
@@ -24,6 +27,7 @@ function validateForm() {
     const value = input.value.trim();
 
     if (value === '') {
+      event.preventDefault();
       const toastPlacementExample = document.querySelector('.toast-placement-ex');
       toastPlacementExample.querySelector('.toast-body').textContent = field.error;
       toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
@@ -35,6 +39,7 @@ function validateForm() {
     if (field.id === 'basic-icon-default-branchname') {
       // Check if TIN Number field contains only numbers
       if (!nameRegex.test(value)) {
+        event.preventDefault();
         const toastPlacementExample = document.querySelector('.toast-placement-ex');
         toastPlacementExample.querySelector('.toast-body').textContent = 'Name Can only contain Alphabets.';
         toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
@@ -47,6 +52,7 @@ function validateForm() {
     if (field.id === 'basic-icon-default-phone') {
       // Check if TIN Number field contains only numbers
       if (!validPhoneRegex.test(value)) {
+        event.preventDefault();
         const toastPlacementExample = document.querySelector('.toast-placement-ex');
         toastPlacementExample.querySelector('.toast-body').textContent = 'Invalid Phone Number';
         toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
@@ -58,6 +64,7 @@ function validateForm() {
     if (field.id === 'basic-icon-default-email') {
       // Check if TIN Number field contains only numbers
       if (!validEmailRegex.test(value)) {
+        event.preventDefault();
         const toastPlacementExample = document.querySelector('.toast-placement-ex');
         toastPlacementExample.querySelector('.toast-body').textContent = 'Invalid Email';
         toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
@@ -67,19 +74,7 @@ function validateForm() {
       }
     }
   }
-
-  // Disable all input fields
-  const inputFields = document.querySelectorAll('input, select');
-  for (const inputField of inputFields) {
-    inputField.disabled = true;
-  }
-
-  // If all fields are valid, show a success message
-  const toastPlacementExample = document.querySelector('.toast-placement-ex');
-  toastPlacementExample.classList.add('bg-primary');
-  toastPlacementExample.classList.remove('bg-danger');
-  toastPlacementExample.querySelector('.toast-body').textContent = 'Form submitted successfully.';
-  toastPlacementExample.querySelector('.toast-title ').textContent = 'Success.';
-  const toastPlacement = new bootstrap.Toast(toastPlacementExample);
-  toastPlacement.show();
+  form.submit();
 }
+
+submitBtn.addEventListener('click', validateForm);
