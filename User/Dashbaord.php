@@ -140,7 +140,7 @@ include "../common/head.php";
               <div data-i18n="Horizontal Form">Repayment History</div>
             </a>
           </li>
-       
+
         </ul>
       </aside>
       <!-- / Menu -->
@@ -307,7 +307,8 @@ include "../common/head.php";
                         <h5 class="card-title text-primary">Congratulations
                           <?php echo $row['name']; ?>! 🎉
                         </h5>
-                        <p class="mb-4">Your Credit Limit has increased by <span class="fw-bold">72%</span>Check The table below</p>
+                        <p class="mb-4">Your Loan has been applied. Your current credit is <span class="fw-bold"><?php echo $row['credit_limit'] ?> Birr</span> Check your new level badge in
+                          your profile.</p>
                         <a href="#table-striped" class="btn btn-sm btn-outline-primary">View Table</a>
                       </div>
                     </div>

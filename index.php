@@ -113,7 +113,7 @@ if (isset($_SESSION['role'])) {
               <div class="mb-3 form-password-toggle">
                 <div class="d-flex justify-content-between">
                   <label class="form-label" for="password">Password</label>
-                  <a href="auth-forgot-password-basic.php">
+                  <a href="forgotpassword.php">
                     <small>Forgot Password?</small>
                   </a>
                 </div>
@@ -163,10 +163,6 @@ if (isset($_SESSION['role'])) {
         </div>
       </div>
     </div>
-    <?php
-    $_SESSION['error'] = "";
-    include "common/footer.php";
-    ?>
 
     <script src="./assets/vendor/libs/jquery/jquery.js"></script>
     <script src="./assets/vendor/libs/popper/popper.js"></script>

@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Horizontal Layouts - Forms | ThemeSelection - Bootstrap 5 HTML Admin Template - Pro</title>
+    <title>Dashboard - Analytics | ThemeSelection - Bootstrap 5 HTML Admin Template - Pro</title>
 
     <meta name="description" content="" />
 
@@ -28,6 +28,8 @@
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+    <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
 
     <!-- Page CSS -->
 
@@ -94,45 +96,42 @@
                 <ul class="menu-inner py-1">
                     <!-- Dashboard -->
 
-                    <li class="menu-item">
+                    <li class="menu-item active open">
                         <a href="Dashbaord.php" class="menu-link">
                             <i class="menu-icon tf-icons bx bxs-dashboard"></i>
                             <div data-i18n="Analytics">Dashboard</div>
                         </a>
                     </li>
+                    <li class="menu-item">
+                        <a href="applyforme.php" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-merge"></i>
+                            <div data-i18n="Analytics">Apply For Me</div>
+                        </a>
+                    </li>
 
-                    <li class="menu-item active open">
-                        <a href="addbranch.php" class="menu-link">
+                    <li class="menu-item">
+                        <a href="branchrepayments.php" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-detail"></i>
-                            <div data-i18n="Analytics">Branch Registarion</div>
+                            <div data-i18n="Analytics">Repayments</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
-                        <a href="addusers.php" class="menu-link">
+                        <a href="transactionbranch.php" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-detail"></i>
-                            <div data-i18n="Analytics">User Registarion</div>
-                        </a>
-                    </li>
-
-
-
-                    <li class="menu-item">
-                        <a href="branches.php" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-table"></i>
-                            <div data-i18n="Analytics">Branch Lists</div>
+                            <div data-i18n="Analytics">Transactions</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
-                        <a href="users.php" class="menu-link">
+                        <a href="userlistbranch.php" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-table"></i>
                             <div data-i18n="Analytics">User Lists</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
-                        <a href="users.php" class="menu-link">
+                        <a href="creditapplicationbranch.php" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-table"></i>
                             <div data-i18n="Analytics">Credit Applications</div>
                         </a>
@@ -162,72 +161,6 @@
                         </div>
                         <!-- /Search -->
 
-                        <ul class="navbar-nav flex-row align-items-center ms-auto">
-                            <!-- Place this tag where you want the button to render. -->
-                            <li class="nav-item lh-1 me-3">
-                                <a class="github-button" href="https://github.com/ThemeSelection/ThemeSelection-html-admin-template-free" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star ThemeSelection/ThemeSelection-html-admin-template-free on GitHub">Star</a>
-                            </li>
-
-                            <!-- User -->
-                            <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                                    <div class="avatar avatar-online">
-                                        <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
-                                    </div>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <div class="d-flex">
-                                                <div class="flex-shrink-0 me-3">
-                                                    <div class="avatar avatar-online">
-                                                        <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
-                                                    </div>
-                                                </div>
-                                                <div class="flex-grow-1">
-                                                    <span class="fw-semibold d-block">John Doe</span>
-                                                    <small class="text-muted">Admin</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div class="dropdown-divider"></div>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="bx bx-user me-2"></i>
-                                            <span class="align-middle">My Profile</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="bx bx-cog me-2"></i>
-                                            <span class="align-middle">Settings</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <span class="d-flex align-items-center align-middle">
-                                                <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                                                <span class="flex-grow-1 align-middle">Billing</span>
-                                                <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div class="dropdown-divider"></div>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="auth-login-basic.html">
-                                            <i class="bx bx-power-off me-2"></i>
-                                            <span class="align-middle">Log Out</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <!--/ User -->
-                        </ul>
                     </div>
                 </nav>
 
@@ -238,82 +171,110 @@
                     <!-- Content -->
 
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span>Branch Information
-                        </h4>
-
-
-                        <!-- Toast with Placements -->
-                        <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
-                            <div class="toast-header">
-                                <i class="bx bx-bell me-2"></i>
-                                <div class="me-auto toast-title fw-semibold">Error</div>
-                                <small></small>
-                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                            </div>
-                            <div class="toast-body">Fruitcake chocolate bar tootsie roll gummies gummies jelly beans
-                                cake.</div>
-                        </div>
-                        <!-- Toast with Placements -->
-                        <!-- Basic with Icons -->
                         <div class="row">
-                            <div class="col-xxl">
-                                <div class="card mb-4">
-                                    <div class="card-header d-flex align-items-center justify-content-between">
-                                        <h5 class="mb-0">1. Branch Information</h5>
-                                        <small class="text-muted float-end">Merged input group</small>
+                            <!-- Order Statistics -->
+                            <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                                        <div class="card-title mb-0">
+                                            <h5 class="m-0 me-2" id="UserfullName">Order Statistics</h5>
+                                            <small class="text-muted" id="PurchaseDate">42.82k Total Sales</small>
+                                        </div>
+                                        <div class="dropdown">
+                                            <button class="btn p-0" type="button" id="orederStatistics" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
+                                                <a class="dropdown-item" href="javascript:void(0);">Select All</a>
+                                                <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+                                                <a class="dropdown-item" href="javascript:void(0);">Share</a>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="card-body">
-                                        <form action="backend.php" method="POST">
-                                            <div class="row mb-4">
-                                                <label class="col-sm-2 col-form-label" for="basic-icon-default-branchname">Branch Name :<span class="text-danger">*</span></label>
-                                                <div class="col-sm-4">
-                                                    <div class="input-group input-group-merge">
-                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
-                                                        <input name="branch_name" type="text" class="form-control" id="basic-icon-default-branchname" placeholder="John Doe" aria-label="John Doe" aria-describedby="basic-icon-default-branchname2" />
-                                                    </div>
-                                                </div>
-
-                                                <label class="col-sm-2 form-label" for="basic-icon-default-phone">Phone
-                                                    Number :<span class="text-danger">*</span></label>
-                                                <div class="col-sm-4">
-                                                    <div class="input-group input-group-merge">
-                                                        <span id="basic-icon-default-phone2" class="input-group-text"><i class="bx bx-phone"></i></span>
-                                                        <input name="phonenumber" type="text" id="basic-icon-default-phone" class="form-control phone-mask" placeholder="658 799 8941" aria-label="658 799 8941" aria-describedby="basic-icon-default-phone2" />
-                                                    </div>
-                                                </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="d-flex flex-column align-items-center gap-1">
+                                                <h2 class="mb-2" id="TotalcreditLeft">8,258</h2>
+                                                <span>Total Current Credit </span>
                                             </div>
+                                            <div id="valuechecker"></div>
+                                        </div>
 
-                                            <div class="row mb-4">
-                                                <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Email :<span class="text-danger">*</span></label>
-                                                <div class="col-sm-4">
-                                                    <div class="input-group input-group-merge">
-                                                        <span class="input-group-text"><i class="bx bx-envelope"></i></span>
-                                                        <input name="email" type="text" id="basic-icon-default-email" class="form-control" placeholder="amanuelgirma@gmail.com" aria-label="john.doe" aria-describedby="basic-icon-default-email2" />
-                                                    </div>
-                                                    <!--<div class="form-text">You can use letters, numbers & periods</div> -->
-                                                </div>
+                                        <ul class="p-0 m-0" id="topItemsList">
 
+                                        </ul>
+                                        <div class="demo-inline-spacing">
+                                            <nav aria-label="Page navigation">
+                                                <ul class="pagination pagination-sm" id="paginationControls">
+                                                    <!-- Pagination buttons will go here -->
+                                                </ul>
+                                            </nav>
+                                        </div>
 
-                                                <label class="col-sm-2 col-form-label" for="basic-icon-default-location">Location :<span class="text-danger">*</span></label>
-                                                <div class="col-sm-4">
-                                                    <div class="input-group input-group-merge">
-                                                        <span class="input-group-text"><i class="bx bx-map"></i></span>
-                                                        <input name="location" type="text" id="basic-icon-default-location" class="form-control" placeholder="Bole" aria-label="Bole" aria-describedby="basic-icon-default-location2" />
-                                                    </div>
-                                                    <!--<div class="form-text">You can use letters, numbers & periods</div> -->
-                                                </div>
-
+                                        <div class="d-flex justify-content-center pt-4 gap-2">
+                                            <div>
+                                                <p class="mb-n1 mt-1" id="totalspent">$0</p>
+                                                <small class="text-muted">Total Spent</small>
                                             </div>
-                                            <div class="row justify-content-end">
-                                                <div class="col-sm-10">
+                                        </div>
+                                    </div>
 
-                                                    <button type="submit" name="addbranch" onclick="validateForm()" class="btn btn-primary">Submit</button>
-                                                </div>
+                                </div>
+                            </div>
+                            <!--/ Order Statistics -->
+                            <!-- Transactions -->
+                            <div class="col-md-6 col-lg-4 order-2 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h5 class="card-title m-0 me-2">Transactions</h5>
+                                        <div class="dropdown">
+                                            <button class="btn p-0" type="button" id="transactionID" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="transactionID">
+                                                <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
+                                                <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
+                                                <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
                                             </div>
-                                        </form>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="p-0 m-0">
+                                            <li class="d-flex mb-4 pb-1">
+                                                <div class="avatar flex-shrink-0 me-3">
+                                                    <img src="../assets/img/icons/unicons/paypal.png" alt="User" class="rounded" />
+                                                </div>
+                                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                                    <div class="me-2">
+                                                        <!--         <small class="text-muted d-block mb-1">Last Payment Date</small> -->
+                                                        <h6 class="mb-0">Last Payment Date</h6>
+                                                    </div>
+                                                    <div class="user-progress d-flex align-items-center gap-1">
+                                                        <h6 class="mb-0" id="paymentdate">+82.6</h6>
+                                                        <span class="text-muted">G.C</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="d-flex mb-4 pb-1">
+                                                <div class="avatar flex-shrink-0 me-3">
+                                                    <img src="../assets/img/icons/unicons/wallet.png" alt="User" class="rounded" />
+                                                </div>
+                                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                                    <div class="me-2">
+                                                        <small class="text-muted d-block mb-1">Status</small>
+                                                        <h6 class="mb-0" id="Status">Paid</h6>
+                                                    </div>
+                                                    <div class="user-progress d-flex align-items-center gap-1">
+                                                        <h6 class="mb-0">+270.69</h6>
+                                                        <span class="text-muted">USD</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
+                            <!--/ Transactions -->
                         </div>
                     </div>
                     <!-- / Content -->
@@ -327,12 +288,11 @@
                                     document.write(new Date().getFullYear());
                                 </script>
                                 , made with ❤️ by
-                                <a href="https://ThemeSelection.com" target="_blank" class="footer-link fw-bolder">E-bidir</a>
+                                <a href="https://ThemeSelection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
                             </div>
                             <div>
                                 <a href="https://ThemeSelection.com/license/" class="footer-link me-4" target="_blank">License</a>
-                                <a href="https://ThemeSelection.com/" target="_blank" class="footer-link me-4">More
-                                    Themes</a>
+                                <a href="https://ThemeSelection.com/" target="_blank" class="footer-link me-4">More Themes</a>
 
                                 <a href="https://ThemeSelection.com/demo/ThemeSelection-bootstrap-html-admin-template/documentation/" target="_blank" class="footer-link me-4">Documentation</a>
 
@@ -374,13 +334,14 @@
 
     <!-- Vendors JS -->
 
+    <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
 
     <!-- Main JS -->
     <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/transactiondetail.js"></script>
 
     <!-- Page JS -->
-    <script src="../assets/js/ui-toasts-branch.js"></script>
-
+    <script src="../assets/js/dashboards-analytics.js"></script>
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>

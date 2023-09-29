@@ -210,7 +210,7 @@ function getRandomNumber(min, max) {
                 </div>
                 </td>
                 <td>
-                <a href="userAllDetail.html" class="menu-link" onclick="showDetails(${index})">
+                <a href="userAllDetail.php" class="menu-link" onclick="showDetails(${index})">
                     <div data-i18n="Without menu">Details</div>
                 </a>
             </td>

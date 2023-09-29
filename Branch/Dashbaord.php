@@ -107,39 +107,36 @@ include "../common/head.php";
                             <div data-i18n="Analytics">Dashboard</div>
                         </a>
                     </li>
+                    <li class="menu-item">
+                        <a href="applyforme.php" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-merge"></i>
+                            <div data-i18n="Analytics">Apply For Me</div>
+                        </a>
+                    </li>
 
                     <li class="menu-item">
-                        <a href="addbranch.php" class="menu-link">
+                        <a href="branchrepayments.php" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-detail"></i>
-                            <div data-i18n="Analytics">Branch Registarion</div>
+                            <div data-i18n="Analytics">Repayments</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
-                        <a href="addusers.php" class="menu-link">
+                        <a href="transactionbranch.php" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-detail"></i>
-                            <div data-i18n="Analytics">User Registarion</div>
-                        </a>
-                    </li>
-
-
-
-                    <li class="menu-item">
-                        <a href="branches.php" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-table"></i>
-                            <div data-i18n="Analytics">Branch Lists</div>
+                            <div data-i18n="Analytics">Transactions</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
-                        <a href="users.php" class="menu-link">
+                        <a href="userlistbranch.php" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-table"></i>
                             <div data-i18n="Analytics">User Lists</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
-                        <a href="users.php" class="menu-link">
+                        <a href="creditapplicationbranch.php" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-table"></i>
                             <div data-i18n="Analytics">Credit Applications</div>
                         </a>
@@ -172,60 +169,6 @@ include "../common/head.php";
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
 
                             <!-- Notification Button -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                    <i class="bx bx-bell bx-sm"></i>
-                                    <!-- Unread notification badge -->
-                                    <span class="badge bg-danger rounded-circle position-absolute  translate-middle">
-                                        3 <!-- Number of unread notifications -->
-                                    </span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <!-- Notification Item 1 -->
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <div class="d-flex">
-                                                <div class="flex-grow-1">
-                                                    <span class="fw-semibold">Notification Title 1</span>
-                                                    <p class="mb-0 text-muted">This is a sample notification.</p>
-                                                    <small class="text-muted">2 hours ago</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <!-- Notification Item 2 -->
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <div class="d-flex">
-                                                <div class="flex-grow-1">
-                                                    <span class="fw-semibold">Notification Title 2</span>
-                                                    <p class="mb-0 text-muted">Another sample notification.</p>
-                                                    <small class="text-muted">3 hours ago</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <!-- End of Notifications -->
-                                    <li class="dropdown-divider"></li>
-                                    <!-- View All Notifications -->
-                                    <li>
-                                        <a class="dropdown-item text-center" href="#">
-                                            View All Notifications
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <!-- Place this tag where you want the button to render. -->
-                            <li class="nav-item lh-1 me-3 ms-4">
-                                <a class="github-button" href="https://github.com/ThemeSelection/e-bidir-html-admin-template-free" data-icon="octicon-star" data-size="large" data-show-count="false" aria-label="Star ThemeSelection/e-bidir-html-admin-template-free on GitHub">Remaining
-                                    Credit
-                                    <span id="creditLimit">4</span>
-                                </a>
-                            </li>
-
-
-
-
                             <!-- User -->
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
@@ -296,40 +239,36 @@ include "../common/head.php";
                     <!-- Content -->
 
                     <div class="container-xxl flex-grow-1  container-p-y">
-                        <div class="row">
-                            <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
-                                <div class="card">
-                                    <div class="row row-bordered g-0">
-                                        <div class="col-md-8">
-                                            <h5 class="card-header m-0 me-2 pb-3">Credit Status</h5>
-                                            <div id="totalRevenueChart" class="px-2"></div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="card-body">
-                                                <div class="text-center">
-                                                    <!-- Remove static options and add an id for the select element -->
-                                                    <select class="form-select" id="growthReportSelect" aria-label="Select a year"></select>
-                                                </div>
+                        <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
+                            <div class="card">
+                                <div class="row row-bordered g-0">
+                                    <div class="col-md-8">
+                                        <h5 class="card-header m-0 me-2 pb-3">Credit Status</h5>
+                                        <div id="totalRevenueChart" class="px-2"></div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card-body">
+                                            <div class="text-center">
+                                                <!-- Remove static options and add an id for the select element -->
+                                                <select class="form-select" id="growthReportSelect" aria-label="Select a year"></select>
                                             </div>
-                                            <!-- Add an empty div with an id for rendering the chart -->
-                                            <div id="growthChart"></div>
-                                            <div class="d-flex px-xxl-4 px-lg-2 p-4 gap-xxl-3 gap-lg-1 gap-3 justify-content-between">
-                                                <div class="text-center">
-                                                    <select class="form-select" id="statusSelect" aria-label="Select a status">
-                                                        <option value="completed">Completed</option>
-                                                        <option value="overdue">Overdue</option>
-                                                        <option value="scheduled">Scheduled</option>
-                                                    </select>
-                                                </div>
+                                        </div>
+                                        <!-- Add an empty div with an id for rendering the chart -->
+                                        <div id="growthChart"></div>
+                                        <div class="d-flex px-xxl-4 px-lg-2 p-4 gap-xxl-3 gap-lg-1 gap-3 justify-content-between">
+                                            <div class="text-center">
+                                                <select class="form-select" id="statusSelect" aria-label="Select a status">
+                                                    <option value="completed">Completed</option>
+                                                    <option value="overdue">Overdue</option>
+                                                    <option value="scheduled">Scheduled</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!--/ Total Revenue -->
-
                         </div>
-
+                        <!--/ Total Revenue -->
 
                         <div class="row">
                             <!-- Striped Rows -->
@@ -719,33 +658,9 @@ include "../common/head.php";
                             <!--/ Transactions -->
                         </div>
                     </div>
-                    <!-- / Content -->
 
-                    <!-- Footer -->
-                    <footer class="content-footer footer bg-footer-theme">
-                        <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-                            <div class="mb-2 mb-md-0">
-                                ©
-                                <script>
-                                    document.write(new Date().getFullYear());
-                                </script>
-                                , made with ❤️ by
-                                <a href="https://ThemeSelection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
-                            </div>
-                            <div>
-                                <a href="https://ThemeSelection.com/license/" class="footer-link me-4" target="_blank">License</a>
-                                <a href="https://ThemeSelection.com/" target="_blank" class="footer-link me-4">More
-                                    Themes</a>
 
-                                <a href="https://ThemeSelection.com/demo/e-bidir-bootstrap-html-admin-template/documentation/" target="_blank" class="footer-link me-4">Documentation</a>
 
-                                <a href="https://github.com/ThemeSelection/e-bidir-html-admin-template-free/issues" target="_blank" class="footer-link me-4">Support</a>
-                            </div>
-                        </div>
-                    </footer>
-                    <!-- / Footer -->
-
-                    <div class="content-backdrop fade"></div>
                 </div>
                 <!-- Content wrapper -->
             </div>

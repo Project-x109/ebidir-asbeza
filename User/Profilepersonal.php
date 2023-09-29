@@ -136,7 +136,7 @@ include "../connect.php";
               <div data-i18n="Horizontal Form">Repayment History</div>
             </a>
           </li>
-       
+
         </ul>
       </aside>
       <!-- / Menu -->
@@ -296,7 +296,7 @@ include "../connect.php";
               <div class="toast-header">
                 <i class="bx bx-bell me-2"></i>
                 <div class="me-auto toast-title fw-semibold">Error</div>
-                <small>11 mins ago</small>
+                <small></small>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
               </div>
               <div class="toast-body">Fruitcake chocolate bar tootsie roll gummies gummies jelly beans cake.</div>
@@ -321,6 +321,16 @@ include "../connect.php";
                 $sql2 = "SELECT * from personal where user_id=$id";
                 $res2 = $conn->query($sql2);
                 $row2 = $res2->fetch_assoc();
+                // Check if data exists, if not, set default values
+                if (!$row2) {
+                  $row2 = array(
+                    'Number_of_dependents' => 'No data',
+                    'Marriage_Status' => 'No data',
+                    'Educational_Status' => 'No data',
+                    'Criminal_record' => 'No data',
+
+                  );
+                }
                 ?>
                 <?php
                 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -360,19 +370,24 @@ include "../connect.php";
                         <div class="mb-3 col-md-6">
                           <label for="Marrige Status" class="form-label">Marrige Status</label>
                           <select class="form-control" type="text" name="marrigeStatus" id="marrigeStatus" autofocus readonly>
-                            <option value="">Default select</option>
-                            <option <?php if ($row2['Marriage_Status'] === 'Married')
-                                      echo ' selected'; ?>>Married</option>
-                            <option <?php if ($row2['Marriage_Status'] === 'Single')
-                                      echo ' selected'; ?>>Single</option>
-                            <option <?php if ($row2['Marriage_Status'] === 'Divorced')
-                                      echo ' selected'; ?>>Divorced
+                            <option value="" <?php if ($row2['Marriage_Status'] === 'No data')
+                                                echo ' selected'; ?>>No data</option>
+                            <option value="Married" <?php if ($row2['Marriage_Status'] === 'Married')
+                                                      echo ' selected'; ?>>Married</option>
+                            <option value="Single" <?php if ($row2['Marriage_Status'] === 'Single')
+                                                      echo ' selected'; ?>>Single</option>
+                            <option value="Divorced" <?php if ($row2['Marriage_Status'] === 'Divorced')
+                                                        echo ' selected'; ?>>Divorced
                             </option>
                           </select>
                         </div>
                         <div class="mb-3 col-md-6">
                           <label for="educationalStatus" class="form-label">Educational Status</label>
                           <select class="form-control" type="text" id="educationalStatus" name="educationalStatus" autofocus readonly>
+                            <option value="" id="educationalStatus" <?php if ($row2['Educational_Status'] === 'No data')
+                                                                      echo ' selected'; ?>>
+                              No data
+                            </option>
 
                             <option value="Below highSchool" id="educationalStatus" <?php if ($row2['Educational_Status'] === 'Below highSchool')
                                                                                       echo ' selected'; ?>>

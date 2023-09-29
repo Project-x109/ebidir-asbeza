@@ -137,7 +137,7 @@ include "../connect.php";
                             <div data-i18n="Horizontal Form">Repayment History</div>
                         </a>
                     </li>
-                
+
                 </ul>
             </aside>
             <!-- / Menu -->
@@ -298,7 +298,7 @@ include "../connect.php";
                             <div class="toast-header">
                                 <i class="bx bx-bell me-2"></i>
                                 <div class="me-auto toast-title fw-semibold">Error</div>
-                                <small>11 mins ago</small>
+                                <small></small>
                                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                             </div>
                             <div class="toast-body">Fruitcake chocolate bar tootsie roll gummies gummies jelly beans
@@ -326,6 +326,16 @@ include "../connect.php";
                                 $sql3 = "SELECT * from economic where user_id=$id";
                                 $res3 = $conn->query($sql3);
                                 $row3 = $res3->fetch_assoc();
+                                // Check if data exists, if not, set default values
+                                if (!$row3) {
+                                    $row3 = array(
+                                        'field_of_employeement' => 'No data',
+                                        'number_of_income' => 'No data',
+                                        'year' => 'No data',
+                                        'branch' => 'No data',
+                                        'position' => 'No data'
+                                    );
+                                }
                                 ?>
                                 <?php
                                 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -377,6 +387,9 @@ include "../connect.php";
                                                 <div class="mb-3 col-md-6">
                                                     <label for="branch" class="form-label">Branch Name</label>
                                                     <select type="text" class="form-control" id="branch" name="branch" autofocus readonly>
+                                                        <option value="No data" <?php if ($row3['branch'] === 'No data')
+                                                                                                echo ' selected'; ?>>
+                                                            No data</option>
                                                         <option value="Purposeblack ETH" <?php if ($row3['branch'] === 'Purposeblack ETH')
                                                                                                 echo ' selected'; ?>>
                                                             Purposeblack ETH</option>

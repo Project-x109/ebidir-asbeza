@@ -2,7 +2,9 @@
  * UI Toasts
  */
 'use strict';
-function validateForm() {
+const form = document.querySelector('form');
+const submitBtn = document.getElementById('submit-btn');
+function validateForm(event) {
   // An array of field IDs and their corresponding error messages
   const fields = [
     { id: 'basic-icon-default-fieldofEmployment', error: 'field of Employment is required.' },
@@ -18,6 +20,7 @@ function validateForm() {
     const value = input.value.trim();
 
     if (value === '') {
+      event.preventDefault();
       const toastPlacementExample = document.querySelector('.toast-placement-ex');
       toastPlacementExample.querySelector('.toast-body').textContent = field.error;
       toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
@@ -29,6 +32,7 @@ function validateForm() {
     if (field.id === 'basic-icon-default-numberofincome') {
       // Check if TIN Number field contains only numbers
       if (!numberRegex.test(value)) {
+        event.preventDefault();
         const toastPlacementExample = document.querySelector('.toast-placement-ex');
         toastPlacementExample.querySelector('.toast-body').textContent = 'Number of Income should be Number only';
         toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
@@ -38,19 +42,6 @@ function validateForm() {
       }
     }
   }
-
-  // Disable all input fields
-  const inputFields = document.querySelectorAll('input, select');
-  for (const inputField of inputFields) {
-    inputField.disabled = true;
-  }
-
-  // If all fields are valid, show a success message
-  const toastPlacementExample = document.querySelector('.toast-placement-ex');
-  toastPlacementExample.classList.add('bg-primary');
-  toastPlacementExample.classList.remove('bg-danger');
-  toastPlacementExample.querySelector('.toast-body').textContent = 'Form submitted successfully.';
-  toastPlacementExample.querySelector('.toast-title ').textContent = 'Success.';
-  const toastPlacement = new bootstrap.Toast(toastPlacementExample);
-  toastPlacement.show();
+  form.submit();
 }
+submitBtn.addEventListener('click', validateForm);
