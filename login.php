@@ -14,9 +14,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset($_PO
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $hashedPassword = $row['password'];
-
+           echo $userEnteredPassword;
             // Verify the user-entered plain text password against the retrieved hashed password
-            if (password_verify($userEnteredPassword, $hashedPassword)) {
+            // if (password_verify($userEnteredPassword, $hashedPassword)) {
+            if ($userEnteredPassword==$hashedPassword) {
                 $_SESSION['role'] = $row['role'];
                 $_SESSION['id'] = $row['id'];
                 $_SESSION['dob'] = $row['dob'];

@@ -11,69 +11,61 @@ require '../assets/PHPMailer/Exception.php';
 
 session_start();
 
-$validationErrors = array();
+$validationErrors = array(); 
+ // Validation functions
+function validateImage($file)
+{
+    $allowedExtensions = array("jpg", "jpeg", "png");
+    $maxFileSize = 1024 * 1024; // 1MB
 
-if (isset($_POST['add_user'])) {
-    // Validation functions
-    function validatePhone($phone)
-    {
-        // Use the provided regex pattern to validate phone numbers
-        $pattern = '/(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(0\s*9\s*(([0-9]\s*){8}))|(0\s*7\s*(([0-9]\s*){8}))/';
-        return preg_match($pattern, $phone);
-    }
+    $fileExtension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    $fileSize = $file['size'];
 
-echo $_SESSION['success'];
-    header("location:addusers.php");
+    return in_array($fileExtension, $allowedExtensions) && $fileSize <= $maxFileSize;
 }
-    function validateEmail($email)
-    {
-        // Use the provided regex pattern to validate emails
-        $pattern = '/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i';
-        return preg_match($pattern, $email);
+function validatePhone($phone)
+{
+    // Use the provided regex pattern to validate phone numbers
+    $pattern = '/(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(0\s*9\s*(([0-9]\s*){8}))|(0\s*7\s*(([0-9]\s*){8}))/';
+    return preg_match($pattern, $phone);
+}
+function validateEmail($email)
+{
+    // Use the provided regex pattern to validate emails
+    $pattern = '/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i';
+    return preg_match($pattern, $email);
+}
+
+function validateName($name)
+{
+    // Use regex to validate that the name contains only letters and spaces
+    return preg_match('/^[A-Za-z\s]+$/', $name);
+}
+
+function validateTINNumber($tinNumber)
+{
+    // Use regex to validate that TIN number contains exactly 10 digits
+    return preg_match('/^\d{10}$/', $tinNumber);
+}
+function validateJobStatus($jobStatus)
+{
+    // Define an array of valid job statuses
+    $validStatuses = array('Employed', 'Unemployed', 'Self Employed');
+    return in_array($jobStatus, $validStatuses);
+}
+
+function validateAge($dob)
+{
+    // Calculate age from date of birth
+    $dobTimestamp = strtotime($dob);
+    $todayTimestamp = time();
+    $age = date('Y', $todayTimestamp) - date('Y', $dobTimestamp);
+    if (date('md', $todayTimestamp) < date('md', $dobTimestamp)) {
+        $age--;
     }
-
-    function validateName($name)
-    {
-        // Use regex to validate that the name contains only letters and spaces
-        return preg_match('/^[A-Za-z\s]+$/', $name);
-    }
-
-    function validateTINNumber($tinNumber)
-    {
-        // Use regex to validate that TIN number contains exactly 10 digits
-        return preg_match('/^\d{10}$/', $tinNumber);
-    }
-
-    function validateJobStatus($jobStatus)
-    {
-        // Define an array of valid job statuses
-        $validStatuses = array('Employed', 'Unemployed', 'Self Employed');
-        return in_array($jobStatus, $validStatuses);
-    }
-
-    function validateAge($dob)
-    {
-        // Calculate age from date of birth
-        $dobTimestamp = strtotime($dob);
-        $todayTimestamp = time();
-        $age = date('Y', $todayTimestamp) - date('Y', $dobTimestamp);
-        if (date('md', $todayTimestamp) < date('md', $dobTimestamp)) {
-            $age--;
-        }
-        return $age >= 18;
-    }
-
-    function validateImage($file)
-    {
-        $allowedExtensions = array("jpg", "jpeg", "png");
-        $maxFileSize = 1024 * 1024; // 1MB
-
-        $fileExtension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        $fileSize = $file['size'];
-
-        return in_array($fileExtension, $allowedExtensions) && $fileSize <= $maxFileSize;
-    }
-
+    return $age >= 18;
+}
+if (isset($_POST['add_user'])) {
     // Check if the phone number, TIN number, and email are already used
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
@@ -177,8 +169,6 @@ echo $_SESSION['success'];
     } else {
         $_SESSION['error'] = implode("<br>", $validationErrors);
     }
-}
-
 // Handle errors (display them in the toast if needed)
 if (isset($_SESSION['error'])) {
     echo '<script>
@@ -190,7 +180,8 @@ if (isset($_SESSION['error'])) {
       </script>';
     unset($_SESSION['error']); // Clear the error message
 }
-
+header("location:addusers.php");
+}
 // Function to generate a random password
 function generateRandomPassword($length = 8)
 {
@@ -236,8 +227,25 @@ function sendPasswordEmail($recipientEmail, $password)
     }
 }
 if(isset($_POST['addbranch'])){
-    $sql="INSERT INTO `branch`(`branch_name`, `phonenumber`,`location`,`profile`) 
-    VALUES ('$_POST[branch_name]','$_POST[phonenumber]','$_POST[email]','$_POST[location]','$folder')";
-
+   
+    $sql="SELECT * FROM admin_setting";
+    $res=$conn->query($sql);
+    $row=$res->fetch_assoc();
+    $branch_id="EB".sprintf( '%04d' ,$row['branch']);
+    $sql = "INSERT INTO `users`(`name`, `phone`, `password`, `role`, `status`, `email`,`user_id`) 
+    VALUES ('$_POST[branch_name]', '$_POST[phonenumber]', '123', 'branch', 'waiting','$_POST[email]','$branch_id')";
+$res = $conn->query($sql);
+if($res){
+  $sql="UPDATE admin_setting set branch=".($row['branch']+1);
+  $conn->query($sql);
+    $sql="INSERT INTO `branch`(`branch_name`,`location`,`branch_id`)
+    VALUES ('$_POST[branch_name]','$_POST[location]','$branch_id')";
+    $res = $conn->query($sql);
+    if($res){
+        $_SESSION['success'] = "Branch Account created successfully";
+    }else
+    $_SESSION['error'] = "Error Occured";
+}
+header("location:addbranch.php");
 }
 ?>
