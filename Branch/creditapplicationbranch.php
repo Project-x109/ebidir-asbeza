@@ -1,3 +1,7 @@
+<?php
+
+include '../connect.php';
+?>
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
@@ -32,7 +36,7 @@
     <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
 
     <!-- Page CSS -->
-
+    <link rel="stylesheet" href="./applyforme_copy.css" />
     <!-- Helpers -->
     <script src="../assets/vendor/js/helpers.js"></script>
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
@@ -241,42 +245,54 @@
                             <div class="col-md-6 col-lg-12 col-xl-12 order-0 mb-4">
                                 <div class="card">
                                     <h5 class="card-header">Lists of Loans</h5>
-                                    <div class="table-responsive text-nowrap ms-3">
-                                        <table class="table table-striped" id="table-striped">
-                                            <thead>
+
+                                    <table id="example" class="display" style="width:100%">
+                                    <thead>
                                                 <tr>
-                                                    <th class="sortable" data-column="userName">User Name</th>
                                                     <th>User ID</th>
+                                                    <th class="sortable" data-column="userName">User Name</th>
+                                                    <th>Loan Amount</th>
                                                     <th>Credit Limit</th>
                                                     <th>Credit Score</th>
-                                                    <th>Age</th>
-                                                    <th>TIN Number</th>
-                                                    <th>Loan Amount</th>
-                                                    <th>Status</th>
                                                     <th>Requsted Date</th>
-                                                    <th>Email</th>
-                                                    <th>Phone Number</th>
-                                                    <th>Details</th>
-                                                    <th>Update Status</th>
-                                                    <th>Actions</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th> 
                                                 </tr>
                                             </thead>
-                                            <tbody class="table-border-bottom-0">
-                                            </tbody>
-                                        </table>
+        <tbody>
+            <?php
+            $sql="SELECT *,loans.user_id as userID ,loans.status as status FROM `loans`  INNER join users on users.id=loans.user_id";
+            $res=$conn->query($sql);
+            if($res->num_rows>0)
+            while($row=$res->fetch_assoc()){
+        echo "<tr>
+        <td>".$row['userID']."</td>
+        <td>".$row['name']."</td>
+        <td>".$row['price']."</td>
+        <td>".$row['credit_limit']."</td> 
+        <td>".$row['credit_score']."</td>   
+        <td>".$row['createdOn']."</td>   
+        <td>".$row['status']."</td>   
+        <td><i class='bx bx-trash me-2 text-danger'></i><i class='btn bx bx-edit me-2 text-primary' data-bs-toggle='modal' data-bs-target='#statusModal'></i></td>   
+        </tr>";
+    }
+?>
+        </tbody>
+    </table>
+
 
                                         <!-- Modal Structure (empty modal) -->
                                         <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="modalToggleLabel">Loan Details</h5>
+                                                        <h5 class="modal-title" id="modalToggleLabel">Loan status</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="card">
                                                             <div class="card-body" id="modalContent">
-                                                                <!-- Modal content will be dynamically generated here -->
+                                                               
                                                             </div>
                                                         </div>
                                                     </div>
@@ -296,7 +312,32 @@
                                                     <div class="modal-body">
                                                         <input type="hidden" id="loanID" />
                                                         <div id="statusRadioContainer">
-                                                            <!-- Radio buttons will be generated here dynamically -->
+                                                        <div class="radio-buttons-container">
+<div class="radio-button">
+  <input name="radio-group" id="radio2" class="radio-button__input" type="radio">
+  <label for="radio2" class="radio-button__label">
+    <span class="radio-button__custom"></span>
+        
+        pending
+  </label>
+</div>
+<div class="radio-button">
+  <input name="radio-group" id="radio1" class="radio-button__input" type="radio">
+  <label for="radio1" class="radio-button__label">
+    <span class="radio-button__custom"></span>
+    
+    decline
+  </label>
+</div>
+<div class="radio-button">
+  <input name="radio-group" id="radio3" class="radio-button__input" type="radio">
+  <label for="radio3" class="radio-button__label">
+    <span class="radio-button__custom"></span>
+        
+        Closed
+  </label>
+</div>
+</div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -404,6 +445,9 @@
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
+    <script>
+new DataTable('#example');
+</script>
     <script src="../assets/vendor/libs/jquery/jquery.js"></script>
     <script src="../assets/vendor/libs/popper/popper.js"></script>
     <script src="../assets/vendor/js/bootstrap.js"></script>
@@ -417,11 +461,13 @@
 
     <!-- Main JS -->
     <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/jquery-3.7.0.js"></script>
+    <script src="../assets/js/jquery.dataTables.min.js"></script>
 
     <!-- Page JS -->
     <script src="../assets/js/dashboards-analytics.js"></script>
     <script src="../assets/js/mark-Notification-read.js"></script>
-    <script src="../assets/js/loanrequestedlistbranch.js"></script>
+    <!-- <script src="../assets/js/loanrequestedlistbranch.js"></script> -->
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>

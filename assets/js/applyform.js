@@ -29,6 +29,6 @@ document.addEventListener('DOMContentLoaded', function () {
   function isValidIdentificationNumber(number) {
     // Implement your validation logic here
     // For example, check if the number is exactly 6 digits
-    return /^\d{6}$/.test(number);
+    return number.length==6;
   }
 });
