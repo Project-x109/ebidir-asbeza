@@ -293,7 +293,7 @@ include "../connect.php";
               <div class="toast-header">
                 <i class="bx bx-bell me-2"></i>
                 <div class="me-auto toast-title fw-semibold">Error</div>
-                <small>11 mins ago</small>
+                <small></small>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
               </div>
               <div class="toast-body">Fruitcake chocolate bar tootsie roll gummies gummies jelly beans cake.</div>
@@ -328,7 +328,7 @@ include "../connect.php";
                   }
                   ?>
                   <div class="card-body">
-                    <form action="backend.php" method="POST">
+                    <form action="Backend.php" method="POST">
                       <input type="hidden" name="id" value='<?php echo $_SESSION['id'] ?>' />
                       <div class="row mb-4">
                         <label class="col-sm-2 col-form-label" for="basic-icon-default-fieldofEmployment">Field of
@@ -365,7 +365,7 @@ include "../connect.php";
                           <div class="input-group input-group-merge">
                             <span id="basic-icon-default-companyname" class="input-group-text"><i class="bx bx-map-pin"></i></span>
                             <select id="basic-icon-default-companyname" class="form-select" name="branch" value='<?php echo $branch ?>'>
-                              <option value="">Vhoose Branch</option>
+                              <option value="">Choose Branch</option>
                               <option value="Purposeblack ETH">Purposeblack ETH</option>
                               <option value="Purposeblack ETH2">Purposeblack ETH2</option>
                               <option value="Purposeblack ETH3">Purposeblack ETH3</option>
@@ -405,6 +405,27 @@ include "../connect.php";
                       </div>
                     </form>
                   </div>
+                  <?php
+                  // Check if there are validation errors and display them
+                  if (isset($_SESSION['errors']) && !empty($_SESSION['errors'])) :
+                  ?>
+                    <div class="alert alert-danger">
+                      <ul>
+                        <?php foreach ($_SESSION['errors'] as $error) : ?>
+                          <li><?php echo $error; ?></li>
+                        <?php endforeach; ?>
+                      </ul>
+                    </div>
+                  <?php unset($_SESSION['errors']);
+                  endif; ?>
+
+                  <!-- Display success message if any -->
+                  <?php if (isset($_SESSION['success'])) : ?>
+                    <div class="alert alert-success">
+                      <?php echo $_SESSION['success']; ?>
+                    </div>
+                  <?php unset($_SESSION['success']);
+                  endif; ?>
                 </div>
               </div>
             </div>

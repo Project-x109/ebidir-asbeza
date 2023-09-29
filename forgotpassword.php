@@ -296,7 +296,7 @@ if (isset($_SESSION['error'])) {
         <div class="toast-header">
             <i class="bx bx-error me-2"></i> <!-- Add an error icon if you have one -->
             <div class="me-auto toast-title fw-semibold">Error</div>
-            <small>11 mins ago</small>
+            <small></small>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
         <div class="toast-body"></div>
@@ -307,7 +307,7 @@ if (isset($_SESSION['error'])) {
             <div class="toast-header">
                 <i class="bx bx-bell me-2"></i>
                 <div class="me-auto toast-title fw-semibold">success</div>
-                <small>11 mins ago</small>
+                <small></small>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
             <div class="toast-body"></div>

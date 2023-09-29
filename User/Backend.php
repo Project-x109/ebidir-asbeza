@@ -4,27 +4,76 @@ include "../connect.php";
 include "./functions.php";
 session_start();
 if (isset($_POST['add_personal'])) {
-    $age = getAge($_SESSION['dob']);
+    // Form validation
+    $errors = array();
+    // Validate Number of Dependents
     $nod = $_POST['Number_of_dependents'];
+    if (!is_numeric($nod) || $nod < 0) {
+        $errors[] = "Number of Dependents must be a non-negative number.";
+    }
+    if (empty($nod)) {
+        $errors[] = "Number of Dependents is Required";
+    }
+    if ($nod > 10) {
+        $errors[] = "Number of Dependents should be less than Ten";
+    }
+    // Validate Marriage Status
     $marriage = $_POST['Marriage_Status'];
+    if (empty($marriage)) {
+        $errors[] = "Marriage Status is required.";
+    }
+    $allowedMarriageStatus = ["Single", "Divorced", "Married"];
+    // Validate Educational Status
     $educational = $_POST['Educational_Status'];
+    if (empty($educational)) {
+        $errors[] = "Educational Status is required.";
+    }
+    if (!in_array($marriage, $allowedMarriageStatus)) {
+        $errors[] = "Marriage Status must be one of: Single, Divorced, Married.";
+    }
+    // Validate Educational Status
+    $educational = $_POST['Educational_Status'];
+    $allowedEducationalStatus = ["Degree", "Diploma", "PHD", "Masters", "Below highSchool"];
+    if (!in_array($educational, $allowedEducationalStatus)) {
+        $errors[] = "Educational Status must be one of: Degree, Diploma, PHD, Masters, Below highSchool.";
+    }
+    // Validate Criminal Record
     $cr = $_POST['Criminal_record'];
-    $score = personalScore($age, $educational, $marriage, $nod, $cr);
-    $sql = "INSERT INTO `personal`(`Number_of_dependents`, `Marriage_Status`, `Educational_Status`, `Criminal_record`,`user_id`,`personal_score`) 
-    VALUES ('$nod','$marriage','$educational','$cr','$_POST[id]','$score')";
-    echo $sql;
-    $res = $conn->query($sql);
-    // Attempt to execute the SQL query
-    if ($conn->query($sql) === TRUE) {
-        $_SESSION['success'] = "Personal information created Successfully";
-        header("location: economic.php");
-        exit(); // Add this to prevent further execution
+    if (empty($cr)) {
+        $errors[] = "Criminal Record is required.";
+    }
+    if (!is_numeric($cr) || $cr < 0) {
+        $errors[] = "Criminal Record must be a non-negative number.";
+    }
+    if ($cr > 10) {
+        $errors[] = "Criminal Record must be less than ten.";
+    }
+    echo "Form validation completed.<br>";
+    // Check if there are any validation errors
+    if (empty($errors)) {
+        echo "No validation errors.<br>";
+        // All form fields are valid, proceed with database insertion
+        $age = getAge($_SESSION['dob']);
+        $score = personalScore($age, $educational, $marriage, $nod, $cr);
+        $sql = "INSERT INTO `personal`(`Number_of_dependents`, `Marriage_Status`, `Educational_Status`, `Criminal_record`,`user_id`,`personal_score`) 
+                VALUES ('$nod','$marriage','$educational','$cr','$_POST[id]','$score')";
+        // Attempt to execute the SQL query
+        if ($conn->query($sql) === TRUE) {
+            $_SESSION['success'] = "Personal information created Successfully";
+            header("location: economic.php");
+            exit(); // Add this to prevent further execution
+        } else {
+            header("location: backend.php");
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
     } else {
-        // Handle errors
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        // There are validation errors, redirect back to the form page and display errors
+        $_SESSION['errors'] = $errors;
+        header("location: backend.php");
     }
 }
-if (isset($_POST['add_economic'])) {
+
+/* if (isset($_POST['add_economic'])) {
     $Source_of_income = $_POST['number_of_income'];
     $Experience = $_POST['year'];
     $Number_Of_Loans = 0;
@@ -50,6 +99,88 @@ if (isset($_POST['add_economic'])) {
     } else {
         // Handle errors
         echo "Error inserting economic data: " . $conn->error;
+    }
+} */
+
+
+// Add this line before validation
+if (isset($_POST['add_economic'])) {
+    // Form validation
+    $errors = array();
+
+    // Validate Field of Employment
+    $field_of_employeement = $_POST['field_of_employeement'];
+    if (empty($field_of_employeement)) {
+        $errors[] = "Field of Employment is required.";
+    }
+
+    // Validate Number of Income
+    $number_of_income = $_POST['number_of_income'];
+    if (!is_numeric($number_of_income) || $number_of_income < 0) {
+        $errors[] = "Number of Income must be a non-negative number.";
+    }
+    if (empty($number_of_income)) {
+        $errors[] = "Number of Income is Required";
+    }
+
+    // Validate Year of Employment
+    $year = $_POST['year'];
+    if (empty($year)) {
+        $errors[] = "Year of Employment is required.";
+    }
+
+    // Validate Branch Name
+    $branch = $_POST['branch'];
+    if (empty($branch)) {
+        $errors[] = "Branch Name is required.";
+    }
+
+    // Validate Position
+    $position = $_POST['position'];
+    if (empty($position)) {
+        $errors[] = "Position is required.";
+    }
+
+    // Validate Salary
+    $salary = $_POST['salary'];
+    if (!is_numeric($salary) || $salary < 0) {
+        $errors[] = "Salary must be a non-negative number.";
+    }
+
+    // Check if there are any validation errors
+    if (empty($errors)) {
+        // All form fields are valid, proceed with database insertion
+        $Source_of_income = $_POST['number_of_income'];
+        $Experience = $_POST['year'];
+        $Number_Of_Loans = 0;
+        $fully_repaid_loans = 0;
+        $score = EconomicScore($Source_of_income, $Experience, $Number_Of_Loans, $fully_repaid_loans);
+        $sql = "INSERT INTO `economic`(`field_of_employeement`, `number_of_income`, `year`, `branch`,`user_id`,`position`,`salary`,`economic_score`) 
+                VALUES ('$_POST[field_of_employeement]','$_POST[number_of_income]','$_POST[year]','$_POST[branch]','$_POST[id]','$_POST[position]','$_POST[salary]',$score)";
+
+        // Attempt to execute the SQL query
+        if ($conn->query($sql) === TRUE) {
+            $_SESSION['success'] = "Economic information created Successfully";
+            $salary = $_POST['salary'];
+            $level = getLevel($salary);
+            $limit = $LEVEL[$level];
+            $sql = "UPDATE users SET form_done=1, credit_limit=$limit, level='$level' WHERE id=$_POST[id]";
+            $res = $conn->query($sql);
+            if ($res) {
+                header("location: Loan.php");
+                exit(); // Add this to prevent further execution
+            } else {
+                // Handle errors
+                echo "Error updating user: " . $conn->error;
+            }
+        } else {
+            // Handle errors
+            echo "Error inserting economic data: " . $conn->error;
+        }
+    } else {
+        // There are validation errors, redirect back to the form page and display errors
+        $_SESSION['errors'] = $errors;
+        header("location: economic.php");
     }
 }
 if (isset($_POST['update_economic'])) {

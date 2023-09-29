@@ -255,7 +255,7 @@
                         <div class="toast-header">
                             <i class="bx bx-bell me-2"></i>
                             <div class="me-auto toast-title fw-semibold">Error</div>
-                            <small>11 mins ago</small>
+                            <small></small>
                             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                         </div>
                         <div class="toast-body">Fruitcake chocolate bar tootsie roll gummies gummies jelly beans

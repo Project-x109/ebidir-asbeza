@@ -4,6 +4,8 @@ include "../connect.php";
 
 ?>
 
+
+
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
@@ -295,7 +297,7 @@ include "../connect.php";
               <div class="toast-header">
                 <i class="bx bx-bell me-2"></i>
                 <div class="me-auto toast-title fw-semibold">Error</div>
-                <small>11 mins ago</small>
+                <small></small>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
               </div>
               <div class="toast-body">Fruitcake chocolate bar tootsie roll gummies gummies jelly beans cake.</div>
@@ -319,7 +321,7 @@ include "../connect.php";
                     <!-- <small class="text-muted float-end">Merged input group</small> -->
                   </div>
                   <div class="card-body">
-                    <form action="backend.php" method="POST" enctype="multipart/form-data">
+                    <form action="Backend.php" method="POST">
                       <input type="hidden" name="id" value='<?php echo $_SESSION['id'] ?>' />
                       <div class="row mb-4">
                         <label class="col-sm-2 col-form-label" for="numberOfDependents">Number of
@@ -376,13 +378,35 @@ include "../connect.php";
                       </div>
                       <div class="row justify-content-end">
                         <div class="col-sm-10">
-                          <button type="submit" name='<?php echo $found ? "update_personal" : "add_personal" ?>' class="btn btn-primary">
+                          <button id="submit-btn" type="submit"  name='<?php echo $found ? "update_personal" : "add_personal" ?>' class="btn btn-primary">
                             <?php echo $found ? "Update" : "Submit" ?>
                           </button>
                         </div>
                       </div>
                     </form>
                   </div>
+                  <?php
+
+                  // Check if there are validation errors and display them
+                  if (isset($_SESSION['errors']) && !empty($_SESSION['errors'])) :
+                  ?>
+                    <div class="alert alert-danger">
+                      <ul>
+                        <?php foreach ($_SESSION['errors'] as $error) : ?>
+                          <li><?php echo $error; ?></li>
+                        <?php endforeach; ?>
+                      </ul>
+                    </div>
+                  <?php unset($_SESSION['errors']);
+                  endif; ?>
+
+                  <!-- Display success message if any -->
+                  <?php if (isset($_SESSION['success'])) : ?>
+                    <div class="alert alert-success">
+                      <?php echo $_SESSION['success']; ?>
+                    </div>
+                  <?php unset($_SESSION['success']);
+                  endif; ?>
                 </div>
               </div>
             </div>

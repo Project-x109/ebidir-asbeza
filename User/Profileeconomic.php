@@ -298,7 +298,7 @@ include "../connect.php";
                             <div class="toast-header">
                                 <i class="bx bx-bell me-2"></i>
                                 <div class="me-auto toast-title fw-semibold">Error</div>
-                                <small>11 mins ago</small>
+                                <small></small>
                                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                             </div>
                             <div class="toast-body">Fruitcake chocolate bar tootsie roll gummies gummies jelly beans
@@ -387,6 +387,9 @@ include "../connect.php";
                                                 <div class="mb-3 col-md-6">
                                                     <label for="branch" class="form-label">Branch Name</label>
                                                     <select type="text" class="form-control" id="branch" name="branch" autofocus readonly>
+                                                        <option value="No data" <?php if ($row3['branch'] === 'No data')
+                                                                                                echo ' selected'; ?>>
+                                                            No data</option>
                                                         <option value="Purposeblack ETH" <?php if ($row3['branch'] === 'Purposeblack ETH')
                                                                                                 echo ' selected'; ?>>
                                                             Purposeblack ETH</option>
