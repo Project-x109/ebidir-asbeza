@@ -321,7 +321,7 @@ include "../connect.php";
                     <!-- <small class="text-muted float-end">Merged input group</small> -->
                   </div>
                   <div class="card-body">
-                    <form action="Backend.php" method="POST">
+                    <form action="backend.php" method="POST">
                       <input type="hidden" name="id" value='<?php echo $_SESSION['id'] ?>' />
                       <div class="row mb-4">
                         <label class="col-sm-2 col-form-label" for="numberOfDependents">Number of
