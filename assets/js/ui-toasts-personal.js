@@ -54,14 +54,14 @@ function validateForm(event) {
     if (field.id === 'criminalRecord') {
       event.preventDefault();
       // Check if Criminal Record field contains only numbers
-      if (!numberRegex.test(value)) {
-        const toastPlacementExample = document.querySelector('.toast-placement-ex');
-        toastPlacementExample.querySelector('.toast-body').textContent = 'Criminal Record Number must contain numbers.';
-        toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
-        const toastPlacement = new bootstrap.Toast(toastPlacementExample);
-        toastPlacement.show();
-        return; // Stop further validation if Criminal Record is invalid
-      }
+      // if (!numberRegex.test(value)) {
+      //   const toastPlacementExample = document.querySelector('.toast-placement-ex');
+      //   toastPlacementExample.querySelector('.toast-body').textContent = 'Criminal Record Number must contain numbers.';
+      //   toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
+      //   const toastPlacement = new bootstrap.Toast(toastPlacementExample);
+      //   toastPlacement.show();
+      //   return; // Stop further validation if Criminal Record is invalid
+      // }
       if (value > 10) {
         const toastPlacementExample = document.querySelector('.toast-placement-ex');
         toastPlacementExample.querySelector('.toast-body').textContent = 'Criminal Record must be less than ten.';

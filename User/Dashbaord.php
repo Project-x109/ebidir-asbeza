@@ -214,8 +214,8 @@ include "../common/head.php";
               </li>
               <!-- Place this tag where you want the button to render. -->
               <li class="nav-item lh-1 me-3 ms-4">
-                <a class="github-button" href="https://github.com/ThemeSelection/e-bidir-html-admin-template-free" data-icon="octicon-star" data-size="large" data-show-count="false" aria-label="Star ThemeSelection/e-bidir-html-admin-template-free on GitHub"> Credit
-                  <span id="creditLimit">4</span>
+                <a class="github-button" data-icon="octicon-star" data-size="large" data-show-count="false" aria-label="Star ThemeSelection/e-bidir-html-admin-template-free on GitHub"> 
+                  <span id="creditLevel"><?php echo $_SESSION['level'];?></span>
                 </a>
               </li>
 
@@ -307,7 +307,7 @@ include "../common/head.php";
                         <h5 class="card-title text-primary">Congratulations
                           <?php echo $row['name']; ?>! 🎉
                         </h5>
-                        <p class="mb-4">Your Loan has been applied. Your current credit is <span class="fw-bold"><?php echo $row['credit_limit'] ?> Birr</span> Check your new level badge in
+                        <p class="mb-4">Your current credit is <span class="fw-bold"><?php echo $row['credit_limit'] ?> Birr</span> Check your new level badge in
                           your profile.</p>
                         <a href="#table-striped" class="btn btn-sm btn-outline-primary">View Table</a>
                       </div>
@@ -340,6 +340,10 @@ include "../common/head.php";
                           </div>
                         </div>
                         <div id="CreditLimitCardID">
+                        <span class="fw-semibold d-block mb-1">Credit Level</span>
+                    <h5 class="card-title mb-2"><?php echo $_SESSION['level'];  ?>
+                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> </small></h5>
+                      
                         </div>
                       </div>
                     </div>
@@ -362,7 +366,9 @@ include "../common/head.php";
                           </div>
                         </div>
                         <div id="AvailableCreditID">
-
+                        <span class="fw-semibold d-block mb-1">Available Credit</span>
+                    <h5 class="card-title text-nowrap mb-2"><?php echo $_SESSION['credit_limit']?>
+                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i></small></h5>
                         </div>
                       </div>
                     </div>
@@ -774,7 +780,7 @@ include "../common/head.php";
   <script src="../assets/js/userorderstatisticschart.js"></script>
   <script src="../assets/js/mark-Notification-read.js"></script>
   <script src="../assets/js/populatetable.js"></script>
-  <script src="../assets/js/userdashboarddata.js"></script>
+  <!-- <script src="../assets/js/userdashboarddata.js"></script> -->
 
   <script src="../assets/js/tablefunctionalities.js">
     // JavaScript for pagination and search functionality

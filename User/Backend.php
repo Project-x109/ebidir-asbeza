@@ -3,7 +3,7 @@
 include "../connect.php";
 include "./functions.php";
 session_start();
-if (isset($_POST['add_personal'])) {
+if (isset($_POST['add_personal'])||isset($_POST['Number_of_dependents'])) {
     // Form validation
     $errors = array();
     // Validate Number of Dependents
@@ -42,12 +42,6 @@ if (isset($_POST['add_personal'])) {
     if (empty($cr)) {
         $errors[] = "Criminal Record is required.";
     }
-    if (!is_numeric($cr) || $cr < 0) {
-        $errors[] = "Criminal Record must be a non-negative number.";
-    }
-    if ($cr > 10) {
-        $errors[] = "Criminal Record must be less than ten.";
-    }
     echo "Form validation completed.<br>";
     // Check if there are any validation errors
     if (empty($errors)) {
@@ -58,18 +52,19 @@ if (isset($_POST['add_personal'])) {
         $sql = "INSERT INTO `personal`(`Number_of_dependents`, `Marriage_Status`, `Educational_Status`, `Criminal_record`,`user_id`,`personal_score`) 
                 VALUES ('$nod','$marriage','$educational','$cr','$_POST[id]','$score')";
         // Attempt to execute the SQL query
+        echo $sql;
         if ($conn->query($sql) === TRUE) {
             $_SESSION['success'] = "Personal information created Successfully";
             header("location: economic.php");
             exit(); // Add this to prevent further execution
         } else {
-            header("location: backend.php");
+            header("location: personal.php");
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
     } else {
         // There are validation errors, redirect back to the form page and display errors
         $_SESSION['errors'] = $errors;
-        header("location: backend.php");
+        header("location: personal.php");
     }
 }
 
@@ -162,9 +157,12 @@ if (isset($_POST['add_economic'])) {
         if ($conn->query($sql) === TRUE) {
             $_SESSION['success'] = "Economic information created Successfully";
             $salary = $_POST['salary'];
+            echo $salary;
             $level = getLevel($salary);
             $limit = $LEVEL[$level];
             $sql = "UPDATE users SET form_done=1, credit_limit=$limit, level='$level' WHERE id=$_POST[id]";
+            echo $sql;
+
             $res = $conn->query($sql);
             if ($res) {
                 header("location: Loan.php");

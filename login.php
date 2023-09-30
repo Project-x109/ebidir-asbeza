@@ -16,10 +16,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset($_PO
             $hashedPassword = $row['password'];
 
             // Verify the user-entered plain text password against the retrieved hashed password
-            if (password_verify($userEnteredPassword, $hashedPassword)) {
+            // if (password_verify($userEnteredPassword, $hashedPassword)) {
+
+            if ($userEnteredPassword=$hashedPassword) {
                 $_SESSION['role'] = $row['role'];
                 $_SESSION['id'] = $row['id'];
                 $_SESSION['dob'] = $row['dob'];
+                $_SESSION['credit_limit']=$row['credit_limit'];
+                $_SESSION['level']=$row['level'];
                 echo $_SESSION['role'];
 
                 $loc = $_SESSION['role'] . "/";

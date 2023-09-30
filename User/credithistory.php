@@ -307,18 +307,34 @@ include "../common/head.php";
                                         <table class="table table-striped" id="table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th class="sortable" data-column="userName">User Name</th>
-                                                    <th>Branch Name</th>
-                                                    <th>User ID</th>
+                                                    <th>NO</th>
                                                     <th>Loan ID</th>
                                                     <th>Amount</th>
                                                     <th>Status</th>
-                                                    <th>Term</th>
-                                                    <th>Date Closed</th>
+                                                    <th>credit score</th>
+                                                    <th>created on</th>
+                                                    <th>closed on</th>
                                                 </tr>
                                             </thead>
-                                            <tbody class="table-border-bottom-0">
-                                            </tbody>
+                                            <tbody>
+            <?php
+            $x=1;
+            $sql="SELECT * FROM `loans` where user_id='".$_SESSION['id']."'";
+            // echo $sql;
+            $res=$conn->query($sql);
+            if($res->num_rows>0)
+            while($row=$res->fetch_assoc()){
+        echo "<tr>
+        <td>".($x++)."</td>
+        <td>".$row['id']."</td>
+        <td>".$row['price']."</td>
+        <td>".$row['status']."</td> 
+        <td>".$row['credit_score']."</td>   
+        <td>".$row['createdOn']."</td>
+        <td>".$row['closedOn']."</td>";
+    }
+?>
+        </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -418,6 +434,10 @@ include "../common/head.php";
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
+    <script>
+new DataTable('#example');
+
+</script>
     <script src="../assets/vendor/libs/jquery/jquery.js"></script>
     <script src="../assets/vendor/libs/popper/popper.js"></script>
     <script src="../assets/vendor/js/bootstrap.js"></script>
@@ -432,10 +452,12 @@ include "../common/head.php";
     <!-- Main JS -->
     <script src="../assets/js/main.js"></script>
 
+    <script src="../assets/js/jquery-3.7.0.js"></script>
+    <script src="../assets/js/jquery.dataTables.min.js"></script>
     <!-- Page JS -->
     <script src="../assets/js/dashboards-analytics.js"></script>
     <script src="../assets/js/mark-Notification-read.js"></script>
-    <script src="../assets/js/usercredithistory.js"></script>
+    <!-- <script src="../assets/js/usercredithistory.js"></script> -->
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
