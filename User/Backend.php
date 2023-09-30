@@ -39,15 +39,14 @@ if (isset($_POST['add_personal'])) {
     }
     // Validate Criminal Record
     $cr = $_POST['Criminal_record'];
+    $allowedCriminalRecord = ["No", "Yes/Past Five Years", "Yes/More Than Five Years"];
     if (empty($cr)) {
         $errors[] = "Criminal Record is required.";
     }
-    if (!is_numeric($cr) || $cr < 0) {
-        $errors[] = "Criminal Record must be a non-negative number.";
+    if (!in_array($cr, $allowedCriminalRecord)) {
+        $errors[] = "Criminal Record must be one of: No, Yes/Past Five Years, Yes/More Than Five Years";
     }
-    if ($cr > 10) {
-        $errors[] = "Criminal Record must be less than ten.";
-    }
+
     echo "Form validation completed.<br>";
     // Check if there are any validation errors
     if (empty($errors)) {
@@ -63,46 +62,15 @@ if (isset($_POST['add_personal'])) {
             header("location: economic.php");
             exit(); // Add this to prevent further execution
         } else {
-            header("location: backend.php");
+            header("location: personal.php");
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
     } else {
         // There are validation errors, redirect back to the form page and display errors
         $_SESSION['errors'] = $errors;
-        header("location: backend.php");
+        header("location: personal.php");
     }
 }
-
-/* if (isset($_POST['add_economic'])) {
-    $Source_of_income = $_POST['number_of_income'];
-    $Experience = $_POST['year'];
-    $Number_Of_Loans = 0;
-    $fully_repaid_loans = 0;
-    $score = EconomicScore($Source_of_income, $Experience, $Number_Of_Loans, $fully_repaid_loans);
-    $sql = "INSERT INTO `economic`(`field_of_employeement`, `number_of_income`, `year`, `branch`,`user_id`,`position`,`salary`,`economic_score`) 
-    VALUES ('$_POST[field_of_employeement]','$_POST[number_of_income]','$_POST[year]','$_POST[branch]','$_POST[id]','$_POST[position]','$_POST[salary]',$score)";
-    echo $sql;
-    if ($conn->query($sql) === TRUE) {
-        $_SESSION['success'] = "Economic information created Successfully";
-        $salary = $_POST['salary'];
-        $level = getLevel($salary);
-        $limit = $LEVEL[$level];
-        $sql = "UPDATE users SET form_done=1, credit_limit=$limit, level='$level' WHERE id=$_POST[id]";
-        $res = $conn->query($sql);
-        if ($res) {
-            header("location: Loan.php");
-            exit(); // Add this to prevent further execution
-        } else {
-            // Handle errors
-            echo "Error updating user: " . $conn->error;
-        }
-    } else {
-        // Handle errors
-        echo "Error inserting economic data: " . $conn->error;
-    }
-} */
-
-
 // Add this line before validation
 if (isset($_POST['add_economic'])) {
     // Form validation
