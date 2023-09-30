@@ -63,19 +63,6 @@ document.addEventListener('DOMContentLoaded', function () {
           return; // Stop further validation if Dependetents Number is invalid
         }
       }
-
-      if (field.id === 'criminalRecord') {
-        // Check if Criminal Record field contains only numbers
-        if (!numberRegex.test(value)) {
-          const toastPlacementExample = document.querySelector('.toast-placement-ex');
-          toastPlacementExample.querySelector('.toast-body').textContent =
-            'Criminal Record Number must contain numbers.';
-          toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
-          const toastPlacement = new bootstrap.Toast(toastPlacementExample);
-          toastPlacement.show();
-          return; // Stop further validation if Criminal Record is invalid
-        }
-      }
     }
     /* // Disable all input fields
     const inputFields = document.querySelectorAll('input, select');

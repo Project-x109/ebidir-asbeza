@@ -1,17 +1,15 @@
 <?php
 include "../connect.php";
 session_start()
-  ?>
+?>
 
 <!DOCTYPE html>
 
-<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/"
-  data-template="vertical-menu-template-free">
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
 
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
   <title>Horizontal Layouts - Forms | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
 
@@ -23,9 +21,7 @@ session_start()
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
 
   <!-- Icons. Uncomment required icon fonts -->
   <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
@@ -46,6 +42,8 @@ session_start()
   <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
   <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
   <script src="../assets/js/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 </head>
 
 <body>
@@ -58,21 +56,12 @@ session_start()
         <div class="app-brand demo">
           <a href="Dashbaord.php" class="app-brand-link">
             <span class="app-brand-logo demo">
-              <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink">
+              <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <defs>
-                  <path
-                    d="M13.7918663,0.358365126 L3.39788168,7.44174259 C0.566865006,9.69408886 -0.379795268,12.4788597 0.557900856,15.7960551 C0.68998853,16.2305145 1.09562888,17.7872135 3.12357076,19.2293357 C3.8146334,19.7207684 5.32369333,20.3834223 7.65075054,21.2172976 L7.59773219,21.2525164 L2.63468769,24.5493413 C0.445452254,26.3002124 0.0884951797,28.5083815 1.56381646,31.1738486 C2.83770406,32.8170431 5.20850219,33.2640127 7.09180128,32.5391577 C8.347334,32.0559211 11.4559176,30.0011079 16.4175519,26.3747182 C18.0338572,24.4997857 18.6973423,22.4544883 18.4080071,20.2388261 C17.963753,17.5346866 16.1776345,15.5799961 13.0496516,14.3747546 L10.9194936,13.4715819 L18.6192054,7.984237 L13.7918663,0.358365126 Z"
-                    id="path-1"></path>
-                  <path
-                    d="M5.47320593,6.00457225 C4.05321814,8.216144 4.36334763,10.0722806 6.40359441,11.5729822 C8.61520715,12.571656 10.0999176,13.2171421 10.8577257,13.5094407 L15.5088241,14.433041 L18.6192054,7.984237 C15.5364148,3.11535317 13.9273018,0.573395879 13.7918663,0.358365126 C13.5790555,0.511491653 10.8061687,2.3935607 5.47320593,6.00457225 Z"
-                    id="path-3"></path>
-                  <path
-                    d="M7.50063644,21.2294429 L12.3234468,23.3159332 C14.1688022,24.7579751 14.397098,26.4880487 13.008334,28.506154 C11.6195701,30.5242593 10.3099883,31.790241 9.07958868,32.3040991 C5.78142938,33.4346997 4.13234973,34 4.13234973,34 C4.13234973,34 2.75489982,33.0538207 2.37032616e-14,31.1614621 C-0.55822714,27.8186216 -0.55822714,26.0572515 -4.05231404e-15,25.8773518 C0.83734071,25.6075023 2.77988457,22.8248993 3.3049379,22.52991 C3.65497346,22.3332504 5.05353963,21.8997614 7.50063644,21.2294429 Z"
-                    id="path-4"></path>
-                  <path
-                    d="M20.6,7.13333333 L25.6,13.8 C26.2627417,14.6836556 26.0836556,15.9372583 25.2,16.6 C24.8538077,16.8596443 24.4327404,17 24,17 L14,17 C12.8954305,17 12,16.1045695 12,15 C12,14.5672596 12.1403557,14.1461923 12.4,13.8 L17.4,7.13333333 C18.0627417,6.24967773 19.3163444,6.07059163 20.2,6.73333333 C20.3516113,6.84704183 20.4862915,6.981722 20.6,7.13333333 Z"
-                    id="path-5"></path>
+                  <path d="M13.7918663,0.358365126 L3.39788168,7.44174259 C0.566865006,9.69408886 -0.379795268,12.4788597 0.557900856,15.7960551 C0.68998853,16.2305145 1.09562888,17.7872135 3.12357076,19.2293357 C3.8146334,19.7207684 5.32369333,20.3834223 7.65075054,21.2172976 L7.59773219,21.2525164 L2.63468769,24.5493413 C0.445452254,26.3002124 0.0884951797,28.5083815 1.56381646,31.1738486 C2.83770406,32.8170431 5.20850219,33.2640127 7.09180128,32.5391577 C8.347334,32.0559211 11.4559176,30.0011079 16.4175519,26.3747182 C18.0338572,24.4997857 18.6973423,22.4544883 18.4080071,20.2388261 C17.963753,17.5346866 16.1776345,15.5799961 13.0496516,14.3747546 L10.9194936,13.4715819 L18.6192054,7.984237 L13.7918663,0.358365126 Z" id="path-1"></path>
+                  <path d="M5.47320593,6.00457225 C4.05321814,8.216144 4.36334763,10.0722806 6.40359441,11.5729822 C8.61520715,12.571656 10.0999176,13.2171421 10.8577257,13.5094407 L15.5088241,14.433041 L18.6192054,7.984237 C15.5364148,3.11535317 13.9273018,0.573395879 13.7918663,0.358365126 C13.5790555,0.511491653 10.8061687,2.3935607 5.47320593,6.00457225 Z" id="path-3"></path>
+                  <path d="M7.50063644,21.2294429 L12.3234468,23.3159332 C14.1688022,24.7579751 14.397098,26.4880487 13.008334,28.506154 C11.6195701,30.5242593 10.3099883,31.790241 9.07958868,32.3040991 C5.78142938,33.4346997 4.13234973,34 4.13234973,34 C4.13234973,34 2.75489982,33.0538207 2.37032616e-14,31.1614621 C-0.55822714,27.8186216 -0.55822714,26.0572515 -4.05231404e-15,25.8773518 C0.83734071,25.6075023 2.77988457,22.8248993 3.3049379,22.52991 C3.65497346,22.3332504 5.05353963,21.8997614 7.50063644,21.2294429 Z" id="path-4"></path>
+                  <path d="M20.6,7.13333333 L25.6,13.8 C26.2627417,14.6836556 26.0836556,15.9372583 25.2,16.6 C24.8538077,16.8596443 24.4327404,17 24,17 L14,17 C12.8954305,17 12,16.1045695 12,15 C12,14.5672596 12.1403557,14.1461923 12.4,13.8 L17.4,7.13333333 C18.0627417,6.24967773 19.3163444,6.07059163 20.2,6.73333333 C20.3516113,6.84704183 20.4862915,6.981722 20.6,7.13333333 Z" id="path-5"></path>
                 </defs>
                 <g id="g-app-brand" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                   <g id="Brand-Logo" transform="translate(-27.000000, -15.000000)">
@@ -91,8 +80,7 @@ session_start()
                           <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-4"></use>
                         </g>
                       </g>
-                      <g id="Triangle"
-                        transform="translate(19.000000, 11.000000) rotate(-300.000000) translate(-19.000000, -11.000000) ">
+                      <g id="Triangle" transform="translate(19.000000, 11.000000) rotate(-300.000000) translate(-19.000000, -11.000000) ">
                         <use fill="#696cff" xlink:href="#path-5"></use>
                         <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-5"></use>
                       </g>
@@ -164,9 +152,7 @@ session_start()
       <div class="layout-page">
         <!-- Navbar -->
 
-        <nav
-          class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
-          id="layout-navbar">
+        <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
           <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
             <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
               <i class="bx bx-menu bx-sm"></i>
@@ -178,8 +164,7 @@ session_start()
             <div class="navbar-nav align-items-center">
               <div class="nav-item d-flex align-items-center">
                 <i class="bx bx-search fs-4 lh-0"></i>
-                <input type="text" class="form-control border-0 shadow-none" placeholder="Search..."
-                  aria-label="Search..." />
+                <input type="text" class="form-control border-0 shadow-none" placeholder="Search..." aria-label="Search..." />
               </div>
             </div>
             <!-- /Search -->
@@ -187,9 +172,7 @@ session_start()
             <ul class="navbar-nav flex-row align-items-center ms-auto">
               <!-- Place this tag where you want the button to render. -->
               <li class="nav-item lh-1 me-3">
-                <a class="github-button" href="https://github.com/ThemeSelection/sneat-html-admin-template-free"
-                  data-icon="octicon-star" data-size="large" data-show-count="true"
-                  aria-label="Star ThemeSelection/sneat-html-admin-template-free on GitHub">Star</a>
+                <a class="github-button" href="https://github.com/ThemeSelection/sneat-html-admin-template-free" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star ThemeSelection/sneat-html-admin-template-free on GitHub">Star</a>
               </li>
 
               <!-- User -->
@@ -265,8 +248,7 @@ session_start()
             <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span>General Information</h4>
 
 
-            <div class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" role="alert" aria-live="assertive"
-              aria-atomic="true" data-delay="2000" id="success-toast">
+            <div class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" style="display: none;" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="success-toast">
               <div class="toast-header">
                 <i class="bx bx-bell me-2"></i>
                 <div class="me-auto toast-title fw-semibold">Success</div>
@@ -276,8 +258,8 @@ session_start()
               <div class="toast-body"></div>
             </div>
 
-            <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive"
-              aria-atomic="true" data-delay="2000" id="error-toast">
+
+            <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="error-toast">
               <div class="toast-header">
                 <i class="bx bx-bell me-2"></i>
                 <div class="me-auto toast-title fw-semibold">Error</div>
@@ -285,6 +267,21 @@ session_start()
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
               </div>
               <div class="toast-body"></div>
+            </div>
+
+            <!-- <div id="loader" class="loader">
+              <div class="loader-content">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="loader-text">Please wait...</div>
+              </div>
+            </div> -->
+
+            <div class="loader" id="loader">
+              <div class="loader-content">
+                <div class="spinner"></div>
+              </div>
             </div>
 
             <!-- Basic with Icons -->
@@ -296,40 +293,31 @@ session_start()
                     <!-- <small class="text-muted float-end">Merged input group</small> -->
                   </div>
                   <div class="card-body">
-                    <form action="backend.php" method="POST" enctype="multipart/form-data">
+                    <form id="userForm" action="backend.php" method="POST" enctype="multipart/form-data">
                       <div class="row mb-4">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Name :<span
-                            class="text-danger">*</span></label>
+                        <input type="hidden" name="add_user" value="1">
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Name :<span class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-fullname2" class="input-group-text"><i
-                                class="bx bx-user"></i></span>
-                            <input type="text" class="form-control" id="basic-icon-default-fullname"
-                              placeholder="John Doe" aria-label="John Doe"
-                              aria-describedby="basic-icon-default-fullname2" name="name" />
+                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
+                            <input type="text" class="form-control" id="basic-icon-default-fullname" placeholder="John Doe" aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" name="name" />
                           </div>
                         </div>
 
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-TIN">TIN /ID Number :<span
-                            class="text-danger">*</span></label>
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-TIN">TIN /ID Number :<span class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-TIN2" class="input-group-text"><i
-                                class="bx bx-credit-card-front"></i></span>
-                            <input type="number" maxLength="10" minLength="10" class="form-control"
-                              id="basic-icon-default-TIN" placeholder="1234567890" aria-label="John Doe"
-                              aria-describedby="basic-icon-default-TIN2" name="TIN_Number" />
+                            <span id="basic-icon-default-TIN2" class="input-group-text"><i class="bx bx-credit-card-front"></i></span>
+                            <input type="number" maxLength="10" minLength="10" class="form-control" id="basic-icon-default-TIN" placeholder="1234567890" aria-label="John Doe" aria-describedby="basic-icon-default-TIN2" name="TIN_Number" />
                           </div>
                         </div>
                       </div>
 
                       <div class="row mb-4">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-company">Job Status :<span
-                            class="text-danger">*</span></label>
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-company">Job Status :<span class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-Job2" class="input-group-text"><i
-                                class="bx bx-buildings"></i></span>
+                            <span id="basic-icon-default-Job2" class="input-group-text"><i class="bx bx-buildings"></i></span>
                             <select id="basic-icon-default-Job" class="form-select" name="Job_Status">
                               <option value="">Default select</option>
                               <option value="Employed">Employed </option>
@@ -338,52 +326,41 @@ session_start()
                             </select>
                           </div>
                         </div>
-                        <label for="html5-datetime-local-input" class="col-md-2 col-form-label">Date of Birth:<span
-                            class="text-danger">*</span></label>
+                        <label for="html5-datetime-local-input" class="col-md-2 col-form-label">Date of Birth:<span class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-dateOfBirth2" class="input-group-text"><i
-                                class="bx bx-calendar"></i></span>
-                            <input class="form-control" type="date" value="2021-06-18"
-                              id="basic-icon-default-dateOfBirth" name="dob" />
+                            <span id="basic-icon-default-dateOfBirth2" class="input-group-text"><i class="bx bx-calendar"></i></span>
+                            <input class="form-control" type="date" value="2021-06-18" id="basic-icon-default-dateOfBirth" name="dob" />
                           </div>
                         </div>
                       </div>
 
                       <div class="row mb-4">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Email :<span
-                            class="text-danger">*</span></label>
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Email :<span class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
                             <span class="input-group-text"><i class="bx bx-envelope"></i></span>
-                            <input type="text" id="basic-icon-default-email" class="form-control" placeholder="john.doe"
-                              aria-label="john.doe" aria-describedby="basic-icon-default-email2" name="email" />
+                            <input type="text" id="basic-icon-default-email" class="form-control" placeholder="john.doe" aria-label="john.doe" aria-describedby="basic-icon-default-email2" name="email" />
                           </div>
                           <!--<div class="form-text">You can use letters, numbers & periods</div> -->
                         </div>
 
-                        <label class="col-sm-2 form-label" for="basic-icon-default-phone">Phone Number :<span
-                            class="text-danger">*</span></label>
+                        <label class="col-sm-2 form-label" for="basic-icon-default-phone">Phone Number :<span class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-phone2" class="input-group-text"><i
-                                class="bx bx-phone"></i></span>
-                            <input type="text" id="basic-icon-default-phone" class="form-control phone-mask"
-                              placeholder="658 799 8941" aria-label="658 799 8941"
-                              aria-describedby="basic-icon-default-phone2" name="phone" />
+                            <span id="basic-icon-default-phone2" class="input-group-text"><i class="bx bx-phone"></i></span>
+                            <input type="text" id="basic-icon-default-phone" class="form-control phone-mask" placeholder="658 799 8941" aria-label="658 799 8941" aria-describedby="basic-icon-default-phone2" name="phone" />
                           </div>
                         </div>
                       </div>
 
                       <div class="row mb-4">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Image :<span
-                            class="text-danger">*</span></label>
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Image :<span class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
                             <span class="input-group-text"><i class="bx bx-image"></i></span>
 
-                            <input id="basic-icon-default-photo" aria-describedby="basic-icon-default-photo2"
-                              class="form-control" type="file" id="formFile" name="profile" />
+                            <input id="basic-icon-default-photo" aria-describedby="basic-icon-default-photo2" class="form-control" type="file" id="formFile" name="profile" />
                           </div>
                         </div>
                       </div>
@@ -395,9 +372,8 @@ session_start()
                       </div>
                     </form>
                     <!-- Display validation errors near form fields -->
-                  
-                    <div class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" role="alert"
-                      aria-live="assertive" aria-atomic="true" data-delay="2000" id="success-toast">
+
+                    <div class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="success-toast">
                       <div class="toast-header">
                         <i class="bx bx-bell me-2"></i>
                         <div class="me-auto toast-title fw-semibold">success</div>
@@ -407,21 +383,12 @@ session_start()
                       <div class="toast-body"></div>
                     </div>
                   </div>
-                    <?php
-                    // Rest of your code
-                    // Display validation errors near form fields
-                    if (!empty($_SESSION['validationErrors'])) {
-                      echo '<div class="alert alert-danger">';
-                      echo '<ul>';
-                      foreach ($_SESSION['validationErrors'] as $error) {
-                        echo '<li>' . htmlspecialchars($error) . '</li>';
-                      }
-                      echo '</ul>';
-                      echo '</div>';
-                      // Clear the validationErrors session variable
-                      unset($_SESSION['validationErrors']);
-                    }
-                    ?>
+                  <!-- <div id="error-container" class="alert alert-danger" style="display: none;">
+                    <ul id="error-list"></ul>
+                  </div>
+                  <div id="success-container" class="alert alert-success" style="display: none;">
+                    <ul id="success-list"></ul>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -443,11 +410,9 @@ session_start()
                 <a href="https://ThemeSelection.com/license/" class="footer-link me-4" target="_blank">License</a>
                 <a href="https://ThemeSelection.com/" target="_blank" class="footer-link me-4">More Themes</a>
 
-                <a href="https://ThemeSelection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
-                  target="_blank" class="footer-link me-4">Documentation</a>
+                <a href="https://ThemeSelection.com/demo/sneat-bootstrap-html-admin-template/documentation/" target="_blank" class="footer-link me-4">Documentation</a>
 
-                <a href="https://github.com/ThemeSelection/sneat-html-admin-template-free/issues" target="_blank"
-                  class="footer-link me-4">Support</a>
+                <a href="https://github.com/ThemeSelection/sneat-html-admin-template-free/issues" target="_blank" class="footer-link me-4">Support</a>
               </div>
             </div>
           </footer>
@@ -482,9 +447,14 @@ session_start()
   <script src="../assets/js/main.js"></script>
 
   <!-- Page JS -->
-  <!--   <script src="../assets/js/ui-toasts-user.js"></script> -->
+  <script src="../assets/js/ui-toasts-user.js"></script>
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+
+
+
 </body>
 
 </html>

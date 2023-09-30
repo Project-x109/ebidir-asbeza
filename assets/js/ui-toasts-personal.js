@@ -43,7 +43,8 @@ function validateForm(event) {
       }
       if (value > 10) {
         const toastPlacementExample = document.querySelector('.toast-placement-ex');
-        toastPlacementExample.querySelector('.toast-body').textContent = 'Number of Dependetents must be less than ten.';
+        toastPlacementExample.querySelector('.toast-body').textContent =
+          'Number of Dependetents must be less than ten.';
         toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
         const toastPlacement = new bootstrap.Toast(toastPlacementExample);
         toastPlacement.show();
@@ -74,6 +75,5 @@ function validateForm(event) {
     }
   }
   form.submit();
-
 }
 submitBtn.addEventListener('click', validateForm);

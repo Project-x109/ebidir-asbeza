@@ -369,10 +369,14 @@ include "../connect.php";
                           Records:<span class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
-                            <span class="input-group-text"><i class="bx bx-video-recording"></i></span>
-                            <input type="text" id="criminalRecord" class="form-control" placeholder="john.doe" name="Criminal_record" aria-label="john.doe" aria-describedby="criminalRecord2" />
+                            <span id="criminalRecord2" class="input-group-text"><i class="bx bx-book-reader"></i></span>
+                            <select id="criminalRecord" class="form-select" name="Criminal_record">
+                              <option value="">Default select</option>
+                              <option value="No">No</option>
+                              <option value="Yes/Past Five Years">Yes/Past Five Years</option>
+                              <option value="Yes/More Than Five Years">Yes/More Than Five Years</option>
+                            </select>
                           </div>
-
                         </div>
 
                       </div>
