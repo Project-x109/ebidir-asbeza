@@ -11,7 +11,11 @@ require '../assets/PHPMailer/Exception.php';
 
 session_start();
 
+
+
+
 $validationErrors = array();
+$response = array();
 
 if (isset($_POST['add_user'])) {
     // Validation functions
@@ -197,7 +201,10 @@ if (isset($_POST['add_user'])) {
                 sendPasswordEmail($email, $randomPassword, $conn);
 
                 $_SESSION['success'] = "User created successfully";
-                header("Location: addusers.php");
+                // Set the success message in the response
+                $response = array('success' => $_SESSION['success']);
+                header('Content-Type: application/json');
+                echo json_encode($response);
                 exit();
             } else {
                 $_SESSION['error'] = "Failed to upload image";
@@ -208,7 +215,24 @@ if (isset($_POST['add_user'])) {
     } else {
         $_SESSION['error'] = implode("<br>", $validationErrors);
     }
+
+    if (!empty($validationErrors)) {
+        // Validation errors occurred
+        $response = array('errors' => $validationErrors);
+    } else {
+        // No errors, success response
+        $response = array('success' => 'User created successfully');
+    }
+
+    header('Content-Type: application/json');
+    echo json_encode($response);
+} else {
+    // Handle cases where 'add_user' is not set (e.g., if the form wasn't submitted)
+    $response = array('error' => 'Invalid request');
+    header('Content-Type: application/json');
+    echo json_encode($response);
 }
+
 
 // Handle errors (display them in the toast if needed)
 /* if (isset($_SESSION['error'])) {
@@ -221,21 +245,6 @@ if (isset($_POST['add_user'])) {
       </script>';
   unset($_SESSION['error']); // Clear the error message
 } */
-
-if (!empty($validationErrors)) {
-    $_SESSION['validationErrors'] = $validationErrors;
-}
-
-if (isset($_SESSION['success'])) {
-    echo '<script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var successToast = new bootstrap.Toast(document.getElementById("success-toast"));
-            successToast.show();
-            document.querySelector("#success-toast .toast-body").innerHTML = "' . $_SESSION['success'] . '";
-        });
-      </script>';
-    unset($_SESSION['success']); // Clear the success message
-}
 // Function to generate a random password
 function generateRandomPassword($length = 8)
 {
@@ -259,7 +268,7 @@ function sendPasswordEmail($recipientEmail, $password, $conn)
         $mail->Host = 'smtp.gmail.com'; // Replace with your SMTP server
         $mail->SMTPAuth = true;
         $mail->Username = 'amanuelgirma108@gmail.com'; // Replace with your SMTP username
-        $mail->Password = 'gnojaxeqnsdekijh'; // Replace with your SMTP password
+        $mail->Password = 'xbpnzmxccxgpvnly'; // Replace with your SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587; // Port may vary depending on the service
         $recipientQuery = "SELECT  name FROM users WHERE email = '$recipientEmail'";
@@ -463,4 +472,3 @@ if (isset($_POST['addbranch'])) {
     }
     header("location:addbranch.php");
 }
-?>
