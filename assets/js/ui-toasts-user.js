@@ -35,6 +35,7 @@ $(document).ready(function () {
         showErrorMessage();
       },
       success: function (response) {
+        console.log(response);
         hideLoader(); // Hide the loader on success
         // Check if the response contains validation errors
         if (response.errors) {
@@ -67,8 +68,8 @@ $(document).ready(function () {
 
                 // Re-enable the submit button after a delay (e.g., 2 seconds)
                 setTimeout(function () {
-                  $('#submitBtn').prop('disabled', false);
-                  $('#submitBtn').text('Submit');
+                  $('#submit-btn').prop('disabled', false);
+                  $('#submit-btn').text('Submit');
                 }, 2000);
               }
             });

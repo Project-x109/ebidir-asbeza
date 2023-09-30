@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset($_PO
             $hashedPassword = $row['password'];
 
             // Verify the user-entered plain text password against the retrieved hashed password
-            // if (password_verify($userEnteredPassword, $hashedPassword)) {
+           if (password_verify($userEnteredPassword, $hashedPassword)) {
 
             if ($userEnteredPassword=$hashedPassword) {
                 $_SESSION['role'] = $row['role'];
@@ -44,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset($_PO
 } else {
     // Pass an error message to JavaScript
     echo '<script>alert("Invalid request method or missing data");</script>';
+}
 }
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -610,6 +611,3 @@ if (isset($_SESSION['error'])) {
       </script>';
     unset($_SESSION['error']); // Clear the error message
 }
-?>
-
-

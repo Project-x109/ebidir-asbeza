@@ -371,18 +371,6 @@ session_start()
                         </div>
                       </div>
                     </form>
-                    <!-- Display validation errors near form fields -->
-
-                    <div class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="success-toast">
-                      <div class="toast-header">
-                        <i class="bx bx-bell me-2"></i>
-                        <div class="me-auto toast-title fw-semibold">success</div>
-                        <small></small>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                      </div>
-                      <div class="toast-body"></div>
-                    </div>
-                  </div>
                   <!-- <div id="error-container" class="alert alert-danger" style="display: none;">
                     <ul id="error-list"></ul>
                   </div>

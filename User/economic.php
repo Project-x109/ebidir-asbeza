@@ -42,6 +42,8 @@ include "../connect.php";
   <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
   <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
   <script src="../assets/js/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -327,8 +329,11 @@ include "../connect.php";
                     $salary = $row['salary'];
                   }
                   ?>
+                  <!-- Toast Container -->
+                  <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
                   <div class="card-body">
-                    <form action="backend.php" method="POST">
+                    <form id="economicForm" action="backend.php" method="POST">
+                      <input type="hidden" name="add_economic" value="1">
                       <input type="hidden" name="id" value='<?php echo $_SESSION['id'] ?>' />
                       <div class="row mb-4">
                         <label class="col-sm-2 col-form-label" for="basic-icon-default-fieldofEmployment">Field of
@@ -363,8 +368,8 @@ include "../connect.php";
                         <label class="col-sm-2 col-form-label" for="marrigeStatus">Branch Name:<span class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-companyname" class="input-group-text"><i class="bx bx-map-pin"></i></span>
-                            <select id="basic-icon-default-companyname" class="form-select" name="branch" value='<?php echo $branch ?>'>
+                            <span id="basic-icon-default-companyname2" class="input-group-text"><i class="bx bx-map-pin"></i></span>
+                            <select id="basic-icon-default-branchname" class="form-select" name="branch" value='<?php echo $branch ?>'>
                               <option value="">Choose Branch</option>
                               <option value="Purposeblack ETH">Purposeblack ETH</option>
                               <option value="Purposeblack ETH2">Purposeblack ETH2</option>
@@ -405,27 +410,11 @@ include "../connect.php";
                       </div>
                     </form>
                   </div>
-                  <?php
-                  // Check if there are validation errors and display them
-                  if (isset($_SESSION['errors']) && !empty($_SESSION['errors'])) :
-                  ?>
-                    <div class="alert alert-danger">
-                      <ul>
-                        <?php foreach ($_SESSION['errors'] as $error) : ?>
-                          <li><?php echo $error; ?></li>
-                        <?php endforeach; ?>
-                      </ul>
+                  <div class="loader" id="loader">
+                    <div class="loader-content">
+                      <div class="spinner"></div>
                     </div>
-                  <?php unset($_SESSION['errors']);
-                  endif; ?>
-
-                  <!-- Display success message if any -->
-                  <?php if (isset($_SESSION['success'])) : ?>
-                    <div class="alert alert-success">
-                      <?php echo $_SESSION['success']; ?>
-                    </div>
-                  <?php unset($_SESSION['success']);
-                  endif; ?>
+                  </div>
                 </div>
               </div>
             </div>
@@ -485,11 +474,20 @@ include "../connect.php";
 
   <!-- Main JS -->
   <script src="../assets/js/main.js"></script>
-
+  <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="error-toast">
+    <div class="toast-header">
+      <i class="bx bx-bell me-2"></i>
+      <div class="me-auto toast-title fw-semibold">Error</div>
+      <small></small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body"></div>
+  </div>
   <!-- Page JS -->
   <script src="../assets/js/ui-toasts-economic.js"></script>
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
+  
 </body>
 
 </html>
