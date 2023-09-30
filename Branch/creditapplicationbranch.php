@@ -256,15 +256,16 @@ include '../connect.php';
                                                     <th>Credit Score</th>
                                                     <th>Requsted Date</th>
                                                     <th>Status</th>
-                                                    <th>Actions</th> 
+                                                    <th>Update payment</th> 
                                                 </tr>
                                             </thead>
         <tbody>
             <?php
-            $sql="SELECT *,loans.user_id as userID ,loans.status as status FROM `loans`  INNER join users on users.id=loans.user_id";
+            $sql="SELECT *,loans.user_id as userID ,loans.status as status,loans.id as loan_id FROM `loans`  INNER join users on users.id=loans.user_id";
             $res=$conn->query($sql);
             if($res->num_rows>0)
             while($row=$res->fetch_assoc()){
+        $disabled=$row['status']=='paid'?"disabled":"";
         echo "<tr>
         <td>".$row['userID']."</td>
         <td>".$row['name']."</td>
@@ -273,7 +274,7 @@ include '../connect.php';
         <td>".$row['credit_score']."</td>   
         <td>".$row['createdOn']."</td>   
         <td>".$row['status']."</td>   
-        <td><i class='bx bx-trash me-2 text-danger'></i><i class='btn bx bx-edit me-2 text-primary' data-bs-toggle='modal' data-bs-target='#statusModal'></i></td>   
+        <td><button class='btn btn-success' $disabled value='$row[loan_id]' onclick='update(this)'>update</button></td>   
         </tr>";
     }
 ?>
@@ -445,6 +446,19 @@ include '../connect.php';
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
+    <script>
+function update(e){
+  let x=e.value;
+  let xhr=new XMLHttpRequest();
+  xhr.onload=function(){
+// alert(this.responseText)
+document.location='';
+  }
+  xhr.open("GET","ajax.php?loan_id="+x)
+  xhr.send();
+}
+
+</script>
     <script>
 new DataTable('#example');
 </script>

@@ -70,8 +70,23 @@ function incrementLevel($level)
 {
   global $levels;
   $index = array_search($level, $levels) + 1;
+  if($index>18)
+  $index=18;
   $result = $levels[$index];
   return $result;
+}
+function decrementLevel($level)
+{
+  global $levels;
+  $index = array_search($level, $levels) - 1;
+  if($index<0)
+  $index=0;
+  $result = $levels[$index];
+  return $result;
+}
+function getLimit($level){
+  global $LEVEL;
+  return $LEVEL[$level];
 }
 function getAge($dob)
 {
