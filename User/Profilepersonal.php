@@ -412,9 +412,20 @@ include "../connect.php";
                           </select>
                         </div>
 
+
                         <div class="mb-3 col-md-6">
                           <label for="criminalRecord" class="form-label">Criminal Record</label>
-                          <input type="text" class="form-control" id="criminalRecord" name="criminalRecord" value="<?php echo $row2['Criminal_record']; ?>" autofocus readonly />
+                          <select class="form-control" type="text" name="criminalRecord" id="criminalRecord" autofocus readonly>
+                            <option value="" <?php if ($row2['Criminal_record'] === 'No data')
+                                                echo ' selected'; ?>>No data</option>
+                            <option value="No" <?php if ($row2['Criminal_record'] === 'No')
+                                                  echo ' selected'; ?>>No</option>
+                            <option value="Yes/Past Five Years" <?php if ($row2['Criminal_record'] === 'Yes/Past Five Years')
+                                                                  echo ' selected'; ?>>Yes/Past Five Years</option>
+                            <option value="Yes/More Than Five Years" <?php if ($row2['Criminal_record'] === 'Yes/More Than Five Years')
+                                                                        echo ' selected'; ?>>Yes/More Than Five Years
+                            </option>
+                          </select>
                         </div>
                         <div class="mt-2">
                           <!-- Change the button text -->
