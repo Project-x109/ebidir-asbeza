@@ -335,7 +335,9 @@ include "../connect.php";
                                         'number_of_income' => 'No data',
                                         'year' => 'No data',
                                         'branch' => 'No data',
-                                        'position' => 'No data'
+                                        'position' => 'No data',
+                                        'user_id'=>'No Id',
+                                        'salary'=> 'No data'
                                     );
                                 }
                                 ?>

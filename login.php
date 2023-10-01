@@ -289,14 +289,15 @@ if (isset($_SESSION['error'])) {
         });
       </script>';
     unset($_SESSION['error']); // Clear the error message
-}
 
+}
 
 
 
 
 if (isset($_GET['token'])) {
     $token = $_GET['token'];
+    echo "Token received from reset_password.php: " . $token; 
 
     // Check if the token has expired (e.g., 24 hours)
     $expireTime = 3600; // 24 hours in seconds
@@ -406,7 +407,7 @@ function sendEmailNotification($newToken, $conn)
         $mail->Host = 'smtp.gmail.com'; // Your SMTP server
         $mail->SMTPAuth = true; // Enable SMTP authentication
         $mail->Username = 'amanuelgirma108@gmail.com'; // SMTP username
-        $mail->Password = 'fyupdrokktlcghpb'; // SMTP password
+        $mail->Password = 'kvwgyeutctlizikd'; // SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587; // TCP port to connect to
         // Get recipient's email address from the database using the token

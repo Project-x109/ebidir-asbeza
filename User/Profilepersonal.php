@@ -330,6 +330,7 @@ include "../connect.php";
                     'Marriage_Status' => 'No data',
                     'Educational_Status' => 'No data',
                     'Criminal_record' => 'No data',
+                    'user_id'=>'No Id'
 
                   );
                 }
