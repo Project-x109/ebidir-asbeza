@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html lang="en" class="light-style customizer-hide" dir="ltr" data-theme="theme-default" data-assets-path="./assets/" data-template="vertical-menu-template-free">
@@ -115,6 +114,9 @@
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" autofocus required />
+                                <div class="invalid-feedback">
+                                    Please enter a valid email address.
+                                </div>
                             </div>
                             <button name="forgot_password" class="btn btn-primary d-grid w-100">Send Reset Link</button>
                         </form>
@@ -132,13 +134,25 @@
     </div>
 
     <!-- / Content -->
+    <div id="success-toast" class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+        <div class="toast-header">
+            <strong class="me-auto">Success</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            <!-- Success message will be inserted here -->
+        </div>
+    </div>
 
-    <!-- 
-<div class="buy-now">
-    <a href="https://ThemeSelection.com/products/ThemeSelection-bootstrap-html-admin-template/" target="_blank"
-      class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
-  </div>
--->
+    <div id="error-toast" class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+        <div class="toast-header">
+            <strong class="me-auto">Error</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            <!-- Error message will be inserted here -->
+        </div>
+    </div>
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
@@ -161,6 +175,46 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script>
+        // Check if the success message exists and display the success toast
+        <?php if (isset($_SESSION['success'])) : ?>
+            document.addEventListener("DOMContentLoaded", function() {
+                var successToast = new bootstrap.Toast(document.getElementById("success-toast"));
+                successToast.show();
+                document.querySelector("#success-toast .toast-body").innerHTML = "<?php echo $_SESSION['success']; ?>";
+            });
+            <?php unset($_SESSION['success']); // Clear the success message 
+            ?>
+        <?php endif; ?>
+
+        // Check if the error message exists and display the error toast
+        <?php if (isset($_SESSION['error'])) : ?>
+            document.addEventListener("DOMContentLoaded", function() {
+                var errorToast = new bootstrap.Toast(document.getElementById("error-toast"));
+                errorToast.show();
+                document.querySelector("#error-toast .toast-body").innerHTML = "<?php echo $_SESSION['error']; ?>";
+            });
+            <?php unset($_SESSION['error']); // Clear the error message 
+            ?>
+        <?php endif; ?>
+    </script>
+    <script>
+        function validateForm() {
+            // Get the email input field
+            var emailInput = document.getElementById("email");
+
+            // Check if the email input is valid
+            if (!emailInput.checkValidity()) {
+                // If not valid, display a custom error message
+                var invalidFeedback = emailInput.nextElementSibling;
+                invalidFeedback.style.display = "block";
+                return false; // Prevent form submission
+            }
+
+            // If valid, continue with form submission
+            return true;
+        }
+    </script>
 </body>
 
 </html>

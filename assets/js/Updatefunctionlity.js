@@ -149,7 +149,7 @@ $(document).ready(function () {
         toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
         const toastPlacement = new bootstrap.Toast(toastPlacementExample);
         toastPlacement.show();
-        isValid = false;
+        isValid = fals;
         return false; // Stop further validation on the first empty field
       }
 
@@ -161,7 +161,7 @@ $(document).ready(function () {
           toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
           const toastPlacement = new bootstrap.Toast(toastPlacementExample);
           toastPlacement.show();
-          isValid = false;
+          isValid = fals;
           return false; // Stop further validation if Dependetents Number is invalid
         }
       }

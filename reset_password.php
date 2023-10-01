@@ -3,7 +3,7 @@ session_start();
 include "./connect.php";
 if (isset($_GET['token'])) {
     $token = $_GET['token'];
-    echo "Token from URL: " . $token; // Debugging output
+    /*  echo "Token from URL: " . $token; // Debugging output */
 } else {
     echo "Token is missing from URL"; // Debugging output
 }
@@ -58,14 +58,24 @@ if (isset($_GET['token'])) {
 
 <body>
     <!-- Content -->
-    <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="error-toast">
+    <div id="success-toast" class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
         <div class="toast-header">
-            <i class="bx bx-error me-2"></i> <!-- Add an error icon if you have one -->
-            <div class="me-auto toast-title fw-semibold">Error</div>
-            <small></small>
+            <strong class="me-auto">Success</strong>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
-        <div class="toast-body"></div>
+        <div class="toast-body">
+            <!-- Success message will be inserted here -->
+        </div>
+    </div>
+
+    <div id="error-toast" class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+        <div class="toast-header">
+            <strong class="me-auto">Error</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            <!-- Error message will be inserted here -->
+        </div>
     </div>
 
     <div class="container-xxl">
@@ -128,15 +138,15 @@ if (isset($_GET['token'])) {
                         </div>
                         <!-- /Logo -->
                         <h4 class="mb-2">Change Password? 🔒</h4>
-                        <p class="mb-4">Enter your new password and Confirm Yourpassword password</p>
+                        <p class="mb-4">Enter your new password and Confirm Your password</p>
                         <form id="formAuthentication" class="mb-3" action="login.php?token=<?php echo $token; ?>" method="POST">
                             <div class="mb-3">
                                 <label for="newpassword" class="form-label">New Password</label>
-                                <input type="password" class="form-control" id="newpassword" name="newpassword" placeholder="Enter your password" autofocus />
+                                <input required type="password" class="form-control" id="newpassword" name="newpassword" placeholder="Enter your password" autofocus />
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Confirm Password</label>
-                                <input type="password" class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" autofocus />
+                                <input required type="password" class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" autofocus />
                             </div>
                             <button type="submit" id="submit-btn" name="change_password" class="btn btn-primary d-grid w-100">Change Password</button>
                         </form>
@@ -155,12 +165,6 @@ if (isset($_GET['token'])) {
 
     <!-- / Content -->
 
-    <!-- 
-<div class="buy-now">
-    <a href="https://ThemeSelection.com/products/ThemeSelection-bootstrap-html-admin-template/" target="_blank"
-      class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
-  </div>
--->
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
@@ -183,6 +187,29 @@ if (isset($_GET['token'])) {
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script>
+        // Check if the success message exists and display the success toast
+        <?php if (isset($_SESSION['success'])) : ?>
+            document.addEventListener("DOMContentLoaded", function() {
+                var successToast = new bootstrap.Toast(document.getElementById("success-toast"));
+                successToast.show();
+                document.querySelector("#success-toast .toast-body").innerHTML = "<?php echo $_SESSION['success']; ?>";
+            });
+            <?php unset($_SESSION['success']); // Clear the success message 
+            ?>
+        <?php endif; ?>
+
+        // Check if the error message exists and display the error toast
+        <?php if (isset($_SESSION['error'])) : ?>
+            document.addEventListener("DOMContentLoaded", function() {
+                var errorToast = new bootstrap.Toast(document.getElementById("error-toast"));
+                errorToast.show();
+                document.querySelector("#error-toast .toast-body").innerHTML = "<?php echo $_SESSION['error']; ?>";
+            });
+            <?php unset($_SESSION['error']); // Clear the error message 
+            ?>
+        <?php endif; ?>
+    </script>
 
     <script>
         const form = document.querySelector('form');
@@ -192,14 +219,17 @@ if (isset($_GET['token'])) {
             var newPassword = document.getElementById("newpassword").value;
             var confirmPassword = document.getElementById("confirmpassword").value;
             var passwordError = document.getElementById("password-error");
-
+            if (newPassword.length === 0 || confirmPassword.length === 0) {
+                event.preventDefault();
+                displayError("Password is Required");
+                return false;
+            }
             // Check password length
             if (newPassword.length < 8) {
                 event.preventDefault();
                 displayError("Password must be at least 8 characters long.");
                 return false;
             }
-
             // Check for at least one uppercase letter, one lowercase letter, and one digit
             var uppercaseRegex = /[A-Z]/;
             var lowercaseRegex = /[a-z]/;

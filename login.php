@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset($_PO
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
     $userEnteredPassword = $_POST['password'];
 
-    // Retrieve the hashed password from the database based on the phone number
+    // Retrieve the hashed password and user data from the database based on the phone number
     $sql = "SELECT * FROM `users` WHERE phone = '$phone'";
     $result = $conn->query($sql);
 
@@ -16,36 +16,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset($_PO
             $hashedPassword = $row['password'];
 
             // Verify the user-entered plain text password against the retrieved hashed password
-           if (password_verify($userEnteredPassword, $hashedPassword)) {
-
-            if ($userEnteredPassword=$hashedPassword) {
+            if (password_verify($userEnteredPassword, $hashedPassword)) {
                 $_SESSION['role'] = $row['role'];
                 $_SESSION['id'] = $row['id'];
                 $_SESSION['dob'] = $row['dob'];
-                $_SESSION['credit_limit']=$row['credit_limit'];
-                $_SESSION['level']=$row['level'];
-                echo $_SESSION['role'];
+                $_SESSION['credit_limit'] = $row['credit_limit'];
+                $_SESSION['level'] = $row['level'];
 
                 $loc = $_SESSION['role'] . "/";
                 header("location:" . $loc);
                 exit();
             } else {
-                // Pass an error message to JavaScript
-                echo '<script>alert("Password is incorrect");</script>';
+                // Password is incorrect, store error message in session
+                $_SESSION['error'] = "Password is incorrect";
             }
         } else {
-            // Pass an error message to JavaScript
-            echo '<script>alert("User with this phone number does not exist");</script>';
+            // User with this phone number does not exist, store error message in session
+            $_SESSION['error'] = "User with this phone number does not exist";
         }
     } else {
-        // Pass an error message to JavaScript
-        echo '<script>alert("MySQL Error: ' . mysqli_error($conn) . '");</script>';
+        // MySQL Error, store error message in session
+        $_SESSION['error'] = "MySQL Error: " . mysqli_error($conn);
     }
-} else {
-    // Pass an error message to JavaScript
-    echo '<script>alert("Invalid request method or missing data");</script>';
 }
+
+// Redirect to the login page with the error message if set
+if (isset($_SESSION['error'])) {
+    header("location: index.php");
+    exit();
 }
+
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
@@ -57,51 +57,55 @@ require './assets/PHPMailer/Exception.php';
 
 if (isset($_POST['forgot_password'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
+    // Check if the email exists in the database
+    $checkEmailQuery = "SELECT * FROM users WHERE email = '$email'";
+    $checkEmailResult = $conn->query($checkEmailQuery);
+    if ($checkEmailResult->num_rows > 0) {
 
-    // Generate a unique token
-    $token = bin2hex(random_bytes(16));
+        // Generate a unique token
+        $token = bin2hex(random_bytes(16));
 
-    // Calculate the expiration time (e.g., 1 hour from now)
-    $expireTime = date('Y-m-d H:i:s', strtotime('+1 hour'));
+        // Calculate the expiration time (e.g., 1 hour from now)
+        $expireTime = date('Y-m-d H:i:s', strtotime('+1 hour'));
 
-    // Insert the token into the database
-    $updateTokenQuery = "UPDATE users SET token = '$token', expire_time = '$expireTime' WHERE email = '$email'";
-    $updateTokenResult = $conn->query($updateTokenQuery);
+        // Insert the token into the database
+        $updateTokenQuery = "UPDATE users SET token = '$token', expire_time = '$expireTime' WHERE email = '$email'";
+        $updateTokenResult = $conn->query($updateTokenQuery);
 
-    if ($updateTokenResult) {
-        // Send an email to the user with the reset password link
-        $resetLink = "http://localhost/sneat-bootstrap-html-admin-template-free/reset_password.php?token=$token";
+        if ($updateTokenResult) {
+            // Send an email to the user with the reset password link
+            $resetLink = "http://localhost/sneat-bootstrap-html-admin-template-free/reset_password.php?token=$token";
 
-        // Create a new PHPMailer instance
-        $mail = new PHPMailer(true);
+            // Create a new PHPMailer instance
+            $mail = new PHPMailer(true);
 
-        try {
-            // Server settings
-            $mail->SMTPDebug = SMTP::DEBUG_OFF; // Disable debugging
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com'; // Replace with your SMTP server
-            $mail->SMTPAuth = true;
-            $mail->Username = 'amanuelgirma108@gmail.com'; // Replace with your SMTP username
-            $mail->Password = 'fyupdrokktlcghpb'; // Replace with your SMTP password
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 587; // Port may vary depending on the service
-            $recipientQuery = "SELECT  name FROM users WHERE email = '$email'";
-            $recipientResult = $conn->query($recipientQuery);
-            if ($recipientResult->num_rows > 0) {
-                $row = $recipientResult->fetch_assoc();
-                $recipientName = $row['name'];
+            try {
+                // Server settings
+                $mail->SMTPDebug = SMTP::DEBUG_OFF; // Disable debugging
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com'; // Replace with your SMTP server
+                $mail->SMTPAuth = true;
+                $mail->Username = 'amanuelgirma108@gmail.com'; // Replace with your SMTP username
+                $mail->Password = 'fyupdrokktlcghpb'; // Replace with your SMTP password
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = 587; // Port may vary depending on the service
+                $recipientQuery = "SELECT  name FROM users WHERE email = '$email'";
+                $recipientResult = $conn->query($recipientQuery);
+                if ($recipientResult->num_rows > 0) {
+                    $row = $recipientResult->fetch_assoc();
+                    $recipientName = $row['name'];
 
-                // Recipients
-                $mail->setFrom('amanuelgirma108@gmail.com', 'E-bidir');
-                $mail->addAddress($email, $recipientName); // Add recipient from the database
-            } else {
-                // If the token doesn't match any user, handle the error
-                throw new Exception("Recipient not found in the database.");
-            }
-            // Content
-            $mail->isHTML(true);
-            $mail->Subject = 'Password Reset Request';
-            $mail->Body = '
+                    // Recipients
+                    $mail->setFrom('amanuelgirma108@gmail.com', 'E-bidir');
+                    $mail->addAddress($email, $recipientName); // Add recipient from the database
+                } else {
+                    // If the token doesn't match any user, handle the error
+                    throw new Exception("Recipient not found in the database.");
+                }
+                // Content
+                $mail->isHTML(true);
+                $mail->Subject = 'Password Reset Request';
+                $mail->Body = '
             <html>
             <head>
                 <style>
@@ -253,17 +257,22 @@ if (isset($_POST['forgot_password'])) {
             </body>
             </html>';
 
-            // Send the email
-            $mail->send();
+                // Send the email
+                $mail->send();
 
-            $_SESSION['success'] = "Password reset link sent to your email";
-            header("Location: forgotpassword.php");
-            exit();
-        } catch (Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                $_SESSION['success'] = "Password reset link sent to your email";
+                header("Location: forgotpassword.php");
+                exit();
+            } catch (Exception $e) {
+                echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            }
+        } else {
+            $_SESSION['error'] = "Error inserting token into the database: " . $conn->error;
         }
     } else {
-        $_SESSION['error'] = "Error inserting token into the database: " . $conn->error;
+        $_SESSION['error'] = "Email does not exist in the database";
+        header("Location: forgotpassword.php");
+        exit();
     }
 }
 
@@ -294,11 +303,9 @@ if (isset($_SESSION['error'])) {
 
 
 
-
+//reset password
 if (isset($_GET['token'])) {
     $token = $_GET['token'];
-    echo "Token received from reset_password.php: " . $token; 
-
     // Check if the token has expired (e.g., 24 hours)
     $expireTime = 3600; // 24 hours in seconds
     $currentTime = time();
@@ -354,14 +361,14 @@ if (isset($_GET['token'])) {
                 exit();
             }
         } else {
-            $_SESSION['error'] = "Password does not meet the requirements.";
+            $_SESSION['error'] = "Password does not meet the requirements.Password should conatin one Capital,symbol,number and lowecase letter";
             header("Location: reset_password.php?token=$token");
             exit();
         }
     }
 } else {
     $_SESSION['error'] = "Invalid or missing token!";
-    header("Location: forgotpassword.php");
+    header("Location: index.php");
     exit();
 }
 

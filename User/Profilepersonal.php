@@ -343,12 +343,12 @@ include "../connect.php";
                         <input type="hidden" name="id" value="<?php echo $row2['user_id']; ?>">
                         <div class="mb-3 col-md-6">
                           <label for="numberOfDependents" class="form-label">Number of Dependents</label>
-                          <input class="form-control" type="text" id="numberOfDependents" name="numberOfDependents" value=" <?php echo $row2['Number_of_dependents']; ?>" readonly autofocus />
+                          <input required class="form-control" type="text" id="numberOfDependents" name="numberOfDependents" value=" <?php echo $row2['Number_of_dependents']; ?>" readonly autofocus />
                         </div>
                         <input type="hidden" id="originalNumberOfDependents" value="<?php echo $row2['Number_of_dependents']; ?>">
                         <div class="mb-3 col-md-6">
                           <label for="Marrige Status" class="form-label">Marrige Status</label>
-                          <select class="form-control" type="text" name="marrigeStatus" id="marrigeStatus" autofocus readonly>
+                          <select required class="form-control" type="text" name="marrigeStatus" id="marrigeStatus" autofocus readonly>
                             <option value="" <?php if ($row2['Marriage_Status'] === 'No data')
                                                 echo ' selected'; ?>>No data</option>
                             <option value="Married" <?php if ($row2['Marriage_Status'] === 'Married')
@@ -363,7 +363,7 @@ include "../connect.php";
                         <input type="hidden" id="originalMarrigeStatus" value="<?php echo $row2['Marriage_Status']; ?>">
                         <div class="mb-3 col-md-6">
                           <label for="educationalStatus" class="form-label">Educational Status</label>
-                          <select class="form-control" type="text" id="educationalStatus" name="educationalStatus" autofocus readonly>
+                          <select required class="form-control" type="text" id="educationalStatus" name="educationalStatus" autofocus readonly>
                             <option value="" id="educationalStatus" <?php if ($row2['Educational_Status'] === 'No data')
                                                                       echo ' selected'; ?>>
                               No data
@@ -395,7 +395,7 @@ include "../connect.php";
                         <input type="hidden" id="originalEducationalStatus" value="<?php echo $row2['Educational_Status']; ?>">
                         <div class="mb-3 col-md-6">
                           <label for="criminalRecord" class="form-label">Criminal Record</label>
-                          <select class="form-control" type="text" name="criminalRecord" id="criminalRecord" autofocus readonly>
+                          <select required class="form-control" type="text" name="criminalRecord" id="criminalRecord" autofocus readonly>
                             <option value="" <?php if ($row2['Criminal_record'] === 'No data')
                                                 echo ' selected'; ?>>No data</option>
                             <option value="No" <?php if ($row2['Criminal_record'] === 'No')
