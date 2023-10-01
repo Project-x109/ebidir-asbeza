@@ -1,8 +1,13 @@
-document.addEventListener('DOMContentLoaded', function () {
-  const updateButton = document.getElementById('updateButton');
-  const form = document.getElementById('formAccountSettings');
-  const inputFields = form.querySelectorAll('input[readonly]');
+function showLoader() {
+  $('#loader').fadeIn();
+}
 
+// Hide the loader when the response is received
+function hideLoader() {
+  $('#loader').fadeOut();
+}
+$(document).ready(function () {
+  var button = $('#updateButton'); // Cache the button element
   // Initialize Flatpickr for the date picker input
   flatpickr('.date-picker', {
     enableTime: false, // Disable time selection
@@ -10,47 +15,153 @@ document.addEventListener('DOMContentLoaded', function () {
     readOnly: true // Initially, the input is readonly
   });
 
-  updateButton.addEventListener('click', function () {
-    if (updateButton.innerText === 'Update') {
+  function storeOriginalValues() {
+    // Store the original values of the fields as data attributes
+    $('#formAccountSettings :input').each(function () {
+      $(this).data('original-value', $(this).val());
+    });
+  }
+
+  function toggleButtonState() {
+    var formFields = $('#formAccountSettings :input');
+    var anyFieldEdited = false;
+
+    // Check if any of the fields have been edited
+    formFields.each(function () {
+      var value = $(this).val().trim();
+      if ($(this).val() !== $(this).data('original-value')) {
+        anyFieldEdited = true;
+        return false; // Exit the loop early if any field is edited
+      }
+
+      if (value === '') {
+        anyFieldEmpty = true;
+      }
+    });
+
+    // Enable the "Save Changes" button if any field is edited
+    button.prop('disabled', !anyFieldEdited);
+  }
+
+  // Store original values when the page loads
+  storeOriginalValues();
+
+  $('#formAccountSettings :input').on('input', toggleButtonState);
+  $('#updateButton').on('click', function () {
+    if (button.text() === 'Update') {
       // Switch to edit mode
-      inputFields.forEach(function (input) {
-        input.removeAttribute('readonly');
-      });
+      button.text('Save Changes');
+      $('#formAccountSettings :input').removeAttr('readonly');
       const datePickers = document.querySelectorAll('.date-picker');
       datePickers.forEach(function (picker) {
-        picker._flatpickr.set('readOnly');
+        picker.disabled = false; // Use the 'disabled' property instead of 'readOnly'
       });
-      // Remove the readonly attribute from the dropdown
-      const yearOfEmployment = document.getElementById('yearOfEmployment');
-      const branchDropdown = document.getElementById('branch');
-      yearOfEmployment.removeAttribute('readonly');
-      branchDropdown.removeAttribute('readonly');
-      updateButton.innerText = 'Save changes';
+      toggleButtonState();
     } else {
-      validateForm();
-
-      // Check if the form is valid
-      const toastPlacementExample = document.querySelector('.toast-placement-ex');
-      if (toastPlacementExample.classList.contains('bg-danger')) {
-        // Form is not valid, don't submit
-        return;
+      // Save changes and switch back to update mode
+      if (validateForm()) {
+        saveChanges(); // Only save changes if the form is valid
       }
-      // Submit the form
-      form.submit();
+      button.text('Update');
+      $('#formAccountSettings :input').attr('readonly', true);
+      const datePickers = document.querySelectorAll('.date-picker');
+      datePickers.forEach(function (picker) {
+        picker.disabled = true; // Use the 'disabled' property instead of 'readOnly'
+      });
+      // Re-check button state after switching back to update mode
     }
   });
+  $('#cancelButton').on('click', function () {
+    // Change the button text to "Update"
+    button.text('Update');
+    // Make the fields readonly
+    $('#formAccountSettings :input').attr('readonly', true);
+    // Reset the form to its original values
+  });
 
+  // Function to save changes when "Save Changes" is clicked
+  function saveChanges() {
+    showLoader();
+    var formData = new FormData($('#formAccountSettings')[0]);
+    $.ajax({
+      url: 'backend.php',
+      method: 'POST',
+      data: formData,
+      contentType: false,
+      processData: false,
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log('AJAX request error:', textStatus, errorThrown);
+        hideLoader();
+        $('#error-toast .toast-body').text('Backend Error: ' + errorThrown);
+        showErrorMessage();
+      },
+      success: function (response) {
+        console.log(response);
+        hideLoader();
+        if (response.errors) {
+          var errorContainer = $('#error-toast .toast-body');
+          errorContainer.empty();
+          $.each(response.errors, function (key, value) {
+            errorContainer.append('<p>' + value + '</p>');
+          });
+          showErrorMessage();
+        } else if (response.success) {
+          console.log(response.success);
+          // Update original values with the newly saved values
+          $('#originalfieldOfEmployment').val($('#fieldOfEmployment').val());
+          $('#originalnumberOfIncome').val($('#numberOfIncome').val());
+          $('#originalyearOfEmployment').val($('#yearOfEmployment').val());
+          $('#originalposition').val($('#position').val());
+          $('#originalbranch').val($('#branch').val());
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: response.success
+          }).then(result => {
+            if (result.isConfirmed) {
+              // Switch back to update mode
+              $('#updateButton').text('Update');
+              $('#formAccountSettings :input').attr('readonly', true);
+            }
+          });
+        }
+      }
+    });
+  }
+
+  // ... Your form validation code here ...
   function validateForm() {
+    let isValid = true;
     // An array of field IDs and their corresponding error messages
     const fields = [
-      { id: 'fieldOfEmployment', error: 'field of Employment is required.' },
-      { id: 'numberOfIncome', error: 'Number of Income Number is required.' },
-      { id: 'yearOfEmployment', error: 'Year of Employment is required.' },
-      { id: 'position', error: 'Position is required.' },
-      { id: 'branch', error: 'Branch is required.' }
+      {
+        id: 'fieldOfEmployment',
+        error: 'field of Employment is required.'
+      },
+      {
+        id: 'numberOfIncome',
+        error: 'Number of Income Number is required.'
+      },
+      {
+        id: 'yearOfEmployment',
+        error: 'Year of Employment is required.'
+      },
+      {
+        id: 'position',
+        error: 'Position is required.'
+      },
+      {
+        id: 'branch',
+        error: 'Branch is required.'
+      },
+      {
+        id: 'basic-icon-default-salary',
+        error: 'Salary is required.'
+      }
     ];
-    const numberRegex = /^[0-9]+$/;
     // Iterate through the fields and check their values
+    const numberRegex = /^[0-9]+$/;
     for (const field of fields) {
       const input = document.getElementById(field.id);
       const value = input.value.trim();
@@ -61,35 +172,42 @@ document.addEventListener('DOMContentLoaded', function () {
         toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
         const toastPlacement = new bootstrap.Toast(toastPlacementExample);
         toastPlacement.show();
-        return; // Stop further validation on the first empty field
+        isValid = fals;
+        return false; // Stop further validation on the first empty field
       }
 
       if (field.id === 'numberOfIncome') {
-        // Check if TIN Number field contains only numbers
+        // Check if Dependetents Number field contains only numbers
         if (!numberRegex.test(value)) {
           const toastPlacementExample = document.querySelector('.toast-placement-ex');
-          toastPlacementExample.querySelector('.toast-body').textContent = 'Number of Income should be Number only';
+          toastPlacementExample.querySelector('.toast-body').textContent = 'Number of Income should be only number';
           toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
           const toastPlacement = new bootstrap.Toast(toastPlacementExample);
           toastPlacement.show();
-          return; // Stop further validation if TIN Number is invalid
+          isValid = fale;
+          return false; // Stop further validation if Dependetents Number is invalid
+        }
+      }
+      if (field.id === 'basic-icon-default-salary') {
+        // Check if TIN Number field contains only numbers
+        if (!numberRegex.test(value)) {
+          const toastPlacementExample = document.querySelector('.toast-placement-ex');
+          toastPlacementExample.querySelector('.toast-body').textContent = 'Salary should only be number';
+          toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
+          const toastPlacement = new bootstrap.Toast(toastPlacementExample);
+          toastPlacement.show();
+          isValid = fale;
+          return false; // Stop further validation if Dependetents Number is invalid
         }
       }
     }
+    // If all fields are valid, return true to indicate success
+    return isValid;
+  }
 
-    /*   // Disable all input fields
-    const inputFields = document.querySelectorAll('input, select');
-    for (const inputField of inputFields) {
-      inputField.disabled = true;
-    } */
-
-    // If all fields are valid, show a success message
-    const toastPlacementExample = document.querySelector('.toast-placement-ex');
-    toastPlacementExample.classList.add('bg-primary');
-    toastPlacementExample.classList.remove('bg-danger');
-    toastPlacementExample.querySelector('.toast-body').textContent = 'Form submitted successfully.';
-    toastPlacementExample.querySelector('.toast-title ').textContent = 'Success.';
-    const toastPlacement = new bootstrap.Toast(toastPlacementExample);
+  // Function to display the error toast
+  function showErrorMessage() {
+    var toastPlacement = new bootstrap.Toast($('#error-toast'));
     toastPlacement.show();
   }
 });

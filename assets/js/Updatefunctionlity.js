@@ -1,41 +1,141 @@
-document.addEventListener('DOMContentLoaded', function () {
-  const updateButton = document.getElementById('updateButton');
-  const form = document.getElementById('formAccountSettings');
-  const inputFields = form.querySelectorAll('input[readonly]');
+function showLoader() {
+  $('#loader').fadeIn();
+}
 
-  updateButton.addEventListener('click', function () {
-    if (updateButton.innerText === 'Update') {
-      // Switch to edit mode
-      inputFields.forEach(function (input) {
-        input.removeAttribute('readonly');
-      });
-      // Remove the readonly attribute from the dropdown
-      const educationalStatusDropdown = document.getElementById('educationalStatus');
-      const marrigeStatusDropdown = document.getElementById('marrigeStatus');
-      educationalStatusDropdown.removeAttribute('readonly');
-      marrigeStatusDropdown.removeAttribute('readonly');
-      updateButton.innerText = 'Save changes';
-    } else {
-      validateForm();
+// Hide the loader when the response is received
+function hideLoader() {
+  $('#loader').fadeOut();
+}
+$(document).ready(function () {
+  var button = $('#updateButton'); // Cache the button elemen
 
-      // Check if the form is valid
-      const toastPlacementExample = document.querySelector('.toast-placement-ex');
-      if (toastPlacementExample.classList.contains('bg-danger')) {
-        // Form is not valid, don't submit
-        return;
+  function storeOriginalValues() {
+    // Store the original values of the fields as data attributes
+    $('#formAccountSettings :input').each(function () {
+      $(this).data('original-value', $(this).val());
+    });
+  }
+
+  function toggleButtonState() {
+    var formFields = $('#formAccountSettings :input');
+    var anyFieldEdited = false;
+
+    // Check if any of the fields have been edited
+    formFields.each(function () {
+      var value = $(this).val().trim();
+      if ($(this).val() !== $(this).data('original-value')) {
+        anyFieldEdited = true;
+        return false; // Exit the loop early if any field is edited
       }
-      // Submit the form
-      form.submit();
+
+      if (value === '') {
+        anyFieldEmpty = true;
+      }
+    });
+
+    // Enable the "Save Changes" button if any field is edited
+    button.prop('disabled', !anyFieldEdited);
+  }
+
+  // Store original values when the page loads
+  storeOriginalValues();
+
+  $('#formAccountSettings :input').on('input', toggleButtonState);
+  $('#updateButton').on('click', function () {
+    if (button.text() === 'Update') {
+      // Switch to edit mode
+      button.text('Save Changes');
+      $('#formAccountSettings :input').removeAttr('readonly');
+      toggleButtonState();
+    } else {
+      // Save changes and switch back to update mode
+      if (validateForm()) {
+        saveChanges(); // Only save changes if the form is valid
+      }
+      button.text('Update');
+      $('#formAccountSettings :input').attr('readonly', true);
+      // Re-check button state after switching back to update mode
     }
   });
+  $('#cancelButton').on('click', function () {
+    // Change the button text to "Update"
+    button.text('Update');
+    // Make the fields readonly
+    $('#formAccountSettings :input').attr('readonly', true);
+    // Reset the form to its original values
+  });
 
+  // Function to save changes when "Save Changes" is clicked
+  function saveChanges() {
+    showLoader();
+    var formData = new FormData($('#formAccountSettings')[0]);
+    $.ajax({
+      url: 'backend.php',
+      method: 'POST',
+      data: formData,
+      contentType: false,
+      processData: false,
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log('AJAX request error:', textStatus, errorThrown);
+        hideLoader();
+        $('#error-toast .toast-body').text('Backend Error: ' + errorThrown);
+        showErrorMessage();
+      },
+      success: function (response) {
+        console.log(response);
+        hideLoader();
+        if (response.errors) {
+          var errorContainer = $('#error-toast .toast-body');
+          errorContainer.empty();
+          $.each(response.errors, function (key, value) {
+            errorContainer.append('<p>' + value + '</p>');
+          });
+          showErrorMessage();
+        } else if (response.success) {
+          console.log(response.success);
+          // Update original values with the newly saved values
+          $('#originalNumberOfDependents').val($('#numberOfDependents').val());
+          $('#originalMarrigeStatus').val($('#marrigeStatus').val());
+          $('#originalEducationalStatus').val($('#educationalStatus').val());
+          $('#originalCriminalRecord').val($('#criminalRecord').val());
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: response.success
+          }).then(result => {
+            if (result.isConfirmed) {
+              // Switch back to update mode
+              $('#updateButton').text('Update');
+              $('#formAccountSettings :input').attr('readonly', true);
+            }
+          });
+        }
+      }
+    });
+  }
+
+  // ... Your form validation code here ...
   function validateForm() {
+    let isValid = true;
     // An array of field IDs and their corresponding error messages
     const fields = [
-      { id: 'numberOfDependents', error: 'Number of Dependents is required.' },
-      { id: 'marrigeStatus', error: 'Marriage Status is required.' },
-      { id: 'educationalStatus', error: 'Educational Status is required.' },
-      { id: 'criminalRecord', error: 'Criminal Record is required.' }
+      {
+        id: 'numberOfDependents',
+        error: 'Number of Dependents is required.'
+      },
+      {
+        id: 'marrigeStatus',
+        error: 'Marriage Status is required.'
+      },
+      {
+        id: 'educationalStatus',
+        error: 'Educational Status is required.'
+      },
+      {
+        id: 'criminalRecord',
+        error: 'Criminal Record is required.'
+      }
     ];
     // Iterate through the fields and check their values
     const numberRegex = /^[0-9]+$/;
@@ -49,7 +149,8 @@ document.addEventListener('DOMContentLoaded', function () {
         toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
         const toastPlacement = new bootstrap.Toast(toastPlacementExample);
         toastPlacement.show();
-        return; // Stop further validation on the first empty field
+        isValid = false;
+        return false; // Stop further validation on the first empty field
       }
 
       if (field.id === 'numberOfDependents') {
@@ -60,23 +161,18 @@ document.addEventListener('DOMContentLoaded', function () {
           toastPlacementExample.querySelector('.toast-title ').textContent = 'Error.';
           const toastPlacement = new bootstrap.Toast(toastPlacementExample);
           toastPlacement.show();
-          return; // Stop further validation if Dependetents Number is invalid
+          isValid = false;
+          return false; // Stop further validation if Dependetents Number is invalid
         }
       }
     }
-    /* // Disable all input fields
-    const inputFields = document.querySelectorAll('input, select');
-    for (const inputField of inputFields) {
-      inputField.disabled = true;
-    } */
+    // If all fields are valid, return true to indicate success
+    return isValid;
+  }
 
-    // If all fields are valid, show a success message
-    const toastPlacementExample = document.querySelector('.toast-placement-ex');
-    toastPlacementExample.classList.add('bg-primary');
-    toastPlacementExample.classList.remove('bg-danger');
-    toastPlacementExample.querySelector('.toast-body').textContent = 'Form submitted successfully.';
-    toastPlacementExample.querySelector('.toast-title ').textContent = 'Success.';
-    const toastPlacement = new bootstrap.Toast(toastPlacementExample);
+  // Function to display the error toast
+  function showErrorMessage() {
+    var toastPlacement = new bootstrap.Toast($('#error-toast'));
     toastPlacement.show();
   }
 });

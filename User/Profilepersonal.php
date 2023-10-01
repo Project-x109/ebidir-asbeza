@@ -43,6 +43,8 @@ include "../connect.php";
   <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
   <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
   <script src="../assets/js/config.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 
 <body>
@@ -332,41 +334,17 @@ include "../connect.php";
                   );
                 }
                 ?>
-                <?php
-                if ($_SERVER["REQUEST_METHOD"] === "POST") {
-                  // Retrieve form data
-                  $numberOfDependents = $_POST['numberOfDependents'];
-                  $marrigeStatus = $_POST['marrigeStatus'];
-                  $educationalStatus = $_POST['educationalStatus'];
-                  $criminalRecord = $_POST['criminalRecord'];
-
-                  // Update the database record
-                  $id = $_SESSION['id'];
-                  $sqlUpdate = "UPDATE personal SET
-                  Number_of_dependents='$numberOfDependents',
-                  Marriage_Status='$marrigeStatus',
-                  Educational_Status='$educationalStatus',
-                  Criminal_record='$criminalRecord'
-                  WHERE user_id=$id";
-                  if ($conn->query($sqlUpdate) === TRUE) {
-                    // Record updated successfully
-                    // You can redirect or show a success message here
-                  } else {
-                    // Error updating record
-                    // You can handle errors here
-                  }
-                }
-                ?>
-
-
                 <div class="card">
                   <div class="card-body">
-                    <form id="formAccountSettings" method="POST" onsubmit="return false">
+                    <form id="formAccountSettings" method="POST" action="backend.php" onsubmit="return false">
                       <div class="row">
+                        <input type="hidden" name="update_personal" value="1">
+                        <input type="hidden" name="id" value="<?php echo $row2['user_id']; ?>">
                         <div class="mb-3 col-md-6">
                           <label for="numberOfDependents" class="form-label">Number of Dependents</label>
                           <input class="form-control" type="text" id="numberOfDependents" name="numberOfDependents" value=" <?php echo $row2['Number_of_dependents']; ?>" readonly autofocus />
                         </div>
+                        <input type="hidden" id="originalNumberOfDependents" value="<?php echo $row2['Number_of_dependents']; ?>">
                         <div class="mb-3 col-md-6">
                           <label for="Marrige Status" class="form-label">Marrige Status</label>
                           <select class="form-control" type="text" name="marrigeStatus" id="marrigeStatus" autofocus readonly>
@@ -381,6 +359,7 @@ include "../connect.php";
                             </option>
                           </select>
                         </div>
+                        <input type="hidden" id="originalMarrigeStatus" value="<?php echo $row2['Marriage_Status']; ?>">
                         <div class="mb-3 col-md-6">
                           <label for="educationalStatus" class="form-label">Educational Status</label>
                           <select class="form-control" type="text" id="educationalStatus" name="educationalStatus" autofocus readonly>
@@ -412,7 +391,7 @@ include "../connect.php";
                           </select>
                         </div>
 
-
+                        <input type="hidden" id="originalEducationalStatus" value="<?php echo $row2['Educational_Status']; ?>">
                         <div class="mb-3 col-md-6">
                           <label for="criminalRecord" class="form-label">Criminal Record</label>
                           <select class="form-control" type="text" name="criminalRecord" id="criminalRecord" autofocus readonly>
@@ -427,13 +406,23 @@ include "../connect.php";
                             </option>
                           </select>
                         </div>
+                        <input type="hidden" id="originalCriminalRecord" value="<?php echo $row2['Criminal_record']; ?>">
                         <div class="mt-2">
                           <!-- Change the button text -->
-                          <button type="submit" class="btn btn-primary me-2" id="updateButton">Update</button>
-                          <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                          <button name="update_personal" type="submit" class="btn btn-primary me-2" id="updateButton">Update</button>
+                          <button type="submit" id="cancelButton" class="btn btn-outline-secondary">Cancel</button>
                         </div>
                     </form>
                   </div>
+                </div>
+                <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="error-toast">
+                  <div class="toast-header">
+                    <i class="bx bx-bell me-2"></i>
+                    <div class="me-auto toast-title fw-semibold">Error</div>
+                    <small></small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                  </div>
+                  <div class="toast-body"></div>
                 </div>
               </div>
             </div>
@@ -476,13 +465,11 @@ include "../connect.php";
   </div>
   <!-- / Layout wrapper -->
 
-  <!-- 
-<div class="buy-ዝow">
-    <a href="https://ThemeSelection.com/products/ThemeSelection-bootstrap-html-admin-template/" target="_blank"
-      class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
+  <div class="loader" id="loader">
+    <div class="loader-content">
+      <div class="spinner"></div>
+    </div>
   </div>
--->
-
   <!-- Core JS -->
   <!-- build:js assets/vendor/js/core.js -->
   <script src="../assets/vendor/libs/jquery/jquery.js"></script>
@@ -505,6 +492,7 @@ include "../connect.php";
 
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
+
 </body>
 
 </html>

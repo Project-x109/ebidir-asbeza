@@ -44,6 +44,8 @@ include "../connect.php";
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 
 <body>
@@ -367,28 +369,35 @@ include "../connect.php";
 
                                 <div class="card">
                                     <div class="card-body">
-                                        <form id="formAccountSettings" method="POST" onsubmit="return false">
+                                        <form id="formAccountSettings" action="backend.php" method="POST" onsubmit="return false">
                                             <div class="row">
+                                                <input type="hidden" name="update_economic" value="1">
+                                                <input type="hidden" name="id" value='<?php echo $_SESSION['id'] ?>' />
                                                 <div class="mb-3 col-md-6">
                                                     <label for="fieldOfEmployment" class="form-label">Field of
                                                         Employement</label>
-                                                    <input class="form-control" type="text" id="fieldOfEmployment" name="fieldOfEmployment" value=" <?php echo $row3['field_of_employeement']; ?>" autofocus readonly />
+                                                    <input class="form-control" type="text" id="fieldOfEmployment" name="field_of_employeement" value=" <?php echo $row3['field_of_employeement']; ?>" autofocus readonly />
                                                 </div>
+                                                <input type="hidden" id="originalfieldOfEmployment" value="<?php echo $row3['field_of_employeement']; ?>">
                                                 <div class="mb-3 col-md-6">
                                                     <label for="numberOfIncome" class="form-label">Number of
                                                         Income</label>
-                                                    <input class="form-control" type="text" name="numberOfIncome" id="numberOfIncome" value="<?php echo $row3['number_of_income']; ?>" autofocus readonly />
+                                                    <input class="form-control" type="text" name="number_of_income" id="numberOfIncome" value="<?php echo $row3['number_of_income']; ?>" autofocus readonly />
                                                 </div>
+                                                <input type="hidden" id="originalnumberOfIncome" value="<?php echo $row3['number_of_income']; ?>">
+
                                                 <div class="mb-3 col-md-6">
                                                     <label for="yearOfEmployment" class="form-label">Year of
                                                         Employment</label>
-                                                    <input class="form-control date-picker" type="text" id="yearOfEmployment" name="yearOfEmployment" value="<?php echo $row3['year']; ?>" placeholder="Select a date" autofocus readonly data-toggle="flatpickr" data-enable-time="false">
+                                                    <input class="form-control date-picker" type="text" id="yearOfEmployment" name="year" value="<?php echo $row3['year']; ?>" placeholder="Select a date" autofocus readonly data-toggle="flatpickr" data-enable-time="false">
                                                 </div>
+                                                <input type="hidden" id="originalyearOfEmployment" value="<?php echo $row3['year']; ?>">
+
                                                 <div class="mb-3 col-md-6">
                                                     <label for="branch" class="form-label">Branch Name</label>
                                                     <select type="text" class="form-control" id="branch" name="branch" autofocus readonly>
                                                         <option value="No data" <?php if ($row3['branch'] === 'No data')
-                                                                                                echo ' selected'; ?>>
+                                                                                    echo ' selected'; ?>>
                                                             No data</option>
                                                         <option value="Purposeblack ETH" <?php if ($row3['branch'] === 'Purposeblack ETH')
                                                                                                 echo ' selected'; ?>>
@@ -403,23 +412,38 @@ include "../connect.php";
                                                                                                 echo ' selected'; ?>>Purposeblack ETH5</option>
                                                     </select>
                                                 </div>
+                                                <input type="hidden" id="originalbranch" value="<?php echo $row3['branch']; ?>">
                                                 <div class="mb-3 col-md-6">
                                                     <label class="form-label" for="position">Position</label>
                                                     <div class="input-group input-group-merge">
                                                         <input type="text" id="position" value="<?php echo $row3['position']; ?>" name="position" class="form-control" placeholder="CEO" autofocus readonly />
                                                     </div>
                                                 </div>
-                                                <!-- <div class="mb-3 col-md-6">
-                                                    <label for="jobStatus" class="form-label">Job Status</label>
-                                                    <input type="text" class="form-control" id="jobStatus"
-                                                        name="jobStatus" value="Unemployed" />
-                                                </div> -->
+                                                <input type="hidden" id="originalposition" value="<?php echo $row3['position']; ?>">
+                                                <div class="mb-3 col-md-6">
+                                                    <label class="form-label" for="salary">Salary</label>
+                                                    <div class="input-group input-group-merge">
+
+                                                        <input type="number" id="basic-icon-default-salary" class="form-control" placeholder="56790" aria-label="salary" aria-describedby="basic-icon-default-salary" autofocus readonly name="salary" value="<?php echo $row3['salary']; ?>" />
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" id="originalsalary" value="<?php echo $row3['salary']; ?>">
+
                                             </div>
                                             <div class="mt-2">
-                                                <button type="submit" id="updateButton" class="btn btn-primary me-2">Update</button>
-                                                <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                                                <button type="submit" id="updateButton" name="update_economic" class="btn btn-primary me-2">Update</button>
+                                                <button type="submit" id="cancelButton" class="btn btn-outline-secondary">Cancel</button>
                                             </div>
                                         </form>
+                                    </div>
+                                    <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="error-toast">
+                                        <div class="toast-header">
+                                            <i class="bx bx-bell me-2"></i>
+                                            <div class="me-auto toast-title fw-semibold">Error</div>
+                                            <small></small>
+                                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                        </div>
+                                        <div class="toast-body"></div>
                                     </div>
                                 </div>
                             </div>
@@ -463,13 +487,12 @@ include "../connect.php";
     </div>
     <!-- / Layout wrapper -->
 
-    <!-- 
-<div class="buy-now">
-    <a href="https://ThemeSelection.com/products/ThemeSelection-bootstrap-html-admin-template/" target="_blank"
-      class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
-  </div>
--->
 
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="spinner"></div>
+        </div>
+    </div>
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script src="../assets/vendor/libs/jquery/jquery.js"></script>
@@ -494,6 +517,7 @@ include "../connect.php";
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 </body>
 
 </html>

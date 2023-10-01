@@ -319,7 +319,10 @@ include "../connect.php";
                     'TIN_Number' => 'No data',
                     'email' => 'No data',
                     'phone' => 'No data',
-                    'dob' => 'No data'
+                    'dob' => 'No data',
+                    'profile'=>'No data',
+                    'createdOn'=>'No data',
+                    'level'=>'No data'
                   );
                 }
                 ?>
