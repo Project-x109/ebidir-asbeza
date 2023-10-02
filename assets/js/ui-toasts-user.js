@@ -126,6 +126,9 @@ $(document).ready(function () {
 
     // Clear previous toast error messages
     $('#error-toast .toast-body').empty();
+    const photoInput = document.getElementById('basic-icon-default-photo');
+    const photoFile = photoInput.files[0]; // Get the selected file
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
     // Iterate through the fields and check their values
     for (const field of fields) {
@@ -183,6 +186,30 @@ $(document).ready(function () {
           $('#error-toast .toast-body').append('<p>Invalid Email Address.</p>');
           showErrorMessage();
           break; // Stop further validation if Email is invalid
+        }
+      }
+
+      if (!photoFile) {
+        isValid = false;
+        // Display an error message in the toast for the 'basic-icon-default-photo' field
+        $('#error-toast .toast-body').append('<p>Image is required.</p>');
+        showErrorMessage();
+      } else {
+        // Check file size
+        const maxSize = 1024 * 1024; // 1 MB in bytes
+        if (photoFile.size > maxSize) {
+          isValid = false;
+          // Display an error message for file size
+          $('#error-toast .toast-body').append('<p>Image size should be below 1 MB.</p>');
+          showErrorMessage();
+        }
+
+        // Check file type
+        if (!allowedTypes.includes(photoFile.type)) {
+          isValid = false;
+          // Display an error message for file type
+          $('#error-toast .toast-body').append('<p>Allowed image types are JPG, JPEG, and PNG.</p>');
+          showErrorMessage();
         }
       }
     }
