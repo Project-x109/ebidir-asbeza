@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset($_PO
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
     $userEnteredPassword = $_POST['password'];
 
-    // Retrieve the hashed password and user data from the database based on the phone number
+    // Retrieve the user data from the database based on the phone number
     $sql = "SELECT * FROM `users` WHERE phone = '$phone'";
     $result = $conn->query($sql);
 
@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset($_PO
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $hashedPassword = $row['password'];
+            $status = $row['status'];
 
             // Verify the user-entered plain text password against the retrieved hashed password
             if (password_verify($userEnteredPassword, $hashedPassword)) {
@@ -23,9 +24,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset($_PO
                 $_SESSION['credit_limit'] = $row['credit_limit'];
                 $_SESSION['level'] = $row['level'];
 
-                $loc = $_SESSION['role'] . "/";
-                header("location:" . $loc);
-                exit();
+                // Check user status
+                if ($status === 'waiting') {
+                    $_SESSION['status'] = 'waiting'; // Set a session variable to indicate the status
+
+                    // Redirect to change password page
+                    header("location: newpassword.php");
+                    exit();
+                } elseif ($status === 'active') {
+                    // User is already active, redirect to the appropriate dashboard
+                    $loc = $_SESSION['role'] . "/";
+                    header("location: " . $loc);
+                    exit();
+                }
             } else {
                 // Password is incorrect, store error message in session
                 $_SESSION['error'] = "Password is incorrect";
@@ -300,6 +311,100 @@ if (isset($_SESSION['error'])) {
     unset($_SESSION['error']); // Clear the error message
 
 }
+
+
+
+//changepassword
+
+if (isset($_SESSION['status']) && $_SESSION['status'] === 'waiting') {
+    // User is in waiting status, allow them to change their password
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_password'])) {
+        $userId = $_SESSION['id'];
+        $newPassword = mysqli_real_escape_string($conn, $_POST['newpassword']);
+        $confirmPassword = mysqli_real_escape_string($conn, $_POST['confirmpassword']);
+
+        // Define password validation rules
+        $minPasswordLength = 8;
+        $uppercaseRequired = true;
+        $lowercaseRequired = true;
+        $numberRequired = true;
+        $specialCharRequired = true;
+
+        // Password complexity check
+        $errors = array();
+
+        if (strlen($newPassword) < $minPasswordLength) {
+            $errors[] = "Password must be at least $minPasswordLength characters long.";
+        }
+
+        if ($uppercaseRequired && !preg_match('/[A-Z]/', $newPassword)) {
+            $errors[] = "Password must contain at least one uppercase letter.";
+        }
+
+        if ($lowercaseRequired && !preg_match('/[a-z]/', $newPassword)) {
+            $errors[] = "Password must contain at least one lowercase letter.";
+        }
+
+        if ($numberRequired && !preg_match('/[0-9]/', $newPassword)) {
+            $errors[] = "Password must contain at least one number.";
+        }
+
+        if ($specialCharRequired && !preg_match('/[\W_]/', $newPassword)) {
+            $errors[] = "Password must contain at least one special character.";
+        }
+        // Retrieve the user's current password from the database
+        $getCurrentPasswordSql = "SELECT `password` FROM `users` WHERE `id` = '$userId'";
+        $result = $conn->query($getCurrentPasswordSql);
+        if ($result && $row = $result->fetch_assoc()) {
+            $currentPasswordHash = $row['password'];
+
+            // Check if the new password matches the current password
+            if (password_verify($newPassword, $currentPasswordHash)) {
+                $errors[] = "New password cannot be the same as the current password.";
+            }
+        }
+        // Check if "New Password" and "Confirm Password" match
+        if ($newPassword !== $confirmPassword) {
+            $errors[] = "Passwords do not match.";
+        }
+
+        if (empty($errors)) {
+            // Hash the new password
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+            // Update the user's password and set status to 'active'
+            $updateSql = "UPDATE `users` SET `password` = '$hashedPassword', `status` = 'active' WHERE `id` = '$userId'";
+            if ($conn->query($updateSql)) {
+                // Password updated successfully, redirect to the dashboard
+                $_SESSION['success'] = "Password updated successfully!";
+                $loc = $_SESSION['role'] . "/";
+                header("location: " . $loc);
+                exit();
+            } else {
+                // Error updating password, store error message in session
+                $_SESSION['error'] = "Error updating password: " . mysqli_error($conn);
+                header("location: newpassword.php");
+                exit();
+            }
+        } else {
+            $_SESSION['password_errors'] = $errors;
+            header("location: newpassword.php");
+            exit();
+        }
+    }
+}
+
+// If the user is not in waiting status or there were validation errors, redirect to the appropriate dashboard
+$loc = $_SESSION['role'] . "/";
+header("location: " . $loc);
+exit();
+
+
+
+
+
+
+
 
 
 

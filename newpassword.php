@@ -1,3 +1,7 @@
+<?php
+session_start();
+include "./connect.php";
+?>
 <!DOCTYPE html>
 
 <html lang="en" class="light-style customizer-hide" dir="ltr" data-theme="theme-default" data-assets-path="./assets/" data-template="vertical-menu-template-free">
@@ -34,22 +38,29 @@
     <link rel="stylesheet" href="./assets/vendor/css/pages/page-auth.css" />
     <!-- Helpers -->
     <script src="./assets/vendor/js/helpers.js"></script>
-
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="./assets/js/config.js"></script>
 </head>
 
 <body>
     <!-- Content -->
-    <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="error-toast">
+    <div id="success-toast" class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
         <div class="toast-header">
-            <i class="bx bx-error me-2"></i> <!-- Add an error icon if you have one -->
-            <div class="me-auto toast-title fw-semibold">Error</div>
-            <small></small>
+            <strong class="me-auto">Success</strong>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
-        <div class="toast-body"></div>
+        <div class="toast-body">
+            <!-- Success message will be inserted here -->
+        </div>
+    </div>
+
+    <div id="error-toast" class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+        <div class="toast-header">
+            <strong class="me-auto">Error</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            
+        </div>
     </div>
 
     <div class="container-xxl">
@@ -88,16 +99,19 @@
                                                         <use fill="#696cff" xlink:href="#path-1"></use>
                                                         <g id="Path-3" mask="url(#mask-2)">
                                                             <use fill="#696cff" xlink:href="#path-3"></use>
-                                                            <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-3"></use>
+                                                            <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-3">
+                                                            </use>
                                                         </g>
                                                         <g id="Path-4" mask="url(#mask-2)">
                                                             <use fill="#696cff" xlink:href="#path-4"></use>
-                                                            <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-4"></use>
+                                                            <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-4">
+                                                            </use>
                                                         </g>
                                                     </g>
                                                     <g id="Triangle" transform="translate(19.000000, 11.000000) rotate(-300.000000) translate(-19.000000, -11.000000) ">
                                                         <use fill="#696cff" xlink:href="#path-5"></use>
-                                                        <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-5"></use>
+                                                        <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-5">
+                                                        </use>
                                                     </g>
                                                 </g>
                                             </g>
@@ -108,20 +122,21 @@
                             </a>
                         </div>
                         <!-- /Logo -->
-                        <h4 class="mb-2">Forgot Password? 🔒</h4>
-                        <p class="mb-4">Enter your email and we'll send you instructions to reset your password</p>
+                        <h4 class="mb-2">Change Password? 🔒</h4>
+                        <p class="mb-4">Enter your old password</p>
                         <form id="formAuthentication" class="mb-3" action="login.php" method="POST">
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" autofocus required />
-                                <div class="invalid-feedback">
-                                    Please enter a valid email address.
-                                </div>
+                                <label for="newpassword" class="form-label">New Password</label>
+                                <input required type="password" class="form-control" id="newpassword" name="newpassword" placeholder="Enter your password" autofocus />
                             </div>
-                            <button name="forgot_password" class="btn btn-primary d-grid w-100">Send Reset Link</button>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Confirm Password</label>
+                                <input required type="password" class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" autofocus />
+                            </div>
+                            <button type="submit" id="submit-btn" name="new_password" class="btn btn-primary d-grid w-100">Change Password</button>
                         </form>
                         <div class="text-center">
-                            <a href="index.php" class="d-flex align-items-center justify-content-center">
+                            <a href="index.php" onclick="return validateForm()" class="d-flex align-items-center justify-content-center">
                                 <i class="bx bx-chevron-left scaleX-n1-rtl bx-sm"></i>
                                 Back to login
                             </a>
@@ -134,25 +149,7 @@
     </div>
 
     <!-- / Content -->
-    <div id="success-toast" class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
-        <div class="toast-header">
-            <strong class="me-auto">Success</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-            <!-- Success message will be inserted here -->
-        </div>
-    </div>
 
-    <div id="error-toast" class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
-        <div class="toast-header">
-            <strong class="me-auto">Error</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-            <!-- Error message will be inserted here -->
-        </div>
-    </div>
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
@@ -175,46 +172,127 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <script>
-        // Check if the success message exists and display the success toast
-        <?php if (isset($_SESSION['success'])) : ?>
-            document.addEventListener("DOMContentLoaded", function() {
-                var successToast = new bootstrap.Toast(document.getElementById("success-toast"));
-                successToast.show();
-                document.querySelector("#success-toast .toast-body").innerHTML = "<?php echo $_SESSION['success']; ?>";
-            });
-            <?php unset($_SESSION['success']); // Clear the success message 
-            ?>
-        <?php endif; ?>
+    <?php
+    // Define JavaScript variables with messages from PHP
+    $jsError = isset($_SESSION['error']) ? $_SESSION['error'] : '';
+    $jsPasswordErrors = isset($_SESSION['password_errors']) ? json_encode($_SESSION['password_errors']) : '[]';
+    $jsSuccess = isset($_SESSION['success']) ? $_SESSION['success'] : '';
+    // Unset the error session variables
+    unset($_SESSION['error']);
+    unset($_SESSION['password_errors']);
+    unset($_SESSION['success']);
+    ?>
 
-        // Check if the error message exists and display the error toast
-        <?php if (isset($_SESSION['error'])) : ?>
-            document.addEventListener("DOMContentLoaded", function() {
-                var errorToast = new bootstrap.Toast(document.getElementById("error-toast"));
-                errorToast.show();
-                document.querySelector("#error-toast .toast-body").innerHTML = "<?php echo $_SESSION['error']; ?>";
-            });
-            <?php unset($_SESSION['error']); // Clear the error message 
-            ?>
-        <?php endif; ?>
-    </script>
-<!--     <script>
-    function validateForm() {
-        // Get the email input field
-        var emailInput = document.getElementById("email");
-        
-        // Check if the email input is valid
-        if (!emailInput.checkValidity()) {
-            // If not valid, display a custom error message
-            var invalidFeedback = emailInput.nextElementSibling;
-            invalidFeedback.style.display = "block";
-            return false; // Prevent form submission
+    <script>
+        // Function to display success message in toast
+        function showSuccessToast(message) {
+            var successToast = document.getElementById("success-toast");
+            var toastBody = successToast.querySelector(".toast-body");
+            toastBody.innerHTML = message;
+            var bsToast = new bootstrap.Toast(successToast);
+            bsToast.show();
         }
-        
-        // If valid, continue with form submission
-        return true;
-    }
-</script> -->
+
+        // Function to display error message in toast
+        function showErrorList(errors) {
+            var errorToast = document.getElementById("error-toast");
+            var toastBody = errorToast.querySelector(".toast-body");
+
+            // Clear existing error messages
+            toastBody.innerHTML = "";
+
+            // Create a new ul element
+            var errorList = document.createElement("ul");
+
+            errors.forEach(function(error) {
+                // Create a new li element for each error message
+                var listItem = document.createElement("li");
+                listItem.textContent = error;
+                // Append the li element to the ul
+                errorList.appendChild(listItem);
+            });
+
+            // Append the ul element to the toast body
+            toastBody.appendChild(errorList);
+
+            var bsToast = new bootstrap.Toast(errorToast);
+            bsToast.show();
+        }
+
+        var error = <?php echo json_encode($jsError); ?>;
+        var passwordErrors = <?php echo $jsPasswordErrors; ?>;
+        var success = <?php echo json_encode($jsSuccess); ?>;
+        if (error) {
+            showErrorList([error]);
+        }
+
+        if (passwordErrors.length > 0) {
+            showErrorList(passwordErrors);
+        }
+
+        if (success) {
+            showSuccessToast(success);
+        }
+    </script>
+
+
+
+
+    <!-- <script>
+        const form = document.querySelector('form');
+        const submitBtn = document.getElementById('submit-btn');
+
+        function validateForm(event) {
+            var newPassword = document.getElementById("newpassword").value;
+            var confirmPassword = document.getElementById("confirmpassword").value;
+            var passwordError = document.getElementById("password-error");
+            if (newPassword.length === 0 || confirmPassword.length === 0) {
+                event.preventDefault();
+                displayError("Password is Required");
+                return false;
+            }
+            // Check password length
+            if (newPassword.length < 8) {
+                event.preventDefault();
+                displayError("Password must be at least 8 characters long.");
+                return false;
+            }
+            // Check for at least one uppercase letter, one lowercase letter, and one digit
+            var uppercaseRegex = /[A-Z]/;
+            var lowercaseRegex = /[a-z]/;
+            var digitRegex = /[0-9]/;
+
+            if (!uppercaseRegex.test(newPassword) || !lowercaseRegex.test(newPassword) || !digitRegex.test(newPassword)) {
+                event.preventDefault();
+                displayError("Password must contain at least one uppercase letter, one lowercase letter, and one digit.");
+                return false;
+            }
+
+            // Check if passwords match
+            if (newPassword !== confirmPassword) {
+                event.preventDefault();
+                displayError("Passwords do not match.");
+                return false;
+            }
+
+            // Clear any previous error messages
+            passwordError.innerHTML = "";
+            form.submit();
+            return true; // Submit the form
+        }
+        // Function to display an error message in the toast
+        function displayError(errorMessage) {
+            var errorToast = document.getElementById("error-toast");
+            var toastBody = errorToast.querySelector(".toast-body");
+            toastBody.innerHTML = errorMessage;
+
+            var bsToast = new bootstrap.Toast(errorToast);
+            bsToast.show();
+        }
+        submitBtn.addEventListener('click', validateForm);
+    </script> -->
 </body>
+
+
 
 </html>
