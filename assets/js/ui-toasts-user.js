@@ -196,10 +196,4 @@ $(document).ready(function () {
     toastPlacement.show();
     hideLoader(); // Hide the loader on error
   }
-
-  // Function to display the success toast
-  /*  function showSuccessMessage() {
-    var toastPlacement = new bootstrap.Toast($('#success-toast'));
-    toastPlacement.show();
-  } */
 });

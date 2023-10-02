@@ -246,6 +246,136 @@ if (isset($_POST['add_user'])) {
   unset($_SESSION['error']); // Clear the error message
 } */
 // Function to generate a random password
+
+
+
+
+
+
+
+
+
+
+if (isset($_POST['addbranch'])) {
+    // Validation functions (similar to those in add_users)
+    $response = array();
+    $branchValidationErrors = array();
+    function validatePhone($phone)
+    {
+        // Check if the input is empty
+        if (empty($phone)) {
+            return false;
+        }
+
+        // Use the provided regex pattern to validate phone numbers
+        $pattern = '/(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(0\s*9\s*(([0-9]\s*){8}))|(0\s*7\s*(([0-9]\s*){8}))/';
+        return preg_match($pattern, $phone);
+    }
+
+    function validateEmail($email)
+    {
+        // Check if the input is empty
+        if (empty($email)) {
+            return false;
+        }
+
+        // Use the provided regex pattern to validate emails
+        $pattern = '/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i';
+        return preg_match($pattern, $email);
+    }
+
+    // Check if the phone number and email are already used
+    $branchPhone = mysqli_real_escape_string($conn, $_POST['phonenumber']);
+    $branchEmail = mysqli_real_escape_string($conn, $_POST['email']);
+    $branchname = mysqli_real_escape_string($conn, $_POST['branch_name']);
+
+    $phoneQuery = "SELECT * FROM `users` WHERE `phone`='$branchPhone'";
+    $emailQuery = "SELECT * FROM `users` WHERE `email`='$branchEmail'";
+    $branchnameQuery = "SELECT * FROM `users` WHERE `name`='$branchname'";
+
+    $phoneResult = $conn->query($phoneQuery);
+    $emailResult = $conn->query($emailQuery);
+    $branchNameResult = $conn->query($branchnameQuery);
+
+    if ($phoneResult->num_rows > 0) {
+        $branchValidationErrors[] = "Phone number is already registered.";
+    }
+    if ($emailResult->num_rows > 0) {
+        $branchValidationErrors[] = "Email is already registered.";
+    }
+    if ($branchNameResult->num_rows > 0) {
+        $branchValidationErrors[] = "Branch is already registered.";
+    }
+
+    // Additional validation for branch-specific fields (e.g., branch name, location)
+
+    // Check if there are any validation errors
+    if (empty($branchValidationErrors)) {
+        // Generate a random password
+        $randomPassword = generateRandomPassword();
+
+        // Sanitize user inputs
+        $branchName = mysqli_real_escape_string($conn, $_POST['branch_name']);
+        $branchPhone = mysqli_real_escape_string($conn, $_POST['phonenumber']);
+        $branchEmail = mysqli_real_escape_string($conn, $_POST['email']);
+        $branchLocation = mysqli_real_escape_string($conn, $_POST['location']);
+
+        // Hash and salt the password
+        $password = password_hash($randomPassword, PASSWORD_DEFAULT);
+
+        // Generate a unique branch ID (e.g., "EB0001")
+        $sql = "SELECT * FROM admin_setting";
+        $res = $conn->query($sql);
+        $row = $res->fetch_assoc();
+        $branch_id = "EB" . ($row ? sprintf('%04d', $row['branch']) : '0000');
+
+        // Insert branch information into the 'users' table
+        $sql = "INSERT INTO `users`(`name`, `phone`, `password`, `role`, `status`, `email`, `user_id`) 
+                VALUES ('$branchName', '$branchPhone', '$password', 'branch', 'waiting', '$branchEmail', '$branch_id')";
+        $res = $conn->query($sql);
+
+        if ($res) {
+            // Update the branch counter in the 'admin_setting' table
+            $sql = "UPDATE admin_setting SET branch=" . ($row['branch'] + 1);
+            $conn->query($sql);
+
+            // Insert branch information into the 'branch' table
+            $sql = "INSERT INTO `branch`(`branch_name`, `location`, `branch_id`)
+                    VALUES ('$branchName','$branchLocation','$branch_id')";
+            $res = $conn->query($sql);
+
+            if ($res) {
+                // Send an email with the generated password to the branch
+                sendPasswordEmail($branchEmail, $randomPassword, $conn);
+                $_SESSION['success'] = "Branch Account created successfully";
+                $response = array('success' => $_SESSION['success']);
+                header('Content-Type: application/json');
+                echo json_encode($response);
+            } else {
+                $_SESSION['error'] = "Error Occurred";
+                $response = array('errors' => $_SESSION['error']);
+                header('Content-Type: application/json');
+                echo json_encode($response);
+            }
+        } else {
+            $_SESSION['error'] = "Error Occurred";
+        }
+    } else {
+        $response = array('errors' => $branchValidationErrors);
+        header('Content-Type: application/json');
+        echo json_encode($response);
+    }
+} else {
+    // Handle cases where 'add_user' is not set (e.g., if the form wasn't submitted)
+    $response = array('error' => 'Invalid request');
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
+// Always return a JSON response
+
+
+
+
 function generateRandomPassword($length = 8)
 {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -447,7 +577,11 @@ function sendPasswordEmail($recipientEmail, $password, $conn)
     }
 }
 
-if (isset($_POST['addbranch'])) {
+
+
+
+
+/* if (isset($_POST['addbranch'])) {
 
     $sql = "SELECT * FROM admin_setting";
     $res = $conn->query($sql);
@@ -471,4 +605,4 @@ if (isset($_POST['addbranch'])) {
         }
     }
     header("location:addbranch.php");
-}
+} */

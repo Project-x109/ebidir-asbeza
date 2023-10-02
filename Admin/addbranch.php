@@ -37,6 +37,10 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 </head>
 
 <body>
@@ -263,8 +267,9 @@
                                         <small class="text-muted float-end">Merged input group</small>
                                     </div>
                                     <div class="card-body">
-                                        <form action="backend.php" method="POST">
+                                        <form id="branchForm" action="backend.php" method="POST">
                                             <div class="row mb-4">
+                                                <input type="hidden" name="addbranch" value="1">
                                                 <label class="col-sm-2 col-form-label" for="basic-icon-default-branchname">Branch Name :<span class="text-danger">*</span></label>
                                                 <div class="col-sm-4">
                                                     <div class="input-group input-group-merge">
@@ -307,7 +312,7 @@
                                             <div class="row justify-content-end">
                                                 <div class="col-sm-10">
 
-                                                    <button id="submit-btn"  type="submit" name="addbranch"  class="btn btn-primary">Submit</button>
+                                                    <button id="submit-btn" type="submit" name="addbranch" class="btn btn-primary">Submit</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -317,7 +322,20 @@
                         </div>
                     </div>
                     <!-- / Content -->
-
+                    <div class="loader" id="loader">
+                        <div class="loader-content">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                    <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="error-toast">
+                        <div class="toast-header">
+                            <i class="bx bx-bell me-2"></i>
+                            <div class="me-auto toast-title fw-semibold">Error</div>
+                            <small></small>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body"></div>
+                    </div>
                     <!-- Footer -->
                     <footer class="content-footer footer bg-footer-theme">
                         <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
@@ -354,13 +372,6 @@
     </div>
     <!-- / Layout wrapper -->
 
-    <!-- 
-<div class="buy-now">
-    <a href="https://ThemeSelection.com/products/ThemeSelection-bootstrap-html-admin-template/" target="_blank"
-      class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
-  </div>
--->
-
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script src="../assets/vendor/libs/jquery/jquery.js"></script>
@@ -379,11 +390,188 @@
     <script src="../assets/js/main.js"></script>
 
     <!-- Page JS -->
-    <script src="../assets/js/ui-toasts-branch.js"></script>
+    <!-- <script src="../assets/js/ui-toasts-branch.js"></script> -->
 
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <script>
+        function showLoader() {
+            $('#loader').fadeIn();
+        }
+
+        // Hide the loader when the response is received
+        function hideLoader() {
+            $('#loader').fadeOut();
+        }
+
+        $(document).ready(function() {
+            console.log('Form submit event binding');
+            $('#branchForm').on('submit', function(event) {
+                event.preventDefault(); // Prevent the default form submission behavior
+                showLoader();
+                // Perform form validation here
+                if (!validateForm()) {
+                    return; // Stop further processing if validation fails
+                }
+
+                // Serialize the form data
+                var formData = new FormData(this);
+                console.log('AJAX request initiated');
+
+                $.ajax({
+                    url: 'backend.php', // URL to send the form data
+                    method: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log('AJAX request error:', textStatus, errorThrown);
+                        hideLoader(); // Hide the loader on error
+                        // Display a backend error message in the error toast
+                        $('#error-toast .toast-body').text('Backend Error: ' + errorThrown);
+                        showErrorMessage();
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        hideLoader(); // Hide the loader on success
+                        // Check if the response contains validation errors
+                        if (response.errors) {
+                            var errorContainer = $('#error-toast .toast-body');
+                            errorContainer.empty(); // Clear any previous errors
+                            console.log('AJAX request initiated');
+                            // Loop through the validation errors and display them in the toast
+                            $.each(response.errors, function(key, value) {
+                                errorContainer.append('<p>' + value + '</p>');
+                            });
+                            console.log('AJAX request initiated');
+
+                            // Display the error toast for frontend validation errors
+                            showErrorMessage();
+                        } else {
+                            // If no errors, you can redirect or show a success message as needed
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: response.success
+                                }).then(result => {
+                                    // You can add additional actions after the user clicks "OK"
+                                    if (result.isConfirmed) {
+                                        // Clear and reset the form fields
+                                        $('#branchForm')[0].reset();
+
+                                        // Create a new FormData object with the cleared form data
+                                        var formData = new FormData($('#branchForm')[0]);
+
+                                        // Re-enable the submit button after a delay (e.g., 2 seconds)
+                                        setTimeout(function() {
+                                            $('#submit-btn').prop('disabled', false);
+                                            $('#submit-btn').text('Submit');
+                                        }, 2000);
+                                    }
+                                });
+                            }
+                            console.log('AJAX request initiated');
+                        }
+                    }
+                });
+            });
+
+            // Function to perform form validation
+            function validateForm() {
+                // Add your form validation logic here
+                var isValid = true;
+
+                const fields = [{
+                        id: 'basic-icon-default-branchname',
+                        error: 'Branch Name is required.'
+                    },
+                    {
+                        id: 'basic-icon-default-email',
+                        error: 'Email is required.'
+                    },
+                    {
+                        id: 'basic-icon-default-phone',
+                        error: 'Phone is required.'
+                    },
+                    {
+                        id: 'basic-icon-default-location',
+                        error: 'Location is required.'
+                    },
+
+                ];
+                const numberRegex = /^[0-9]+$/;
+                const nameRegex = /^[A-Za-z\s]+$/;
+                const validPhoneRegex = RegExp(
+                    /(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(0\s*9\s*(([0-9]\s*){8}))|(0\s*7\s*(([0-9]\s*){8}))/
+                );
+                const validEmailRegex = RegExp(
+                    /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+                );
+
+                // Clear previous toast error messages
+                $('#error-toast .toast-body').empty();
+
+                // Iterate through the fields and check their values
+                for (const field of fields) {
+                    const input = document.getElementById(field.id);
+                    const value = input.value.trim();
+
+                    if (value === '') {
+                        isValid = false;
+                        // Display an error message in the toast
+                        $('#error-toast .toast-body').append('<p>' + field.error + '</p>');
+                        showErrorMessage();
+                        break; // Stop further validation on the first empty field
+                    }
+
+                    if (field.id === 'basic-icon-default-branchname') {
+                        // Check if Name field contains only alphabets
+                        if (!nameRegex.test(value)) {
+                            isValid = false;
+                            // Display an error message in the toast
+                            $('#error-toast .toast-body').append('<p>Name can only contain alphabets and spaces.</p>');
+                            showErrorMessage();
+                            break; // Stop further validation if Name is invalid
+                        }
+                    }
+
+                    if (field.id === 'basic-icon-default-phone') {
+                        // Check if Phone Number is valid
+                        if (!validPhoneRegex.test(value)) {
+                            isValid = false;
+                            // Display an error message in the toast
+                            $('#error-toast .toast-body').append('<p>Invalid Phone Number.</p>');
+                            showErrorMessage();
+                            break; // Stop further validation if Phone Number is invalid
+                        }
+                    }
+
+                    if (field.id === 'basic-icon-default-email') {
+                        // Check if Email is valid
+                        if (!validEmailRegex.test(value)) {
+                            isValid = false;
+                            // Display an error message in the toast
+                            $('#error-toast .toast-body').append('<p>Invalid Email Address.</p>');
+                            showErrorMessage();
+                            break; // Stop further validation if Email is invalid
+                        }
+                    }
+                }
+
+                return isValid;
+            }
+
+            // Function to display the error toast for frontend validation errors
+            function showErrorMessage() {
+                var toastPlacement = new bootstrap.Toast($('#error-toast'));
+                toastPlacement.show();
+                hideLoader(); // Hide the loader on error
+            }
+        });
+    </script>
 </body>
 
 </html>
