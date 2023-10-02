@@ -248,7 +248,7 @@ session_start()
             <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span>General Information</h4>
 
 
-            <div class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" style="display: none;" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="success-toast">
+           <!--  <div class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" style="display: none;" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="success-toast">
               <div class="toast-header">
                 <i class="bx bx-bell me-2"></i>
                 <div class="me-auto toast-title fw-semibold">Success</div>
@@ -256,7 +256,7 @@ session_start()
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
               </div>
               <div class="toast-body"></div>
-            </div>
+            </div> -->
 
 
             <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="error-toast">

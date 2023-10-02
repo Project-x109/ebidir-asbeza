@@ -226,13 +226,7 @@ if (isset($_POST['add_user'])) {
 
     header('Content-Type: application/json');
     echo json_encode($response);
-} else {
-    // Handle cases where 'add_user' is not set (e.g., if the form wasn't submitted)
-    $response = array('error' => 'Invalid request');
-    header('Content-Type: application/json');
-    echo json_encode($response);
 }
-
 
 // Handle errors (display them in the toast if needed)
 /* if (isset($_SESSION['error'])) {
@@ -349,25 +343,16 @@ if (isset($_POST['addbranch'])) {
                 sendPasswordEmail($branchEmail, $randomPassword, $conn);
                 $_SESSION['success'] = "Branch Account created successfully";
                 $response = array('success' => $_SESSION['success']);
-                header('Content-Type: application/json');
-                echo json_encode($response);
             } else {
                 $_SESSION['error'] = "Error Occurred";
                 $response = array('errors' => $_SESSION['error']);
-                header('Content-Type: application/json');
-                echo json_encode($response);
             }
         } else {
             $_SESSION['error'] = "Error Occurred";
         }
     } else {
         $response = array('errors' => $branchValidationErrors);
-        header('Content-Type: application/json');
-        echo json_encode($response);
     }
-} else {
-    // Handle cases where 'add_user' is not set (e.g., if the form wasn't submitted)
-    $response = array('error' => 'Invalid request');
     header('Content-Type: application/json');
     echo json_encode($response);
 }

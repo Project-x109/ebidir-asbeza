@@ -48,6 +48,7 @@ include "../common/head.php";
 
 <body>
     <!-- Layout wrapper -->
+    <div id="restricted-content">
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
             <!-- Menu -->
@@ -757,12 +758,7 @@ include "../common/head.php";
     </div>
     <!-- / Layout wrapper -->
 
-    <!-- 
-<div class="buy-now">
-    <a href="https://ThemeSelection.com/products/e-bidir-bootstrap-html-admin-template/" target="_blank"
-      class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
-  </div>
--->
+    </div>
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
@@ -802,8 +798,16 @@ include "../common/head.php";
     <script src="../assets/js/branchpicahrt.js">
         // JavaScript for pagination and search functionality
     </script>
+    <script>
+  // Call the function when the page loads
+  window.addEventListener('load', updateUIBasedOnAuthStatus);
+</script>
 
+
+    <!-- Include the JavaScript file for authorization -->
+<script src="../assets/js/authorization.js"></script>
 
 </body>
+
 
 </html>
