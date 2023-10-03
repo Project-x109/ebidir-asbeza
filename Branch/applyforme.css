@@ -184,18 +184,7 @@
   margin-bottom: 1rem;
 }
 
-.form-card-input {
-  font-size: 2rem;
-  font-weight: bold;
-  letter-spacing: 2rem;
-  text-align: start;
-  -webkit-transform: translateX(36px);
-  -ms-transform: translateX(36px);
-  transform: translateX(36px);
-  position: absolute;
-  z-index: 3;
-  background-color: transparent;
-}
+
 
 .form-card-input-bg {
   content: '';

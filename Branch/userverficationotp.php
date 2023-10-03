@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="../assets/vendor/css/core.css" class="template-customizer-core-css" />
     <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="../assets/css/demo.css" />
-    <link rel="stylesheet" href="./userimfo.css" />
+    <link rel="stylesheet" href="./userverification.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
@@ -234,54 +234,19 @@
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1  container-p-y">
                         <div class="row justify-content-center align-items-center mt-5">
-                            <div class="container">
-                                <div class="card cart">
-                                    <label class="title">CHECKOUT</label>
-                                    <div class="steps">
-                                        <div class="step">
-                                            <div class="payments">
-                                                <span>User Information</span>
-                                                <div class="details">
-                                                    <span>Full Name:</span>
-                                                    <span>Amanuel Girma Mekonnen </span>
-                                                    <span>Email:</span>
-                                                    <span>amanuelgirma108@gmail.com</span>
-                                                    <span>Phone Numbre:</span>
-                                                    <span>+251 9194 851 89</span>
-
-                                                    <span>TIN Number:</span>
-                                                    <span>4526223623</span>
-                                                    <span>Job Status:</span>
-                                                    <span>Employed</span>
-
-
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div>
-                                                <span>Credit Limit</span>
-                                                <!-- <p>Visa</p> -->
-                                                <p>10000 ETB</p>
-                                            </div>
-                                            <hr>
-                                            <div class="promo">
-                                                <span>Enter Total Amount</span>
-                                                <form class="form">
-                                                    <input class="input_field" placeholder="Enter Total Amount" type="text">
-                                                    <button>Apply</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <form id="creditForm" class="form">
+                                <div class="title">You can apply for credit here</div>
+                                <p class="message">Insert the user's six-digit identification number</p>
+                                <div class="inputs">
+                                    <input class="form-card-input" id="identificationNumber1" type="text" maxlength="1">
+                                    <input class="form-card-input" id="identificationNumber2" type="text" maxlength="1">
+                                    <input class="form-card-input" id="identificationNumber3" type="text" maxlength="1">
+                                    <input class="form-card-input" id="identificationNumber4" type="text" maxlength="1">
+                                    <input class="form-card-input" id="identificationNumber5" type="text" maxlength="1">
+                                    <input class="form-card-input" id="identificationNumber6" type="text" maxlength="1">
                                 </div>
-
-                                <div class="card checkout">
-                                    <div class="footer">
-                                        <label class="price">$280.40</label>
-                                        <button class="checkout-btn">Checkout</button>
-                                    </div>
-                                </div>
-                            </div>
+                                <button class="action">verify user</button>
+                            </form>
                         </div>
                     </div>
 
@@ -332,14 +297,6 @@
         <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
-
-    <!-- 
-<div class="buy-now">
-    <a href="https://ThemeSelection.com/products/ThemeSelection-bootstrap-html-admin-template/" target="_blank"
-      class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
-  </div>
--->
-
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script src="../assets/vendor/libs/jquery/jquery.js"></script>
@@ -359,6 +316,7 @@
     <!-- Page JS -->
     <script src="../assets/js/dashboards-analytics.js"></script>
     <script src="../assets/js/mark-Notification-read.js"></script>
+    <script src="../assets/js/userverification.js"></script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
