@@ -248,7 +248,7 @@ session_start()
             <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span>General Information</h4>
 
 
-           <!--  <div class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" style="display: none;" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="success-toast">
+            <!--  <div class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" style="display: none;" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="success-toast">
               <div class="toast-header">
                 <i class="bx bx-bell me-2"></i>
                 <div class="me-auto toast-title fw-semibold">Success</div>
@@ -312,29 +312,6 @@ session_start()
                           </div>
                         </div>
                       </div>
-
-                      <div class="row mb-4">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-company">Job Status :<span class="text-danger">*</span></label>
-                        <div class="col-sm-4">
-                          <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-Job2" class="input-group-text"><i class="bx bx-buildings"></i></span>
-                            <select id="basic-icon-default-Job" class="form-select" name="Job_Status">
-                              <option value="">Default select</option>
-                              <option value="Employed">Employed </option>
-                              <option value="Unemployed">Unemployed</option>
-                              <option value="Self Emplyed">Self Employed</option>
-                            </select>
-                          </div>
-                        </div>
-                        <label for="html5-datetime-local-input" class="col-md-2 col-form-label">Date of Birth:<span class="text-danger">*</span></label>
-                        <div class="col-sm-4">
-                          <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-dateOfBirth2" class="input-group-text"><i class="bx bx-calendar"></i></span>
-                            <input class="form-control" type="date" value="2021-06-18" id="basic-icon-default-dateOfBirth" name="dob" />
-                          </div>
-                        </div>
-                      </div>
-
                       <div class="row mb-4">
                         <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Email :<span class="text-danger">*</span></label>
                         <div class="col-sm-4">
@@ -363,6 +340,28 @@ session_start()
                             <input id="basic-icon-default-photo" aria-describedby="basic-icon-default-photo2" class="form-control" type="file" id="formFile" name="profile" />
                           </div>
                         </div>
+                        <label for="html5-datetime-local-input" class="col-md-2 col-form-label">Date of Birth:<span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                          <div class="input-group input-group-merge">
+                            <span id="basic-icon-default-dateOfBirth2" class="input-group-text"><i class="bx bx-calendar"></i></span>
+                            <input class="form-control" type="date" value="2021-06-18" id="basic-icon-default-dateOfBirth" name="dob" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row mb-4">
+                        <!--            <label class="col-sm-2 col-form-label" for="basic-icon-default-company">Job Status :<span class="text-danger">*</span></label>
+                        <div class="col-sm-4">
+                          <div class="input-group input-group-merge">
+                            <span id="basic-icon-default-Job2" class="input-group-text"><i class="bx bx-buildings"></i></span>
+                            <select id="basic-icon-default-Job" class="form-select" name="Job_Status">
+                              <option value="">Default select</option>
+                              <option value="Employed">Employed </option>
+                              <option value="Unemployed">Unemployed</option>
+                              <option value="Self Emplyed">Self Employed</option>
+                            </select>
+                          </div>
+                        </div> -->
+
                       </div>
                       <div class="row justify-content-end">
                         <div class="col-sm-10">
@@ -371,73 +370,73 @@ session_start()
                         </div>
                       </div>
                     </form>
-                  <!-- <div id="error-container" class="alert alert-danger" style="display: none;">
+                    <!-- <div id="error-container" class="alert alert-danger" style="display: none;">
                     <ul id="error-list"></ul>
                   </div>
                   <div id="success-container" class="alert alert-success" style="display: none;">
                     <ul id="success-list"></ul>
                   </div> -->
+                  </div>
                 </div>
               </div>
             </div>
+            <!-- / Content -->
+
+            <!-- Footer -->
+            <footer class="content-footer footer bg-footer-theme">
+              <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                <div class="mb-2 mb-md-0">
+                  ©
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  , made with ❤️ by
+                  <a href="https://ThemeSelection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
+                </div>
+                <div>
+                  <a href="https://ThemeSelection.com/license/" class="footer-link me-4" target="_blank">License</a>
+                  <a href="https://ThemeSelection.com/" target="_blank" class="footer-link me-4">More Themes</a>
+
+                  <a href="https://ThemeSelection.com/demo/sneat-bootstrap-html-admin-template/documentation/" target="_blank" class="footer-link me-4">Documentation</a>
+
+                  <a href="https://github.com/ThemeSelection/sneat-html-admin-template-free/issues" target="_blank" class="footer-link me-4">Support</a>
+                </div>
+              </div>
+            </footer>
+            <!-- / Footer -->
+
+            <div class="content-backdrop fade"></div>
           </div>
-          <!-- / Content -->
-
-          <!-- Footer -->
-          <footer class="content-footer footer bg-footer-theme">
-            <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-              <div class="mb-2 mb-md-0">
-                ©
-                <script>
-                  document.write(new Date().getFullYear());
-                </script>
-                , made with ❤️ by
-                <a href="https://ThemeSelection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
-              </div>
-              <div>
-                <a href="https://ThemeSelection.com/license/" class="footer-link me-4" target="_blank">License</a>
-                <a href="https://ThemeSelection.com/" target="_blank" class="footer-link me-4">More Themes</a>
-
-                <a href="https://ThemeSelection.com/demo/sneat-bootstrap-html-admin-template/documentation/" target="_blank" class="footer-link me-4">Documentation</a>
-
-                <a href="https://github.com/ThemeSelection/sneat-html-admin-template-free/issues" target="_blank" class="footer-link me-4">Support</a>
-              </div>
-            </div>
-          </footer>
-          <!-- / Footer -->
-
-          <div class="content-backdrop fade"></div>
+          <!-- Content wrapper -->
         </div>
-        <!-- Content wrapper -->
+        <!-- / Layout page -->
       </div>
-      <!-- / Layout page -->
+
+      <!-- Overlay -->
+      <div class="layout-overlay layout-menu-toggle"></div>
     </div>
+    <!-- / Layout wrapper -->
 
-    <!-- Overlay -->
-    <div class="layout-overlay layout-menu-toggle"></div>
-  </div>
-  <!-- / Layout wrapper -->
-
-  <!-- Core JS -->
-  <!-- build:js assets/vendor/js/core.js -->
-  <script src="../assets/vendor/libs/jquery/jquery.js"></script>
-  <script src="../assets/vendor/libs/popper/popper.js"></script>
-  <script src="../assets/vendor/js/bootstrap.js"></script>
-  <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="../assets/vendor/libs/popper/popper.js"></script>
+    <script src="../assets/vendor/js/bootstrap.js"></script>
+    <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
 
-  <script src="../assets/vendor/js/menu.js"></script>
-  <!-- endbuild -->
+    <script src="../assets/vendor/js/menu.js"></script>
+    <!-- endbuild -->
 
-  <!-- Vendors JS -->
+    <!-- Vendors JS -->
 
-  <!-- Main JS -->
-  <script src="../assets/js/main.js"></script>
+    <!-- Main JS -->
+    <script src="../assets/js/main.js"></script>
 
-  <!-- Page JS -->
-  <script src="../assets/js/ui-toasts-user.js"></script>
-  <!-- Place this tag in your head or just before your close body tag. -->
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- Page JS -->
+    <script src="../assets/js/ui-toasts-user.js"></script>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
 
 
 

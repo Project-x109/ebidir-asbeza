@@ -95,10 +95,6 @@ $(document).ready(function () {
         error: 'TIN Number is required.'
       },
       {
-        id: 'basic-icon-default-Job',
-        error: 'Job Status is required.'
-      },
-      {
         id: 'basic-icon-default-dateOfBirth',
         error: 'Date of Birth is required.'
       },

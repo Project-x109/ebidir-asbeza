@@ -314,7 +314,6 @@ include "../connect.php";
                 // Check if data exists, if not, set default values
                 if (!$row) {
                   $row = array(
-                    'job_status' => 'No data',
                     'name' => 'No data',
                     'TIN_Number' => 'No data',
                     'email' => 'No data',
@@ -389,7 +388,7 @@ include "../connect.php";
                           <label for="dateOfBirth" class="form-label">Date of Birth</label>
                           <input class="form-control" type="date" id="dateOfBirth" name="dateOfBirth" value="<?php echo $row['dob']; ?>" autofocus disabled placeholder="01-12-2023" />
                         </div>
-                        <div class="mb-3 col-md-6">
+                       <!--  <div class="mb-3 col-md-6">
                           <label for="branch" class="form-label">Branch Name</label>
                           <select type="text" class="form-control" id="branch" name="branch" autofocus disabled>
                             <option value="Employed" <?php if ($row['job_status'] === 'Employed')
@@ -400,7 +399,7 @@ include "../connect.php";
                             <option value="Self Employed" <?php if ($row['job_status'] === 'Self Employed')
                                                             echo ' selected'; ?>>Self Employed</option>
                           </select>
-                        </div>
+                        </div> -->
 
                       </div>
                     </form>

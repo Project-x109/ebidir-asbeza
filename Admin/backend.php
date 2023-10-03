@@ -65,7 +65,7 @@ if (isset($_POST['add_user'])) {
         return preg_match('/^\d{10}$/', $tinNumber);
     }
 
-    function validateJobStatus($jobStatus)
+    /*    function validateJobStatus($jobStatus)
     {
         // Check if the input is empty
         if (empty($jobStatus)) {
@@ -75,7 +75,7 @@ if (isset($_POST['add_user'])) {
         // Define an array of valid job statuses
         $validStatuses = array('Employed', 'Unemployed', 'Self Employed');
         return in_array($jobStatus, $validStatuses);
-    }
+    } */
 
     function validateAge($dob)
     {
@@ -150,10 +150,6 @@ if (isset($_POST['add_user'])) {
         $validationErrors[] = "Invalid TIN number format.";
     }
 
-    if (!validateJobStatus($_POST['Job_Status'])) {
-        $validationErrors[] = "Invalid job status.";
-    }
-
     if (!validateAge($_POST['dob'])) {
         $validationErrors[] = "You must be at least 18 years old.";
     }
@@ -167,7 +163,6 @@ if (isset($_POST['add_user'])) {
         validateEmail($_POST['email']) &&
         validateName($_POST['name']) &&
         validateTINNumber($_POST['TIN_Number']) &&
-        validateJobStatus($_POST['Job_Status']) &&
         validateAge($_POST['dob']) &&
         validateImage($_FILES["profile"])
     ) {
@@ -179,7 +174,6 @@ if (isset($_POST['add_user'])) {
         $dob = mysqli_real_escape_string($conn, $_POST['dob']);
         $phone = mysqli_real_escape_string($conn, $_POST['phone']);
         $TIN_Number = mysqli_real_escape_string($conn, $_POST['TIN_Number']);
-        $job_status = mysqli_real_escape_string($conn, $_POST['Job_Status']);
         $email = mysqli_real_escape_string($conn, $_POST['email']);
         $status = 'waiting';
 
@@ -191,8 +185,8 @@ if (isset($_POST['add_user'])) {
         $date = date("s-h-d-m-Y");
         $folder = "../images/" . $date . $filename;
 
-        $sql = "INSERT INTO `users`(`name`, `dob`, `phone`, `password`, `role`, `TIN_Number`, `profile`, `job_status`, `status`, `email`) 
-                VALUES ('$name', '$dob', '$phone', '$password', 'user', '$TIN_Number', '$folder', '$job_status', '$status', '$email')";
+        $sql = "INSERT INTO `users`(`name`, `dob`, `phone`, `password`, `role`, `TIN_Number`, `profile`, `status`, `email`) 
+                VALUES ('$name', '$dob', '$phone', '$password', 'user', '$TIN_Number', '$folder', '$status', '$email')";
         $res = $conn->query($sql);
 
         if ($res) {
