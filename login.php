@@ -2,6 +2,15 @@
 session_start();
 include "connect.php";
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require './assets/PHPMailer/PHPMailer.php';
+require './assets/PHPMailer/SMTP.php';
+require './assets/PHPMailer/Exception.php';
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset($_POST['password'])) {
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
     $userEnteredPassword = $_POST['password'];
@@ -40,28 +49,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset($_PO
             } else {
                 // Password is incorrect, store error message in session
                 $_SESSION['error'] = "Password is incorrect";
+                header("Location: index.php");
+                exit();
+                
             }
         } else {
             // User with this phone number does not exist, store error message in session
             $_SESSION['error'] = "User with this phone number does not exist";
+            header("Location: index.php");
+            exit();
         }
     } else {
         // MySQL Error, store error message in session
         $_SESSION['error'] = "MySQL Error: " . mysqli_error($conn);
+        header("Location: index.php");
+        exit();
     }
-} else {
+} /* else {
     header("location: index.php");
     exit();
 }
+ */
 
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-
-require './assets/PHPMailer/PHPMailer.php';
-require './assets/PHPMailer/SMTP.php';
-require './assets/PHPMailer/Exception.php';
 
 
 
@@ -373,11 +382,11 @@ if (isset($_GET['token'])) {
             header("Location: reset_password.php?token=$token");
             exit();
         }
+    } else {
+        $_SESSION['error'] = "Invalid or missing token!";
+        header("Location: index.php");
+        exit();
     }
-} else {
-    $_SESSION['error'] = "Invalid or missing token!";
-    header("Location: index.php");
-    exit();
 }
 
 

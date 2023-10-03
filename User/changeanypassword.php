@@ -1,12 +1,7 @@
 <?php
 session_start();
-include "./connect.php";
-if (isset($_GET['token'])) {
-    $token = $_GET['token'];
-    /*  echo "Token from URL: " . $token; // Debugging output */
-} else {
-    echo "Token is missing from URL"; // Debugging output
-}
+include "../connect.php";
+
 ?>
 <!DOCTYPE html>
 
@@ -29,25 +24,28 @@ if (isset($_GET['token'])) {
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
 
     <!-- Icons. Uncomment required icon fonts -->
-    <link rel="stylesheet" href="./assets/vendor/fonts/boxicons.css" />
+    <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="./assets/vendor/css/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="./assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="./assets/css/demo.css" />
+    <link rel="stylesheet" href="../assets/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="../assets/css/demo.css" />
 
     <!-- Vendors CSS -->
-    <link rel="stylesheet" href="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
     <!-- Page CSS -->
     <!-- Page -->
-    <link rel="stylesheet" href="./assets/vendor/css/pages/page-auth.css" />
+    <link rel="stylesheet" href="../assets/vendor/css/pages/page-auth.css" />
     <!-- Helpers -->
-    <script src="./assets/vendor/js/helpers.js"></script>
+    <script src="../assets/vendor/js/helpers.js"></script>
 
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="./assets/js/config.js"></script>
+    <script src="../assets/js/config.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 </head>
 
 <body>
@@ -133,7 +131,11 @@ if (isset($_GET['token'])) {
                         <!-- /Logo -->
                         <h4 class="mb-2">Change Password? 🔒</h4>
                         <p class="mb-4">Enter your new password and Confirm Your password</p>
-                        <form id="formAuthentication" class="mb-3" action="login.php?token=<?php echo $token; ?>" method="POST">
+                        <form id="password-change-form" class="mb-3" action="changeanypasswordbackend.php" method="POST">
+                            <div class="mb-3">
+                                <label for="oldpassword" class="form-label">Old Password</label>
+                                <input required type="password" class="form-control" id="oldpassword" name="oldpassword" placeholder="Enter your old password" autofocus />
+                            </div>
                             <div class="mb-3">
                                 <label for="newpassword" class="form-label">New Password</label>
                                 <input required type="password" class="form-control" id="newpassword" name="newpassword" placeholder="Enter your password" autofocus />
@@ -142,12 +144,12 @@ if (isset($_GET['token'])) {
                                 <label for="email" class="form-label">Confirm Password</label>
                                 <input required type="password" class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" autofocus />
                             </div>
-                            <button type="submit" id="submit-btn" name="change_password" class="btn btn-primary d-grid w-100">Change Password</button>
+                            <button type="submit" id="submit-btn" name="change_old_password" class="btn btn-primary d-grid w-100">Change Password</button>
                         </form>
                         <div class="text-center">
-                            <a href="index.php" onclick="return validateForm()" class="d-flex align-items-center justify-content-center">
+                            <a href="Dashbaord.php" onclick="return validateForm()" class="d-flex align-items-center justify-content-center">
                                 <i class="bx bx-chevron-left scaleX-n1-rtl bx-sm"></i>
-                                Back to login
+                                Back to Dashboard
                             </a>
                         </div>
                     </div>
@@ -162,26 +164,28 @@ if (isset($_GET['token'])) {
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
-    <script src="./assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="./assets/vendor/libs/popper/popper.js"></script>
-    <script src="./assets/vendor/js/bootstrap.js"></script>
-    <script src="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="../assets/vendor/libs/popper/popper.js"></script>
+    <script src="../assets/vendor/js/bootstrap.js"></script>
+    <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
-    <script src="./assets/vendor/js/menu.js"></script>
+    <script src="../assets/vendor/js/menu.js"></script>
     <!-- endbuild -->
-    <script src="./assets/js/common.js"></script>
+    <script src="../assets/js/common.js"></script>
 
     <!-- Vendors JS -->
 
 
     <!-- Main JS -->
-    <script src="./assets/js/main.js"></script>
+    <script src="../assets/js/main.js"></script>
 
     <!-- Page JS -->
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <script>
+
+
+    <!-- <script>
         // Check if the success message exists and display the success toast
         <?php if (isset($_SESSION['success'])) : ?>
             document.addEventListener("DOMContentLoaded", function() {
@@ -194,28 +198,44 @@ if (isset($_GET['token'])) {
         <?php endif; ?>
 
         // Check if the error message exists and display the error toast
-        <?php if (isset($_SESSION['error'])) : ?>
+        <?php if (isset($_SESSION['password_errors'])) : ?>
             document.addEventListener("DOMContentLoaded", function() {
                 var errorToast = new bootstrap.Toast(document.getElementById("error-toast"));
                 errorToast.show();
-                document.querySelector("#error-toast .toast-body").innerHTML = "<?php echo $_SESSION['error']; ?>";
+                document.querySelector("#error-toast .toast-body").innerHTML = "<?php echo $_SESSION['password_errors']; ?>";
             });
-            <?php unset($_SESSION['error']); // Clear the error message 
+            <?php unset($_SESSION['password_errors']); // Clear the error message 
             ?>
         <?php endif; ?>
-    </script>
+    </script> -->
 
-    <script>
+    <!-- <script>
         const form = document.querySelector('form');
         const submitBtn = document.getElementById('submit-btn');
 
         function validateForm(event) {
+            var oldPassword = document.getElementById("oldpassword").value;
             var newPassword = document.getElementById("newpassword").value;
             var confirmPassword = document.getElementById("confirmpassword").value;
             var passwordError = document.getElementById("password-error");
-            if (newPassword.length === 0 || confirmPassword.length === 0) {
+            if (oldPassword.length === 0) {
                 event.preventDefault();
-                displayError("Password is Required");
+                displayError("Old Password is Required");
+                return false;
+            }
+            if (newPassword.length === 0) {
+                event.preventDefault();
+                displayError("New Password is Required");
+                return false;
+            }
+            if (confirmPassword.length === 0) {
+                event.preventDefault();
+                displayError("Confirm your Password");
+                return false;
+            }
+            if (oldPassword === newPassword) {
+                event.preventDefault();
+                displayError("Old Password and New password can not be the same");
                 return false;
             }
             // Check password length
@@ -257,6 +277,42 @@ if (isset($_GET['token'])) {
             bsToast.show();
         }
         submitBtn.addEventListener('click', validateForm);
+    </script> -->
+
+
+    <script>
+        $(document).ready(function() {
+            $('#change-password-form').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: 'changeanypasswordbackend.php',
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            // Password updated successfully
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: response.message
+                            }).then(function() {
+                                // Redirect to the dashboard after clicking "OK"
+                                window.location.href = 'dashbaord.php';
+                            });
+                        } else {
+                            // Display error messages
+                            let errorMessage = Array.isArray(response.message) ? response.message.join('<br>') : response.message;
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                html: errorMessage
+                            });
+                        }
+                    }
+                });
+            });
+        });
     </script>
 </body>
 
