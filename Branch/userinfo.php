@@ -1,3 +1,10 @@
+<?php
+session_start();
+include "../connect.php";
+
+
+
+?>
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
@@ -241,31 +248,38 @@
                                             <div class="payments">
                                                 <span>User Information</span>
                                                 <div class="details">
-                                                    <span>Full Name:</span>
-                                                    <span>Amanuel Girma Mekonnen </span>
+                                                    <?php
+                                $id=$_SESSION['user_id'];
+                                $sql="SELECT * FROM users where user_id='$id'";
+                                $res=$conn->query($sql);
+                                $row=$res->fetch_assoc();
+                                                echo"<span>Full Name</span>
+                                                    <span>$row[name]</span>
                                                     <span>Email:</span>
-                                                    <span>amanuelgirma108@gmail.com</span>
+                                                    <span>$row[email]</span>
                                                     <span>Phone Numbre:</span>
-                                                    <span>+251 9194 851 89</span>
+                                                    <span>$row[phone]</span>
                                                     <span>TIN Number:</span>
-                                                    <span>4526223623</span>
+                                                    <span>$row[TIN_Number]</span>
                                                     <span>Job Status:</span>
                                                     <span>Employed</span>
-                                                    <span>1<?php $_POST['data']?></span>
+                                                    <span><?php echo $_SESSION[user_id]?></span>";
+                                                    ?>
                                                 </div>
                                             </div>
                                             <hr>
                                             <div>
                                                 <span>Credit Limit</span>
                                                 <!-- <p>Visa</p> -->
-                                                <p>10000 ETB</p>
+                                                <p><?=$row['credit_limit']?> ETB</p>
                                             </div>
                                             <hr>
                                             <div class="promo">
                                                 <span>Enter Total Amount</span>
-                                                <form class="form">
-                                                    <input class="input_field" placeholder="Enter Total Amount" type="text">
-                                                    <button>Apply</button>
+                                                <form class="form" action="backend.php" method="POST">
+                                                    <input class="input_field" name="total_price"  placeholder="Enter Total Amount" type="number" max='<?=$row['credit_limit']?>' step="0" onkeyup="filldata(this)" required> 
+                                                   <input type='hidden' name="user_id" value='<?=$id?>'/>
+                                                    <button name="branch_checkout" type='submit'>Apply</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -274,8 +288,8 @@
 
                                 <div class="card checkout">
                                     <div class="footer">
-                                        <label class="price">$280.40</label>
-                                        <button class="checkout-btn">Checkout</button>
+                                        <label class="price" id="price"></label>
+                                        <!-- <button class="checkout-btn">Checkout</button> -->
                                     </div>
                                 </div>
                             </div>
@@ -292,6 +306,11 @@
                         <div class="toast-body">
                         </div>
                     </div>
+                    <script>
+function filldata(e){
+    document.getElementById('price').innerHTML=e.value+" Birr";
+}
+</script>
                     <!-- / Content -->
 
                     <!-- Footer -->

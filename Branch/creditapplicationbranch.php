@@ -1,5 +1,6 @@
 <?php
-
+session_start();
+ 
 include '../connect.php';
 ?>
 <!DOCTYPE html>
@@ -143,10 +144,12 @@ include '../connect.php';
                     </li>
                 </ul>
             </aside>
-            <!-- / Menu -->
-
-            <!-- Layout container -->
+            <?php include '../common/sidebar.php';?>
             <div class="layout-page">
+            <?php
+include "../common/nav.php";
+
+?>
                 <!-- Navbar -->
 
                 <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
@@ -261,7 +264,7 @@ include '../connect.php';
                                             </thead>
         <tbody>
             <?php
-            $sql="SELECT *,loans.user_id as userID ,loans.status as status,loans.id as loan_id FROM `loans`  INNER join users on users.id=loans.user_id";
+            $sql="SELECT *,loans.user_id as userID ,loans.status as status,loans.id as loan_id FROM `loans`  INNER join users on users.user_id=loans.user_id";
             $res=$conn->query($sql);
             if($res->num_rows>0)
             while($row=$res->fetch_assoc()){
