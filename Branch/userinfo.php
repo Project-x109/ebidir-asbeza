@@ -228,7 +228,6 @@
                 </nav>
 
                 <!-- / Navbar -->
-
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
                     <!-- Content -->
@@ -248,13 +247,11 @@
                                                     <span>amanuelgirma108@gmail.com</span>
                                                     <span>Phone Numbre:</span>
                                                     <span>+251 9194 851 89</span>
-
                                                     <span>TIN Number:</span>
                                                     <span>4526223623</span>
                                                     <span>Job Status:</span>
                                                     <span>Employed</span>
-
-
+                                                    <span>1<?php $_POST['data']?></span>
                                                 </div>
                                             </div>
                                             <hr>
