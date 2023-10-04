@@ -234,18 +234,18 @@
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1  container-p-y">
                         <div class="row justify-content-center align-items-center mt-5">
-                            <form id="creditForm" class="form">
+                            <form id="creditForm" class="form" action="userinfo.php" method="POST">
                                 <div class="title">You can apply for credit here</div>
                                 <p class="message">Insert the user's six-digit identification number</p>
                                 <div class="inputs">
-                                    <input class="form-card-input" id="identificationNumber1" type="text" maxlength="1">
+                                    <input class="form-card-input" name="data" id="identificationNumber1" type="text" maxlength="1">
                                     <input class="form-card-input" id="identificationNumber2" type="text" maxlength="1">
                                     <input class="form-card-input" id="identificationNumber3" type="text" maxlength="1">
                                     <input class="form-card-input" id="identificationNumber4" type="text" maxlength="1">
                                     <input class="form-card-input" id="identificationNumber5" type="text" maxlength="1">
                                     <input class="form-card-input" id="identificationNumber6" type="text" maxlength="1">
                                 </div>
-                                <button class="action">verify user</button>
+                                <button class="action" name="verify">verify user</button>
                             </form>
                         </div>
                     </div>
@@ -316,7 +316,7 @@
     <!-- Page JS -->
     <script src="../assets/js/dashboards-analytics.js"></script>
     <script src="../assets/js/mark-Notification-read.js"></script>
-    <script src="../assets/js/userverification.js"></script>
+    <!-- <script src="../assets/js/userverification.js"></script> -->
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
