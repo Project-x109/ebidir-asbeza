@@ -144,7 +144,7 @@ include "../connect.php";
                                 <label for="email" class="form-label">Confirm Password</label>
                                 <input required type="password" class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" autofocus />
                             </div>
-                            <button type="submit" id="submit-btn" name="change_old_password" class="btn btn-primary d-grid w-100">Change Password</button>
+                            <button type="submit" id="submit-btn" name="change_old_passwords" class="btn btn-primary d-grid w-100">Change Password</button>
                         </form>
                         <div class="text-center">
                             <a href="Dashbaord.php" onclick="return validateForm()" class="d-flex align-items-center justify-content-center">
@@ -158,6 +158,9 @@ include "../connect.php";
             </div>
         </div>
     </div>
+    <div id="success-message" class="alert alert-success" style="display: none;"></div>
+    <div id="error-message" class="alert alert-danger" style="display: none;"></div>
+
 
     <!-- / Content -->
 
@@ -185,31 +188,7 @@ include "../connect.php";
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
 
-    <!-- <script>
-        // Check if the success message exists and display the success toast
-        <?php if (isset($_SESSION['success'])) : ?>
-            document.addEventListener("DOMContentLoaded", function() {
-                var successToast = new bootstrap.Toast(document.getElementById("success-toast"));
-                successToast.show();
-                document.querySelector("#success-toast .toast-body").innerHTML = "<?php echo $_SESSION['success']; ?>";
-            });
-            <?php unset($_SESSION['success']); // Clear the success message 
-            ?>
-        <?php endif; ?>
-
-        // Check if the error message exists and display the error toast
-        <?php if (isset($_SESSION['password_errors'])) : ?>
-            document.addEventListener("DOMContentLoaded", function() {
-                var errorToast = new bootstrap.Toast(document.getElementById("error-toast"));
-                errorToast.show();
-                document.querySelector("#error-toast .toast-body").innerHTML = "<?php echo $_SESSION['password_errors']; ?>";
-            });
-            <?php unset($_SESSION['password_errors']); // Clear the error message 
-            ?>
-        <?php endif; ?>
-    </script> -->
-
-    <!-- <script>
+    <script>
         const form = document.querySelector('form');
         const submitBtn = document.getElementById('submit-btn');
 
@@ -277,37 +256,38 @@ include "../connect.php";
             bsToast.show();
         }
         submitBtn.addEventListener('click', validateForm);
-    </script> -->
-
-
+    </script>
     <script>
         $(document).ready(function() {
-            $('#change-password-form').on('submit', function(e) {
-                e.preventDefault();
+
+            $('#password-change-form').on('submit', function(e) {
+                /*  e.preventDefault(); */
+
                 $.ajax({
                     type: 'POST',
                     url: 'changeanypasswordbackend.php',
                     data: $(this).serialize(),
                     dataType: 'json',
                     success: function(response) {
+                        console.log(response)
                         if (response.success) {
+                            console.log("hello")
                             // Password updated successfully
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Success',
-                                text: response.message
-                            }).then(function() {
-                                // Redirect to the dashboard after clicking "OK"
-                                window.location.href = 'dashbaord.php';
-                            });
+                            $('#success-message').html(response.message).show();
+                            $('#error-message').hide();
+                            // Redirect to the dashboard after a delay
+                            setTimeout(function() {
+                                window.location.href = 'dashboard.php';
+                            }, 3000); // Redirect after 3 seconds (adjust as needed)
                         } else {
+                            console.log("error")
                             // Display error messages
                             let errorMessage = Array.isArray(response.message) ? response.message.join('<br>') : response.message;
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                html: errorMessage
-                            });
+                            $('#error-message').html(errorMessage).show();
+                            $('#success-message').hide();
+                            setTimeout(function() {
+                                window.location.href = 'changeanypassword.php.php';
+                            }, 3000);
                         }
                     }
                 });
