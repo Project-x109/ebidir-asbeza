@@ -1,3 +1,7 @@
+<?php
+include "connect.php";
+session_start();
+?>
 
 <!DOCTYPE html>
 
@@ -52,17 +56,17 @@
         </div>
         <div class="toast-body"></div>
     </div>
+    <div class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="success-toast">
+        <div class="toast-header">
+            <i class="bx bx-bell me-2"></i>
+            <div class="me-auto toast-title fw-semibold">success</div>
+            <small></small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body"></div>
+    </div>
 
     <div class="container-xxl">
-        <div class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="success-toast">
-            <div class="toast-header">
-                <i class="bx bx-bell me-2"></i>
-                <div class="me-auto toast-title fw-semibold">success</div>
-                <small></small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body"></div>
-        </div>
         <div class="authentication-wrapper authentication-basic container-p-y">
             <div class="authentication-inner py-4">
                 <!-- Forgot Password -->
@@ -114,9 +118,10 @@
                         <form id="formAuthentication" class="mb-3" action="login.php" method="POST">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" autofocus required />
+                                <input type="email" class="form-control" re id="email" name="email" placeholder="Enter your email" requi autofocus />
+                                <div id="emailError" class="text-danger"></div> <!-- Error message container -->
                             </div>
-                            <button name="forgot_password" class="btn btn-primary d-grid w-100">Send Reset Link</button>
+                            <button onclick="validateEmail()" name="forgot_password" class="btn btn-primary d-grid w-100">Send Reset Link</button>
                         </form>
                         <div class="text-center">
                             <a href="index.php" class="d-flex align-items-center justify-content-center">
@@ -128,39 +133,103 @@
                 </div>
                 <!-- /Forgot Password -->
             </div>
+
         </div>
-    </div>
 
-    <!-- / Content -->
+        <!-- / Content -->
+        <div id="success-toast" class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+            <div class="toast-header">
+                <strong class="me-auto">Success</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                <!-- Success message will be inserted here -->
+            </div>
+        </div>
 
-    <!-- 
-<div class="buy-now">
-    <a href="https://ThemeSelection.com/products/ThemeSelection-bootstrap-html-admin-template/" target="_blank"
-      class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
-  </div>
--->
+        <div id="error-toast" class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+            <div class="toast-header">
+                <strong class="me-auto">Error</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                <!-- Error message will be inserted here -->
+            </div>
+        </div>
 
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
-    <script src="./assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="./assets/vendor/libs/popper/popper.js"></script>
-    <script src="./assets/vendor/js/bootstrap.js"></script>
-    <script src="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+        <!-- Core JS -->
+        <!-- build:js assets/vendor/js/core.js -->
+        <script src="./assets/vendor/libs/jquery/jquery.js"></script>
+        <script src="./assets/vendor/libs/popper/popper.js"></script>
+        <script src="./assets/vendor/js/bootstrap.js"></script>
+        <script src="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
-    <script src="./assets/vendor/js/menu.js"></script>
-    <!-- endbuild -->
-    <script src="./assets/js/common.js"></script>
+        <script src="./assets/vendor/js/menu.js"></script>
+        <!-- endbuild -->
+        <script src="./assets/js/common.js"></script>
 
-    <!-- Vendors JS -->
+        <!-- Vendors JS -->
 
 
-    <!-- Main JS -->
-    <script src="./assets/js/main.js"></script>
+        <!-- Main JS -->
+        <script src="./assets/js/main.js"></script>
 
-    <!-- Page JS -->
+        <!-- Page JS -->
 
-    <!-- Place this tag in your head or just before your close body tag. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
+        <!-- Place this tag in your head or just before your close body tag. -->
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+        <script>
+            // Check if the success message exists and display the success toast
+            <?php if (isset($_SESSION['success'])) : ?>
+                document.addEventListener("DOMContentLoaded", function() {
+                    var successToast = new bootstrap.Toast(document.getElementById("success-toast"));
+                    successToast.show();
+                    document.querySelector("#success-toast .toast-body").innerHTML = "<?php echo $_SESSION['success']; ?>";
+                });
+                <?php unset($_SESSION['success']); // Clear the success message 
+                ?>
+            <?php endif; ?>
+
+            // Check if the error message exists and display the error toast
+            <?php if (isset($_SESSION['error'])) : ?>
+                document.addEventListener("DOMContentLoaded", function() {
+                    var errorToast = new bootstrap.Toast(document.getElementById("error-toast"));
+                    errorToast.show();
+                    document.querySelector("#error-toast .toast-body").innerHTML = "<?php echo $_SESSION['error']; ?>";
+                });
+                <?php unset($_SESSION['error']); // Clear the error message 
+                ?>
+            <?php endif; ?>
+        </script>
+        <script>
+            function validateEmail() {
+                const emailInput = document.getElementById('email');
+                const emailError = document.getElementById('emailError');
+                const emailPattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+                if (emailInput.value.trim() === '') {
+                    emailInput.classList.add('is-invalid');
+                    emailError.textContent = 'Email is required.';
+                } else if (!emailPattern.test(emailInput.value.trim())) {
+                    emailInput.classList.add('is-invalid');
+                    emailError.textContent = 'Please enter a valid email address.';
+                } else {
+                    // Clear any previous error messages
+                    emailInput.classList.remove('is-invalid');
+                    emailError.textContent = '';
+
+                    // The email is valid, you can submit the form here if needed
+                    document.getElementById('formAuthentication').submit();
+                }
+            }
+        </script>
+
+
+
+
+
+
+
 </body>
 
 </html>

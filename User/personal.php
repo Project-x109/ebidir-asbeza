@@ -40,11 +40,14 @@ include "../connect.php";
   <!-- Page CSS -->
 
   <!-- Helpers -->
+
   <script src="../assets/vendor/js/helpers.js"></script>
 
   <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
   <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
   <script src="../assets/js/config.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 
 <body>
@@ -291,19 +294,6 @@ include "../connect.php";
 
           <div class="container-xxl flex-grow-1 container-p-y">
             <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span>Personal Information</h4>
-
-            <!-- Toast with Placements -->
-            <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
-              <div class="toast-header">
-                <i class="bx bx-bell me-2"></i>
-                <div class="me-auto toast-title fw-semibold">Error</div>
-                <small></small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-              </div>
-              <div class="toast-body">Fruitcake chocolate bar tootsie roll gummies gummies jelly beans cake.</div>
-            </div>
-            <!-- Toast with Placements -->
-
             <!-- Basic Layout & Basic with Icons -->
             <div class="row">
               <div class="col-xxl">
@@ -321,7 +311,8 @@ include "../connect.php";
                     <!-- <small class="text-muted float-end">Merged input group</small> -->
                   </div>
                   <div class="card-body">
-                    <form action="backend.php" method="POST">
+                    <form id="personalForm" action="backend.php" method="POST">
+                      <input type="hidden" name="add_user" value="1">
                       <input type="hidden" name="id" value='<?php echo $_SESSION['id'] ?>' />
                       <div class="row mb-4">
                         <label class="col-sm-2 col-form-label" for="numberOfDependents">Number of
@@ -357,7 +348,7 @@ include "../connect.php";
                             <select id="educationalStatus" class="form-select" name="Educational_Status">
                               <option value="">Default select</option>
                               <option value="Below highSchool">Below highSchool </option>
-                              <option value="Dipoma">Diploma</option>
+                              <option value="Diploma">Diploma</option>
                               <option value="Degree">Degree</option>
                               <option value="Masters">Masters</option>
                               <option value="PHD">PHD</option>
@@ -382,35 +373,24 @@ include "../connect.php";
                       </div>
                       <div class="row justify-content-end">
                         <div class="col-sm-10">
-                          <button id="submit-btn" type="submit"  name='<?php echo $found ? "update_personal" : "add_personal" ?>' class="btn btn-primary">
+                          <button id="submit-btn" type="submit" name='<?php echo $found ? "update_personal" : "add_personal" ?>' class="btn btn-primary">
                             <?php echo $found ? "Update" : "Submit" ?>
                           </button>
                         </div>
                       </div>
                     </form>
                   </div>
-                  <?php
 
-                  // Check if there are validation errors and display them
-                  if (isset($_SESSION['errors']) && !empty($_SESSION['errors'])) :
-                  ?>
-                    <div class="alert alert-danger">
-                      <ul>
-                        <?php foreach ($_SESSION['errors'] as $error) : ?>
-                          <li><?php echo $error; ?></li>
-                        <?php endforeach; ?>
-                      </ul>
-                    </div>
-                  <?php unset($_SESSION['errors']);
-                  endif; ?>
 
-                  <!-- Display success message if any -->
-                  <?php if (isset($_SESSION['success'])) : ?>
-                    <div class="alert alert-success">
-                      <?php echo $_SESSION['success']; ?>
+                  <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="error-toast">
+                    <div class="toast-header">
+                      <i class="bx bx-bell me-2"></i>
+                      <div class="me-auto toast-title fw-semibold">Error</div>
+                      <small></small>
+                      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
-                  <?php unset($_SESSION['success']);
-                  endif; ?>
+                    <div class="toast-body"></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -446,6 +426,11 @@ include "../connect.php";
       </div>
       <!-- / Layout page -->
     </div>
+    <div class="loader" id="loader">
+      <div class="loader-content">
+        <div class="spinner"></div>
+      </div>
+    </div>
 
     <!-- Overlay -->
     <div class="layout-overlay layout-menu-toggle"></div>
@@ -472,6 +457,7 @@ include "../connect.php";
   <script src="../assets/js/ui-toasts-personal.js"></script>
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
+
 </body>
 
 </html>

@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Horizontal Layouts - Forms | ThemeSelection - Bootstrap 5 HTML Admin Template - Pro</title>
+    <title>Dashboard - Analytics | ThemeSelection - Bootstrap 5 HTML Admin Template - Pro</title>
 
     <meta name="description" content="" />
 
@@ -16,7 +16,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" />
 
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
@@ -25,22 +25,22 @@
     <link rel="stylesheet" href="../assets/vendor/css/core.css" class="template-customizer-core-css" />
     <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="../assets/css/demo.css" />
-
+    <link rel="stylesheet" href="./userverification.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+    <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
 
     <!-- Page CSS -->
 
     <!-- Helpers -->
     <script src="../assets/vendor/js/helpers.js"></script>
-
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
 </head>
 
 <body>
@@ -104,39 +104,36 @@
                             <div data-i18n="Analytics">Dashboard</div>
                         </a>
                     </li>
-
                     <li class="menu-item active open">
-                        <a href="addbranch.php" class="menu-link">
+                        <a href="applyforme.php" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-merge"></i>
+                            <div data-i18n="Analytics">Apply For Me</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="branchrepayments.php" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-detail"></i>
-                            <div data-i18n="Analytics">Branch Registarion</div>
+                            <div data-i18n="Analytics">Repayments</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
-                        <a href="addusers.php" class="menu-link">
+                        <a href="transactionbranch.php" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-detail"></i>
-                            <div data-i18n="Analytics">User Registarion</div>
-                        </a>
-                    </li>
-
-
-
-                    <li class="menu-item">
-                        <a href="branches.php" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-table"></i>
-                            <div data-i18n="Analytics">Branch Lists</div>
+                            <div data-i18n="Analytics">Transactions</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
-                        <a href="users.php" class="menu-link">
+                        <a href="userlistbranch.php" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-table"></i>
                             <div data-i18n="Analytics">User Lists</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
-                        <a href="users.php" class="menu-link">
+                        <a href="creditapplicationbranch.php" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-table"></i>
                             <div data-i18n="Analytics">Credit Applications</div>
                         </a>
@@ -167,11 +164,6 @@
                         <!-- /Search -->
 
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
-                            <!-- Place this tag where you want the button to render. -->
-                            <li class="nav-item lh-1 me-3">
-                                <a class="github-button" href="https://github.com/ThemeSelection/ThemeSelection-html-admin-template-free" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star ThemeSelection/ThemeSelection-html-admin-template-free on GitHub">Star</a>
-                            </li>
-
                             <!-- User -->
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
@@ -240,102 +232,36 @@
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
                     <!-- Content -->
-
-                    <div class="container-xxl flex-grow-1 container-p-y">
-                        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span>Branch Information
-                        </h4>
-
-
-                        <!-- Toast with Placements -->
-                        <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
-                            <div class="toast-header">
-                                <i class="bx bx-bell me-2"></i>
-                                <div class="me-auto toast-title fw-semibold">Error</div>
-                                <small></small>
-                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                            </div>
-                            <div class="toast-body">Fruitcake chocolate bar tootsie roll gummies gummies jelly beans
-                                cake.</div>
-                        </div>
-                        <!-- Toast with Placements -->
-                        <!-- Basic with Icons -->
-                        <div class="row">
-                            <div class="col-xxl">
-                                <div class="card mb-4">
-                                    <div class="card-header d-flex align-items-center justify-content-between">
-                                        <h5 class="mb-0">1. Branch Information</h5>
-                                        <small class="text-muted float-end">Merged input group</small>
-                                    </div>
-                                    <div class="card-body">
-                                        <form id="branchForm" action="backend.php" method="POST">
-                                            <div class="row mb-4">
-                                                <input type="hidden" name="addbranch" value="1">
-                                                <label class="col-sm-2 col-form-label" for="basic-icon-default-branchname">Branch Name :<span class="text-danger">*</span></label>
-                                                <div class="col-sm-4">
-                                                    <div class="input-group input-group-merge">
-                                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
-                                                        <input name="branch_name" type="text" class="form-control" id="basic-icon-default-branchname" placeholder="John Doe" aria-label="John Doe" aria-describedby="basic-icon-default-branchname2" />
-                                                    </div>
-                                                </div>
-
-                                                <label class="col-sm-2 form-label" for="basic-icon-default-phone">Phone
-                                                    Number :<span class="text-danger">*</span></label>
-                                                <div class="col-sm-4">
-                                                    <div class="input-group input-group-merge">
-                                                        <span id="basic-icon-default-phone2" class="input-group-text"><i class="bx bx-phone"></i></span>
-                                                        <input name="phonenumber" type="text" id="basic-icon-default-phone" class="form-control phone-mask" placeholder="658 799 8941" aria-label="658 799 8941" aria-describedby="basic-icon-default-phone2" />
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row mb-4">
-                                                <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Email :<span class="text-danger">*</span></label>
-                                                <div class="col-sm-4">
-                                                    <div class="input-group input-group-merge">
-                                                        <span class="input-group-text"><i class="bx bx-envelope"></i></span>
-                                                        <input name="email" type="text" id="basic-icon-default-email" class="form-control" placeholder="amanuelgirma@gmail.com" aria-label="john.doe" aria-describedby="basic-icon-default-email2" />
-                                                    </div>
-                                                    <!--<div class="form-text">You can use letters, numbers & periods</div> -->
-                                                </div>
-
-
-                                                <label class="col-sm-2 col-form-label" for="basic-icon-default-location">Location :<span class="text-danger">*</span></label>
-                                                <div class="col-sm-4">
-                                                    <div class="input-group input-group-merge">
-                                                        <span class="input-group-text"><i class="bx bx-map"></i></span>
-                                                        <input name="location" type="text" id="basic-icon-default-location" class="form-control" placeholder="Bole" aria-label="Bole" aria-describedby="basic-icon-default-location2" />
-                                                    </div>
-                                                    <!--<div class="form-text">You can use letters, numbers & periods</div> -->
-                                                </div>
-
-                                            </div>
-                                            <div class="row justify-content-end">
-                                                <div class="col-sm-10">
-
-                                                    <button id="submit-btn" type="submit" name="addbranch" class="btn btn-primary">Submit</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
+                    <div class="container-xxl flex-grow-1  container-p-y">
+                        <div class="row justify-content-center align-items-center mt-5">
+                            <form id="creditForm" class="form">
+                                <div class="title">You can apply for credit here</div>
+                                <p class="message">Insert the user's six-digit identification number</p>
+                                <div class="inputs">
+                                    <input class="form-card-input" id="identificationNumber1" type="text" maxlength="1">
+                                    <input class="form-card-input" id="identificationNumber2" type="text" maxlength="1">
+                                    <input class="form-card-input" id="identificationNumber3" type="text" maxlength="1">
+                                    <input class="form-card-input" id="identificationNumber4" type="text" maxlength="1">
+                                    <input class="form-card-input" id="identificationNumber5" type="text" maxlength="1">
+                                    <input class="form-card-input" id="identificationNumber6" type="text" maxlength="1">
                                 </div>
-                            </div>
+                                <button class="action">verify user</button>
+                            </form>
                         </div>
                     </div>
-                    <!-- / Content -->
-                    <div class="loader" id="loader">
-                        <div class="loader-content">
-                            <div class="spinner"></div>
-                        </div>
-                    </div>
-                    <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="error-toast">
+
+                    <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="errorToast" style="display: none;">
                         <div class="toast-header">
                             <i class="bx bx-bell me-2"></i>
                             <div class="me-auto toast-title fw-semibold">Error</div>
                             <small></small>
                             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                         </div>
-                        <div class="toast-body"></div>
+                        <div class="toast-body">
+                        </div>
                     </div>
+                    <!-- / Content -->
+
                     <!-- Footer -->
                     <footer class="content-footer footer bg-footer-theme">
                         <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
@@ -371,7 +297,6 @@
         <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
-
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script src="../assets/vendor/libs/jquery/jquery.js"></script>
@@ -381,197 +306,19 @@
 
     <script src="../assets/vendor/js/menu.js"></script>
     <!-- endbuild -->
-    <script src="../assets/js/common.js"></script>
 
     <!-- Vendors JS -->
-
+    <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
 
     <!-- Main JS -->
     <script src="../assets/js/main.js"></script>
 
     <!-- Page JS -->
-    <!-- <script src="../assets/js/ui-toasts-branch.js"></script> -->
-
-
+    <script src="../assets/js/dashboards-analytics.js"></script>
+    <script src="../assets/js/mark-Notification-read.js"></script>
+    <script src="../assets/js/userverification.js"></script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
-
-    <script>
-        function showLoader() {
-            $('#loader').fadeIn();
-        }
-
-        // Hide the loader when the response is received
-        function hideLoader() {
-            $('#loader').fadeOut();
-        }
-
-        $(document).ready(function() {
-            console.log('Form submit event binding');
-            $('#branchForm').on('submit', function(event) {
-                event.preventDefault(); // Prevent the default form submission behavior
-                showLoader();
-                // Perform form validation here
-                if (!validateForm()) {
-                    return; // Stop further processing if validation fails
-                }
-
-                // Serialize the form data
-                var formData = new FormData(this);
-                console.log('AJAX request initiated');
-
-                $.ajax({
-                    url: 'backend.php', // URL to send the form data
-                    method: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.log('AJAX request error:', textStatus, errorThrown);
-                        hideLoader(); // Hide the loader on error
-                        // Display a backend error message in the error toast
-                        $('#error-toast .toast-body').text('Backend Error: ' + errorThrown);
-                        showErrorMessage();
-                    },
-                    success: function(response) {
-                        console.log(response);
-                        hideLoader(); // Hide the loader on success
-                        // Check if the response contains validation errors
-                        if (response.errors) {
-                            var errorContainer = $('#error-toast .toast-body');
-                            errorContainer.empty(); // Clear any previous errors
-                            console.log('AJAX request initiated');
-                            // Loop through the validation errors and display them in the toast
-                            $.each(response.errors, function(key, value) {
-                                errorContainer.append('<p>' + value + '</p>');
-                            });
-                            console.log('AJAX request initiated');
-
-                            // Display the error toast for frontend validation errors
-                            showErrorMessage();
-                        } else {
-                            // If no errors, you can redirect or show a success message as needed
-                            if (response.success) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Success',
-                                    text: response.success
-                                }).then(result => {
-                                    // You can add additional actions after the user clicks "OK"
-                                    if (result.isConfirmed) {
-                                        // Clear and reset the form fields
-                                        $('#branchForm')[0].reset();
-
-                                        // Create a new FormData object with the cleared form data
-                                        var formData = new FormData($('#branchForm')[0]);
-
-                                        // Re-enable the submit button after a delay (e.g., 2 seconds)
-                                        setTimeout(function() {
-                                            $('#submit-btn').prop('disabled', false);
-                                            $('#submit-btn').text('Submit');
-                                        }, 2000);
-                                    }
-                                });
-                            }
-                            console.log('AJAX request initiated');
-                        }
-                    }
-                });
-            });
-
-            // Function to perform form validation
-            function validateForm() {
-                // Add your form validation logic here
-                var isValid = true;
-
-                const fields = [{
-                        id: 'basic-icon-default-branchname',
-                        error: 'Branch Name is required.'
-                    },
-                    {
-                        id: 'basic-icon-default-email',
-                        error: 'Email is required.'
-                    },
-                    {
-                        id: 'basic-icon-default-phone',
-                        error: 'Phone is required.'
-                    },
-                    {
-                        id: 'basic-icon-default-location',
-                        error: 'Location is required.'
-                    },
-
-                ];
-                const numberRegex = /^[0-9]+$/;
-                const nameRegex = /^[A-Za-z\s]+$/;
-                const validPhoneRegex = RegExp(
-                    /(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(0\s*9\s*(([0-9]\s*){8}))|(0\s*7\s*(([0-9]\s*){8}))/
-                );
-                const validEmailRegex = RegExp(
-                    /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
-                );
-
-                // Clear previous toast error messages
-                $('#error-toast .toast-body').empty();
-
-                // Iterate through the fields and check their values
-                for (const field of fields) {
-                    const input = document.getElementById(field.id);
-                    const value = input.value.trim();
-
-                    if (value === '') {
-                        isValid = false;
-                        // Display an error message in the toast
-                        $('#error-toast .toast-body').append('<p>' + field.error + '</p>');
-                        showErrorMessage();
-                        break; // Stop further validation on the first empty field
-                    }
-
-                    if (field.id === 'basic-icon-default-branchname') {
-                        // Check if Name field contains only alphabets
-                        if (!nameRegex.test(value)) {
-                            isValid = false;
-                            // Display an error message in the toast
-                            $('#error-toast .toast-body').append('<p>Name can only contain alphabets and spaces.</p>');
-                            showErrorMessage();
-                            break; // Stop further validation if Name is invalid
-                        }
-                    }
-
-                    if (field.id === 'basic-icon-default-phone') {
-                        // Check if Phone Number is valid
-                        if (!validPhoneRegex.test(value)) {
-                            isValid = false;
-                            // Display an error message in the toast
-                            $('#error-toast .toast-body').append('<p>Invalid Phone Number.</p>');
-                            showErrorMessage();
-                            break; // Stop further validation if Phone Number is invalid
-                        }
-                    }
-
-                    if (field.id === 'basic-icon-default-email') {
-                        // Check if Email is valid
-                        if (!validEmailRegex.test(value)) {
-                            isValid = false;
-                            // Display an error message in the toast
-                            $('#error-toast .toast-body').append('<p>Invalid Email Address.</p>');
-                            showErrorMessage();
-                            break; // Stop further validation if Email is invalid
-                        }
-                    }
-                }
-
-                return isValid;
-            }
-
-            // Function to display the error toast for frontend validation errors
-            function showErrorMessage() {
-                var toastPlacement = new bootstrap.Toast($('#error-toast'));
-                toastPlacement.show();
-                hideLoader(); // Hide the loader on error
-            }
-        });
-    </script>
 </body>
 
 </html>

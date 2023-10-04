@@ -35,6 +35,7 @@ $(document).ready(function () {
         showErrorMessage();
       },
       success: function (response) {
+        console.log(response);
         hideLoader(); // Hide the loader on success
         // Check if the response contains validation errors
         if (response.errors) {
@@ -67,8 +68,8 @@ $(document).ready(function () {
 
                 // Re-enable the submit button after a delay (e.g., 2 seconds)
                 setTimeout(function () {
-                  $('#submitBtn').prop('disabled', false);
-                  $('#submitBtn').text('Submit');
+                  $('#submit-btn').prop('disabled', false);
+                  $('#submit-btn').text('Submit');
                 }, 2000);
               }
             });
@@ -92,10 +93,6 @@ $(document).ready(function () {
       {
         id: 'basic-icon-default-TIN',
         error: 'TIN Number is required.'
-      },
-      {
-        id: 'basic-icon-default-Job',
-        error: 'Job Status is required.'
       },
       {
         id: 'basic-icon-default-dateOfBirth',
@@ -125,6 +122,9 @@ $(document).ready(function () {
 
     // Clear previous toast error messages
     $('#error-toast .toast-body').empty();
+    const photoInput = document.getElementById('basic-icon-default-photo');
+    const photoFile = photoInput.files[0]; // Get the selected file
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
     // Iterate through the fields and check their values
     for (const field of fields) {
@@ -184,6 +184,30 @@ $(document).ready(function () {
           break; // Stop further validation if Email is invalid
         }
       }
+
+      if (!photoFile) {
+        isValid = false;
+        // Display an error message in the toast for the 'basic-icon-default-photo' field
+        $('#error-toast .toast-body').append('<p>Image is required.</p>');
+        showErrorMessage();
+      } else {
+        // Check file size
+        const maxSize = 1024 * 1024; // 1 MB in bytes
+        if (photoFile.size > maxSize) {
+          isValid = false;
+          // Display an error message for file size
+          $('#error-toast .toast-body').append('<p>Image size should be below 1 MB.</p>');
+          showErrorMessage();
+        }
+
+        // Check file type
+        if (!allowedTypes.includes(photoFile.type)) {
+          isValid = false;
+          // Display an error message for file type
+          $('#error-toast .toast-body').append('<p>Allowed image types are JPG, JPEG, and PNG.</p>');
+          showErrorMessage();
+        }
+      }
     }
 
     return isValid;
@@ -195,10 +219,4 @@ $(document).ready(function () {
     toastPlacement.show();
     hideLoader(); // Hide the loader on error
   }
-
-  // Function to display the success toast
-  /*  function showSuccessMessage() {
-    var toastPlacement = new bootstrap.Toast($('#success-toast'));
-    toastPlacement.show();
-  } */
 });

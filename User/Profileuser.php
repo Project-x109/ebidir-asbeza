@@ -314,12 +314,14 @@ include "../connect.php";
                 // Check if data exists, if not, set default values
                 if (!$row) {
                   $row = array(
-                    'job_status' => 'No data',
                     'name' => 'No data',
                     'TIN_Number' => 'No data',
                     'email' => 'No data',
                     'phone' => 'No data',
-                    'dob' => 'No data'
+                    'dob' => 'No data',
+                    'profile'=>'No data',
+                    'createdOn'=>'No data',
+                    'level'=>'No data'
                   );
                 }
                 ?>
@@ -331,7 +333,7 @@ include "../connect.php";
                       <div class="col-12 col-sm-8 d-flex align-items-start align-items-sm-center gap-4">
                         <img src="<?php echo $row['profile']; ?>" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar" />
                         <div class="button-wrapper">
-                          <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                       <!--    <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
                             <span class="d-none d-sm-block">Upload new photo</span>
                             <i class="bx bx-upload d-block d-sm-none"></i>
                             <input type="file" id="upload" class="account-file-input" hidden accept="image/png, image/jpeg" />
@@ -339,7 +341,7 @@ include "../connect.php";
                           <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
                             <i class="bx bx-reset d-block d-sm-none"></i>
                             <span class="d-none d-sm-block">Reset</span>
-                          </button>
+                          </button> -->
 
                           <p class="text-muted mb-0"><small class="text-muted">Account Created on
                               <?php echo $row['createdOn'] ?>
@@ -386,7 +388,7 @@ include "../connect.php";
                           <label for="dateOfBirth" class="form-label">Date of Birth</label>
                           <input class="form-control" type="date" id="dateOfBirth" name="dateOfBirth" value="<?php echo $row['dob']; ?>" autofocus disabled placeholder="01-12-2023" />
                         </div>
-                        <div class="mb-3 col-md-6">
+                       <!--  <div class="mb-3 col-md-6">
                           <label for="branch" class="form-label">Branch Name</label>
                           <select type="text" class="form-control" id="branch" name="branch" autofocus disabled>
                             <option value="Employed" <?php if ($row['job_status'] === 'Employed')
@@ -397,7 +399,7 @@ include "../connect.php";
                             <option value="Self Employed" <?php if ($row['job_status'] === 'Self Employed')
                                                             echo ' selected'; ?>>Self Employed</option>
                           </select>
-                        </div>
+                        </div> -->
 
                       </div>
                     </form>

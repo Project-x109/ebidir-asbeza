@@ -142,7 +142,7 @@ include "../common/head.php";
                             <div data-i18n="Horizontal Form">Repayment History</div>
                         </a>
                     </li>
-                
+
                 </ul>
             </aside>
             <!-- / Menu -->
@@ -317,24 +317,24 @@ include "../common/head.php";
                                                 </tr>
                                             </thead>
                                             <tbody>
-            <?php
-            $x=1;
-            $sql="SELECT * FROM `loans` where user_id='".$_SESSION['id']."'";
-            // echo $sql;
-            $res=$conn->query($sql);
-            if($res->num_rows>0)
-            while($row=$res->fetch_assoc()){
-        echo "<tr>
-        <td>".($x++)."</td>
-        <td>".$row['id']."</td>
-        <td>".$row['price']."</td>
-        <td>".$row['status']."</td> 
-        <td>".$row['credit_score']."</td>   
-        <td>".$row['createdOn']."</td>
-        <td>".$row['closedOn']."</td>";
-    }
-?>
-        </tbody>
+                                                <?php
+                                                $x = 1;
+                                                $sql = "SELECT * FROM `loans` where user_id='" . $_SESSION['id'] . "'";
+                                                // echo $sql;
+                                                $res = $conn->query($sql);
+                                                if ($res->num_rows > 0)
+                                                    while ($row = $res->fetch_assoc()) {
+                                                        echo "<tr>
+                                                    <td>" . ($x++) . "</td>
+                                                    <td>" . $row['id'] . "</td>
+                                                    <td>" . $row['price'] . "</td>
+                                                    <td>" . $row['status'] . "</td> 
+                                                    <td>" . $row['credit_score'] . "</td>   
+                                                    <td>" . $row['createdOn'] . "</td>
+                                                    <td>" . $row['closedOn'] . "</td>";
+                                                        }
+                                                ?>
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -435,9 +435,8 @@ include "../common/head.php";
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script>
-new DataTable('#example');
-
-</script>
+        new DataTable('#example');
+    </script>
     <script src="../assets/vendor/libs/jquery/jquery.js"></script>
     <script src="../assets/vendor/libs/popper/popper.js"></script>
     <script src="../assets/vendor/js/bootstrap.js"></script>
@@ -457,7 +456,7 @@ new DataTable('#example');
     <!-- Page JS -->
     <script src="../assets/js/dashboards-analytics.js"></script>
     <script src="../assets/js/mark-Notification-read.js"></script>
-    <!-- <script src="../assets/js/usercredithistory.js"></script> -->
+    <script src="../assets/js/usercredithistory.js"></script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>

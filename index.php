@@ -108,7 +108,7 @@ if (isset($_SESSION['role'])) {
             <form id="formAuthentication" class="mb-3" action="login.php" method="POST">
               <div class="mb-3">
                 <label for="email" class="form-label">Phone</label>
-                <input type="text" class="form-control" id="email" name="phone" placeholder="Enter your email or username" autofocus />
+                <input type="text" required class="form-control" id="email" name="phone" placeholder="Enter your email or username" autofocus />
               </div>
               <div class="mb-3 form-password-toggle">
                 <div class="d-flex justify-content-between">
@@ -118,7 +118,7 @@ if (isset($_SESSION['role'])) {
                   </a>
                 </div>
                 <div class="input-group input-group-merge">
-                  <input type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
+                  <input required autofocus type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
                   <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                 </div>
               </div>
@@ -163,6 +163,25 @@ if (isset($_SESSION['role'])) {
         </div>
       </div>
     </div>
+    <div id="success-toast" class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+      <div class="toast-header">
+        <strong class="me-auto">Success</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        <!-- Success message will be inserted here -->
+      </div>
+    </div>
+
+    <div id="error-toast" class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+      <div class="toast-header">
+        <strong class="me-auto">Error</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        <!-- Error message will be inserted here -->
+      </div>
+    </div>
 
     <script src="./assets/vendor/libs/jquery/jquery.js"></script>
     <script src="./assets/vendor/libs/popper/popper.js"></script>
@@ -184,6 +203,29 @@ if (isset($_SESSION['role'])) {
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script>
+      // Check if the success message exists and display the success toast
+      <?php if (isset($_SESSION['success'])) : ?>
+        document.addEventListener("DOMContentLoaded", function() {
+          var successToast = new bootstrap.Toast(document.getElementById("success-toast"));
+          successToast.show();
+          document.querySelector("#success-toast .toast-body").innerHTML = "<?php echo $_SESSION['success']; ?>";
+        });
+        <?php unset($_SESSION['success']); // Clear the success message 
+        ?>
+      <?php endif; ?>
+
+      // Check if the error message exists and display the error toast
+      <?php if (isset($_SESSION['error'])) : ?>
+        document.addEventListener("DOMContentLoaded", function() {
+          var errorToast = new bootstrap.Toast(document.getElementById("error-toast"));
+          errorToast.show();
+          document.querySelector("#error-toast .toast-body").innerHTML = "<?php echo $_SESSION['error']; ?>";
+        });
+        <?php unset($_SESSION['error']); // Clear the error message 
+        ?>
+      <?php endif; ?>
+    </script>
 </body>
 
 </html>
