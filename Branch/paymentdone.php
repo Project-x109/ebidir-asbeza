@@ -181,46 +181,6 @@
     }
 
 
-
-    @keyframes print {
-        0% {
-            transform: translateY(-90%);
-        }
-
-        100% {
-            transform: translateY(0%);
-        }
-    }
-
-    @-webkit-keyframes print {
-        0% {
-            -webkit-transform: translateY(-90%);
-        }
-
-        100% {
-            -webkit-transform: translateY(0%);
-        }
-    }
-
-    @-moz-keyframes print {
-        0% {
-            -moz-transform: translateY(-90%);
-        }
-
-        100% {
-            -moz-transform: translateY(0%);
-        }
-    }
-
-    @-ms-keyframes print {
-        0% {
-            -ms-transform: translateY(-90%);
-        }
-
-        100% {
-            -ms-transform: translateY(0%);
-        }
-    }
 </style>
 
 <body>
