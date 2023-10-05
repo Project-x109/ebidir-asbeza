@@ -293,7 +293,7 @@ include "../common/head.php";
 
           <?php
           $id = $_SESSION['id'];
-          $sql1 = "SELECT * from users where id=$id";
+          $sql1 = "SELECT * from users where user_id='$id'";
           $res = $conn->query($sql1);
           $row = $res->fetch_assoc();
           ?>
@@ -341,7 +341,7 @@ include "../common/head.php";
                         </div>
                         <div id="CreditLimitCardID">
                         <span class="fw-semibold d-block mb-1">Credit Level</span>
-                    <h5 class="card-title mb-2"><?php echo $_SESSION['level'];  ?>
+                    <h5 class="card-title mb-2"><?php echo $row['level'];  ?>
                     <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> </small></h5>
                       
                         </div>

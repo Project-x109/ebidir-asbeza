@@ -308,7 +308,7 @@ include "../connect.php";
 
                 <?php
                 $id = $_SESSION['id'];
-                $sql1 = "SELECT * from users where id=$id";
+                $sql1 = "SELECT * from users where user_id='$id'";
                 $res = $conn->query($sql1);
                 $row = $res->fetch_assoc();
                 // Check if data exists, if not, set default values

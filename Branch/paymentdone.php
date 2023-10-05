@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
@@ -391,7 +394,7 @@
                                             </div>
                                             <div class="order-details">
                                                 <div class="order-number-label">Transaction ID</div>
-                                                <div class="order-number">123456789</div>
+                                                <div class="order-number"><?=$_SESSION['user_id']?></div>
                                                 <div class="complement">Thank You!</div>
                                             </div>
                                         </div>

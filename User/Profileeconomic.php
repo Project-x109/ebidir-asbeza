@@ -352,7 +352,7 @@ include "../connect.php";
                                 </ul>
                                 <?php
                                 $id = $_SESSION['id'];
-                                $sql3 = "SELECT * from economic where user_id=$id";
+                                $sql3 = "SELECT * from economic where user_id='$id'";
                                 $res3 = $conn->query($sql3);
                                 $row3 = $res3->fetch_assoc();
                                 // Check if data exists, if not, set default values

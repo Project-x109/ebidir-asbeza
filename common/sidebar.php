@@ -71,7 +71,7 @@ if($_SESSION['role']=='branch')
                             <div data-i18n="Analytics">Repayments</div>
                         </a>
                     </li>
-                    <li class="menu-item  open">
+                    <li class="menu-item">
                         <a href="userlistbranch.php" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-table"></i>
                             <div data-i18n="Analytics">User Lists</div>
@@ -89,5 +89,53 @@ if($_SESSION['role']=='branch')
 <?php
 }
 ?>
+<?php 
+if($_SESSION['role']=='Admin'){
+?>
+  <li class="menu-item active open">
+                        <a href="Dashbaord.php" class="menu-link">
+                            <i class="menu-icon tf-icons bx bxs-dashboard"></i>
+                            <div data-i18n="Analytics">Dashboard</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="addbranch.php" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-detail"></i>
+                            <div data-i18n="Analytics">Branch Registarion</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="addusers.php" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-detail"></i>
+                            <div data-i18n="Analytics">User Registarion</div>
+                        </a>
+                    </li>
+
+
+
+                    <li class="menu-item">
+                        <a href="branches.php" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-table"></i>
+                            <div data-i18n="Analytics">Branch Lists</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="users.php" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-table"></i>
+                            <div data-i18n="Analytics">User Lists</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="creditapplication.php" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-table"></i>
+                            <div data-i18n="Analytics">Credit Applications</div>
+                        </a>
+                    </li>
+<?php
+}?>
 </ul>
 </aside>

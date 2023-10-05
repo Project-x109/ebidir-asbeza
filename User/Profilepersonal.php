@@ -320,7 +320,7 @@ include "../connect.php";
                 </ul>
                 <?php
                 $id = $_SESSION['id'];
-                $sql2 = "SELECT * from personal where user_id=$id";
+                $sql2 = "SELECT * from personal where user_id='$id'";
                 $res2 = $conn->query($sql2);
                 $row2 = $res2->fetch_assoc();
                 // Check if data exists, if not, set default values
