@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset($_PO
             // if (password_verify($userEnteredPassword, $hashedPassword)) {
                 if(1){
                 $_SESSION['role'] = $row['role'];
-                $_SESSION['id'] = $row['id'];
+                $_SESSION['id'] = $row['user_id'];
                 $_SESSION['dob'] = $row['dob'];
                 $_SESSION['credit_limit'] = $row['credit_limit'];
                 $_SESSION['level'] = $row['level'];

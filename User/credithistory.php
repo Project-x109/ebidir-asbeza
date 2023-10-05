@@ -319,7 +319,7 @@ include "../common/head.php";
                                             <tbody>
                                                 <?php
                                                 $x = 1;
-                                                $sql = "SELECT * FROM `loans` where user_id='" . $_SESSION['id'] . "'";
+                                                $sql = "SELECT * FROM `loans` where user_id='".$_SESSION['id'] ."'";
                                                 // echo $sql;
                                                 $res = $conn->query($sql);
                                                 if ($res->num_rows > 0)

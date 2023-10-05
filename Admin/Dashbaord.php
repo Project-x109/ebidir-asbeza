@@ -140,7 +140,7 @@ include "../common/head.php";
                     </li>
 
                     <li class="menu-item">
-                        <a href="users.php" class="menu-link">
+                        <a href="creditapplication.php" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-table"></i>
                             <div data-i18n="Analytics">Credit Applications</div>
                         </a>

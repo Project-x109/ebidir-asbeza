@@ -302,19 +302,35 @@ include "../connect.php";
                                         <table class="table table-striped" id="table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th class="sortable" data-column="userName">User Name</th>
-                                                    <th>Branch Name</th>
-                                                    <th>User ID</th>
+                                                    <th>No</th>
+                                                    <th>Transaction Id</th>
                                                     <th>Loan ID</th>
                                                     <th>Loan Amount</th>
-                                                    <th>Due Date</th>
-                                                    <th>Amount Due</th>
-                                                    <th>Actual Amount paid</th>
+                                                    <th>Credit Limit</th>
+                                                    <th>Credit Level</th>
+                                                    <th>Credit Score</th>
                                                     <th>Date Paid</th>
-                                                    <th>Current Status</th>
                                                 </tr>
                                             </thead>
-                                            <tbody class="table-border-bottom-0">
+                                            <tbody>
+                                                <?php
+                                                $x = 1;
+                                                $sql = "SELECT *,loans.credit_score as score FROM `transactions` inner join loans on loans.id=transactions.loan_id where transactions.user_id='".$_SESSION['id'] ."'";
+                                               
+                                                $res = $conn->query($sql);
+                                                if ($res->num_rows > 0)
+                                                    while ($row = $res->fetch_assoc()) {
+                                                        echo "<tr>
+                                                    <td>" . ($x++) . "</td>
+                                                    <td>" . $row['transaction_id'] . "</td>
+                                                    <td>" . $row['loan_id'] . "</td>
+                                                    <td>" . $row['loan_amount'] . "</td> 
+                                                    <td>" . $row['credit_limit'] . "</td>   
+                                                    <td>" . $row['credit_level'] . "</td>   
+                                                    <td>" . $row['score'] . "</td>
+                                                    <td>" . $row['updatedOn'] . "</td>";
+                                                        }
+                                                ?>
                                             </tbody>
                                         </table>
                                     </div>
@@ -387,7 +403,7 @@ include "../connect.php";
     <!-- Page JS -->
     <script src="../assets/js/dashboards-analytics.js"></script>
     <script src="../assets/js/mark-Notification-read.js"></script>
-    <script src="../assets/js/userrepayment.js"></script>
+    <!-- <script src="../assets/js/userrepayment.js"></script> -->
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>

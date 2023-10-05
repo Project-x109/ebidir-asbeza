@@ -27,7 +27,7 @@ if (isset($_GET['loan_id'])) {
         $latency = "yellow";
     else
         $latency = "red";
-    $sql = "SELECT * from users where id='$row[user_id]'";
+    $sql = "SELECT * from users where user_id='$row[user_id]'";
     $res2 = $conn->query($sql);
     $row2 = $res2->fetch_assoc();
 
@@ -40,7 +40,7 @@ if (isset($_GET['loan_id'])) {
         $conn->query($sql);
         $level = $days < 40 ? incrementLevel($row2['level']) : decrementLevel($row2['level']);
         $limit = getLimit($level);
-        $sql = "UPDATE users set level='$level', credit_limit='$limit' where id='$row[user_id]'";
+        $sql = "UPDATE users set level='$level', credit_limit='$limit' where user_id='$row[user_id]'";
         $conn->query($sql);
         $sql = "SELECT * FROM economic where user_id='$row[user_id]'";
         $res3 = $conn->query($sql);

@@ -24,16 +24,20 @@ $row = $res->fetch_assoc();
 $date = date('Y-m-d h:i:s');
 $sql="SELECT (personal.personal_score+economic.economic_score) as score from personal INNER JOIN economic on personal.user_id=economic.user_id WHERE personal.user_id='$_POST[user_id]'";
 $res = $conn->query($sql);
-$row=$res->fetch_assoc();
-$score=$row['score'];
+$row1=$res->fetch_assoc();
+$score=$row1['score'];
 $sql2 = "INSERT INTO loans(`user_id`,`price`,`credit_score`,`createdOn`,`provider`) Values('$_POST[user_id]',$_POST[total_price],'$score','$date','$_SESSION[id]')";
 $res = $conn->query($sql2);
 if ($res) {
-    $limit = $row['credit_limit'] - $_POST['price'];
-    $sql = "update users set credit_limit=$limit WHERE id=$_POST[id]";
+    $last_id = mysqli_insert_id($conn);
+    $limit = $row['credit_limit'] - $_POST['total_price'];
+    $sql = "update users set credit_limit=$limit WHERE user_id='$_POST[user_id]'";
     $res = $conn->query($sql);
     //// send success message here 
-    header("location:applyforme.php");
+   
+    $_SESSION['user_id']=$last_id;
+    echo $sql;
+    header("location:paymentdone.php");
 }
 
 }
