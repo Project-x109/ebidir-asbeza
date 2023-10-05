@@ -37,9 +37,9 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset
                 $_SESSION['credit_limit'] = $row['credit_limit'];
                 $_SESSION['level'] = $row['level'];
 
-                    // Check user status
-                    if ($status === 'waiting') {
-                        $_SESSION['status'] = 'waiting'; // Set a session variable to indicate the status
+                // Check user status
+                if ($status === 'waiting') {
+                    $_SESSION['status'] = 'waiting'; // Set a session variable to indicate the status
 
                         // Redirect to change password page
                         header("location: newpassword.php");
@@ -57,16 +57,16 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset
                     header("Location: index.php");
                     exit();
                 }
+            } else {
+                // Password is incorrect, store error message in session
+                $_SESSION['error'] = "Password is incorrect";
+                header("Location: index.php");
+                exit();
             }
-        } else {
-            // User with this phone number does not exist, store error message in session
-            $_SESSION['error'] = "User with this phone number does not exist";
-            header("Location: index.php");
-            exit();
         }
     } else {
-        // MySQL Error, store error message in session
-        $_SESSION['error'] = "MySQL Error: " . mysqli_error($conn);
+        // User with this phone number does not exist, store error message in session
+        $_SESSION['error'] = "User with this phone number does not exist";
         header("Location: index.php");
         exit();
     }

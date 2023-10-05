@@ -16,3 +16,4 @@ if (isset($_GET['id'])) {
     echo json_encode(['error' => 'Invalid request']);
 }
 $conn->close();
+
