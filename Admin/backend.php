@@ -96,8 +96,13 @@ if (isset($_POST['add_user'])) {
         $date = date("s-h-d-m-Y");
         $folder = "../images/" . $date . $filename;
 
-        $sql = "INSERT INTO `users`(`name`, `dob`, `phone`, `password`, `role`, `TIN_Number`, `profile`, `status`, `email`) 
-                VALUES ('$name', '$dob', '$phone', '$password', 'user', '$TIN_Number', '$folder', '$status', '$email')";
+        $sql = "SELECT * FROM admin_setting";
+        $res = $conn->query($sql);
+        $row = $res->fetch_assoc();
+        $user_id = "EB" . ($row ? sprintf('%04d', $row['branch']) : '0000');
+
+        $sql = "INSERT INTO `users`(`name`, `dob`, `phone`, `password`, `role`, `TIN_Number`, `profile`, `status`, `email`,`user_id`) 
+                VALUES ('$name', '$dob', '$phone', '$password', 'user', '$TIN_Number', '$folder', '$status', '$email','$user_id')";
         $res = $conn->query($sql);
 
         if ($res) {
@@ -106,6 +111,9 @@ if (isset($_POST['add_user'])) {
                 sendPasswordEmail($email, $randomPassword, $conn);
 
                 $_SESSION['success'] = "User created successfully";
+                $sql = "UPDATE admin_setting SET user=" . ($row['user'] + 1);
+                $conn->query($sql);
+
                 // Set the success message in the response
                 $response = array('success' => $_SESSION['success']);
                 header('Content-Type: application/json');

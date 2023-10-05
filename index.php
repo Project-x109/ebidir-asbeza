@@ -1,5 +1,6 @@
 <?php
 session_start();
+$_SESSION['token'] = bin2hex(random_bytes(35));
 if (isset($_SESSION['role'])) {
   header("Location:" . $_SESSION['role'] . "/index.php");
 }
@@ -110,6 +111,7 @@ if (isset($_SESSION['role'])) {
                 <label for="email" class="form-label">Phone</label>
                 <input type="text" required class="form-control" id="email" name="phone" placeholder="Enter your email or username" autofocus />
               </div>
+              <input type="hidden" name="token" value="<?php echo $_SESSION['token'] ?? '' ?>">
               <div class="mb-3 form-password-toggle">
                 <div class="d-flex justify-content-between">
                   <label class="form-label" for="password">Password</label>
