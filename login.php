@@ -12,7 +12,7 @@ require './assets/PHPMailer/Exception.php';
 
 $token = filter_input(INPUT_POST, 'token', FILTER_SANITIZE_STRING);
 if (!$token || $token !== $_SESSION['token']) {
-    $_SESSION['error'] = "Authorization Error";
+    $_SESSION['error'] = "Authorization Error"; 
     header("Location: index.php");
     exit;
 }
