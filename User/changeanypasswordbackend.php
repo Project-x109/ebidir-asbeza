@@ -3,7 +3,6 @@ session_start();
 include "../connect.php";
 
 
-
 if (isset($_POST['change_old_passwords'])) {
     // User is in active status, allow them to change their password
 

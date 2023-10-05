@@ -10,8 +10,13 @@ require './assets/PHPMailer/PHPMailer.php';
 require './assets/PHPMailer/SMTP.php';
 require './assets/PHPMailer/Exception.php';
 
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset($_POST['password'])) {
+$token = filter_input(INPUT_POST, 'token', FILTER_SANITIZE_STRING);
+if (!$token || $token !== $_SESSION['token']) {
+    $_SESSION['error'] = "Authorization Error";
+    header("Location: index.php");
+    exit;
+}
+else if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset($_POST['password'])) {
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
     $userEnteredPassword = $_POST['password'];
 
@@ -24,7 +29,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset($_PO
             $row = $result->fetch_assoc();
             $hashedPassword = $row['password'];
             $status = $row['status'];
-
             // Verify the user-entered plain text password against the retrieved hashed password
             if (password_verify($userEnteredPassword, $hashedPassword)) {
                 $_SESSION['role'] = $row['role'];
@@ -43,6 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset($_PO
                     } elseif ($status === 'active') {
                         // User is already active, redirect to the appropriate dashboard
                         $loc = $_SESSION['role'] . "/";
+                        echo $loc;
                         header("location: " . $loc);
                         exit();
                     }
@@ -65,14 +70,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset($_PO
         header("Location: index.php");
         exit();
     }
-} /* else {
-    header("location: index.php");
-    exit();
-}
- */
-
-
-
 
 //forgotpassword
 if (isset($_POST['forgot_password'])) {
