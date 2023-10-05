@@ -184,6 +184,20 @@ $(document).ready(function () {
           break; // Stop further validation if Email is invalid
         }
       }
+      if (field.id === 'basic-icon-default-dateOfBirth') {
+        // Check if Date of Birth is valid and indicates the user is at least 18 years old
+        const dobDate = new Date(value);
+        const todayDate = new Date();
+        const eighteenYearsAgo = new Date(todayDate.getFullYear() - 18, todayDate.getMonth(), todayDate.getDate());
+  
+        if (isNaN(dobDate) || dobDate > eighteenYearsAgo) {
+          isValid = false;
+          // Display an error message in the toast
+          $('#error-toast .toast-body').append('<p>Date of Birth must indicate you are at least 18 years old.</p>');
+          showErrorMessage();
+          break; // Stop further validation if Date of Birth is invalid
+        }
+      }
 
       if (!photoFile) {
         isValid = false;
@@ -207,6 +221,7 @@ $(document).ready(function () {
           $('#error-toast .toast-body').append('<p>Allowed image types are JPG, JPEG, and PNG.</p>');
           showErrorMessage();
         }
+        
       }
     }
 

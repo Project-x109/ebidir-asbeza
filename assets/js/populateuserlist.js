@@ -1,263 +1,339 @@
-// Function to generate a random number between min and max (inclusive)
-function getRandomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+// Function to fetch user data and populate the modal and AJAX data
+new DataTable('#table-striped');
+function showLoader() {
+  $('#loader').fadeIn();
 }
 
-// Function to generate a random date within a range of years
-function getRandomDate(startYear, endYear) {
-  const year = getRandomNumber(startYear, endYear);
-  const month = getRandomNumber(1, 12);
-  const day = getRandomNumber(1, 28); // Assuming all months have up to 28 days
-  return `${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}-${year}`;
+// Hide the loader when the response is received
+function hideLoader() {
+  $('#loader').fadeOut();
 }
+function validateForm() {
+  // Add your form validation logic here
+  var isValid = true;
 
-// Function to generate random status
-function getRandomStatus() {
-  const statuses = ['active', 'inactive', 'waiting'];
-  return statuses[getRandomNumber(0, 2)];
-}
-function getJobStatus() {
-  const statuses = ['Employed', 'Unemployed', 'Self Employed'];
-  return statuses[getRandomNumber(0, 2)];
-}
-
-function generateRandomEmail() {
-  const emailProviders = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'example.com'];
-  const randomProvider = emailProviders[Math.floor(Math.random() * emailProviders.length)];
-  const randomUsername = Math.random().toString(36).substring(7); // Generate a random string for the username part
-  const email = `${randomUsername}@${randomProvider}`;
-  return email;
-}
-function generateRandomPhoneNumber() {
-  const countryCode = '+1'; // Change this to your desired country code
-  const areaCode = Math.floor(Math.random() * 1000)
-    .toString()
-    .padStart(3, '0');
-  const firstPart = Math.floor(Math.random() * 1000)
-    .toString()
-    .padStart(3, '0');
-  const secondPart = Math.floor(Math.random() * 10000)
-    .toString()
-    .padStart(4, '0');
-  const phoneNumber = `${countryCode} ${areaCode}-${firstPart}-${secondPart}`;
-  return phoneNumber;
-}
-// Array of random account names
-const randomAccountNames = [
-  'Amanuel Girma',
-  'John Doe',
-  'Jane Smith',
-  'Alice Johnson',
-  'Bob Wilson'
-  // Add more names as needed
-];
-const randombranchname = [
-  'Purposeblack ETH',
-  'Purposeblack ETH2',
-  'Purposeblack ETH3',
-  'Purposeblack ETH4',
-  'Purposeblack ETH5'
-  // Add more names as needed
-];
-function getRandomItem() {
-  const items = ['item1', 'item2', 'item3', 'item4', 'item5']; // Add more items as needed
-  return items[getRandomNumber(0, items.length - 1)];
-}
-function getRandomQuantity() {
-  return getRandomNumber(1, 10); // Adjust the range as needed
-}
-
-function generateRandomCartData() {
-  const cartData = [];
-  const numberOfItems = getRandomNumber(1, 10); // Adjust the range as needed
-
-  for (let i = 0; i < numberOfItems; i++) {
-    const item = getRandomItem();
-    const quantity = getRandomQuantity();
-    const pricePerItem = getRandomNumber(5, 50); // Adjust the price range as needed
-    const totalPriceForItem = quantity * pricePerItem;
-
-    const cartItem = {
-      item,
-      quantity,
-      pricePerItem: `$${pricePerItem.toFixed(2)}`,
-      totalPriceForItem: `$${totalPriceForItem.toFixed(2)}`
-    };
-
-    cartData.push(cartItem);
-  }
-
-  return cartData;
-}
-
-// Function to calculate totalSpent from cartData
-function calculateTotalSpent(cartData) {
-  let total = 0;
-  cartData.forEach(cartItem => {
-    total += parseFloat(cartItem.totalPriceForItem.replace('$', ''));
-  });
-  return `$${total.toFixed(2)}`;
-}
-const creditLimitsAll = [
-  0, 100, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 8000, 9000, 10000
-];
-
-// Function to generate a random image URL
-function getRandomImageUrl() {
-  // Replace this with an array of image URLs or an API call to fetch random images.
-  const imageUrls = [
-    'https://th.bing.com/th/id/R.8e789e42f2f50ed4bc0c420c1c65d0f0?rik=uHrS11DPo4NbKg&pid=ImgRaw&r=0',
-    'https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg',
-    'https://images.statusfacebook.com/profile_pictures/Awesome/Awesome_profile_picture2.jpg'
-    // Add more image URLs as needed
+  const fields = [
+    {
+      id: 'nameBackdrop',
+      error: 'Name is required.'
+    },
+    {
+      id: 'TIN_Number',
+      error: 'TIN Number is required.'
+    },
+    {
+      id: 'dobBackdrop',
+      error: 'Date of Birth is required.'
+    },
+    {
+      id: 'emailBackdrop',
+      error: 'Email is required.'
+    },
+    {
+      id: 'phoneBackdrop',
+      error: 'Phone is required.'
+    },
+    {
+      id: 'status',
+      error: 'Status is Required'
+    }
   ];
-  const randomImageUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
-  return randomImageUrl;
-}
 
-// Generate up to 100 records
-const dummyData = [];
+  // Clear previous toast error messages
+  $('#error-toast .toast-body').empty();
 
-// Function to calculate credit repayment date (one month ahead)
-function calculateCreditRepaymentDate(paymentDate) {
-  const [month, day, year] = paymentDate.split('-').map(Number);
-  const nextMonth = month === 12 ? 1 : month + 1;
-  const nextYear = month === 12 ? year + 1 : year;
-  return `${nextMonth.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}-${nextYear}`;
-}
+  const numberRegex = /^[0-9]+$/;
+  const nameRegex = /^[A-Za-z\s]+$/;
+  const validPhoneRegex = RegExp(
+    /(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(0\s*9\s*(([0-9]\s*){8}))|(0\s*7\s*(([0-9]\s*){8}))/
+  );
+  const validEmailRegex = RegExp(
+    /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+  );
 
-for (let i = 0; i < 100; i++) {
-  // Calculate loanAmount ensuring loanAmount >= 100
-  let loanAmount;
-  do {
-    loanAmount = creditLimitsAll[getRandomNumber(0, creditLimitsAll.length - 1)]; // Adjust the loanAmount range as needed
-  } while (loanAmount < 100);
+  // Iterate through the fields and check their values
+  for (const field of fields) {
+    const input = document.getElementById(field.id);
+    const value = input.value.trim();
 
-  let remainingLoan = loanAmount;
-  const cartData = generateRandomCartData();
-  let totalSpent = 0;
+    if (value === '') {
+      isValid = false;
+      // Display an error message in the toast
+      $('#error-toast .toast-body').append('<p>' + field.error + '</p>');
+      showErrorMessage();
+      break; // Stop further validation on the first empty field
+    }
 
-  // Ensure totalSpent <= loanAmount
-  for (let j = 0; j < cartData.length; j++) {
-    const cartItem = cartData[j];
-    const itemTotal = parseFloat(cartItem.totalPriceForItem.replace('$', ''));
+    if (field.id === 'TIN_Number') {
+      // Check if TIN Number field contains only numbers
+      if (!numberRegex.test(value) || value.length !== 10) {
+        isValid = false;
+        // Display an error message in the toast
+        $('#error-toast .toast-body').append('<p>TIN Number must contain numbers and have a length of ten (0-9).</p>');
+        showErrorMessage();
+        break; // Stop further validation if TIN Number is invalid
+      }
+    }
 
-    if (totalSpent + itemTotal <= loanAmount) {
-      totalSpent += itemTotal;
-    } else {
-      cartItem.quantity = Math.floor((loanAmount - totalSpent) / parseFloat(cartItem.pricePerItem.replace('$', '')));
-      cartItem.totalPriceForItem = `$${(cartItem.quantity * parseFloat(cartItem.pricePerItem.replace('$', ''))).toFixed(
-        2
-      )}`;
-      totalSpent = loanAmount;
-      break;
+    if (field.id === 'nameBackdrop') {
+      // Check if Name field contains only alphabets
+      if (!nameRegex.test(value)) {
+        isValid = false;
+        // Display an error message in the toast
+        $('#error-toast .toast-body').append('<p>Name can only contain alphabets and spaces.</p>');
+        showErrorMessage();
+        break; // Stop further validation if Name is invalid
+      }
+    }
+
+    if (field.id === 'phoneBackdrop') {
+      // Check if Phone Number is valid
+      if (!validPhoneRegex.test(value)) {
+        isValid = false;
+        // Display an error message in the toast
+        $('#error-toast .toast-body').append('<p>Invalid Phone Number.</p>');
+        showErrorMessage();
+        break; // Stop further validation if Phone Number is invalid
+      }
+    }
+
+    if (field.id === 'emailBackdrop') {
+      // Check if Email is valid
+      if (!validEmailRegex.test(value)) {
+        isValid = false;
+        // Display an error message in the toast
+        $('#error-toast .toast-body').append('<p>Invalid Email Address.</p>');
+        showErrorMessage();
+        break; // Stop further validation if Email is invalid
+      }
+    }
+    if (field.id === 'dobBackdrop') {
+      // Check if Date of Birth is valid and indicates the user is at least 18 years old
+      const dobDate = new Date(value);
+      const todayDate = new Date();
+      const eighteenYearsAgo = new Date(todayDate.getFullYear() - 18, todayDate.getMonth(), todayDate.getDate());
+
+      if (isNaN(dobDate) || dobDate > eighteenYearsAgo) {
+        isValid = false;
+        // Display an error message in the toast
+        $('#error-toast .toast-body').append('<p>Date of Birth must indicate you are at least 18 years old.</p>');
+        showErrorMessage();
+        break; // Stop further validation if Date of Birth is invalid
+      }
     }
   }
-  const paymentDate = getRandomDate(2020, 2023);
-  // Calculate creditLeft as loanAmount - totalSpent
-  const creditLeft = `$${(loanAmount - totalSpent).toFixed(2)}`;
-  const record = {
-    accountName: randomAccountNames[getRandomNumber(0, randomAccountNames.length - 1)],
-    branchname:randombranchname[getRandomNumber(0,randombranchname.length-1)],
-    id: `eb0${getRandomNumber(1000000, 9999999)}`,
-    loanAmount: `$${loanAmount.toFixed(2)}`,
-    totalSpent: `$${totalSpent.toFixed(2)}`,
-    creditLeft: creditLeft,
-    paymentDate: paymentDate,
-    creditrepaymentdate: calculateCreditRepaymentDate(paymentDate), // Calculate credit repayment date
-    status: getRandomStatus(),
-    loanID: `eb0${getRandomNumber(1000000, 9999999)}`,
-    tinnumber:getRandomNumber(100000000,2000000000),
-    originalAmount: `$${getRandomNumber(3000, 10000)}`,
-    amountPaid: `$${getRandomNumber(0, 5000)}`,
-    cartData: cartData,
-    jobStatus: getJobStatus(),
-    email: generateRandomEmail(),
-    phone: generateRandomPhoneNumber(),
-  };
-  dummyData.push(record);
+
+  return isValid;
 }
 
-// Function to populate the table with dummy data
-function populateTable() {
-  var tbody = document.querySelector('#table-striped tbody');
+function showErrorMessage() {
+  // Display the toast with error messages
+  $('#error-toast').toast('show');
+  hideLoader();
+}
+function editUser(userId) {
+  showLoader();
+  $.ajax({
+    type: 'GET',
+    url: 'get_user_data.php', // Create a PHP file to fetch user data
+    data: {
+      id: userId
+    },
+    dataType: 'json',
+    success: function (data) {
+      hideLoader();
+      // Populate the modal with user data
+      $('#nameBackdrop').val(data.name);
+      $('#emailBackdrop').val(data.email);
+      $('#phoneBackdrop').val(data.phone);
+      $('#dobBackdrop').val(data.dob);
+      $('#TIN_Number').val(data.TIN_Number);
+      $('#status').val(data.status);
 
-  dummyData.forEach(function (data, index) {
-    var row = document.createElement('tr');
+      // Populate the AJAX data (for saving changes)
+      $('#userIdToUpdate').val(data.id); // Assuming you have an input field with id="userIdToUpdate"
 
-    row.innerHTML = `
-              <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>${data.accountName}</strong></td>
-              <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>${data.branchname}</strong></td>
-              <td>${data.id}</td>
-              <td>${data.tinnumber}</td>
-              <td>${data.paymentDate}</td>
-              <td><span class="badge bg-label-${
-                data.status === 'active'
-                  ? 'success'
-                  : data.status === 'inactive'
-                  ? 'danger'
-                  : data.status === 'waiting'
-                  ? 'info'
-                  : 'warning'
-              } me-1">${data.status}</span></td>
-              
-              <td>${data.jobStatus}</td>
-              <td>${data.email}</td>
-              <td>${data.phone}</td>
-              <td>
-              <!-- Toggle Between Modals -->
-              <div class="mt-1">
-                  <button
-                      type="button"
-                      class="btn rounded-pill btn-icon btn-outline-primary"
-                      data-bs-toggle="modal"
-                      data-bs-target="#modalToggle"
-                      data-bs-toggle="modal"
-                      data-bs-target="#modalToggle"
-                      onclick="populateModal('${getRandomImageUrl()}')" // Pass the random image URL to the function
-                  >
-                  <i class='bx bx-link-external'></i>
-                  </button>
-              </div>
-              </td>
-              <td>
-              <a href="userAllDetail.php" class="menu-link" onclick="showDetails(${index})">
-                  <div data-i18n="Without menu">Details</div>
-              </a>
-          </td>
-              <td>
-                  <div class="dropdown">
-                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                          <i class="bx bx-dots-vertical-rounded"></i>
-                      </button>
-                      <div class="dropdown-menu">
-                          <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                          <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
-                      </div>
-                  </div>
-              </td>
-          `;
+      // Set the modal title
+      $('#backDropModalTitle').text('Edit User');
 
-    tbody.appendChild(row);
+      // Show the modal
+      $('#backDropModal').modal('show');
+    },
+    error: function (xhr, status, error) {
+      console.error(xhr.responseText);
+    }
   });
 }
 
-// Function to populate the modal with dynamic data
-function populateModal(imageUrl) {
-  var modalContent = document.getElementById('modalContent');
-  modalContent.innerHTML = `
-        <img src="${imageUrl}" alt="Random Image" class="img-fluid max-width-50 max-height-50">`;
+var dataTable; // Declare the dataTable variable outside of any function
+
+// Function to update the DataTable after saving a user
+function updateDataTable(userId, name, email, TIN_Number, status, dob, phone) {
+  var table = dataTable;
+
+  // Find the row with the user's ID and update its data
+  var row = table.row('#row-' + userId);
+
+  var rowData = row.data();
+
+  if (row.length > 0) {
+    var badgeClass = '';
+    if (status === 'active') {
+      badgeClass = 'success';
+    } else if (status === 'inactive') {
+      badgeClass = 'danger';
+    } else if (status === 'waiting') {
+      badgeClass = 'info';
+    } else {
+      badgeClass = 'warning';
+    }
+
+    // Update only the properties that have changed
+    rowData.id = userId;
+    rowData.name = name;
+    rowData.email = email;
+    rowData.TIN_Number = TIN_Number;
+    rowData.status = `<span class="badge bg-label-${badgeClass}">${status}</span>`;
+    rowData.dob = dob;
+    rowData.phone = phone;
+
+    // Set the updated data back to the row
+    row.data(rowData).draw(false);
+  }
 }
 
-// Call the function to populate the table
-populateTable();
+function saveUser() {
+  showLoader();
+  if (validateForm()) {
+    var userId = $('#userIdToUpdate').val();
+    var name = $('#nameBackdrop').val();
+    var email = $('#emailBackdrop').val();
+    var TIN_Number = $('#TIN_Number').val();
+    var status = $('#status').val();
+    var dob = $('#dobBackdrop').val();
+    var phone = $('#phoneBackdrop').val();
 
-function showDetails(index) {
-  // Get the selected record's data from the `dummyData` array
-  const selectedRecord = dummyData[index];
-  // Convert the selected record to a JSON string
-  const selectedRecordJSON = JSON.stringify(selectedRecord);
+    // Assuming you have an API endpoint for updating user data
+    $.ajax({
+      url: 'update_user.php', // Replace with your API endpoint
+      type: 'POST',
+      data: {
+        id: userId,
+        name: name,
+        email: email,
+        TIN_Number: TIN_Number,
+        status: status,
+        dob: dob,
+        phone: phone
+      },
+      dataType: 'json',
+      success: function (data) {
+        hideLoader();
+        if (data.status === 'success') {
+          // Show success message using SweetAlert
+          $('#backDropModal').modal('hide');
+          Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'User updated successfully!'
+          }).then(result => {
+            if (result.isConfirmed) {
+              // Update the DataTable with the new user data
+              updateDataTable(userId, name, email, TIN_Number, status, dob, phone);
+            }
+          });
+        } else {
+          var errorContainer = $('#error-toast .toast-body');
+          errorContainer.empty(); // Clear any previous errors
+          console.log('AJAX request initiated');
+          // Loop through the validation errors and display them in the toast
+          if (data.errors) {
+            $.each(data.errors, function (key, value) {
+              errorContainer.append('<p>' + value + '</p>');
+            });
+          } else {
+            errorContainer.append('<p>An error occurred on the server.</p>');
+          }
+          console.log('AJAX request initiated');
 
-  // Store the selected record data in localStorage
-  localStorage.setItem('selectedRecord', selectedRecordJSON);
+          // Display the error toast for frontend validation errors
+          showErrorMessage();
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error(error);
+      }
+    });
+  }
 }
+// Call this function once when the page is loaded to initialize DataTable
+function initializeDataTable() {
+  dataTable = $('#table-striped').DataTable({
+    // DataTable configuration options
+    // DataTable configuration options
+    columns: [
+      {
+        data: 'id'
+      }, // Map 'id' column from your data
+      {
+        data: 'profile'
+      }, // Map 'profile' column from your data
+      {
+        data: 'name'
+      }, // Map 'name' column from your data
+      {
+        data: 'phone'
+      },
+      {
+        data: 'email'
+      },
+      {
+        data: 'TIN_Number'
+      },
+      {
+        data: 'dob'
+      },
+      {
+        data: 'status'
+      },
+      {
+        data: 'credit_limit'
+      },
+      {
+        data: 'level'
+      },
+      {
+        data: 'createdOn'
+      },
+      {
+        data: 'user_id'
+      },
+      // Define columns for other data you have
+      {
+        // Define 'Actions' column
+        data: null,
+        render: function (data, type, row, meta) {
+          return (
+            '<div class="dropdown">' +
+            '<button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">' +
+            '<i class="bx bx-dots-vertical-rounded"></i>' +
+            '</button>' +
+            '<div class="dropdown-menu">' +
+            '<a class="dropdown-item" href="javascript:void(0);" onclick="editUser(' +
+            data.id +
+            ');"><i class="bx bx-edit-alt me-1"></i> Edit</a>' +
+            '<a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>' +
+            '</div>' +
+            '</div>'
+          );
+        }
+      }
+    ],
+    // ...
+    destroy: true // This allows reinitialization of DataTable
+  });
+}
+// Call the initializeDataTable() function once when the page is loaded
+$(document).ready(function () {
+  initializeDataTable();
+});

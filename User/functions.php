@@ -70,8 +70,8 @@ function incrementLevel($level)
 {
   global $levels;
   $index = array_search($level, $levels) + 1;
-  if($index>18)
-  $index=18;
+  if ($index > 18)
+    $index = 18;
   $result = $levels[$index];
   return $result;
 }
@@ -79,12 +79,13 @@ function decrementLevel($level)
 {
   global $levels;
   $index = array_search($level, $levels) - 1;
-  if($index<0)
-  $index=0;
+  if ($index < 0)
+    $index = 0;
   $result = $levels[$index];
   return $result;
 }
-function getLimit($level){
+function getLimit($level)
+{
   global $LEVEL;
   return $LEVEL[$level];
 }
@@ -198,3 +199,82 @@ function EconomicScore($Source_of_income, $Experience, $Number_Of_Loans, $fully_
   $score = $score + $DTI;
   return 2 * $score;
 };
+
+
+function validatePhone($phone)
+{
+  // Check if the input is empty
+  if (empty($phone)) {
+    return false;
+  }
+
+  // Use the provided regex pattern to validate phone numbers
+  $pattern = '/(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(0\s*9\s*(([0-9]\s*){8}))|(0\s*7\s*(([0-9]\s*){8}))/';
+  return preg_match($pattern, $phone);
+}
+
+function validateEmail($email)
+{
+  // Check if the input is empty
+  if (empty($email)) {
+    return false;
+  }
+
+  // Use the provided regex pattern to validate emails
+  $pattern = '/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i';
+  return preg_match($pattern, $email);
+}
+
+function validateName($name)
+{
+  // Check if the input is empty
+  if (empty($name)) {
+    return false;
+  }
+
+  // Use regex to validate that the name contains only letters and spaces
+  return preg_match('/^[A-Za-z\s]+$/', $name);
+}
+
+function validateTINNumber($tinNumber)
+{
+  // Check if the input is empty
+  if (empty($tinNumber)) {
+    return false;
+  }
+
+  // Use regex to validate that TIN number contains exactly 10 digits
+  return preg_match('/^\d{10}$/', $tinNumber);
+}
+function validateAge($dob)
+{
+  // Check if the input is empty
+  if (empty($dob)) {
+    return false;
+  }
+
+  // Calculate age from date of birth
+  $dobTimestamp = strtotime($dob);
+  $todayTimestamp = time();
+  $age = date('Y', $todayTimestamp) - date('Y', $dobTimestamp);
+  if (date('md', $todayTimestamp) < date('md', $dobTimestamp)) {
+    $age--;
+  }
+  return $age >= 18;
+}
+
+function validateImage($file)
+{
+  // Check if the input is empty
+  if (empty($file['name'])) {
+    return false;
+  }
+
+  $allowedExtensions = array("jpg", "jpeg", "png");
+  $maxFileSize = 1024 * 1024; // 1MB
+
+  $fileExtension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+  $fileSize = $file['size'];
+
+  return in_array($fileExtension, $allowedExtensions) && $fileSize <= $maxFileSize;
+}
