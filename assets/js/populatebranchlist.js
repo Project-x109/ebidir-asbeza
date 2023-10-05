@@ -96,7 +96,8 @@ function editUser(userId) {
           $('#locationBackdrop').val(branchData.location);
 
           // Populate the AJAX data (for saving changes)
-          $('#userIdToUpdate').val(userData.id);
+          $('#userIdToUpdate').val(userData.user_id);
+          $('#userIdToUpdatebranch').val(branchData.branch_id);
 
           // Set the modal title
           $('#backDropModalTitle').text('Edit User');
@@ -150,6 +151,7 @@ function updateDataTable(userId, name, email, status, phone, location) {
 
 function saveUser() {
   var userId = $('#userIdToUpdate').val();
+  var branchId = $('#userIdToUpdatebranch').val();
   var name = $('#branchnameBackdrop').val();
   var email = $('#emailBackdrop').val();
   var status = $('#status').val();
@@ -159,6 +161,7 @@ function saveUser() {
   // Log the data before making the AJAX request
   console.log('Data before AJAX request:');
   console.log('userId:', userId);
+  console.log('Branch Id:', branchId);
   console.log('name:', name);
   console.log('email:', email);
   console.log('status:', status);
@@ -187,7 +190,7 @@ function saveUser() {
           url: 'update_branch.php', // Replace with your branch data update API endpoint
           type: 'POST',
           data: {
-            branch_id: userId, // Use branch_id as the identifier
+            branch_id: branchId, // Use branch_id as the identifier
             location: location
           },
           dataType: 'json',

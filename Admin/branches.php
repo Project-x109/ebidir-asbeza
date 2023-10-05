@@ -238,7 +238,7 @@ $result = $conn->query($sql);
                                                     echo "<td>{$row['id']}</td>";
                                                     // Assuming the 'profile' column contains image URLs
 
-                                                    echo "<td>{$row['branch_name']}</td>";
+                                                    echo "<td>{$row['name']}</td>";
                                                     echo "<td>{$row['branch_id']}</td>";
                                                     echo "<td>{$row['location']}</td>";
                                                     echo "<td>{$row['email']}</td>";
@@ -335,17 +335,8 @@ $result = $conn->query($sql);
                                                             </div>
 
                                                         </div>
-                                                        <?php
-                                                        // Check if $row is not null and if 'branch_id' exists in the array
-                                                        if ($row !== null && isset($row['branch_id'])) {
-                                                            // Use the 'branch_id' value
-                                                            $branchId = $row['branch_id'];
-                                                        } else {
-                                                            // Handle the case where 'branch_id' is missing or $row is null
-                                                            $branchId = ''; // Provide a default value or handle the error accordingly
-                                                        }
-                                                        ?>
-                                                        <input type="hidden" id="userIdToUpdate" name="userIdToUpdate" value="<?php echo $branchId; ?>" />
+                                                        <input type="hidden" id="userIdToUpdate" name="userIdToUpdate"/>
+                                                        <input type="hidden" id="userIdToUpdatebranch" name="userIdToUpdatebranch"/>
                                                        
                                                     </div>
                                                     <div class="modal-footer">
