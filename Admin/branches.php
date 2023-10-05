@@ -1,3 +1,21 @@
+<?php
+include "../connect.php";
+session_start();
+
+
+
+$sql = "SELECT u.*, b.branch_name, b.location,b.branch_id 
+FROM users AS u
+JOIN branch AS b ON u.user_id = b.branch_id
+WHERE u.role = 'branch'";
+
+$result = $conn->query($sql);
+?>
+
+
+
+
+
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
@@ -25,11 +43,15 @@
     <link rel="stylesheet" href="../assets/vendor/css/core.css" class="template-customizer-core-css" />
     <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="../assets/css/demo.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
     <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
     <!-- Page CSS -->
 
@@ -147,6 +169,7 @@
             <div class="layout-page">
                 <!-- Navbar -->
 
+
                 <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
                     <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
                         <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
@@ -174,86 +197,169 @@
                     <!-- Content -->
 
                     <div class="container-xxl flex-grow-1  container-p-y">
+                        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Branch/</span>Branchs List</h4>
+                        <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="error-toast">
+                            <div class="toast-header">
+                                <i class="bx bx-bell me-2"></i>
+                                <div class="me-auto toast-title fw-semibold">Error</div>
+                                <small></small>
+                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                            <div class="toast-body"></div>
+                        </div>
 
                         <div class="row">
                             <!-- Striped Rows -->
                             <div class="col-md-6 col-lg-12 col-xl-12 order-0 mb-4">
                                 <div class="card">
-                                    <div class="d-flex  mt-3">
-                                        <div style="margin-left: 20px;">
-                                            <input type="text" class="form-control form-control-sm" id="tableSearch" placeholder="Search..." />
-                                        </div>
-                                    </div>
+
                                     <h5 class="card-header">Lists of Branches</h5>
-                                    <div class="table-responsive text-nowrap">
+                                    <div class="table-responsive text-nowrap ms-3 me-3">
                                         <table class="table table-striped" id="table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th>Branch Name</th>
                                                     <th>ID</th>
+                                                    <th>Branch Name</th>
+                                                    <th>Branch ID</th>
                                                     <th>Location</th>
-                                                    <th>Status</th>
                                                     <th>Email</th>
                                                     <th>Phone Number</th>
-                                                    <th>Image</th>
+                                                    <th>Status</th>
+                                                    <th>Created On</th>
                                                     <th>Details</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="table-border-bottom-0">
+                                                <?php
+                                                // Loop through the database results and generate table rows
+                                                while ($row = $result->fetch_assoc()) {
+                                                    echo "<tr id='row-{$row['id']}'>";
+                                                    echo "<td>{$row['id']}</td>";
+                                                    // Assuming the 'profile' column contains image URLs
+
+                                                    echo "<td>{$row['branch_name']}</td>";
+                                                    echo "<td>{$row['branch_id']}</td>";
+                                                    echo "<td>{$row['location']}</td>";
+                                                    echo "<td>{$row['email']}</td>";
+                                                    echo "<td>{$row['phone']}</td>";
+
+                                                    $status = $row['status'];
+                                                    $badgeClass = '';
+
+                                                    if ($status === 'active') {
+                                                        $badgeClass = 'success';
+                                                    } elseif ($status === 'inactive') {
+                                                        $badgeClass = 'danger';
+                                                    } elseif ($status === 'waiting') {
+                                                        $badgeClass = 'info';
+                                                    } else {
+                                                        $badgeClass = 'warning';
+                                                    }
+                                                    echo "<td><span class=\"badge bg-label-$badgeClass me-1\">$status</span></td>";
+                                                    echo "<td>{$row['createdOn']}</td>";
+                                                    echo "<td><a href='branchdetails.php' class='menu-link'>
+                                                                <div data-i18n='Without menu'>Details</div>
+                                                                </a>
+                                                        </td>";
+                                                    echo "<td>
+                                                                <div class='dropdown'>
+                                                                    <button type='button' class='btn p-0 dropdown-toggle hide-arrow' data-bs-toggle='dropdown'>
+                                                                        <i class='bx bx-dots-vertical-rounded'></i>
+                                                                    </button>
+                                                                    <div class='dropdown-menu'>
+                                                                    <a class='dropdown-item' href='javascript:void(0);' onclick='editUser({$row['id']});'>
+                                                                    <i class='bx bx-edit-alt me-1'></i> Edit</a>
+                                                                        <a class='dropdown-item' href='javascript:void(0);'><i class='bx bx-trash me-1'></i> Delete</a>
+                                                                    </div>
+                                                                </div>
+                                                            </td>";
+                                                    echo "</tr>";
+                                                }
+
+                                                // Close the database connection
+                                                $conn->close();
+                                                ?>
                                             </tbody>
                                         </table>
 
-                                        <!-- Modal Structure (empty modal) -->
-                                        <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
+
+                                        <div class="modal fade" id="backDropModal" data-bs-backdrop="static" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <form class="modal-content">
+
+
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="modalToggleLabel">Loan Details</h5>
+                                                        <h5 class="modal-title" id="backDropModalTitle">Update User</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <div class="card">
-                                                            <div class="card-body" id="modalContent">
-                                                                <!-- Modal content will be dynamically generated here -->
+                                                        <div class="row">
+                                                            <div class="col mb-3">
+                                                                <label for="branchnameBackdrop" class="form-label">Branch Name</label>
+                                                                <input type="text" name="branchnameBackdrop" id="branchnameBackdrop" class="form-control" placeholder="Enter Branch Name" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="row g-2">
+                                                            <div class="col mb-0">
+                                                                <label for="emailBackdrop" class="form-label">Email</label>
+                                                                <input type="text" id="emailBackdrop" name="emailBackdrop" itemid="emailBackdrop" class="form-control" placeholder="xxxx@xxx.xx" />
+                                                            </div>
+                                                            <div class="col mb-0">
+                                                                <label for="locationBackdrop" class="form-label">Location</label>
+                                                                <input type="text" id="locationBackdrop" name="locationBackdrop" itemid="locationBackdrop" class="form-control" placeholder="DD / MM / YY" />
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+
+                                                    <div class="modal-body">
+
+
+                                                        <div class="row g-2">
+                                                            <div class="col mb-0">
+                                                                <label for="phoneBackdrop" class="form-label">Phone Number</label>
+                                                                <input type="text" id="phoneBackdrop" name="phoneBackdrop" itemid="phoneBackdrop" class="form-control" placeholder="xxxx@xxx.xx" />
+                                                            </div>
+
+                                                            <div class="col mb-0">
+                                                                <label for="status" class="form-label">Status</label>
+                                                                <div class="input-group input-group-merge">
+                                                                    <span id="statusspan" class="input-group-text"><i class="bx bx-buildings"></i></span>
+                                                                    <select id="status" name="status" class="form-select">
+                                                                        <option value="">Default select</option>
+                                                                        <option value="waiting">Waiting </option>
+                                                                        <option value="active">Active</option>
+                                                                        <option value="inactive">Inactive</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <?php
+                                                        // Check if $row is not null and if 'branch_id' exists in the array
+                                                        if ($row !== null && isset($row['branch_id'])) {
+                                                            // Use the 'branch_id' value
+                                                            $branchId = $row['branch_id'];
+                                                        } else {
+                                                            // Handle the case where 'branch_id' is missing or $row is null
+                                                            $branchId = ''; // Provide a default value or handle the error accordingly
+                                                        }
+                                                        ?>
+                                                        <input type="hidden" id="userIdToUpdate" name="userIdToUpdate" value="<?php echo $branchId; ?>" />
+                                                       
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                            Close
+                                                        </button>
+                                                        <button onclick="saveUser()" type="button" class="btn btn-primary">Save</button>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
+                                    </div>
 
-                                    </div>
-                                    <!-- Pagination and Search Controls -->
-                                    <div class="d-flex justify-content-between mt-3">
-                                        <div style="margin-left: 20px;">
-                                            <!--   <label for="recordsPerPage">Records per page:</label> -->
-                                            <select id="recordsPerPage" class="form-select form-select-sm">
-                                                <option value="5">5</option>
-                                                <option value="10">10</option>
-                                                <option value="15">15</option>
-                                            </select>
-                                        </div>
-                                        <div style="margin-right: 20px;">
-                                            <nav aria-label="Page navigation">
-                                                <ul class="pagination pagination-sm">
-                                                    <li class="page-item">
-                                                        <a class="page-link btn btn-xs btn-dark" href="#" id="prevPage">
-                                                            Previous
-                                                        </a>
-                                                    </li>
-                                                    <li class="page-item">
-                                                        <a class="page-link btn btn-xs btn-primary" href="#" id="nextPage">
-                                                            Next
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </nav>
-                                        </div>
-                                    </div>
                                 </div>
-
-
                             </div>
 
                             <!--/ Striped Rows -->
@@ -295,17 +401,11 @@
         <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
-
-    <!-- 
-<div class="buy-now">
-    <a href="https://ThemeSelection.com/products/ThemeSelection-bootstrap-html-admin-template/" target="_blank"
-      class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
-  </div>
--->
-
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="../assets/js/jquery-3.7.0.js"></script>
+    <script src="../assets/js/jquery.dataTables.min.js"></script>
     <script src="../assets/vendor/libs/popper/popper.js"></script>
     <script src="../assets/vendor/js/bootstrap.js"></script>
     <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
@@ -323,10 +423,6 @@
     <script src="../assets/js/dashboards-analytics.js"></script>
     <script src="../assets/js/mark-Notification-read.js"></script>
     <script src="../assets/js/populatebranchlist.js"></script>
-
-    <script src="../assets/js/tablefunctionalities.js">
-        // JavaScript for pagination and search functionality
-    </script>
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>

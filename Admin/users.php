@@ -1,6 +1,6 @@
 <?php
 include "../connect.php";
-session_start()
+session_start();
 
 
 
@@ -444,7 +444,7 @@ $result = $conn->query($sql);
 
                           <div class="modal-body">
                             <div class="col mb-0">
-                              <label for="emailBackdrop" class="form-label">Phone Number</label>
+                              <label for="phoneBackdrop" class="form-label">Phone Number</label>
                               <input type="text" id="phoneBackdrop" name="phoneBackdrop" itemid="phoneBackdrop" class="form-control" placeholder="xxxx@xxx.xx" />
                             </div>
 
