@@ -247,18 +247,6 @@ session_start()
           <div class="container-xxl flex-grow-1 container-p-y">
             <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Forms/</span>General Information</h4>
 
-
-            <!--  <div class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" style="display: none;" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="success-toast">
-              <div class="toast-header">
-                <i class="bx bx-bell me-2"></i>
-                <div class="me-auto toast-title fw-semibold">Success</div>
-                <small></small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-              </div>
-              <div class="toast-body"></div>
-            </div> -->
-
-
             <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="error-toast">
               <div class="toast-header">
                 <i class="bx bx-bell me-2"></i>
@@ -268,15 +256,6 @@ session_start()
               </div>
               <div class="toast-body"></div>
             </div>
-
-            <!-- <div id="loader" class="loader">
-              <div class="loader-content">
-                <div class="spinner-border text-primary" role="status">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-                <div class="loader-text">Please wait...</div>
-              </div>
-            </div> -->
 
             <div class="loader" id="loader">
               <div class="loader-content">

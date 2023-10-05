@@ -1,3 +1,19 @@
+<?php
+include "../connect.php";
+session_start()
+
+
+
+
+// Execute the query
+
+?>
+
+<?php
+$sql = "SELECT * FROM users where role='user'";
+$result = $conn->query($sql);
+?>
+
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
@@ -30,6 +46,9 @@
   <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
   <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
 
   <!-- Page CSS -->
 
@@ -39,6 +58,7 @@
   <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
   <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
   <script src="../assets/js/config.js"></script>
+
 </head>
 
 <body>
@@ -288,85 +308,162 @@
           <!-- Content -->
 
           <div class="container-xxl flex-grow-1  container-p-y">
+            <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">User/</span>User List</h4>
+
 
             <div class="row">
               <!-- Striped Rows -->
               <div class="col-md-6 col-lg-12 col-xl-12 order-0 mb-4">
                 <div class="card">
-                  <div class="d-flex  mt-3">
-                    <div style="margin-left: 20px;">
-                      <input type="text" class="form-control form-control-sm" id="tableSearch" placeholder="Search..." />
-                    </div>
-                  </div>
                   <h5 class="card-header">Lists of Users</h5>
-                  <div class="table-responsive text-nowrap">
+                  <div class="table-responsive text-nowrap ms-3 me-3">
                     <table class="table table-striped" id="table-striped">
                       <thead>
                         <tr>
+                          <th>Id</th>
+                          <th>Image</th>
                           <th>User Full Name</th>
-                          <th>Branch Name</th>
-                          <th>ID</th>
+                          <th>Phone Number</th>
+                          <th>Email</th>
                           <th>TIN Number</th>
                           <th>Date of Birth</th>
                           <th>Status</th>
-                          <th>Job Status</th>
-                          <th>Email</th>
-                          <th>Phone Number</th>
-                          <th>Image</th>
+                          <th>Credit Limit</th>
+                          <th>Level</th>
+                          <th>Created On</th>
+                          <th>User Id</th>
                           <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody class="table-border-bottom-0">
+                        <?php
+                        // Loop through the database results and generate table rows
+                        while ($row = $result->fetch_assoc()) {
+                          echo "<tr>";
+                          echo "<td>{$row['id']}</td>";
+                          // Assuming the 'profile' column contains image URLs
+                          echo "<td>
+                          <ul class='list-unstyled users-list m-0 avatar-group d-flex align-items-center'>
+                            <li
+                              data-bs-toggle='tooltip'
+                              data-popup='tooltip-custom'
+                              data-bs-placement='top'
+                              class='avatar avatar-xs pull-up'
+                              title='{$row['name']}'
+                            >
+                          <img src='{$row['profile']}' alt='Profile Image' class='rounded-circle'>
+                            </li>
+                            </ul>
+                          </td>";
+                          echo "<td>{$row['name']}</td>";
+                          echo "<td>{$row['phone']}</td>";
+                          echo "<td>{$row['email']}</td>";
+                          echo "<td>{$row['TIN_Number']}</td>";
+                          echo "<td>{$row['dob']}</td>";
+                          $status = $row['status'];
+                          $badgeClass = '';
+
+                          if ($status === 'active') {
+                            $badgeClass = 'success';
+                          } elseif ($status === 'inactive') {
+                            $badgeClass = 'danger';
+                          } elseif ($status === 'waiting') {
+                            $badgeClass = 'info';
+                          } else {
+                            $badgeClass = 'warning';
+                          }
+                          echo "<td><span class=\"badge bg-label-$badgeClass me-1\">$status</span></td>";
+                          echo "<td>{$row['credit_limit']}</td>";
+                          echo "<td>{$row['level']}</td>";
+                          echo "<td>{$row['createdOn']}</td>";
+                          echo "<td>{$row['user_id']}</td>";
+                          echo "<td>
+                                  <div class='dropdown'>
+                                      <button type='button' class='btn p-0 dropdown-toggle hide-arrow' data-bs-toggle='dropdown'>
+                                          <i class='bx bx-dots-vertical-rounded'></i>
+                                      </button>
+                                      <div class='dropdown-menu'>
+                                      <a class='dropdown-item' href='javascript:void(0);' onclick='editUser({$row['id']});'><i class='bx bx-edit-alt me-1'></i> Edit</a>
+                                          <a class='dropdown-item' href='javascript:void(0);'><i class='bx bx-trash me-1'></i> Delete</a>
+                                      </div>
+                                  </div>
+                              </td>";
+                          echo "</tr>";
+                        }
+
+                        // Close the database connection
+                        $conn->close();
+                        ?>
                       </tbody>
                     </table>
 
-                    <!-- Modal Structure (empty modal) -->
-                    <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
+                    <div class="modal fade" id="backDropModal" data-bs-backdrop="static" tabindex="-1">
+                      <div class="modal-dialog">
+                        <form class="modal-content">
+
+
                           <div class="modal-header">
-                            <h5 class="modal-title" id="modalToggleLabel">Loan Details</h5>
+                            <h5 class="modal-title" id="backDropModalTitle">Update User</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
                           <div class="modal-body">
-                            <div class="card">
-                              <div class="card-body" id="modalContent">
-                                <!-- Modal content will be dynamically generated here -->
+                            <div class="row">
+                              <div class="col mb-3">
+                                <label for="nameBackdrop" class="form-label">Name</label>
+                                <input type="text" name="nameBackdrop" id="nameBackdrop" class="form-control" placeholder="Enter Name" />
+                              </div>
+                            </div>
+                            <div class="row g-2">
+                              <div class="col mb-0">
+                                <label for="emailBackdrop" class="form-label">Email</label>
+                                <input type="text" id="emailBackdrop" name="emailBackdrop" itemid="emailBackdrop" class="form-control" placeholder="xxxx@xxx.xx" />
+                              </div>
+                              <div class="col mb-0">
+                                <label for="dobBackdrop" class="form-label">DOB</label>
+                                <input type="date" id="dobBackdrop" name="dobBackdrop" itemid="dobBackdrop" class="form-control" placeholder="DD / MM / YY" />
                               </div>
                             </div>
                           </div>
-                        </div>
+
+                          <div class="modal-body">
+                            <div class="col mb-0">
+                              <label for="emailBackdrop" class="form-label">Phone Number</label>
+                              <input type="text" id="phoneBackdrop" name="phoneBackdrop" itemid="phoneBackdrop" class="form-control" placeholder="xxxx@xxx.xx" />
+                            </div>
+
+                            <div class="row g-2">
+                              <div class="col mb-0">
+                                <label for="TIN_Number" class="form-label">TIN Number</label>
+                                <input type="text" id="TIN_Number" name="TIN_Number" class="form-control" placeholder="Enter TIN Number" />
+                              </div>
+                              <div class="col mb-0">
+                                <label for="emailBackdrop" class="form-label">Status</label>
+                                <div class="input-group input-group-merge">
+                                  <span id="statusspan" class="input-group-text"><i class="bx bx-buildings"></i></span>
+                                  <select id="status" name="status" class="form-select">
+                                    <option value="">Default select</option>
+                                    <option value="waiting">Waiting </option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                  </select>
+                                </div>
+                              </div>
+
+                            </div>
+                            <input type="hidden" id="userIdToUpdate" name="userIdToUpdate" />
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                              Close
+                            </button>
+                            <button onclick="saveUser()" type="button" class="btn btn-primary">Save</button>
+                          </div>
+                        </form>
                       </div>
                     </div>
 
                   </div>
-                  <!-- Pagination and Search Controls -->
-                  <div class="d-flex justify-content-between mt-3">
-                    <div style="margin-left: 20px;">
-                      <!--   <label for="recordsPerPage">Records per page:</label> -->
-                      <select id="recordsPerPage" class="form-select form-select-sm">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                      </select>
-                    </div>
-                    <div style="margin-right: 20px;">
-                      <nav aria-label="Page navigation">
-                        <ul class="pagination pagination-sm">
-                          <li class="page-item">
-                            <a class="page-link btn btn-xs btn-dark" href="#" id="prevPage">
-                              Previous
-                            </a>
-                          </li>
-                          <li class="page-item">
-                            <a class="page-link btn btn-xs btn-primary" href="#" id="nextPage">
-                              Next
-                            </a>
-                          </li>
-                        </ul>
-                      </nav>
-                    </div>
-                  </div>
+
                 </div>
 
 
@@ -430,18 +527,109 @@
 
   <!-- Main JS -->
   <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/jquery-3.7.0.js"></script>
+  <script src="../assets/js/jquery.dataTables.min.js"></script>
 
   <!-- Page JS -->
   <script src="../assets/js/dashboards-analytics.js"></script>
   <script src="../assets/js/mark-Notification-read.js"></script>
-  <script src="../assets/js/populateuserlist.js"></script>
-
-  <script src="../assets/js/tablefunctionalities.js">
-    // JavaScript for pagination and search functionality
-  </script>
+  <script src="../assets/js/usercredithistory.js"></script>
 
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  <script>
+    // Function to fetch user data and populate the modal and AJAX data
+    function editUser(userId) {
+      $.ajax({
+        type: 'GET',
+        url: 'get_user_data.php', // Create a PHP file to fetch user data
+        data: {
+          id: userId
+        },
+        dataType: 'json',
+        success: function(data) {
+          // Populate the modal with user data
+          $('#nameBackdrop').val(data.name);
+          $('#emailBackdrop').val(data.email);
+          $('#phoneBackdrop').val(data.phone);
+          $('#dobBackdrop').val(data.dob);
+          $('#TIN_Number').val(data.TIN_Number);
+          $('#status').val(data.status);
+
+          // Populate the AJAX data (for saving changes)
+          $('#userIdToUpdate').val(data.id); // Assuming you have an input field with id="userIdToUpdate"
+
+          // Set the modal title
+          $('#backDropModalTitle').text('Edit User');
+
+          // Show the modal
+          $('#backDropModal').modal('show');
+        },
+        error: function(xhr, status, error) {
+          console.error(xhr.responseText);
+        }
+      });
+    }
+
+
+    function saveUser() {
+      var userId = $('#userIdToUpdate').val();
+      var name = $('#nameBackdrop').val();
+      var email = $('#emailBackdrop').val();
+      var TIN_Number = $('#TIN_Number').val();
+      var status = $('#status').val();
+      var dob = $('#dobBackdrop').val();
+      var phone = $('#phoneBackdrop').val();
+
+      // Assuming you have an API endpoint for updating user data
+      $.ajax({
+        url: 'update_user.php', // Replace with your API endpoint
+        type: 'POST',
+        data: {
+          id: userId,
+          name: name,
+          email: email,
+          TIN_Number: TIN_Number,
+          status: status,
+          dob: dob,
+          phone: phone
+        },
+        dataType: 'json',
+        success: function(data) {
+          var table = $('#table-striped').DataTable();
+          var row = table.row('#row-' + userId);
+          if (data.status === 'success') {
+            alert('User updated successfully!');
+            $('#editUserModal').hide();
+
+            try {
+              row.data({
+                "id": userId,
+                "name": name,
+                "phone": phone,
+                "email": email,
+                "TIN_Number": TIN_Number,
+                "dob": dob,
+                "status": status,
+              }).draw(false);
+            } catch (error) {
+              console.error("Error setting row data:", error);
+            }
+
+          } else {
+            alert('Error updating user: ' + data.message);
+          }
+        },
+        error: function(xhr, status, error) {
+          console.error(error);
+        }
+      });
+    }
+  </script>
+
+
+
 </body>
 
 </html>
