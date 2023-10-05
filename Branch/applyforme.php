@@ -1,17 +1,18 @@
 <?php
 session_start();
-include "../common/head.php";// head part and all links
+include "../common/head.php"; // head part and all links
 ?>
+
 <body>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
-<?php include '../common/sidebar.php';?> <!-- sidebar -->
+            <?php include '../common/sidebar.php'; ?> <!-- sidebar -->
             <div class="layout-page">
-            <?php
-include "../common/nav.php";  //<!-- sidebar -->
-?>
-            <div class="content-wrapper">
+                <?php
+                include "../common/nav.php";  //<!-- sidebar -->
+                ?>
+                <div class="content-wrapper">
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1  container-p-y">
                         <div class="row justify-content-center align-items-center mt-5">
@@ -20,7 +21,7 @@ include "../common/nav.php";  //<!-- sidebar -->
                                 <p class="form-card-prompt">Insert the user's six-digit identification number</p>
                                 <div class="form-card-input-wrapper">
                                     <input class="form-card-input" id="user" name="user" placeholder="______" maxlength="6" type="tel" id="identificationNumber">
-                                    
+
                                     <div class="form-card-input-bg"></div>
                                 </div>
                                 <!-- <input type="text" name="data"/> -->
@@ -45,6 +46,6 @@ include "../common/nav.php";  //<!-- sidebar -->
                         </div>
                     </div>
 
- <?php
- include "../common/footer.php";
- ?>
+                    <?php
+                    include "../common/footer.php";
+                    ?>

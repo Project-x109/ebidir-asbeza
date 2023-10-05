@@ -349,12 +349,6 @@ session_start()
                         </div>
                       </div>
                     </form>
-                    <!-- <div id="error-container" class="alert alert-danger" style="display: none;">
-                    <ul id="error-list"></ul>
-                  </div>
-                  <div id="success-container" class="alert alert-success" style="display: none;">
-                    <ul id="success-list"></ul>
-                  </div> -->
                   </div>
                 </div>
               </div>

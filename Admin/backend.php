@@ -1,5 +1,6 @@
 <?php
 include "../connect.php";
+include "../User/functions.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
@@ -18,97 +19,7 @@ $validationErrors = array();
 $response = array();
 
 if (isset($_POST['add_user'])) {
-    // Validation functions
-    function validatePhone($phone)
-    {
-        // Check if the input is empty
-        if (empty($phone)) {
-            return false;
-        }
 
-        // Use the provided regex pattern to validate phone numbers
-        $pattern = '/(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(0\s*9\s*(([0-9]\s*){8}))|(0\s*7\s*(([0-9]\s*){8}))/';
-        return preg_match($pattern, $phone);
-    }
-
-    function validateEmail($email)
-    {
-        // Check if the input is empty
-        if (empty($email)) {
-            return false;
-        }
-
-        // Use the provided regex pattern to validate emails
-        $pattern = '/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i';
-        return preg_match($pattern, $email);
-    }
-
-    function validateName($name)
-    {
-        // Check if the input is empty
-        if (empty($name)) {
-            return false;
-        }
-
-        // Use regex to validate that the name contains only letters and spaces
-        return preg_match('/^[A-Za-z\s]+$/', $name);
-    }
-
-    function validateTINNumber($tinNumber)
-    {
-        // Check if the input is empty
-        if (empty($tinNumber)) {
-            return false;
-        }
-
-        // Use regex to validate that TIN number contains exactly 10 digits
-        return preg_match('/^\d{10}$/', $tinNumber);
-    }
-
-    /*    function validateJobStatus($jobStatus)
-    {
-        // Check if the input is empty
-        if (empty($jobStatus)) {
-            return false;
-        }
-
-        // Define an array of valid job statuses
-        $validStatuses = array('Employed', 'Unemployed', 'Self Employed');
-        return in_array($jobStatus, $validStatuses);
-    } */
-
-    function validateAge($dob)
-    {
-        // Check if the input is empty
-        if (empty($dob)) {
-            return false;
-        }
-
-        // Calculate age from date of birth
-        $dobTimestamp = strtotime($dob);
-        $todayTimestamp = time();
-        $age = date('Y', $todayTimestamp) - date('Y', $dobTimestamp);
-        if (date('md', $todayTimestamp) < date('md', $dobTimestamp)) {
-            $age--;
-        }
-        return $age >= 18;
-    }
-
-    function validateImage($file)
-    {
-        // Check if the input is empty
-        if (empty($file['name'])) {
-            return false;
-        }
-
-        $allowedExtensions = array("jpg", "jpeg", "png");
-        $maxFileSize = 1024 * 1024; // 1MB
-
-        $fileExtension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        $fileSize = $file['size'];
-
-        return in_array($fileExtension, $allowedExtensions) && $fileSize <= $maxFileSize;
-    }
 
     // Check if the phone number, TIN number, and email are already used
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
@@ -248,29 +159,6 @@ if (isset($_POST['addbranch'])) {
     // Validation functions (similar to those in add_users)
     $response = array();
     $branchValidationErrors = array();
-    function validatePhone($phone)
-    {
-        // Check if the input is empty
-        if (empty($phone)) {
-            return false;
-        }
-
-        // Use the provided regex pattern to validate phone numbers
-        $pattern = '/(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(0\s*9\s*(([0-9]\s*){8}))|(0\s*7\s*(([0-9]\s*){8}))/';
-        return preg_match($pattern, $phone);
-    }
-
-    function validateEmail($email)
-    {
-        // Check if the input is empty
-        if (empty($email)) {
-            return false;
-        }
-
-        // Use the provided regex pattern to validate emails
-        $pattern = '/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i';
-        return preg_match($pattern, $email);
-    }
 
     // Check if the phone number and email are already used
     $branchPhone = mysqli_real_escape_string($conn, $_POST['phonenumber']);

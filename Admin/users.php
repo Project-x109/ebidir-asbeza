@@ -44,10 +44,13 @@ $result = $conn->query($sql);
 
   <!-- Vendors CSS -->
   <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
 
   <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
 
   <!-- Page CSS -->
@@ -310,7 +313,21 @@ $result = $conn->query($sql);
           <div class="container-xxl flex-grow-1  container-p-y">
             <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">User/</span>User List</h4>
 
+            <div class="loader" id="loader">
+              <div class="loader-content">
+                <div class="spinner"></div>
+              </div>
+            </div>
 
+            <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="error-toast">
+              <div class="toast-header">
+                <i class="bx bx-bell me-2"></i>
+                <div class="me-auto toast-title fw-semibold">Error</div>
+                <small></small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+              </div>
+              <div class="toast-body"></div>
+            </div>
             <div class="row">
               <!-- Striped Rows -->
               <div class="col-md-6 col-lg-12 col-xl-12 order-0 mb-4">
@@ -339,7 +356,7 @@ $result = $conn->query($sql);
                         <?php
                         // Loop through the database results and generate table rows
                         while ($row = $result->fetch_assoc()) {
-                          echo "<tr>";
+                          echo "<tr id='row-{$row['id']}'>";
                           echo "<td>{$row['id']}</td>";
                           // Assuming the 'profile' column contains image URLs
                           echo "<td>
@@ -533,102 +550,10 @@ $result = $conn->query($sql);
   <!-- Page JS -->
   <script src="../assets/js/dashboards-analytics.js"></script>
   <script src="../assets/js/mark-Notification-read.js"></script>
-  <script src="../assets/js/usercredithistory.js"></script>
+  <script src="../assets/js/populateuserlist.js"></script>
 
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
-
-  <script>
-    // Function to fetch user data and populate the modal and AJAX data
-    function editUser(userId) {
-      $.ajax({
-        type: 'GET',
-        url: 'get_user_data.php', // Create a PHP file to fetch user data
-        data: {
-          id: userId
-        },
-        dataType: 'json',
-        success: function(data) {
-          // Populate the modal with user data
-          $('#nameBackdrop').val(data.name);
-          $('#emailBackdrop').val(data.email);
-          $('#phoneBackdrop').val(data.phone);
-          $('#dobBackdrop').val(data.dob);
-          $('#TIN_Number').val(data.TIN_Number);
-          $('#status').val(data.status);
-
-          // Populate the AJAX data (for saving changes)
-          $('#userIdToUpdate').val(data.id); // Assuming you have an input field with id="userIdToUpdate"
-
-          // Set the modal title
-          $('#backDropModalTitle').text('Edit User');
-
-          // Show the modal
-          $('#backDropModal').modal('show');
-        },
-        error: function(xhr, status, error) {
-          console.error(xhr.responseText);
-        }
-      });
-    }
-
-
-    function saveUser() {
-      var userId = $('#userIdToUpdate').val();
-      var name = $('#nameBackdrop').val();
-      var email = $('#emailBackdrop').val();
-      var TIN_Number = $('#TIN_Number').val();
-      var status = $('#status').val();
-      var dob = $('#dobBackdrop').val();
-      var phone = $('#phoneBackdrop').val();
-
-      // Assuming you have an API endpoint for updating user data
-      $.ajax({
-        url: 'update_user.php', // Replace with your API endpoint
-        type: 'POST',
-        data: {
-          id: userId,
-          name: name,
-          email: email,
-          TIN_Number: TIN_Number,
-          status: status,
-          dob: dob,
-          phone: phone
-        },
-        dataType: 'json',
-        success: function(data) {
-          var table = $('#table-striped').DataTable();
-          var row = table.row('#row-' + userId);
-          if (data.status === 'success') {
-            alert('User updated successfully!');
-            $('#editUserModal').hide();
-
-            try {
-              row.data({
-                "id": userId,
-                "name": name,
-                "phone": phone,
-                "email": email,
-                "TIN_Number": TIN_Number,
-                "dob": dob,
-                "status": status,
-              }).draw(false);
-            } catch (error) {
-              console.error("Error setting row data:", error);
-            }
-
-          } else {
-            alert('Error updating user: ' + data.message);
-          }
-        },
-        error: function(xhr, status, error) {
-          console.error(error);
-        }
-      });
-    }
-  </script>
-
-
 
 </body>
 
