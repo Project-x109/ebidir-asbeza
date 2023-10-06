@@ -56,7 +56,6 @@ $(document).ready(function () {
       datePickers.forEach(function (picker) {
         picker.disabled = false; // Use the 'disabled' property instead of 'readOnly'
       });
-      toggleButtonState();
     } else {
       // Save changes and switch back to update mode
       if (validateForm()) {

@@ -19,9 +19,12 @@ if (!$token || $token !== $_SESSION['token']) {
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
     $userEnteredPassword = $_POST['password'];
 
-    // Retrieve the user data from the database based on the phone number
-    $sql = "SELECT * FROM `users` WHERE phone = '$phone'";
-    $result = $conn->query($sql);
+    // Prepare a statement to retrieve the user data from the database based on the phone number
+    $sql = "SELECT * FROM `users` WHERE phone = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $phone);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result) {
         if ($result->num_rows > 0) {
@@ -34,7 +37,7 @@ if (!$token || $token !== $_SESSION['token']) {
                 $_SESSION['role'] = $row['role'];
 
                 // Store the user's ID in the session
-                $_SESSION['id'] = $row['id'];
+                $_SESSION['id'] = $row['user_id'];
                 $_SESSION['dob'] = $row['dob'];
                 $_SESSION['credit_limit'] = $row['credit_limit'];
                 $_SESSION['level'] = $row['level'];
@@ -67,6 +70,7 @@ if (!$token || $token !== $_SESSION['token']) {
         exit();
     }
 }
+
 //forgotpassword
 if (isset($_POST['forgot_password'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);

@@ -37,7 +37,6 @@ include "../AdminCommons/head.php";
                             <div class="col-md-6 col-lg-12 col-xl-12 order-0 mb-4">
                                 <div class="card">
                                     <h5 class="card-header">Lists of Loans</h5>
-                                    <h5 class="card-header">Lists of Users</h5>
                                     <div class="table-responsive text-nowrap ms-3 me-3">
                                         <table class="table table-striped" id="table-striped">
                                             <thead>

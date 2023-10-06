@@ -19,20 +19,38 @@ $validationErrors = array();
 $response = array();
 
 if (isset($_POST['add_user'])) {
-
-
     // Check if the phone number, TIN number, and email are already used
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $TIN_Number = mysqli_real_escape_string($conn, $_POST['TIN_Number']);
 
-    $phoneQuery = "SELECT * FROM `users` WHERE `phone`='$phone'";
-    $emailQuery = "SELECT * FROM `users` WHERE `email`='$email'";
-    $TINQuery = "SELECT * FROM `users` WHERE `TIN_Number`='$TIN_Number'";
+    $phoneQuery = "SELECT * FROM `users` WHERE `phone`=?";
+    $emailQuery = "SELECT * FROM `users` WHERE `email`=?";
+    $TINQuery = "SELECT * FROM `users` WHERE `TIN_Number`=?";
+    $user_idQuery = "SELECT * FROM `users` WHERE `user_id`=?";
 
-    $phoneResult = $conn->query($phoneQuery);
-    $emailResult = $conn->query($emailQuery);
-    $TINResult = $conn->query($TINQuery);
+    // Create prepared statements
+    $phoneStmt = $conn->prepare($phoneQuery);
+    $phoneStmt->bind_param("s", $phone);
+    $phoneStmt->execute();
+    $phoneResult = $phoneStmt->get_result();
+
+    $emailStmt = $conn->prepare($emailQuery);
+    $emailStmt->bind_param("s", $email);
+    $emailStmt->execute();
+    $emailResult = $emailStmt->get_result();
+
+    $TINStmt = $conn->prepare($TINQuery);
+    $TINStmt->bind_param("d", $TIN_Number);
+    $TINStmt->execute();
+    $TINResult = $TINStmt->get_result();
+
+    $user_idStmt = $conn->prepare($user_idQuery);
+    $user_idStmt->bind_param("s", $user_id);
+    $user_idStmt->execute();
+    $user_idResult = $user_idStmt->get_result();
+
+    $validationErrors = array();
 
     if ($phoneResult->num_rows > 0) {
         $validationErrors[] = "Phone number is already registered.";
@@ -40,53 +58,41 @@ if (isset($_POST['add_user'])) {
     if ($emailResult->num_rows > 0) {
         $validationErrors[] = "Email is already registered.";
     }
-
     if ($TINResult->num_rows > 0) {
         $validationErrors[] = "TIN number is already registered.";
     }
+    if ($user_idResult->num_rows > 0) {
+        $validationErrors[] = "User ID is already in use.";
+    }
+
     // Check individual validation conditions and add specific errors to the array
     if (!validatePhone($_POST['phone'])) {
         $validationErrors[] = "Invalid phone number format.";
     }
-
     if (!validateEmail($_POST['email'])) {
         $validationErrors[] = "Invalid email address.";
     }
-
     if (!validateName($_POST['name'])) {
         $validationErrors[] = "Name can only contain letters and spaces.";
     }
-
     if (!validateTINNumber($_POST['TIN_Number'])) {
         $validationErrors[] = "Invalid TIN number format.";
     }
-
     if (!validateAge($_POST['dob'])) {
         $validationErrors[] = "You must be at least 18 years old.";
     }
-
     if (!validateImage($_FILES["profile"])) {
         $validationErrors[] = "Invalid image format or file size exceeds the limit.";
     }
 
-    if (
-        validatePhone($_POST['phone']) &&
-        validateEmail($_POST['email']) &&
-        validateName($_POST['name']) &&
-        validateTINNumber($_POST['TIN_Number']) &&
-        validateAge($_POST['dob']) &&
-        validateImage($_FILES["profile"])
-    ) {
-        // Generate a random password
-        $randomPassword = generateRandomPassword();
-
-        // Sanitize user inputs
+    if (empty($validationErrors)) {
+        // All form fields are valid, proceed with database insertion
         $name = mysqli_real_escape_string($conn, $_POST['name']);
         $dob = mysqli_real_escape_string($conn, $_POST['dob']);
-        $phone = mysqli_real_escape_string($conn, $_POST['phone']);
-        $TIN_Number = mysqli_real_escape_string($conn, $_POST['TIN_Number']);
-        $email = mysqli_real_escape_string($conn, $_POST['email']);
         $status = 'waiting';
+
+        // Generate a random password
+        $randomPassword = generateRandomPassword();
 
         // Hash and salt the password
         $password = password_hash($randomPassword, PASSWORD_DEFAULT);
@@ -96,16 +102,18 @@ if (isset($_POST['add_user'])) {
         $date = date("s-h-d-m-Y");
         $folder = "../images/" . $date . $filename;
 
+        // Generate a unique user ID (e.g., "EB0001")
         $sql = "SELECT * FROM admin_setting";
         $res = $conn->query($sql);
         $row = $res->fetch_assoc();
-        $user_id = "EB" . ($row ? sprintf('%04d', $row['branch']) : '0000');
+        $user_id = "EB" . ($row ? sprintf('%04d', $row['user']) : '0000');
 
-        $sql = "INSERT INTO `users`(`name`, `dob`, `phone`, `password`, `role`, `TIN_Number`, `profile`, `status`, `email`,`user_id`) 
-                VALUES ('$name', '$dob', '$phone', '$password', 'user', '$TIN_Number', '$folder', '$status', '$email','$user_id')";
-        $res = $conn->query($sql);
+        // Create a prepared statement for user insertion
+        $userInsertStmt = $conn->prepare("INSERT INTO `users`(`name`, `dob`, `phone`, `password`, `role`, `TIN_Number`, `profile`, `status`, `email`, `user_id`) 
+                VALUES (?, ?, ?, ?, 'user', ?, ?, ?, ?, ?)");
+        $userInsertStmt->bind_param("ssssdssss", $name, $dob, $phone, $password, $TIN_Number, $folder, $status, $email, $user_id);
 
-        if ($res) {
+        if ($userInsertStmt->execute()) {
             if (move_uploaded_file($tempname, $folder)) {
                 // Send an email to the user with their unhashed password
                 sendPasswordEmail($email, $randomPassword, $conn);
@@ -141,6 +149,8 @@ if (isset($_POST['add_user'])) {
     echo json_encode($response);
 }
 
+
+
 // Handle errors (display them in the toast if needed)
 /* if (isset($_SESSION['error'])) {
   echo '<script>
@@ -171,15 +181,33 @@ if (isset($_POST['addbranch'])) {
     // Check if the phone number and email are already used
     $branchPhone = mysqli_real_escape_string($conn, $_POST['phonenumber']);
     $branchEmail = mysqli_real_escape_string($conn, $_POST['email']);
-    $branchname = mysqli_real_escape_string($conn, $_POST['branch_name']);
+    $branchName = mysqli_real_escape_string($conn, $_POST['branch_name']);
 
-    $phoneQuery = "SELECT * FROM `users` WHERE `phone`='$branchPhone'";
-    $emailQuery = "SELECT * FROM `users` WHERE `email`='$branchEmail'";
-    $branchnameQuery = "SELECT * FROM `users` WHERE `name`='$branchname'";
+    $phoneQuery = "SELECT * FROM `users` WHERE `phone`=?";
+    $emailQuery = "SELECT * FROM `users` WHERE `email`=?";
+    $branchNameQuery = "SELECT * FROM `branch` WHERE `branch_name`=?";
+    $branchIDQuery = "SELECT * FROM `branch` WHERE `branch_id`=?";
 
-    $phoneResult = $conn->query($phoneQuery);
-    $emailResult = $conn->query($emailQuery);
-    $branchNameResult = $conn->query($branchnameQuery);
+    // Create prepared statements
+    $phoneStmt = $conn->prepare($phoneQuery);
+    $phoneStmt->bind_param("s", $branchPhone);
+    $phoneStmt->execute();
+    $phoneResult = $phoneStmt->get_result();
+
+    $emailStmt = $conn->prepare($emailQuery);
+    $emailStmt->bind_param("s", $branchEmail);
+    $emailStmt->execute();
+    $emailResult = $emailStmt->get_result();
+
+    $branchNameStmt = $conn->prepare($branchNameQuery);
+    $branchNameStmt->bind_param("s", $branchName);
+    $branchNameStmt->execute();
+    $branchNameResult = $branchNameStmt->get_result();
+
+    $branchIDStmt = $conn->prepare($branchIDQuery);
+    $branchIDStmt->bind_param("s", $branch_id);
+    $branchIDStmt->execute();
+    $branchIDResult = $branchIDStmt->get_result();
 
     if ($phoneResult->num_rows > 0) {
         $branchValidationErrors[] = "Phone number is already registered.";
@@ -188,7 +216,19 @@ if (isset($_POST['addbranch'])) {
         $branchValidationErrors[] = "Email is already registered.";
     }
     if ($branchNameResult->num_rows > 0) {
-        $branchValidationErrors[] = "Branch is already registered.";
+        $branchValidationErrors[] = "Branch name is already registered.";
+    }
+    if ($branchIDResult->num_rows > 0) {
+        $branchValidationErrors[] = "Branch ID is already in use.";
+    }
+    if (!validatePhone($_POST['phonenumber'])) {
+        $branchValidationErrors[] = "Invalid phone number format.";
+    }
+    if (!validateEmail($_POST['email'])) {
+        $branchValidationErrors[] = "Invalid email address.";
+    }
+    if (!validateName($_POST['location'])) {
+        $branchValidationErrors[] = "Location can only contain letters and spaces.";
     }
 
     // Additional validation for branch-specific fields (e.g., branch name, location)
@@ -213,22 +253,22 @@ if (isset($_POST['addbranch'])) {
         $row = $res->fetch_assoc();
         $branch_id = "EB" . ($row ? sprintf('%04d', $row['branch']) : '0000');
 
-        // Insert branch information into the 'users' table
-        $sql = "INSERT INTO `users`(`name`, `phone`, `password`, `role`, `status`, `email`, `user_id`) 
-                VALUES ('$branchName', '$branchPhone', '$password', 'branch', 'waiting', '$branchEmail', '$branch_id')";
-        $res = $conn->query($sql);
+        // Create prepared statements for user and branch insertion
+        $userInsertStmt = $conn->prepare("INSERT INTO `users`(`name`, `phone`, `password`, `role`, `status`, `email`, `user_id`) 
+                VALUES (?, ?, ?, 'branch', 'waiting', ?, ?)");
+        $userInsertStmt->bind_param("sssss", $branchName, $branchPhone, $password, $branchEmail, $branch_id);
 
-        if ($res) {
+        if ($userInsertStmt->execute()) {
             // Update the branch counter in the 'admin_setting' table
             $sql = "UPDATE admin_setting SET branch=" . ($row['branch'] + 1);
             $conn->query($sql);
 
             // Insert branch information into the 'branch' table
-            $sql = "INSERT INTO `branch`(`branch_name`, `location`, `branch_id`)
-                    VALUES ('$branchName','$branchLocation','$branch_id')";
-            $res = $conn->query($sql);
+            $branchInsertStmt = $conn->prepare("INSERT INTO `branch`(`branch_name`, `location`, `branch_id`)
+                    VALUES (?, ?, ?)");
+            $branchInsertStmt->bind_param("sss", $branchName, $branchLocation, $branch_id);
 
-            if ($res) {
+            if ($branchInsertStmt->execute()) {
                 // Send an email with the generated password to the branch
                 sendPasswordEmail($branchEmail, $randomPassword, $conn);
                 $_SESSION['success'] = "Branch Account created successfully";
@@ -246,6 +286,8 @@ if (isset($_POST['addbranch'])) {
     header('Content-Type: application/json');
     echo json_encode($response);
 }
+
+
 // Always return a JSON response
 
 

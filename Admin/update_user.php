@@ -70,16 +70,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Check if the phone number already exists in the database, excluding the current user's ID
-    $phoneQuery = "SELECT * FROM users WHERE phone = '$phone' AND id != '$userId'";
-    $phoneResult = $conn->query($phoneQuery);
+    $phoneQuery = "SELECT * FROM users WHERE phone = ? AND id != ?";
+    $phoneStmt = $conn->prepare($phoneQuery);
+    $phoneStmt->bind_param("si", $phone, $userId);
+    $phoneStmt->execute();
+    $phoneResult = $phoneStmt->get_result();
 
     // Check if the email already exists in the database, excluding the current user's ID
-    $emailQuery = "SELECT * FROM users WHERE email = '$email' AND id != '$userId'";
-    $emailResult = $conn->query($emailQuery);
+    $emailQuery = "SELECT * FROM users WHERE email = ? AND id != ?";
+    $emailStmt = $conn->prepare($emailQuery);
+    $emailStmt->bind_param("si", $email, $userId);
+    $emailStmt->execute();
+    $emailResult = $emailStmt->get_result();
 
     // Check if the TIN number already exists in the database, excluding the current user's ID
-    $TINQuery = "SELECT * FROM users WHERE TIN_Number = '$TIN_Number' AND id != '$userId'";
-    $TINResult = $conn->query($TINQuery);
+    $TINQuery = "SELECT * FROM users WHERE TIN_Number = ? AND id != ?";
+    $TINStmt = $conn->prepare($TINQuery);
+    $TINStmt->bind_param("si", $TIN_Number, $userId);
+    $TINStmt->execute();
+    $TINResult = $TINStmt->get_result();
 
     // Check if there are validation errors
     if (!empty($validationErrors)) {
@@ -110,10 +119,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // No validation errors and no conflicts, proceed with the database update
-        // Perform the database update
-        $sql = "UPDATE users SET name='$name', email='$email', dob='$dob', status='$status', TIN_Number='$TIN_Number', phone='$phone' WHERE id='$userId'";
+        // Perform the database update using prepared statement and parameterized query
+        $updateQuery = "UPDATE users SET name=?, email=?, dob=?, status=?, TIN_Number=?, phone=? WHERE id=?";
+        $updateStmt = $conn->prepare($updateQuery);
+        $updateStmt->bind_param("ssssdsi", $name, $email, $dob, $status, $TIN_Number, $phone, $userId);
 
-        if ($conn->query($sql) === TRUE) {
+        if ($updateStmt->execute()) {
             // Update successful
             echo json_encode(["status" => "success", "message" => "User updated successfully!"]);
             sendProfileUpdatedEmail($email, $name, $conn);
@@ -129,6 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Handle the case where this script is accessed without a POST request
     echo json_encode(["status" => "error", "message" => "Invalid request method"]);
 }
+
 
 
 

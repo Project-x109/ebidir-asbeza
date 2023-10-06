@@ -46,7 +46,6 @@ $(document).ready(function () {
       // Switch to edit mode
       button.text('Save Changes');
       $('#formAccountSettings :input').removeAttr('readonly');
-      toggleButtonState();
     } else {
       // Save changes and switch back to update mode
       if (validateForm()) {

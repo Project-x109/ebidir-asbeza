@@ -44,18 +44,21 @@ if (isset($_POST['add_personal']) || isset($_POST['Number_of_dependents'])) {
     if (empty($cr)) {
         $errors[] = "Criminal Record is required.";
     }
+
     // Check if there are any validation errors
     if (empty($errors)) {
         // All form fields are valid, proceed with database insertion
 
-        // All form fields are valid, proceed with database insertion
+        // Calculate the personal score (modify this logic as needed)
         $age = getAge($_SESSION['dob']);
         $score = personalScore($age, $educational, $marriage, $nod, $cr);
-        $sql = "INSERT INTO `personal`(`Number_of_dependents`, `Marriage_Status`, `Educational_Status`, `Criminal_record`,`user_id`,`personal_score`) 
-                VALUES ('$nod','$marriage','$educational','$cr','$_POST[id]','$score')";
-        // Attempt to execute the SQL query
 
-        if ($conn->query($sql) === TRUE) {
+        // Prepare and bind the SQL insert statement
+        $stmt = $conn->prepare("INSERT INTO `personal`(`Number_of_dependents`, `Marriage_Status`, `Educational_Status`, `Criminal_record`, `user_id`, `personal_score`) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("issssi", $nod, $marriage, $educational, $cr, $_POST['id'], $score);
+
+        // Execute the SQL insert statement
+        if ($stmt->execute()) {
             $_SESSION['success'] = "Personal information created Successfully";
 
             // Set the success message in the response
@@ -64,8 +67,11 @@ if (isset($_POST['add_personal']) || isset($_POST['Number_of_dependents'])) {
             echo json_encode($response);
             exit(); // Add this to prevent further execution
         } else {
-            $_SESSION['error'] = "Error: " . $sql . "<br>" . $conn->error;
+            $_SESSION['error'] = "Error inserting record: " . $stmt->error;
         }
+
+        // Close the prepared statement
+        $stmt->close();
     } else {
         // There are validation errors, send them back to the frontend
         $response = array('errors' => $errors);
@@ -74,18 +80,21 @@ if (isset($_POST['add_personal']) || isset($_POST['Number_of_dependents'])) {
     }
 }
 
+
 if (isset($_POST['update_personal'])) {
     $response = array();
     $errors = array();
+
+    // Validate Number of Dependents
     $nod = $_POST['numberOfDependents'];
     if (!is_numeric($nod) || $nod < 0) {
         $errors[] = "Number of Dependents must be a non-negative number.";
     }
     if (empty($nod)) {
-        $errors[] = "Number of Dependents is Required";
+        $errors[] = "Number of Dependents is required.";
     }
     if ($nod > 10) {
-        $errors[] = "Number of Dependents should be less than Ten";
+        $errors[] = "Number of Dependents should be less than Ten.";
     }
 
     // Validate Marriage Status
@@ -114,26 +123,19 @@ if (isset($_POST['update_personal'])) {
     if (empty($cr)) {
         $errors[] = "Criminal Record is required.";
     }
-    /*   $sql = "UPDATE `personal` SET `Number_of_dependents`='$_POST[Number_of_dependents]',`Marriage_Status`='$_POST[Marriage_Status]',`Educational_Status`='$_POST[Educational_Status]',`Criminal_record`='$_POST[Criminal_record]' WHERE user_id=$_POST[id]";
-    $res = $conn->query($sql);
-    if ($res) {
-        $_SESSION['success'] = "Personal information created Successfully";
-        header("location:Profilepersonal.php");
-    } */
 
     if (empty($errors)) {
-        // All form fields are valid, proceed with database insertion
-
-        // All form fields are valid, proceed with database insertion
+        // All form fields are valid, proceed with database update
+        // Calculate the personal score (modify this logic as needed)
         $age = getAge($_SESSION['dob']);
         $score = personalScore($age, $educational, $marriage, $nod, $cr);
-        $sql = "UPDATE `personal` SET `Number_of_dependents`='$_POST[numberOfDependents]',
-        `Marriage_Status`='$_POST[marrigeStatus]',`Educational_Status`='$_POST[educationalStatus]',
-        `Criminal_record`='$_POST[criminalRecord]', `personal_score`=$score WHERE user_id=$_POST[id]";
 
-        // Attempt to execute the SQL query
+        // Prepare and bind the SQL update statement
+        $stmt = $conn->prepare("UPDATE `personal` SET `Number_of_dependents`=?, `Marriage_Status`=?, `Educational_Status`=?, `Criminal_record`=?, `personal_score`=? WHERE user_id=?");
+        $stmt->bind_param("isssis", $_POST['numberOfDependents'], $_POST['marrigeStatus'], $_POST['educationalStatus'], $_POST['criminalRecord'], $score, $_POST['id']);
 
-        if ($conn->query($sql) === TRUE) {
+        // Execute the SQL update statement
+        if ($stmt->execute()) {
             $_SESSION['success'] = "Personal information updated Successfully";
 
             // Set the success message in the response
@@ -142,8 +144,11 @@ if (isset($_POST['update_personal'])) {
             echo json_encode($response);
             exit(); // Add this to prevent further execution
         } else {
-            $_SESSION['error'] = "Error: " . $sql . "<br>" . $conn->error;
+            $_SESSION['error'] = "Error updating record: " . $stmt->error;
         }
+
+        // Close the prepared statement
+        $stmt->close();
     } else {
         // There are validation errors, send them back to the frontend
         $response = array('errors' => $errors);
@@ -158,6 +163,7 @@ if (isset($_POST['add_economic'])) {
     // Form validation
     $errors = array();
     $response = array();
+
     // Validate Field of Employment
     $field_of_employment = $_POST['field_of_employeement'];
     if (empty($field_of_employment)) {
@@ -204,17 +210,22 @@ if (isset($_POST['add_economic'])) {
         $Number_Of_Loans = 0;
         $fully_repaid_loans = 0;
         $score = EconomicScore($Source_of_income, $Experience, $Number_Of_Loans, $fully_repaid_loans);
-        $sql = "INSERT INTO `economic`(`field_of_employeement`, `number_of_income`, `year`, `branch`,`user_id`,`position`,`salary`,`economic_score`) 
-                VALUES ('$_POST[field_of_employeement]','$_POST[number_of_income]','$_POST[year]','$_POST[branch]','$_POST[id]','$_POST[position]','$_POST[salary]',$score)";
 
-        // Attempt to execute the SQL query
-        if ($conn->query($sql) === TRUE) {
+        // Prepare and bind the SQL insert statement
+        $stmt = $conn->prepare("INSERT INTO `economic`(`field_of_employeement`, `number_of_income`, `year`, `branch`, `user_id`, `position`, `salary`, `economic_score`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sissssii", $field_of_employment, $number_of_income, $year, $branch, $_POST['id'], $position, $salary, $score);
+
+        // Execute the SQL insert statement
+        if ($stmt->execute()) {
             $salary = $_POST['salary'];
             $level = getLevel($salary);
             $limit = $LEVEL[$level];
-            $sql = "UPDATE users SET form_done=1, credit_limit=$limit, level='$level' WHERE id=$_POST[id]";
-            $res = $conn->query($sql);
-            if ($res) {
+
+            // Prepare and bind the SQL update statement for users table
+            $stmt = $conn->prepare("UPDATE users SET form_done=1, credit_limit=?, level=? WHERE id=?");
+            $stmt->bind_param("iss", $limit, $level, $_POST['id']);
+
+            if ($stmt->execute()) {
                 $_SESSION['success'] = "Economic information created Successfully";
                 $response = array('success' => $_SESSION['success']);
                 header('Content-Type: application/json');
@@ -230,9 +241,12 @@ if (isset($_POST['add_economic'])) {
     }
 }
 
+
 if (isset($_POST['update_economic'])) {
+    // Form validation
     $errors = array();
     $response = array();
+
     // Validate Field of Employment
     $field_of_employment = $_POST['field_of_employeement'];
     if (empty($field_of_employment)) {
@@ -271,25 +285,31 @@ if (isset($_POST['update_economic'])) {
     if (!is_numeric($salary) || $salary < 0) {
         $errors[] = "Salary must be a non-negative number.";
     }
+
     if (empty($errors)) {
-        // All form fields are valid, proceed with database insertion
+        // All form fields are valid, proceed with database update
         $Source_of_income = $_POST['number_of_income'];
         $Experience = $_POST['year'];
         $Number_Of_Loans = 0;
         $fully_repaid_loans = 0;
         $score = EconomicScore($Source_of_income, $Experience, $Number_Of_Loans, $fully_repaid_loans);
-        $sql = "UPDATE `economic` SET `field_of_employeement`='$_POST[field_of_employeement]',`number_of_income`='$_POST[number_of_income]',
-        `year`='$_POST[year]',`branch`='$_POST[branch]',`position`='$_POST[position]',`salary`='$_POST[salary]',`economic_score`=$score WHERE user_id=$_POST[id]";
 
-        // Attempt to execute the SQL query
-        if ($conn->query($sql) === TRUE) {
+        // Prepare and bind the SQL update statement
+        $stmt = $conn->prepare("UPDATE `economic` SET `field_of_employeement`=?, `number_of_income`=?, `year`=?, `branch`=?, `position`=?, `salary`=?, `economic_score`=? WHERE user_id=?");
+        $stmt->bind_param("sisssiis", $field_of_employment, $number_of_income, $year, $branch, $position, $salary, $score, $_POST['id']);
+
+        // Execute the SQL update statement
+        if ($stmt->execute()) {
             $salary = $_POST['salary'];
             $level = getLevel($salary);
             $limit = $LEVEL[$level];
-            $sql = "UPDATE users SET form_done=1, credit_limit=$limit, level='$level' WHERE id=$_POST[id]";
-            $res = $conn->query($sql);
-            if ($res) {
-                $_SESSION['success'] = "Economic information Updated Successfully";
+
+            // Prepare and bind the SQL update statement for users table
+            $stmt = $conn->prepare("UPDATE users SET form_done=1, credit_limit=?, level=? WHERE id=?");
+            $stmt->bind_param("iss", $limit, $level, $_POST['id']);
+
+            if ($stmt->execute()) {
+                $_SESSION['success'] = "Economic information updated Successfully";
                 $response = array('success' => $_SESSION['success']);
                 header('Content-Type: application/json');
                 echo json_encode($response);
@@ -303,6 +323,7 @@ if (isset($_POST['update_economic'])) {
         echo json_encode($response);
     }
 }
+
 
 if (isset($_POST['checkout'])) {
 

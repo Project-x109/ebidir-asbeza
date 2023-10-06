@@ -1,6 +1,6 @@
 <?php
-session_start();
 include "../connect.php";
+session_start();
 
 
 if (isset($_POST['change_old_passwords'])) {
