@@ -61,6 +61,7 @@ if (isset($_SESSION['status']) && $_SESSION['status'] === 'waiting' && isset($_P
             // Update the user's password and set status to 'active'
             $updateSql = "UPDATE `users` SET `password` = '$hashedPassword', `status` = 'active' WHERE `id` = '$userId'";
             if ($conn->query($updateSql)) {
+                unset($_SESSION['on_newpassword_page']);
                 // Password updated successfully, redirect to the dashboard
                 $_SESSION['success'] = "Password updated successfully!";
                 $loc = $_SESSION['role'] . "/";

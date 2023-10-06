@@ -4,6 +4,8 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
 if (isset($_SESSION['role'])) {
   header("Location:" . $_SESSION['role'] . "/index.php");
 }
+include "./sessioncheck.php";
+
 ?>
 
 <!DOCTYPE html>

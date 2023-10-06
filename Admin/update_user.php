@@ -33,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!validateTINNumber($TIN_Number)) {
         $validationErrors[] = "Invalid TIN number format.";
     }
+
     // Check if Date of Birth is empty or user is not at least 18 years old
     if (!validateAge($dob)) {
         $validationErrors[] = "You must be at least 18 years old.";
@@ -56,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $validationErrors[] = "Email is required.";
     }
     if (empty($TIN_Number)) {
-        $validationErrors[] = "Tin Number is required.";
+        $validationErrors[] = "TIN Number is required.";
     }
     if (empty($dob)) {
         $validationErrors[] = "Date of Birth is required.";
@@ -68,33 +69,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $validationErrors[] = "Full Name is required.";
     }
 
-    // Check if the phone number already exists in the database
+    // Check if the phone number already exists in the database, excluding the current user's ID
     $phoneQuery = "SELECT * FROM users WHERE phone = '$phone' AND id != '$userId'";
     $phoneResult = $conn->query($phoneQuery);
-    if ($phoneResult->num_rows > 0) {
-        $validationErrors[] = "Phone number is already registered.";
-    }
 
-    // Check if the email already exists in the database
+    // Check if the email already exists in the database, excluding the current user's ID
     $emailQuery = "SELECT * FROM users WHERE email = '$email' AND id != '$userId'";
     $emailResult = $conn->query($emailQuery);
-    if ($emailResult->num_rows > 0) {
-        $validationErrors[] = "Email is already registered.";
-    }
 
-    // Check if the TIN number already exists in the database
+    // Check if the TIN number already exists in the database, excluding the current user's ID
     $TINQuery = "SELECT * FROM users WHERE TIN_Number = '$TIN_Number' AND id != '$userId'";
     $TINResult = $conn->query($TINQuery);
-    if ($TINResult->num_rows > 0) {
-        $validationErrors[] = "TIN number is already registered.";
-    }
 
     // Check if there are validation errors
     if (!empty($validationErrors)) {
         // Return validation errors in JSON format
         echo json_encode(["status" => "error", "errors" => $validationErrors]);
     } else {
-        // No validation errors, proceed with the database update
+        // Check if the same user's records are being updated
+        if ($phoneResult->num_rows > 0 && $emailResult->num_rows > 0 && $TINResult->num_rows > 0) {
+            // Allow updates since the same user is updating their own records
+        } else {
+            // Check if there are no other records with the same values
+            $conflictingErrors = array();
+            if ($phoneResult->num_rows > 0) {
+                $conflictingErrors[] = "Phone number is already registered by another user.";
+            }
+            if ($emailResult->num_rows > 0) {
+                $conflictingErrors[] = "Email is already registered by another user.";
+            }
+            if ($TINResult->num_rows > 0) {
+                $conflictingErrors[] = "TIN number is already registered by another user.";
+            }
+
+            if (!empty($conflictingErrors)) {
+                // Block updates due to conflicts
+                echo json_encode(["status" => "error", "errors" => $conflictingErrors]);
+                exit; // Stop further execution
+            }
+        }
+
+        // No validation errors and no conflicts, proceed with the database update
         // Perform the database update
         $sql = "UPDATE users SET name='$name', email='$email', dob='$dob', status='$status', TIN_Number='$TIN_Number', phone='$phone' WHERE id='$userId'";
 

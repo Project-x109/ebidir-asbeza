@@ -1,7 +1,14 @@
 new DataTable('#table-striped');
 
 var dataTable; // Declare the dataTable variable outside of any function
+function showLoader() {
+  $('#loader').fadeIn();
+}
 
+// Hide the loader when the response is received
+function hideLoader() {
+  $('#loader').fadeOut();
+}
 // Function to initialize the DataTable
 function initializeDataTable() {
   dataTable = $('#table-striped').DataTable({
@@ -64,12 +71,10 @@ function initializeDataTable() {
 $(document).ready(function () {
   initializeDataTable();
 });
-function showErrorMessage() {
-  // Display the toast with error messages
-  $('#error-toast').toast('show');
-}
+
 // Function to edit user data and display it in a modal
 function editUser(userId) {
+  showLoader();
   $.ajax({
     type: 'GET',
     url: 'get_user_data.php',
@@ -78,6 +83,7 @@ function editUser(userId) {
     },
     dataType: 'json',
     success: function (userData) {
+      hideLoader();
       // Populate the modal with user data
       $('#branchnameBackdrop').val(userData.name);
       $('#emailBackdrop').val(userData.email);
@@ -96,7 +102,7 @@ function editUser(userId) {
           $('#locationBackdrop').val(branchData.location);
 
           // Populate the AJAX data (for saving changes)
-          $('#userIdToUpdate').val(userData.user_id);
+          $('#userIdToUpdate').val(userData.id);
           $('#userIdToUpdatebranch').val(branchData.branch_id);
 
           // Set the modal title
@@ -149,104 +155,136 @@ function updateDataTable(userId, name, email, status, phone, location) {
   }
 }
 
-function saveUser() {
-  var userId = $('#userIdToUpdate').val();
-  var branchId = $('#userIdToUpdatebranch').val();
-  var name = $('#branchnameBackdrop').val();
-  var email = $('#emailBackdrop').val();
-  var status = $('#status').val();
-  var phone = $('#phoneBackdrop').val();
-  var location = $('#locationBackdrop').val();
+function validateForm() {
+  const errors = []; // Array to store error messages
 
-  // Log the data before making the AJAX request
-  console.log('Data before AJAX request:');
-  console.log('userId:', userId);
-  console.log('Branch Id:', branchId);
-  console.log('name:', name);
-  console.log('email:', email);
-  console.log('status:', status);
-  console.log('phone:', phone);
-  console.log('location:', location);
+  // An array of field IDs and their corresponding error messages
+  const fields = [
+    { id: 'branchnameBackdrop', error: 'Branch Name is required.' },
+    { id: 'emailBackdrop', error: 'Email is required.' },
+    { id: 'phoneBackdrop', error: 'Phone is required.' },
+    { id: 'locationBackdrop', error: 'Location is required.' },
+    { id: 'status', error: 'Status is required.' }
+  ];
 
-  // Assuming you have API endpoints for updating user and branch data
-  $.ajax({
-    url: 'bupdate_branch_user.php', // Replace with your user data update API endpoint
-    type: 'POST',
-    data: {
-      id: userId,
-      name: name,
-      email: email,
-      status: status,
-      phone: phone
-    },
-    dataType: 'json',
-    success: function (userData) {
-      // Log the response from the user data update API
-      console.log('Response from User API:', userData);
+  const nameRegex = /^[A-Za-z\s]+$/;
+  const validPhoneRegex = RegExp(
+    /(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(\+\s*2\s*5\s*1\s*9\s*(([0-9]\s*){8}\s*))|(0\s*9\s*(([0-9]\s*){8}))|(0\s*7\s*(([0-9]\s*){8}))/i
+  );
+  const validEmailRegex = RegExp(
+    /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+  );
 
-      if (userData.status === 'success') {
-        // User data updated successfully, now update branch data
-        $.ajax({
-          url: 'update_branch.php', // Replace with your branch data update API endpoint
-          type: 'POST',
-          data: {
-            branch_id: branchId, // Use branch_id as the identifier
-            location: location
-          },
-          dataType: 'json',
-          success: function (branchData) {
-            // Log the response from the branch data update API
-            console.log('Response from Branch API:', branchData);
+  // Iterate through the fields and check their values
+  for (const field of fields) {
+    const input = document.getElementById(field.id);
+    const value = input.value.trim();
 
-            if (branchData.status === 'success') {
-              $('#backDropModal').modal('hide');
-              Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: 'User and branch data updated successfully!'
-              }).then(result => {
-                if (result.isConfirmed) {
-                  // Update the DataTable with the new user data
-                  updateDataTable(userId, name, email, status, phone, location);
-                }
-              });
-            } else {
-              // Branch data update failed, display an error message
-              showErrorToast('Error updating branch data.');
-            }
-          },
-          error: function (xhr, status, error) {
-            console.error('AJAX Error:', status, error);
-            console.log('Response Text:', xhr.responseText);
-            showErrorToast('Error updating branch data.');
-          }
-        });
-      } else {
-        // User data update failed, display an error message
-        showErrorToast('Error updating user data.');
-      }
-    },
-    error: function (xhr, status, error) {
-      console.error('AJAX Error:', status, error);
-      console.log('Response Text:', xhr.responseText);
-      showErrorToast('Error updating user data.');
+    if (value === '') {
+      errors.push(field.error); // Add error message to the array
+    } else if (field.id === 'branchnameBackdrop' && !nameRegex.test(value)) {
+      errors.push('Name can only contain alphabets and spaces.'); // Add specific error message
+    } else if (field.id === 'phoneBackdrop' && !validPhoneRegex.test(value)) {
+      errors.push('Invalid Phone Number.'); // Add specific error message
+    } else if (field.id === 'emailBackdrop' && !validEmailRegex.test(value)) {
+      errors.push('Invalid Email Address.'); // Add specific error message
     }
+  }
+
+  // Check if there are validation errors
+  if (errors.length > 0) {
+    showErrorToast(errors); // Display error messages in the toast
+    return false; // Form is not valid
+  }
+
+  return true; // Form is valid
+}
+
+function showErrorToast(errorMessages) {
+  $('#error-toast').toast('show');
+  var errorContainer = $('#error-toast .toast-body');
+  errorContainer.empty(); // Clear any previous errors
+
+  // Create an unordered list to display errors
+  var errorList = $('<ul></ul>');
+
+  // Iterate through the error messages and append them as list items
+  errorMessages.forEach(function (errorMessage) {
+    errorList.append('<li>' + errorMessage + '</li>');
   });
+
+  // Append the list of errors to the error container
+  errorContainer.append(errorList);
+}
+function saveUser() {
+  showLoader();
+  if (validateForm()) {
+    var userId = $('#userIdToUpdate').val();
+    var branchId = $('#userIdToUpdatebranch').val();
+    var name = $('#branchnameBackdrop').val();
+    var email = $('#emailBackdrop').val();
+    var status = $('#status').val();
+    var phone = $('#phoneBackdrop').val();
+    var location = $('#locationBackdrop').val();
+    // Assuming you have API endpoints for updating user and branch data
+    $.ajax({
+      url: 'bupdate_branch_user.php', // Replace with your user data update API endpoint
+      type: 'POST',
+      data: {
+        id: userId,
+        name: name,
+        email: email,
+        status: status,
+        phone: phone
+      },
+      dataType: 'json',
+      success: function (userData) {
+        hideLoader();
+        if (userData.status === 'success') {
+          // User data updated successfully, now update branch data
+          $.ajax({
+            url: 'update_branch.php', // Replace with your branch data update API endpoint
+            type: 'POST',
+            data: {
+              branch_id: branchId, // Use branch_id as the identifier
+              location: location
+            },
+            dataType: 'json',
+            success: function (branchData) {
+              if (branchData.status === 'success') {
+                $('#backDropModal').modal('hide');
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Success!',
+                  text: 'User and branch data updated successfully!'
+                }).then(result => {
+                  if (result.isConfirmed) {
+                    // Update the DataTable with the new user data
+                    updateDataTable(userId, name, email, status, phone, location);
+                  }
+                });
+              } else {
+                // Branch data update failed, display an error message
+                showErrorToast(branchData.errors); // Display the specific error message
+              }
+            },
+            error: function (xhr, status, error) {
+              showErrorToast('Error updating branch data: ' + error); // Display the generic error message
+            }
+          });
+        } else {
+          // User data update failed, display an error message
+          showErrorToast(userData.errors); // Display the specific error message
+        }
+      },
+      error: function (xhr, status, error) {
+        showErrorToast('Error updating user data: ' + error); // Display the generic error message
+      }
+    });
+  }
 }
 
 // Update the "Save" button's click event to call saveUser()
 $('#saveButton').click(function () {
   saveUser();
 });
-
-// Helper function to show error toast
-function showErrorToast(errorMessage) {
-  var errorContainer = $('#error-toast .toast-body');
-  errorContainer.empty(); // Clear any previous errors
-  errorContainer.append('<p>' + errorMessage + '</p>');
-
-  // Display the error toast
-  showErrorMessage();
-}
-
-// ... (previous code)

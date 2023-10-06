@@ -10,13 +10,12 @@ require './assets/PHPMailer/PHPMailer.php';
 require './assets/PHPMailer/SMTP.php';
 require './assets/PHPMailer/Exception.php';
 
-$token = filter_input(INPUT_POST, 'token', FILTER_SANITIZE_STRING);
+$token = htmlspecialchars($_POST['token'], ENT_QUOTES, 'UTF-8');
 if (!$token || $token !== $_SESSION['token']) {
-    $_SESSION['error'] = "Authorization Error"; 
+    $_SESSION['error'] = "Authorization Error";
     header("Location: index.php");
     exit;
-}
-else if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset($_POST['password'])) {
+} else if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset($_POST['password'])) {
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
     $userEnteredPassword = $_POST['password'];
 
@@ -29,10 +28,13 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset
             $row = $result->fetch_assoc();
             $hashedPassword = $row['password'];
             $status = $row['status'];
+
             // Verify the user-entered plain text password against the retrieved hashed password
             if (password_verify($userEnteredPassword, $hashedPassword)) {
                 $_SESSION['role'] = $row['role'];
-                $_SESSION['id'] = $row['user_id'];
+
+                // Store the user's ID in the session
+                $_SESSION['id'] = $row['id'];
                 $_SESSION['dob'] = $row['dob'];
                 $_SESSION['credit_limit'] = $row['credit_limit'];
                 $_SESSION['level'] = $row['level'];
@@ -41,20 +43,14 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset
                 if ($status === 'waiting') {
                     $_SESSION['status'] = 'waiting'; // Set a session variable to indicate the status
 
-                        // Redirect to change password page
-                        header("location: newpassword.php");
-                        exit();
-                    } elseif ($status === 'active') {
-                        // User is already active, redirect to the appropriate dashboard
-                        $loc = $_SESSION['role'] . "/";
-                        echo $loc;
-                        header("location: " . $loc);
-                        exit();
-                    }
-                } else {
-                    // Password is incorrect, store error message in session
-                    $_SESSION['error'] = "Password is incorrect";
-                    header("Location: index.php");
+                    // Redirect to change password page
+                    header("location: newpassword.php");
+                    exit();
+                } elseif ($status === 'active') {
+                    // User is already active, redirect to the appropriate dashboard
+                    $loc = $_SESSION['role'] . "/";
+                    echo $loc;
+                    header("location: " . $loc);
                     exit();
                 }
             } else {
@@ -70,7 +66,7 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset
         header("Location: index.php");
         exit();
     }
-
+}
 //forgotpassword
 if (isset($_POST['forgot_password'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
