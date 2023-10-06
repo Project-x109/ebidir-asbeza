@@ -1,6 +1,8 @@
 <?php
 include "connect.php";
+
 session_start();
+$_SESSION['token'] = bin2hex(random_bytes(35));
 ?>
 
 <!DOCTYPE html>
@@ -117,6 +119,7 @@ session_start();
                         <p class="mb-4">Enter your email and we'll send you instructions to reset your password</p>
                         <form id="formAuthentication" class="mb-3" action="login.php" method="POST">
                             <div class="mb-3">
+                                <input type="hidden" name="token" value="<?php echo $_SESSION['token'] ?? '' ?>">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" class="form-control" re id="email" name="email" placeholder="Enter your email" requi autofocus />
                                 <div id="emailError" class="text-danger"></div> <!-- Error message container -->

@@ -39,8 +39,12 @@ if (isset($_SESSION['status']) && $_SESSION['status'] === 'waiting' && isset($_P
             $errors[] = "Password must contain at least one special character.";
         }
         // Retrieve the user's current password from the database
-        $getCurrentPasswordSql = "SELECT `password` FROM `users` WHERE `id` = '$userId'";
-        $result = $conn->query($getCurrentPasswordSql);
+        $getCurrentPasswordSql = "SELECT `password` FROM `users` WHERE `user_id` = ?";
+        $stmt = $conn->prepare($getCurrentPasswordSql);
+        $stmt->bind_param("s", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
         if ($result && $row = $result->fetch_assoc()) {
             $currentPasswordHash = $row['password'];
 
@@ -59,8 +63,11 @@ if (isset($_SESSION['status']) && $_SESSION['status'] === 'waiting' && isset($_P
             $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
             // Update the user's password and set status to 'active'
-            $updateSql = "UPDATE `users` SET `password` = '$hashedPassword', `status` = 'active' WHERE `id` = '$userId'";
-            if ($conn->query($updateSql)) {
+            $updateSql = "UPDATE `users` SET `password` = ?, `status` = 'active' WHERE `user_id` = ?";
+            $stmt = $conn->prepare($updateSql);
+            $stmt->bind_param("ss", $hashedPassword, $userId);
+
+            if ($stmt->execute()) {
                 unset($_SESSION['on_newpassword_page']);
                 // Password updated successfully, redirect to the dashboard
                 $_SESSION['success'] = "Password updated successfully!";
@@ -109,5 +116,3 @@ function isValidPassword($password)
     // All requirements met
     return true;
 }
-
-?>

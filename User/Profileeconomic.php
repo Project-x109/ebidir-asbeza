@@ -17,9 +17,6 @@ include "../UsersCommon/head.php";
             <?php
             include "../UsersCommon/sidebar.php";
             ?>
-
-            <!-- / Menu -->
-
             <!-- Layout container -->
             <div class="layout-page">
                 <!-- Navbar -->

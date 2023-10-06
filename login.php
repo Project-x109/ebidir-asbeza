@@ -69,10 +69,7 @@ if (!$token || $token !== $_SESSION['token']) {
         header("Location: index.php");
         exit();
     }
-}
-
-//forgotpassword
-if (isset($_POST['forgot_password'])) {
+} else if (isset($_POST['forgot_password'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     // Check if the email exists in the database
     $checkEmailQuery = "SELECT * FROM users WHERE email = '$email'";
@@ -292,6 +289,7 @@ if (isset($_POST['forgot_password'])) {
         exit();
     }
 }
+
 
 // ... (the rest of your code)
 

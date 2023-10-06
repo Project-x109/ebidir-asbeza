@@ -1,16 +1,18 @@
 <?php
 session_start();
-include "../common/head.php"; // head part and all links
+include "../BranchCommon/head.php";
+// head part and all links
 ?>
+
 
 <body>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
-            <?php include '../common/sidebar.php'; ?> <!-- sidebar -->
+            <?php include '../BranchCommon/sidebar.php'; ?> <!-- sidebar -->
             <div class="layout-page">
                 <?php
-                include "../common/nav.php";  //<!-- sidebar -->
+                include "../BranchCommon/nav.php";  //<!-- sidebar -->
                 ?>
                 <div class="content-wrapper">
                     <!-- Content -->
@@ -47,5 +49,5 @@ include "../common/head.php"; // head part and all links
                     </div>
 
                     <?php
-                    include "../common/footer.php";
+                    include "../BranchCommon/footer.php";
                     ?>

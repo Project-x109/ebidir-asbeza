@@ -1,5 +1,6 @@
 <?php
 session_start();
+$_SESSION['token'] = bin2hex(random_bytes(35));
 include "./connect.php";
 if (isset($_GET['token'])) {
     $token = $_GET['token'];
@@ -134,6 +135,7 @@ if (isset($_GET['token'])) {
                         <h4 class="mb-2">Change Password? 🔒</h4>
                         <p class="mb-4">Enter your new password and Confirm Your password</p>
                         <form id="formAuthentication" class="mb-3" action="login.php?token=<?php echo $token; ?>" method="POST">
+                            <input type="hidden" name="token" value="<?php echo $_SESSION['token'] ?? '' ?>">
                             <div class="mb-3">
                                 <label for="newpassword" class="form-label">New Password</label>
                                 <input required type="password" class="form-control" id="newpassword" name="newpassword" placeholder="Enter your password" autofocus />

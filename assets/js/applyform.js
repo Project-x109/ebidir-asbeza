@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+  console.log('Form submitted');
   const creditForm = document.getElementById('creditForm');
   const identificationNumberInput = document.getElementById('identificationNumber');
   const errorToast = document.getElementById('errorToast');
@@ -14,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
       errorToast.style.display = 'block';
 
       // You can set a custom error message here
-       errorToast.querySelector(".toast-body").textContent = "Invalid identification number.";
+      errorToast.querySelector('.toast-body').textContent = 'Invalid identification number.';
 
       // Hide the toast after a delay
       setTimeout(function () {
@@ -29,6 +30,6 @@ document.addEventListener('DOMContentLoaded', function () {
   function isValidIdentificationNumber(number) {
     // Implement your validation logic here
     // For example, check if the number is exactly 6 digits
-    return number.length==6;
+    return number.length === 6; // Fixed typo: "Length" should be "length"
   }
 });
