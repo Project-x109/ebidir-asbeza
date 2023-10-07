@@ -45,6 +45,7 @@
 <!-- endbuild -->
 <script src="../assets/js/common.js"></script>
 
+
 <!-- Vendors JS -->
 
 
@@ -58,4 +59,5 @@
 <!-- Include the JavaScript file for authorization -->
 <script src="../assets/js/authorization.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="../assets/js/logout.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

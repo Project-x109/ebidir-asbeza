@@ -193,7 +193,7 @@ include "../BranchCommon/head.php"
                 <?php
                 include "../BranchCommon/footer.php"
                 ?>
-                <script>
+                <!--  <script>
                     function update(e) {
                         let x = e.value;
                         let xhr = new XMLHttpRequest();
@@ -203,6 +203,30 @@ include "../BranchCommon/head.php"
                         }
                         xhr.open("GET", "ajax.php?loan_id=" + x)
                         xhr.send();
+                    }
+                </script> -->
+                <script>
+                    function update(e) {
+                        let x = e.value;
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: 'You are about to update this record.',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, update it!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // If the user confirms, proceed with the update
+                                let xhr = new XMLHttpRequest();
+                                xhr.onload = function() {
+                                    document.location = '';
+                                }
+                                xhr.open("GET", "ajax.php?loan_id=" + x)
+                                xhr.send();
+                            }
+                        })
                     }
                 </script>
                 <script src="../assets/js/jquery-3.7.0.js"></script>
