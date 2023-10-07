@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-
-<html>
-
 <?php
-include "../BranchCommon/head.php"
-
+include "../connect.php";
+session_start();
+include "./AuthorizationBranch.php";
+include "../BranchCommon/head.php";
 ?>
-
-
 <body>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">

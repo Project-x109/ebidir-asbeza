@@ -1,6 +1,7 @@
 <?php
-session_start();
 include "../connect.php";
+session_start();
+include "./AuthorizationUser.php";
 ?>
 
 <?php
@@ -57,7 +58,7 @@ include "../UsersCommon/head.php";
                     <h5 class="mb-0">2.Economic Information</h5>
                   </div>
                   <?php
-                  $sql = "SELECT * from economic where user_id=" . $_SESSION['id'];
+                  $sql = "SELECT * FROM economic WHERE user_id = '" . $_SESSION['id'] . "'";
                   $res = $conn->query($sql);
                   $found = $res->num_rows;
                   $field_of_employeement = "";

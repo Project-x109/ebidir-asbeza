@@ -1,5 +1,7 @@
 <?php
+include "../connect.php";
 session_start();
+include "./AuthorizationBranch.php";
 ?>
 <?php
 include "../BranchCommon/head.php"
