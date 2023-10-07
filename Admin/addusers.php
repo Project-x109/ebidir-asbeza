@@ -149,12 +149,6 @@ include "../AdminCommons/head.php";
             <!-- Page JS -->
             <script src="../assets/js/ui-toasts-user.js"></script>
             <!-- Place this tag in your head or just before your close body tag. -->
-
-
-
-
-
-
 </body>
 
 </html>

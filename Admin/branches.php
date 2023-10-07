@@ -72,7 +72,7 @@ include "../AdminCommons/head.php";
                                                     <th>Phone Number</th>
                                                     <th>Status</th>
                                                     <th>Created On</th>
-                                                    <th>Details</th>
+                                                    <th></th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -104,9 +104,7 @@ include "../AdminCommons/head.php";
                                                     }
                                                     echo "<td><span class=\"badge bg-label-$badgeClass me-1\">$status</span></td>";
                                                     echo "<td>{$row['createdOn']}</td>";
-                                                    echo "<td><a href='branchdetails.php' class='menu-link'>
-                                                                <div data-i18n='Without menu'>Details</div>
-                                                                </a>
+                                                    echo "<td>
                                                         </td>";
                                                     echo "<td>
                                                                 <div class='dropdown'>
