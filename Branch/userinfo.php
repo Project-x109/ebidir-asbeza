@@ -88,18 +88,22 @@ include "../connect.php";
                                                     $id = $_SESSION['user_id'];
                                                     $sql = "SELECT * FROM users where user_id='$id'";
                                                     $res = $conn->query($sql);
-                                                    $row = $res->fetch_assoc();
-                                                    echo "<span>Full Name</span>
-                                                    <span>$row[name]</span>
-                                                    <span>Email:</span>
-                                                    <span>$row[email]</span>
-                                                    <span>Phone Numbre:</span>
-                                                    <span>$row[phone]</span>
-                                                    <span>TIN Number:</span>
-                                                    <span>$row[TIN_Number]</span>
-                                                    <span>Job Status:</span>
-                                                    <span>Employed</span>
-                                                    <span><?php echo $_SESSION[user_id]?></span>";
+                                                    if ($res && $res->num_rows > 0) {
+                                                        $row = $res->fetch_assoc();
+                                                        echo "<span>Full Name</span>
+                                                       <span>{$row['name']}</span>
+                                                       <span>Email:</span>
+                                                       <span>{$row['email']}</span>
+                                                       <span>Phone Numbre:</span>
+                                                       <span>{$row['phone']}</span>
+                                                       <span>TIN Number:</span>
+                                                       <span>{$row['TIN_Number']}</span>
+                                                       <span>Job Status:</span>
+                                                       <span>Employed</span>
+                                                       <span>{$_SESSION['user_id']}</span>";
+                                                    } else {
+                                                        echo "<span>User Data Not found</span>";
+                                                    }
                                                     ?>
                                                 </div>
                                             </div>
@@ -107,7 +111,7 @@ include "../connect.php";
                                             <div>
                                                 <span>Credit Limit</span>
                                                 <!-- <p>Visa</p> -->
-                                                <p><?= $row['credit_limit'] ?> ETB</p>
+                                                <p><?= isset($row['credit_limit']) ? $row['credit_limit'] . ' ETB' : 'N/A' ?></p>
                                             </div>
                                             <hr>
                                             <div class="promo">
