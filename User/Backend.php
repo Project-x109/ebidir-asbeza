@@ -1,8 +1,9 @@
  
 <?php
 include "../connect.php";
-include "./functions.php";
 session_start();
+include "./AuthorizationUser.php";
+include "./functions.php";
 if (isset($_POST['add_personal']) || isset($_POST['Number_of_dependents'])) {
     // Form validation
     $errors = array();
@@ -222,7 +223,7 @@ if (isset($_POST['add_economic'])) {
             $limit = $LEVEL[$level];
 
             // Prepare and bind the SQL update statement for users table
-            $stmt = $conn->prepare("UPDATE users SET form_done=1, credit_limit=?, level=? WHERE id=?");
+            $stmt = $conn->prepare("UPDATE users SET form_done=1, credit_limit=?, level=? WHERE user_id=?");
             $stmt->bind_param("iss", $limit, $level, $_POST['id']);
 
             if ($stmt->execute()) {
@@ -238,6 +239,7 @@ if (isset($_POST['add_economic'])) {
         $response = array('errors' => $errors);
         header('Content-Type: application/json');
         echo json_encode($response);
+        exit();
     }
 }
 
@@ -305,7 +307,7 @@ if (isset($_POST['update_economic'])) {
             $limit = $LEVEL[$level];
 
             // Prepare and bind the SQL update statement for users table
-            $stmt = $conn->prepare("UPDATE users SET form_done=1, credit_limit=?, level=? WHERE id=?");
+            $stmt = $conn->prepare("UPDATE users SET form_done=1, credit_limit=?, level=? WHERE user_id=?");
             $stmt->bind_param("iss", $limit, $level, $_POST['id']);
 
             if ($stmt->execute()) {

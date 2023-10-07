@@ -1,6 +1,8 @@
 <?php
 include "../connect.php";
 session_start();
+include "./AuthorizationAdmin.php";
+
 
 // Get POST data
 $branchId = $_POST['branch_id']; // Assuming 'branch_id' is the identifier for branch data

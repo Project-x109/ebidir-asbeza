@@ -1,6 +1,7 @@
 <?php
-session_start();
 include "../connect.php";
+session_start();
+include "./AuthorizationUser.php";
 
 ?>
 
@@ -139,7 +140,7 @@ include "../connect.php";
 
         </ul>
       </aside>
-      
+
       <!-- / Menu -->
 
       <!-- Layout container -->
@@ -259,7 +260,8 @@ include "../connect.php";
                 <div class="card mb-4">
                   <div class="card-header d-flex align-items-center justify-content-between">
                     <?php
-                    $sql = "SELECT * from personal where user_id=" . $_SESSION['id'];
+                    $sql = "SELECT * FROM personal WHERE user_id = '" . $_SESSION['id'] . "'";
+
                     $res = $conn->query($sql);
                     $found = $res->num_rows;
                     if ($res->num_rows) {

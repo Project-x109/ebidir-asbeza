@@ -1,9 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['role']))
-    header("location:../index.php");
-else if ($_SESSION['role'] != 'Admin')
-    header("location:" . $_SESSION['role'] . "/");
+include "./AuthorizationAdmin.php";
 include "../AdminCommons/head.php";
 
 ?>
@@ -462,7 +459,9 @@ include "../AdminCommons/head.php";
                         <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
                         <script src="../assets/js/branchpicahrt.js"></script>
                         <script src="../assets/js/branchgrowthchart.js"></script>
-                        <script>window.addEventListener('load', updateUIBasedOnAuthStatus); </script>
+                        <script>
+                            window.addEventListener('load', updateUIBasedOnAuthStatus);
+                        </script>
                         <script src="../assets/js/tablefunctionalities.js"></script>
                         <script src="../assets/js/branchdetail.js"></script>
                         <script src="../assets/js/branchtotalRevenueChart.js"></script>

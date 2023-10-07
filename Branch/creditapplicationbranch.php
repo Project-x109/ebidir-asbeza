@@ -1,7 +1,7 @@
 <?php
+include "../connect.php";
 session_start();
-
-include '../connect.php';
+include "./AuthorizationBranch.php";
 ?>
 <?php
 include "../BranchCommon/head.php"
@@ -57,15 +57,15 @@ include "../BranchCommon/head.php"
                                                     while ($row = $res->fetch_assoc()) {
                                                         $disabled = $row['status'] == 'paid' ? "disabled" : "";
                                                         echo "<tr>
-        <td>" . $row['userID'] . "</td>
-        <td>" . $row['name'] . "</td>
-        <td>" . $row['price'] . "</td>
-        <td>" . $row['credit_limit'] . "</td> 
-        <td>" . $row['credit_score'] . "</td>   
-        <td>" . $row['createdOn'] . "</td>   
-        <td>" . $row['provider'] . "</td>   
-        <td><button class='btn btn-success' $disabled value='$row[loan_id]' onclick='update(this)'>update</button></td>   
-        </tr>";
+                                                            <td>" . $row['userID'] . "</td>
+                                                            <td>" . $row['name'] . "</td>
+                                                            <td>" . $row['price'] . "</td>
+                                                            <td>" . $row['credit_limit'] . "</td> 
+                                                            <td>" . $row['credit_score'] . "</td>   
+                                                            <td>" . $row['createdOn'] . "</td>   
+                                                            <td>" . $row['provider'] . "</td>   
+                                                            <td><button class='btn btn-success' $disabled value='$row[loan_id]' onclick='update(this)'>update</button></td>   
+                                                            </tr>";
                                                     }
                                                 ?>
                                             </tbody>

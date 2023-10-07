@@ -1,10 +1,12 @@
 <?php
-session_start();
 include "../connect.php";
+session_start();
+include "./AuthorizationUser.php";
 ?>
 <?php
 include "../UsersCommon/head.php";
 ?>
+
 <body>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
@@ -121,7 +123,7 @@ include "../UsersCommon/head.php";
                     include "../UsersCommon/footer.php";
                     ?>
                     <script src="../assets/js/jquery-3.7.0.js"></script>
-                    <script src="../assets/js/jquery.dataTables.min.js"></script>    
+                    <script src="../assets/js/jquery.dataTables.min.js"></script>
                     <script src="../assets/js/usercredithistory.js"></script>
 </body>
 

@@ -1,6 +1,8 @@
 <?php
 include "../connect.php";
 session_start();
+include "./AuthorizationAdmin.php";
+
 if (isset($_GET['id'])) {
     $userId = $_GET['id'];
     $sql = "SELECT * FROM users WHERE id = $userId";

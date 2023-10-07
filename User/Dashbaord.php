@@ -1,6 +1,7 @@
 <?php
-session_start();
 include "../connect.php";
+session_start();
+include "./AuthorizationUser.php";
 
 ?>
 
@@ -8,18 +9,14 @@ include "../connect.php";
 
 include "../UsersCommon/head.php"
 ?>
-
 <body>
   <!-- Layout wrapper -->
   <div class="layout-wrapper layout-content-navbar">
     <div class="layout-container">
       <!-- Menu -->
-
       <?php
-
       include "../UsersCommon/sidebar.php"
       ?>
-
       <!-- / Menu -->
 
       <!-- Layout container -->

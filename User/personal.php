@@ -1,6 +1,7 @@
 <?php
-session_start();
 include "../connect.php";
+session_start();
+include "./AuthorizationUser.php";
 
 ?>
 
@@ -48,11 +49,21 @@ include "../UsersCommon/head.php"
                 <div class="card mb-4">
                   <div class="card-header d-flex align-items-center justify-content-between">
                     <?php
-                    $sql = "SELECT * from personal where user_id=".$_SESSION['id'];
+                    $sql = "SELECT * FROM personal WHERE user_id = '" . $_SESSION['id'] . "'";
                     $res = $conn->query($sql);
-                    $found = $res->num_rows;
-                    if ($res->num_rows) {
-                      $row = $res->fetch_assoc();
+
+                    if (!$res) {
+                      // Handle the SQL query error
+                      echo "Error: " . $conn->error;
+                    } else {
+                      $found = $res->num_rows;
+
+                      if ($found > 0) {
+                        $row = $res->fetch_assoc();
+                        // Now you can safely access the result data
+                      } else {
+                        // No rows found
+                      }
                     }
                     ?>
                     <h5 class="mb-0">1.Personal Information</h5>

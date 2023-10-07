@@ -2,6 +2,8 @@
 include "../connect.php";
 include "../User/functions.php";
 session_start();
+include "./AuthorizationAdmin.php";
+
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
