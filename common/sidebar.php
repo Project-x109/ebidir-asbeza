@@ -131,7 +131,7 @@
                 <li class="menu-item">
                     <a href="creditapplication.php" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-table"></i>
-                        <div data-i18n="Analytics">Credit Applications</div>
+                        <div data-i18n="Analytics">Credit Applications</div> 
                     </a>
                 </li>
             <?php
