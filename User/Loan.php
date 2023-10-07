@@ -79,7 +79,6 @@ include "../common/head.php"
                         }
                         echo   "Total price :" . $_SESSION['price'];
                         $sql = "SELECT * from users where id='$_SESSION[id]'";
-                        echo $sql;
                         $res = $conn->query($sql);
                         $row = $res->fetch_assoc();
                         echo "<br>Credit Limit:" . $row['credit_limit'];
