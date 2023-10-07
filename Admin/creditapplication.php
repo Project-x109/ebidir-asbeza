@@ -54,20 +54,21 @@ include "../AdminCommons/head.php";
                                             <tbody>
                                                 <?php
                                                 $sql = "SELECT *,loans.user_id as userID ,loans.status as status,loans.id as loan_id FROM `loans`  INNER join users on users.user_id=loans.user_id where loans.status!='paid'";
+                                                
                                                 $res = $conn->query($sql);
                                                 if ($res->num_rows > 0)
                                                     while ($row = $res->fetch_assoc()) {
                                                         $disabled = $row['status'] == 'paid' ? "disabled" : "";
                                                         echo "<tr>
-        <td>" . $row['userID'] . "</td>
-        <td>" . $row['name'] . "</td>
-        <td>" . $row['price'] . "</td>
-        <td>" . $row['credit_limit'] . "</td> 
-        <td>" . $row['credit_score'] . "</td>   
-        <td>" . $row['createdOn'] . "</td>   
-        <td>" . $row['provider'] . "</td>   
-        <td><button class='btn btn-success' $disabled value='$row[loan_id]' onclick='update(this)'>update</button></td>   
-        </tr>";
+                                                                <td>" . $row['userID'] . "</td>
+                                                                <td>" . $row['name'] . "</td>
+                                                                <td>" . $row['price'] . "</td>
+                                                                <td>" . $row['credit_limit'] . "</td> 
+                                                                <td>" . $row['credit_score'] . "</td>   
+                                                                <td>" . $row['createdOn'] . "</td>   
+                                                                <td>" . $row['provider'] . "</td>   
+                                                                <td><button class='btn btn-success' $disabled value='$row[loan_id]' onclick='update(this)'>update</button></td>   
+                                                                </tr>";
                                                     }
                                                 ?>
                                             </tbody>
@@ -197,7 +198,7 @@ include "../AdminCommons/head.php";
                 <?php
                 include "../AdminCommons/footer.php";
                 ?>
-                <script>
+                 <script>
                     function update(e) {
                         let x = e.value;
                         let xhr = new XMLHttpRequest();
@@ -209,6 +210,30 @@ include "../AdminCommons/head.php";
                         xhr.send();
                     }
                 </script>
+                <!-- <script>
+                    function update(e) {
+                        let x = e.value;
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: 'You are about to update this record.',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, update it!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // If the user confirms, proceed with the update
+                                let xhr = new XMLHttpRequest();
+                                xhr.onload = function() {
+                                    document.location = '';
+                                }
+                                xhr.open("GET", "ajax.php?loan_id=" + x)
+                                xhr.send();
+                            }
+                        })
+                    }
+                </script> -->
                 <script>
                     new DataTable('#table-striped');
                 </script>

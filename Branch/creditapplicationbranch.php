@@ -51,7 +51,7 @@ include "../BranchCommon/head.php"
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $sql = "SELECT *,loans.user_id as userID ,loans.status as status,loans.id as loan_id FROM `loans`  INNER join users on users.user_id=loans.user_id where loans.status!='paid'";
+                                                $sql = "SELECT *, loans.user_id AS userID, loans.status AS status, loans.id AS loan_id FROM loans INNER JOIN users ON users.user_id = loans.user_id WHERE loans.status != 'paid' AND loans.provider = '$_SESSION[id]'";
                                                 $res = $conn->query($sql);
                                                 if ($res->num_rows > 0)
                                                     while ($row = $res->fetch_assoc()) {
