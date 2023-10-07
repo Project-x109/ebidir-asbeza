@@ -118,14 +118,15 @@ if (isset($_POST['branch_checkout'])) {
         exit();
     }
 
+    $sql = "SELECT (personal.personal_score+economic.economic_score) as score from personal INNER JOIN economic on personal.user_id=economic.user_id WHERE personal.user_id='$_POST[user_id]'";
+    $res = $conn->query($sql);
+    $row1 = $res->fetch_assoc();
+    $score = $row1['score'];
     // Continue with the rest of your code to insert the loan and update the credit limit
     $date = date('Y-m-d h:i:s');
     $sql2 = "INSERT INTO loans(`user_id`,`price`,`credit_score`,`createdOn`,`provider`) VALUES (?, ?, ?, ?, ?)";
     $stmt2 = $conn->prepare($sql2);
     $stmt2->bind_param("sdsds", $user_id, $total_price, $score, $date, $_SESSION['id']);
-
-    $score = 0; // Calculate the score here
-    // You can calculate the score based on your logic
 
     if ($stmt2->execute()) {
         $last_id = $stmt2->insert_id;

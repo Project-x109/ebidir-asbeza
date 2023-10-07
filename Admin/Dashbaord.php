@@ -1,5 +1,6 @@
 <?php
 session_start();
+include "../connect.php";
 include "./AuthorizationAdmin.php";
 include "../AdminCommons/head.php";
 
