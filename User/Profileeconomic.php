@@ -6,7 +6,7 @@ include "./AuthorizationUser.php";
 ?>
 
 <?php
-include "../UsersCommon/head.php";
+include "../common/head.php";
 ?>
 
 <body>
@@ -16,14 +16,14 @@ include "../UsersCommon/head.php";
             <!-- Menu -->
 
             <?php
-            include "../UsersCommon/sidebar.php";
+            include "../common/sidebar.php";
             ?>
             <!-- Layout container -->
             <div class="layout-page">
                 <!-- Navbar -->
 
                 <?php
-                include "../UsersCommon/nav.php";
+                include "../common/nav.php";
                 ?>
                 <!-- / Navbar -->
 

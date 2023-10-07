@@ -42,8 +42,13 @@
   <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
   
 
-  <!-- Page CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Icons. Uncomment required icon fonts -->
 
+    <link rel="stylesheet" href="./star.css" />
+  <!-- Page CSS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   <!-- Helpers -->
   <script src="../assets/vendor/js/helpers.js"></script>
 
@@ -53,4 +58,7 @@
   <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
   <script src="../assets/js/config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+
 </head>

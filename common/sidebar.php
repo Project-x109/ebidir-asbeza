@@ -136,5 +136,49 @@
                 </li>
             <?php
             } ?>
+            <?php
+            if ($_SESSION['role'] == 'user') {
+            ?>
+
+<li class="menu-item">
+            <a href="Dashbaord.php" class="menu-link">
+                <i class="menu-icon tf-icons bx bxs-dashboard"></i>
+                <div data-i18n="Analytics">Dashboard</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="Profileuser.php" class="menu-link">
+                <i class='menu-icon tf-icons bx bxs-user-account'></i>
+                <div data-i18n="Account">Account Informtion</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="Profilepersonal.php" class="menu-link">
+                <i class="menu-icon tf-icons bx bxs-user-detail"></i>
+                <div data-i18n="Notifications">Personal Informtion</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="Profileeconomic.php" class="menu-link">
+                <i class="menu-icon tf-icons bx bxs-wallet"></i>
+                <div data-i18n="Connections">Economic Information</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="credithistory.php" class="menu-link">
+                <i class='menu-icon tf-icons bx bxs-credit-card'></i>
+                <div data-i18n="Vertical Form">Credit History</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="repaymenthistory.php" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-history"></i>
+                <div data-i18n="Horizontal Form">Repayment History</div>
+            </a>
+        </li>
+
+            <?php
+            } ?>
         </ul>
 </aside>
+

@@ -7,7 +7,7 @@ include "./AuthorizationUser.php";
 
 <?php
 
-include "../UsersCommon/head.php"
+include "../common/head.php"
 ?>
 
 <body>
@@ -18,7 +18,7 @@ include "../UsersCommon/head.php"
 
       <?php
 
-      include "../UsersCommon/sidebar.php"
+      include "../common/sidebar.php"
       ?>
       <!-- / Menu -->
 
@@ -28,7 +28,7 @@ include "../UsersCommon/head.php"
 
         <?php
 
-        include "../UsersCommon/nav.php"
+        include "../common/nav.php"
         ?>
 
         <!-- / Navbar -->
