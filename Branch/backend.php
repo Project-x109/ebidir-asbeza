@@ -42,7 +42,7 @@ if (isset($_POST['user'])) {
         if ($res->num_rows > 0) {
             $row = $res->fetch_assoc();
             $_SESSION['user_id'] = $row['user_id'];
-            $response = array('success' => 'User found. Redirecting to userinfo.php...');
+            $response = array('success' => 'User found. Redirecting to User Information');
         } else {
             $response = array('error' => 'User ID does not exist in the database.');
         }

@@ -111,7 +111,7 @@ include "../connect.php";
                                             <div>
                                                 <span>Credit Limit</span>
                                                 <!-- <p>Visa</p> -->
-                                                <p><?= isset($row['credit_limit']) ? $row['credit_limit'] . ' ETB' : 'N/A' ?></p>
+                                                <p><?= isset($row['credit_limit']) ? $row['credit_limit'] . ' ETB' : 'User Data Not found' ?></p>
                                             </div>
                                             <hr>
                                             <div class="promo">
