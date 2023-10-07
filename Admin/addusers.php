@@ -1,7 +1,7 @@
 <?php
 include "../connect.php";
 session_start();
-
+include "./AuthorizationAdmin.php";
 include "../AdminCommons/head.php";
 ?>
 

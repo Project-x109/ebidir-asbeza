@@ -1,10 +1,7 @@
 <?php
 include "../connect.php";
 session_start();
-
-
-
-
+include "./AuthorizationAdmin.php";
 // Execute the query
 
 ?>

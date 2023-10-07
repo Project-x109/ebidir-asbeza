@@ -1,3 +1,4 @@
 <?php 
-include "Dashbaord.php"
+include "Dashbaord.php";
+
 ?>
