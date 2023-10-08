@@ -3,7 +3,7 @@ include "../connect.php";
 
 include "../user/functions.php";
 session_start();
-include "./AuthorizationAdmin.php";
+include "../common/Authorization.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;

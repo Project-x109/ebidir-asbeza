@@ -1,7 +1,7 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationBranch.php";
+include "../common/Authorization.php";
 // head part and all links
 ?>
 <!DOCTYPE html>

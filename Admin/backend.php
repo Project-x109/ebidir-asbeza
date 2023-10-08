@@ -12,7 +12,7 @@ require '../assets/PHPMailer/Exception.php';
 
 session_start();
 
-
+include "../common/Authorization.php";
 
 
 $validationErrors = array();

@@ -99,7 +99,7 @@ $row = $res->fetch_assoc();
                     </li>
 
                     <li>
-                        <a class="dropdown-item" href="./changeanypassword.php">
+                        <a class="dropdown-item" href="../changeanypassword.php">
                             <i class="bx bx-cog me-2"></i>
                             <span class="align-middle">Change Password</span>
                         </a>

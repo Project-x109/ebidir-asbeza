@@ -2,7 +2,7 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationUser.php";
+include "../common/Authorization.php";
 include "./functions.php";
 if (isset($_POST['add_personal']) || isset($_POST['Number_of_dependents'])) {
     // Form validation

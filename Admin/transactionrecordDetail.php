@@ -2,7 +2,7 @@
 include "../connect.php";
 session_start();
 include "../common/head.php";
-include "./AuthorizationAdmin.php";
+include "../common/Authorization.php";
 
 ?>
 
