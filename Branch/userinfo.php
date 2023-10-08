@@ -161,7 +161,7 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
                     </script>
                     <!-- / Content -->
 
-                    <?php include include "../common/footer.php"; ?> <!-- sidebar -->
+                    <?php include "../common/footer.php"; ?> <!-- sidebar -->
 
                     <script>
                         function showLoader() {
