@@ -99,11 +99,11 @@ include "../AdminCommons/head.php";
                                                         $badgeClass = 'danger';
                                                     } elseif ($status === 'waiting') {
                                                         $badgeClass = 'info';
-                                                    } else {
+                                                    } else { 
                                                         $badgeClass = 'warning';
                                                     }
                                                     echo "<td><span class=\"badge bg-label-$badgeClass me-1\">$status</span></td>";
-                                                    echo "<td>{$row['createdOn']}</td>";
+                                                    echo "<td>{$row['createdOn']}</td>"; 
                                                     echo "<td>
                                                         </td>";
                                                     echo "<td>

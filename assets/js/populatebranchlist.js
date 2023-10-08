@@ -45,7 +45,7 @@ function initializeDataTable() {
       {
         // Define 'Actions' column
         data: null,
-        render: function (data, type, row, meta) {
+        render: function (data, type, row, meta) { 
           return (
             '<div class="dropdown">' +
             '<button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">' +
