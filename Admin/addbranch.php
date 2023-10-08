@@ -13,7 +13,7 @@ include "./AuthorizationAdmin.php";
             <!-- Menu -->
 
             <?php
-            include "../AdminCommons/sidebar.php";
+            include "../common/sidebar.php";
             ?>
             <!-- / Menu -->
 

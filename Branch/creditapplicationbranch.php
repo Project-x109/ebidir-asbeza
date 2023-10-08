@@ -14,7 +14,7 @@ include "../BranchCommon/head.php"
             <!-- Menu -->
 
             <?php
-            include "../BranchCommon/sidebar.php"
+            include "../common/sidebar.php";
             ?>
             <div class="layout-page">
                 <?php

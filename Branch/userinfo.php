@@ -60,7 +60,7 @@ include "../connect.php";
         <div class="layout-container">
             <!-- Menu -->
 
-            <?php include '../BranchCommon/sidebar.php'; ?> <!-- sidebar -->
+            <?php include "../common/sidebar.php"; ?> <!-- sidebar -->
 
             <!-- / Menu -->
 

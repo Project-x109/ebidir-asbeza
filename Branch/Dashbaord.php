@@ -10,7 +10,7 @@ include "../BranchCommon/head.php";
         <div class="layout-container">
             <!-- Menu -->
             <?php
-            include "../BranchCommon/sidebar.php"
+            include "../common/sidebar.php";
             ?>
             <!-- / Menu -->
             <!-- Layout container -->

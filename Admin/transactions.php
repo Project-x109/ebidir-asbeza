@@ -16,7 +16,7 @@ include "../AdminCommons/head.php"
             <!-- Layout container -->
 
             <?php
-            include "../AdminCommons/sidebar.php"
+           include "../common/sidebar.php";
 
             ?>
             <div class="layout-page">

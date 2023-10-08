@@ -45,144 +45,140 @@
 
     <div class="menu-inner-shadow"></div>
     <ul class="menu-inner py-1">
-        <ul>
-            <?php
-            // session_start();
-            if ($_SESSION['role'] == 'branch') {
-            ?>
-                <li class="menu-item">
-                    <a href="Dashbaord.php" class="menu-link">
-                        <i class="menu-icon tf-icons bx bxs-dashboard"></i>
-                        <div data-i18n="Analytics">Dashboard</div>
-                    </a>
-                </li>
 
-                <li class="menu-item">
-                    <a href="applyforme.php" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-merge"></i>
-                        <div data-i18n="Analytics">Apply For Me</div>
-                    </a>
-                </li>
+        <?php
+        // session_start();
+        if ($_SESSION['role'] == 'branch') {
+        ?>
+            <li class="menu-item">
+                <a href="Dashbaord.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bxs-dashboard"></i>
+                    <div data-i18n="Analytics">Dashboard</div>
+                </a>
+            </li>
 
-                <li class="menu-item">
-                    <a href="branchrepayments.php" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-detail"></i>
-                        <div data-i18n="Analytics">Repayments</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="userlistbranch.php" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-table"></i>
-                        <div data-i18n="Analytics">User Lists</div>
-                    </a>
-                </li>
+            <li class="menu-item">
+                <a href="applyforme.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-merge"></i>
+                    <div data-i18n="Analytics">Apply For Me</div>
+                </a>
+            </li>
 
-                <li class="menu-item">
-                    <a href="creditapplicationbranch.php" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-table"></i>
-                        <div data-i18n="Analytics">Credit Applications</div>
-                    </a>
-                </li>
+            <li class="menu-item">
+                <a href="branchrepayments.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-detail"></i>
+                    <div data-i18n="Analytics">Repayments</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="userlistbranch.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-table"></i>
+                    <div data-i18n="Analytics">User Lists</div>
+                </a>
+            </li>
 
-
-            <?php
-            }
-            ?>
+            <li class="menu-item">
+                <a href="creditapplicationbranch.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-table"></i>
+                    <div data-i18n="Analytics">Credit Applications</div>
+                </a>
+            </li>
 
 
+        <?php
+        }
+        ?>
 
+        <?php
+        if ($_SESSION['role'] == 'Admin') {
+        ?>
+            <li class="menu-item">
+                <a href="Dashbaord.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bxs-dashboard"></i>
+                    <div data-i18n="Analytics">Dashboard</div>
+                </a>
+            </li>
 
+            <li class="menu-item">
+                <a href="addbranch.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-detail"></i>
+                    <div data-i18n="Analytics">Branch Registarion</div>
+                </a>
+            </li>
 
-            <?php
-            if ($_SESSION['role'] == 'Admin') {
-            ?>
-                <li class="menu-item active open">
-                    <a href="Dashbaord.php" class="menu-link">
-                        <i class="menu-icon tf-icons bx bxs-dashboard"></i>
-                        <div data-i18n="Analytics">Dashboard</div>
-                    </a>
-                </li>
-
-                <li class="menu-item">
-                    <a href="addbranch.php" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-detail"></i>
-                        <div data-i18n="Analytics">Branch Registarion</div>
-                    </a>
-                </li>
-
-                <li class="menu-item">
-                    <a href="addusers.php" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-detail"></i>
-                        <div data-i18n="Analytics">User Registarion</div>
-                    </a>
-                </li>
+            <li class="menu-item">
+                <a href="addusers.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-detail"></i>
+                    <div data-i18n="Analytics">User Registarion</div>
+                </a>
+            </li>
 
 
 
-                <li class="menu-item">
-                    <a href="branches.php" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-table"></i>
-                        <div data-i18n="Analytics">Branch Lists</div>
-                    </a>
-                </li>
+            <li class="menu-item">
+                <a href="branches.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-table"></i>
+                    <div data-i18n="Analytics">Branch Lists</div>
+                </a>
+            </li>
 
-                <li class="menu-item">
-                    <a href="users.php" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-table"></i>
-                        <div data-i18n="Analytics">User Lists</div>
-                    </a>
-                </li>
+            <li class="menu-item">
+                <a href="userslist.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-table"></i>
+                    <div data-i18n="Analytics">User Lists</div>
+                </a>
+            </li>
 
-                <li class="menu-item">
-                    <a href="creditapplication.php" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-table"></i>
-                        <div data-i18n="Analytics">Credit Applications</div>
-                    </a>
-                </li>
-            <?php
-            } ?>
-            <?php
-            if ($_SESSION['role'] == 'user') {
-            ?>
+            <li class="menu-item">
+                <a href="creditapplication.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-table"></i>
+                    <div data-i18n="Analytics">Credit Applications</div>
+                </a>
+            </li>
+        <?php
+        } ?>
+        <?php
+        if ($_SESSION['role'] == 'user') {
+        ?>
 
-                <li class="menu-item">
-                    <a href="Dashbaord.php" class="menu-link">
-                        <i class="menu-icon tf-icons bx bxs-dashboard"></i>
-                        <div data-i18n="Analytics">Dashboard</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="Profileuser.php" class="menu-link">
-                        <i class='menu-icon tf-icons bx bxs-user-account'></i>
-                        <div data-i18n="Account">Account Informtion</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="Profilepersonal.php" class="menu-link">
-                        <i class="menu-icon tf-icons bx bxs-user-detail"></i>
-                        <div data-i18n="Notifications">Personal Informtion</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="Profileeconomic.php" class="menu-link">
-                        <i class="menu-icon tf-icons bx bxs-wallet"></i>
-                        <div data-i18n="Connections">Economic Information</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="credithistory.php" class="menu-link">
-                        <i class='menu-icon tf-icons bx bxs-credit-card'></i>
-                        <div data-i18n="Vertical Form">Credit History</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="repaymenthistory.php" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-history"></i>
-                        <div data-i18n="Horizontal Form">Repayment History</div>
-                    </a>
-                </li>
+            <li class="menu-item">
+                <a href="Dashbaord.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bxs-dashboard"></i>
+                    <div data-i18n="Analytics">Dashboard</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="Profileuser.php" class="menu-link">
+                    <i class='menu-icon tf-icons bx bxs-user-account'></i>
+                    <div data-i18n="Account">Account Informtion</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="Profilepersonal.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bxs-user-detail"></i>
+                    <div data-i18n="Notifications">Personal Informtion</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="Profileeconomic.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bxs-wallet"></i>
+                    <div data-i18n="Connections">Economic Information</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="credithistory.php" class="menu-link">
+                    <i class='menu-icon tf-icons bx bxs-credit-card'></i>
+                    <div data-i18n="Vertical Form">Credit History</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="repaymenthistory.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-history"></i>
+                    <div data-i18n="Horizontal Form">Repayment History</div>
+                </a>
+            </li>
 
-            <?php
-            } ?>
-        </ul>
+        <?php
+        } ?>
+    </ul>
 </aside>

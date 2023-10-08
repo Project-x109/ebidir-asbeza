@@ -16,7 +16,7 @@ include "../BranchCommon/head.php"
             <!-- Layout container -->
 
             <?php
-            include "../BranchCommon/sidebar.php"
+            include "../common/sidebar.php";
 
             ?>
             <div class="layout-page">

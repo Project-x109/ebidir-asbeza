@@ -47,7 +47,7 @@ include "./AuthorizationBranch.php";
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
-            <?php include '../BranchCommon/sidebar.php'; ?> <!-- sidebar -->
+            <?php include "../common/sidebar.php"; ?> <!-- sidebar -->
             <div class="layout-page">
                 <?php
                 include "../common/nav.php";

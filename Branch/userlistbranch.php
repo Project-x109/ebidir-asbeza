@@ -13,7 +13,7 @@ include "../BranchCommon/head.php"
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
             <?php
-            include "../BranchCommon/sidebar.php"
+            include "../common/sidebar.php";
             ?>
             <div class="layout-page">
                 <!-- Navbar -->
