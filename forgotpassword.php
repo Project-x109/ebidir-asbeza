@@ -1,6 +1,5 @@
 <?php
 include "connect.php";
-
 session_start();
 $_SESSION['token'] = bin2hex(random_bytes(35));
 ?>

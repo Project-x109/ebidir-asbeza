@@ -76,7 +76,6 @@
                     <div data-i18n="Analytics">User Lists</div>
                 </a>
             </li>
-
             <li class="menu-item">
                 <a href="creditapplicationbranch.php" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-table"></i>
@@ -128,6 +127,13 @@
                     <div data-i18n="Analytics">User Lists</div>
                 </a>
             </li>
+            <li class="menu-item">
+                <a href="transactions.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-table"></i>
+                    <div data-i18n="Analytics">Repayments</div>
+                </a>
+            </li>
+
 
             <li class="menu-item">
                 <a href="creditapplication.php" class="menu-link">

@@ -2,6 +2,7 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
+$_SESSION['token'] = bin2hex(random_bytes(35));
 // Execute the query
 
 ?>
@@ -31,8 +32,8 @@ include "../common/head.php";
         <!-- Navbar -->
 
         <?php
-                include "../common/nav.php";
-                ?>
+        include "../common/nav.php";
+        ?>
 
         <!-- / Navbar -->
 
@@ -148,7 +149,7 @@ include "../common/head.php";
                       <div class="modal-dialog">
                         <form class="modal-content">
 
-
+                          <input type="hidden" name="token" id="csrf-token" value="<?php echo $_SESSION['token'] ?? ''; ?>">
                           <div class="modal-header">
                             <h5 class="modal-title" id="backDropModalTitle">Update User</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

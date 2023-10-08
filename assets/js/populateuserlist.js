@@ -133,11 +133,17 @@ function showErrorMessage() {
 }
 function editUser(userId) {
   showLoader();
+  var csrfToken = document.getElementById('csrf-token').getAttribute('value');
+  console.log(csrfToken);
+ 
   $.ajax({
     type: 'GET',
     url: 'get_user_data.php', // Create a PHP file to fetch user data
     data: {
       id: userId
+    },
+    headers: {
+      'X-CSRF-Token': csrfToken // Send the CSRF token as a header
     },
     dataType: 'json',
     success: function (data) {
@@ -203,6 +209,7 @@ function updateDataTable(userId, name, email, TIN_Number, status, dob, phone) {
 }
 
 function saveUser() {
+  var csrfToken = document.getElementById('csrf-token').getAttribute('value');
   showLoader();
   if (validateForm()) {
     var userId = $('#userIdToUpdate').val();
@@ -225,6 +232,9 @@ function saveUser() {
         status: status,
         dob: dob,
         phone: phone
+      },
+      headers: {
+        'X-CSRF-Token': csrfToken // Send the CSRF token as a header
       },
       dataType: 'json',
       success: function (data) {

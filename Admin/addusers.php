@@ -3,6 +3,7 @@ include "../connect.php";
 session_start();
 include "../common/Authorization.php";
 include "../common/head.php";
+$_SESSION['token'] = bin2hex(random_bytes(35));
 ?>
 
 
@@ -60,6 +61,7 @@ include "../common/head.php";
                   </div>
                   <div class="card-body">
                     <form id="userForm" action="backend.php" method="POST" enctype="multipart/form-data">
+                      <input type="hidden" name="token" value="<?php echo $_SESSION['token'] ?? '' ?>">
                       <div class="row mb-4">
                         <input type="hidden" name="add_user" value="1">
                         <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Name :<span class="text-danger">*</span></label>

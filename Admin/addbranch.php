@@ -3,7 +3,7 @@ include "../connect.php";
 session_start();
 include "../common/head.php";
 include "../common/Authorization.php";
-
+$_SESSION['token'] = bin2hex(random_bytes(35));
 ?>
 
 <body>
@@ -55,6 +55,7 @@ include "../common/Authorization.php";
                                     </div>
                                     <div class="card-body">
                                         <form id="branchForm" action="backend.php" method="POST">
+                                            <input type="hidden" name="token" value="<?php echo $_SESSION['token'] ?? '' ?>">
                                             <div class="row mb-4">
                                                 <input type="hidden" name="addbranch" value="1">
                                                 <label class="col-sm-2 col-form-label" for="basic-icon-default-branchname">Branch Name :<span class="text-danger">*</span></label>

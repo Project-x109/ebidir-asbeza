@@ -13,6 +13,10 @@ require '../assets/PHPMailer/PHPMailer.php';
 require '../assets/PHPMailer/SMTP.php';
 require '../assets/PHPMailer/Exception.php';
 
+if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $_SESSION['token']) {
+    echo json_encode(['error' => 'Authorization Error']);
+    exit;
+}
 // Get POST data
 $userId = $_POST['id'];
 $name = $_POST['name'];

@@ -2,6 +2,7 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
+$_SESSION['token'] = bin2hex(random_bytes(35));
 
 
 
@@ -58,7 +59,6 @@ include "../common/head.php";
                             <!-- Striped Rows -->
                             <div class="col-md-6 col-lg-12 col-xl-12 order-0 mb-4">
                                 <div class="card">
-
                                     <h5 class="card-header">Lists of Branches</h5>
                                     <div class="table-responsive text-nowrap ms-3 me-3">
                                         <table class="table table-striped" id="table-striped">
@@ -130,7 +130,7 @@ include "../common/head.php";
                                             <div class="modal-dialog">
                                                 <form class="modal-content">
 
-
+                                                    <input type="hidden" name="token" id="csrf-token" value="<?php echo $_SESSION['token'] ?? '' ?>">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="backDropModalTitle">Update User</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -179,6 +179,7 @@ include "../common/head.php";
                                                         </div>
                                                         <input type="hidden" id="userIdToUpdate" name="userIdToUpdate" />
                                                         <input type="hidden" id="userIdToUpdatebranch" name="userIdToUpdatebranch" />
+
 
                                                     </div>
                                                     <div class="modal-footer">
