@@ -1,7 +1,7 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationUser.php";
+include "../common/Authorization.php";
 
 ?>
 
@@ -462,7 +462,7 @@ include "../common/head.php"
           </div>
           <?php
 
-          include "../UsersCommon/footer.php"
+          include "../common/footer.php";
           ?>
           <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
           <script src="../assets/js/populatetable.js"></script>

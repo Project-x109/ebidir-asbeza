@@ -1,10 +1,10 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationBranch.php";
+include "../common/Authorization.php";
 ?>
 <?php
-include "../BranchCommon/head.php"
+include "../common/head.php";
 
 ?>
 
@@ -16,13 +16,13 @@ include "../BranchCommon/head.php"
             <!-- Layout container -->
 
             <?php
-            include "../BranchCommon/sidebar.php"
+            include "../common/sidebar.php";
 
             ?>
             <div class="layout-page">
                 <!-- Navbar -->
                 <?php
-                include "../BranchCommon/nav.php";
+                include "../common/nav.php";
 
                 ?>
 
@@ -82,7 +82,7 @@ include "../BranchCommon/head.php"
                     <!-- / Content -->
 
                     <?php
-                    include "../BranchCommon/footer.php"
+                    include "../common/footer.php";
 
                     ?>
                     <script src="../assets/js/jquery-3.7.0.js"></script>

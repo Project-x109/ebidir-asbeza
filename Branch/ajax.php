@@ -16,7 +16,7 @@ if (isset($_GET['loan_id'])) {
     $res = $conn->query($sql);
     $row = $res->fetch_assoc();
 
-    $date = date("y-m-d ");
+    $date = date("y-m-d");
     $date2 = date("23-09-30");
     $days = dateDiffInDays($date, $row['createdOn']);
     $tranactionId = $SixDigitRandomNumber = rand(100000, 999999);

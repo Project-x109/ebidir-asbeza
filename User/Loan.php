@@ -1,8 +1,8 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationUser.php";
-
+include "../common/Authorization.php";
+$_SESSION['token'] = bin2hex(random_bytes(35));
 ?>
 
 
@@ -33,8 +33,8 @@ include "../common/head.php"
 
         include "../common/nav.php"
         ?>
-        
-                <div class="content-wrapper">
+
+        <div class="content-wrapper">
           <!-- Content -->
 
           <div class="container-xxl flex-grow-1 container-p-y">
@@ -58,7 +58,7 @@ include "../common/head.php"
                 <div class="card mb-4">
                   <div class="card-header d-flex align-items-center justify-content-between">
                     <?php
-                    $sql = "SELECT * FROM personal WHERE user_id = '".$_SESSION['id']."'";
+                    $sql = "SELECT * FROM personal WHERE user_id = '" . $_SESSION['id'] . "'";
 
                     $res = $conn->query($sql);
                     $found = $res->num_rows;
@@ -72,6 +72,7 @@ include "../common/head.php"
                   <div class="card-body">
                     <form action="backend.php" method="POST">
                       <input type="hidden" name="id" value='<?php echo $_SESSION['id'] ?>' />
+                      <input type="hidden" name="token" id="csrf-token" value="<?php echo $_SESSION['token'] ?? '' ?>">
                       <div>
                         <?php
                         if (isset($_POST['totalprice'])) {

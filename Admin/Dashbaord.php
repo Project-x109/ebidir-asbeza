@@ -1,8 +1,8 @@
 <?php
 session_start();
 include "../connect.php";
-include "./AuthorizationAdmin.php";
-include "../AdminCommons/head.php";
+include "../common/Authorization.php";
+include "../common/head.php";
 
 ?>
 <!DOCTYPE html>
@@ -14,14 +14,14 @@ include "../AdminCommons/head.php";
             <div class="layout-container">
                 <!-- Menu -->
                 <?php
-                include "../AdminCommons/sidebar.php";
+                include "../common/sidebar.php";
                 ?>
                 <!-- Layout container -->
                 <div class="layout-page">
                     <!-- Navbar -->
                     <?php
-                    include "../AdminCommons/nav.php";
-                    ?>
+                include "../common/nav.php";
+                ?>
                     <!-- / Navbar -->
                     <!-- Content wrapper -->
                     <div class="content-wrapper">
@@ -454,7 +454,7 @@ include "../AdminCommons/head.php";
 
                         <!-- Footer -->
                         <?php
-                        include "../AdminCommons/footer.php";
+                        include "../common/footer.php";
                         ?>
                         <!-- / Footer -->
                         <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>

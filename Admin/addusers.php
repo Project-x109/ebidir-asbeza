@@ -1,8 +1,9 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationAdmin.php";
-include "../AdminCommons/head.php";
+include "../common/Authorization.php";
+include "../common/head.php";
+$_SESSION['token'] = bin2hex(random_bytes(35));
 ?>
 
 
@@ -13,7 +14,7 @@ include "../AdminCommons/head.php";
       <!-- Menu -->
 
       <?php
-      include "../AdminCommons/sidebar.php";
+      include "../common/sidebar.php";
       ?>
       <!-- / Menu -->
 
@@ -22,7 +23,7 @@ include "../AdminCommons/head.php";
         <!-- Navbar -->
 
         <?php
-        include "../AdminCommons/nav.php";
+        include "../common/nav.php";
         ?>
 
         <!-- / Navbar -->
@@ -60,6 +61,7 @@ include "../AdminCommons/head.php";
                   </div>
                   <div class="card-body">
                     <form id="userForm" action="backend.php" method="POST" enctype="multipart/form-data">
+                      <input type="hidden" name="token" value="<?php echo $_SESSION['token'] ?? '' ?>">
                       <div class="row mb-4">
                         <input type="hidden" name="add_user" value="1">
                         <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Name :<span class="text-danger">*</span></label>
@@ -143,7 +145,7 @@ include "../AdminCommons/head.php";
             <!-- / Content -->
 
             <?php
-            include "../AdminCommons/footer.php";
+            include "../common/footer.php";
             ?>
 
             <!-- Page JS -->

@@ -1,9 +1,13 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationAdmin.php";
+include "../common/Authorization.php";
 
-if (isset($_GET['id'])) {
+// Check if the CSRF token is present in the request headers
+if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $_SESSION['token']) {
+    echo json_encode(['error' => 'Authorization Error']);
+    exit;
+} else if (isset($_GET['id'])) {
     $userId = $_GET['id'];
     $sql = "SELECT * FROM users WHERE id = $userId";
     $result = $conn->query($sql);
@@ -18,4 +22,3 @@ if (isset($_GET['id'])) {
     echo json_encode(['error' => 'Invalid request']);
 }
 $conn->close();
-

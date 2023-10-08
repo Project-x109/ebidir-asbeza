@@ -1,8 +1,8 @@
 <?php
 include "../connect.php";
 session_start();
-include "../AdminCommons/head.php";
-include "./AuthorizationAdmin.php";
+include "../common/head.php";
+include "../common/Authorization.php";
 
 ?>
 
@@ -13,7 +13,7 @@ include "./AuthorizationAdmin.php";
             <!-- Menu -->
 
             <?php
-            include "../AdminCommons/sidebar.php";
+            include "../common/sidebar.php";
             ?>
             <!-- / Menu -->
 
@@ -22,7 +22,7 @@ include "./AuthorizationAdmin.php";
                 <!-- Navbar -->
 
                 <?php
-                include "../AdminCommons/nav.php";
+                include "../common/nav.php";
                 ?>
 
                 <!-- / Navbar -->
@@ -142,7 +142,7 @@ include "./AuthorizationAdmin.php";
 
                     <!-- Footer -->
                     <?php
-                    include "../AdminCommons/footer.php";
+                    include "../common/footer.php";
                     ?>
 
                     <script src="../assets/js/transactiondetail.js"></script>

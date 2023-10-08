@@ -1,9 +1,9 @@
 <?php
 include "../connect.php";
 session_start();
-include "../AdminCommons/head.php";
-include "./AuthorizationAdmin.php";
-
+include "../common/head.php";
+include "../common/Authorization.php";
+$_SESSION['token'] = bin2hex(random_bytes(35));
 ?>
 
 <body>
@@ -13,7 +13,7 @@ include "./AuthorizationAdmin.php";
             <!-- Menu -->
 
             <?php
-            include "../AdminCommons/sidebar.php";
+            include "../common/sidebar.php";
             ?>
             <!-- / Menu -->
 
@@ -21,7 +21,7 @@ include "./AuthorizationAdmin.php";
             <div class="layout-page">
                 <!-- Navbar -->
                 <?php
-                include "../AdminCommons/nav.php";
+                include "../common/nav.php";
                 ?>
                 <!-- / Navbar -->
                 <!-- Content wrapper -->
@@ -55,6 +55,7 @@ include "./AuthorizationAdmin.php";
                                     </div>
                                     <div class="card-body">
                                         <form id="branchForm" action="backend.php" method="POST">
+                                            <input type="hidden" name="token" value="<?php echo $_SESSION['token'] ?? '' ?>">
                                             <div class="row mb-4">
                                                 <input type="hidden" name="addbranch" value="1">
                                                 <label class="col-sm-2 col-form-label" for="basic-icon-default-branchname">Branch Name :<span class="text-danger">*</span></label>
@@ -124,7 +125,7 @@ include "./AuthorizationAdmin.php";
                         <div class="toast-body"></div>
                     </div>
                     <?php
-                    include "../AdminCommons/footer.php";
+                    include "../common/footer.php";
                     ?>
                     <!-- / Footer -->
                     <!-- Page JS -->

@@ -1,10 +1,10 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationBranch.php";
+include "../common/Authorization.php";
 ?>
 <?php
-include "../BranchCommon/head.php"
+include "../common/head.php";
 ?>
 <style>
     .container1 {
@@ -149,7 +149,7 @@ include "../BranchCommon/head.php"
             <!-- Menu -->
 
             <?php
-            include "../BranchCommon/sidebar.php"
+            include "../common/sidebar.php";
             ?>
             <!-- / Menu -->
 
@@ -158,7 +158,8 @@ include "../BranchCommon/head.php"
                 <!-- Navbar -->
 
                 <?php
-                include "../BranchCommon/nav.php"
+                include "../common/nav.php";
+
                 ?>
                 <!-- / Navbar -->
 
@@ -209,7 +210,7 @@ include "../BranchCommon/head.php"
                     </div>
                     <!-- / Content -->
                     <?php
-                    include "../BranchCommon/footer.php"
+                    include "../common/footer.php";
                     ?>
 </body>
 

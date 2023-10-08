@@ -1,7 +1,8 @@
 <?php
 session_start();
 include "../connect.php";
-
+include "../common/Authorization.php";
+$_SESSION['token'] = bin2hex(random_bytes(35));
 
 
 ?>
@@ -60,7 +61,7 @@ include "../connect.php";
         <div class="layout-container">
             <!-- Menu -->
 
-            <?php include '../BranchCommon/sidebar.php'; ?> <!-- sidebar -->
+            <?php include "../common/sidebar.php"; ?> <!-- sidebar -->
 
             <!-- / Menu -->
 
@@ -68,7 +69,10 @@ include "../connect.php";
             <div class="layout-page">
                 <!-- Navbar -->
 
-                <?php include '../BranchCommon/nav.php'; ?>
+                <?php
+                include "../common/nav.php";
+
+                ?>
 
                 <!-- / Navbar -->
                 <!-- Content wrapper -->
@@ -117,7 +121,8 @@ include "../connect.php";
                                             <div class="promo">
                                                 <span>Enter Total Amount</span>
                                                 <form id="checkoutForm" class="form" action="backend.php" method="POST">
-                                                    <input class="input_field" id="total_price" name="total_price" placeholder="Enter Total Amount" type="number" step="0" onkeyup="filldata(this)">
+                                                    <input type="hidden" name="token" id="csrf-token" value="<?php echo $_SESSION['token'] ?? '' ?>">
+                                                    <input class="input_field" id="total_price" name="total_price" placeholder="Enter Total Amount" required max='<?= $row['credit_limit'] ?>' type="number" step="0" onkeyup="filldata(this)">
                                                     <input type='hidden' name="user_id" id="user_id" value='<?= $id ?>' />
                                                     <button name="branch_checkout" type='submit'>Apply</button>
                                                 </form>
@@ -156,7 +161,7 @@ include "../connect.php";
                     </script>
                     <!-- / Content -->
 
-                    <?php include '../BranchCommon/footer.php'; ?> <!-- sidebar -->
+                    <?php include include "../common/footer.php"; ?> <!-- sidebar -->
 
                     <script>
                         function showLoader() {
@@ -181,6 +186,7 @@ include "../connect.php";
                             $("#total_price").on("input", function() {
                                 var total_price = $(this).val();
 
+
                                 // Frontend validation for total_price
                                 if (!isValidAmount(total_price)) {
                                     // Display an error message in the toast
@@ -195,6 +201,7 @@ include "../connect.php";
                             // Form submission and AJAX code
                             $("#checkoutForm").on("submit", function(event) {
                                 event.preventDefault();
+                                var csrfToken = document.getElementById('csrf-token').getAttribute('value');
                                 showLoader();
 
                                 var user_id = $("#user_id").val();
@@ -217,6 +224,9 @@ include "../connect.php";
                                         user_id: user_id,
                                         total_price: total_price,
                                         branch_checkout: true
+                                    },
+                                    headers: {
+                                        'X-CSRF-Token': csrfToken // Send the CSRF token as a header
                                     },
                                     dataType: "json",
                                     success: function(response) {

@@ -75,11 +75,15 @@ $(document).ready(function () {
 // Function to edit user data and display it in a modal
 function editUser(userId) {
   showLoader();
+  var csrfToken = document.getElementById('csrf-token').getAttribute('value');
   $.ajax({
     type: 'GET',
     url: 'get_user_data.php',
     data: {
       id: userId
+    },
+    headers: {
+      'X-CSRF-Token': csrfToken // Send the CSRF token as a header
     },
     dataType: 'json',
     success: function (userData) {
@@ -96,6 +100,9 @@ function editUser(userId) {
         url: 'get_branch_data.php',
         data: {
           user_id: userData.user_id
+        },
+        headers: {
+          'X-CSRF-Token': csrfToken // Send the CSRF token as a header
         },
         dataType: 'json',
         success: function (branchData) {
@@ -218,6 +225,7 @@ function showErrorToast(errorMessages) {
 }
 function saveUser() {
   showLoader();
+  var csrfToken = document.getElementById('csrf-token').getAttribute('value');
   if (validateForm()) {
     var userId = $('#userIdToUpdate').val();
     var branchId = $('#userIdToUpdatebranch').val();
@@ -237,6 +245,9 @@ function saveUser() {
         status: status,
         phone: phone
       },
+      headers: {
+        'X-CSRF-Token': csrfToken // Send the CSRF token as a header
+      },
       dataType: 'json',
       success: function (userData) {
         hideLoader();
@@ -248,6 +259,9 @@ function saveUser() {
             data: {
               branch_id: branchId, // Use branch_id as the identifier
               location: location
+            },
+            headers: {
+              'X-CSRF-Token': csrfToken // Send the CSRF token as a header
             },
             dataType: 'json',
             success: function (branchData) {

@@ -1,11 +1,12 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationUser.php";
+include "../common/Authorization.php";
+$_SESSION['token'] = bin2hex(random_bytes(35));
 ?>
 
 <?php
-include "../UsersCommon/head.php";
+include "../common/head.php";
 ?>
 
 
@@ -16,7 +17,7 @@ include "../UsersCommon/head.php";
       <!-- Menu -->
 
       <?php
-      include "../UsersCommon/sidebar.php";
+      include "../common/sidebar.php";
       ?>
 
       <!-- / Menu -->
@@ -26,7 +27,7 @@ include "../UsersCommon/head.php";
         <!-- Navbar -->
 
         <?php
-        include "../UsersCommon/nav.php";
+        include "../common/nav.php";
         ?>
 
 
@@ -81,6 +82,7 @@ include "../UsersCommon/head.php";
                   <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
                   <div class="card-body">
                     <form id="economicForm" action="backend.php" method="POST">
+                    <input type="hidden" name="token" id="csrf-token" value="<?php echo $_SESSION['token'] ?? '' ?>">
                       <input type="hidden" name="add_economic" value="1">
                       <input type="hidden" name="id" value='<?php echo $_SESSION['id'] ?>' />
                       <div class="row mb-4">
@@ -201,7 +203,7 @@ include "../UsersCommon/head.php";
         <!-- / Content -->
 
         <?php
-        include "../UsersCommon/footer.php";
+        include "../common/footer.php";
         ?>
 
 

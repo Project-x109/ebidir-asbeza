@@ -1,7 +1,8 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationAdmin.php";
+include "../common/Authorization.php";
+$_SESSION['token'] = bin2hex(random_bytes(35));
 
 
 
@@ -13,7 +14,7 @@ WHERE u.role = 'branch'";
 $result = $conn->query($sql);
 ?>
 <?php
-include "../AdminCommons/head.php";
+include "../common/head.php";
 ?>
 
 <body>
@@ -23,7 +24,7 @@ include "../AdminCommons/head.php";
             <!-- Menu -->
 
             <?php
-            include "../AdminCommons/sidebar.php";
+            include "../common/sidebar.php";
             ?>
             <!-- / Menu -->
 
@@ -31,7 +32,7 @@ include "../AdminCommons/head.php";
             <div class="layout-page">
                 <!-- Navbar -->
                 <?php
-                include "../AdminCommons/nav.php";
+                include "../common/nav.php";
                 ?>
                 <!-- / Navbar -->
                 <!-- Content wrapper -->
@@ -58,7 +59,6 @@ include "../AdminCommons/head.php";
                             <!-- Striped Rows -->
                             <div class="col-md-6 col-lg-12 col-xl-12 order-0 mb-4">
                                 <div class="card">
-
                                     <h5 class="card-header">Lists of Branches</h5>
                                     <div class="table-responsive text-nowrap ms-3 me-3">
                                         <table class="table table-striped" id="table-striped">
@@ -130,7 +130,7 @@ include "../AdminCommons/head.php";
                                             <div class="modal-dialog">
                                                 <form class="modal-content">
 
-
+                                                    <input type="hidden" name="token" id="csrf-token" value="<?php echo $_SESSION['token'] ?? '' ?>">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="backDropModalTitle">Update User</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -180,6 +180,7 @@ include "../AdminCommons/head.php";
                                                         <input type="hidden" id="userIdToUpdate" name="userIdToUpdate" />
                                                         <input type="hidden" id="userIdToUpdatebranch" name="userIdToUpdatebranch" />
 
+
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
@@ -198,7 +199,7 @@ include "../AdminCommons/head.php";
                     </div>
                     <!-- / Content -->
                     <?php
-                    include "../AdminCommons/footer.php";
+                    include "../common/footer.php";
                     ?>
                     <script src="../assets/js/jquery-3.7.0.js"></script>
                     <script src="../assets/js/jquery.dataTables.min.js"></script>

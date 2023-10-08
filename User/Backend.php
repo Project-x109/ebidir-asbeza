@@ -2,9 +2,12 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationUser.php";
+include "../common/Authorization.php";
 include "./functions.php";
-if (isset($_POST['add_personal']) || isset($_POST['Number_of_dependents'])) {
+if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $_SESSION['token']) {
+    echo json_encode(['error' => 'Authorization Error']);
+    exit;
+} else if (isset($_POST['add_personal']) || isset($_POST['Number_of_dependents'])) {
     // Form validation
     $errors = array();
     $response = array();
@@ -79,10 +82,7 @@ if (isset($_POST['add_personal']) || isset($_POST['Number_of_dependents'])) {
         header('Content-Type: application/json');
         echo json_encode($response);
     }
-}
-
-
-if (isset($_POST['update_personal'])) {
+} else if (isset($_POST['update_personal'])) {
     $response = array();
     $errors = array();
 
@@ -156,11 +156,7 @@ if (isset($_POST['update_personal'])) {
         header('Content-Type: application/json');
         echo json_encode($response);
     }
-}
-
-
-// Add this line before validation
-if (isset($_POST['add_economic'])) {
+} else if (isset($_POST['add_economic'])) {
     // Form validation
     $errors = array();
     $response = array();
@@ -241,10 +237,7 @@ if (isset($_POST['add_economic'])) {
         echo json_encode($response);
         exit();
     }
-}
-
-
-if (isset($_POST['update_economic'])) {
+} else if (isset($_POST['update_economic'])) {
     // Form validation
     $errors = array();
     $response = array();
@@ -325,9 +318,12 @@ if (isset($_POST['update_economic'])) {
         echo json_encode($response);
     }
 }
-
-
-if (isset($_POST['checkout'])) {
+$token = htmlspecialchars($_POST['token'], ENT_QUOTES, 'UTF-8');
+if (!$token || $token !== $_SESSION['token']) {
+    $_SESSION['error'] = "Authorization Error";
+    header("Location: index.php");
+    exit;
+} else if (isset($_POST['checkout'])) {
 
     $sql = "SELECT * FROM users where id=$_POST[id]";
     $res = $conn->query($sql);

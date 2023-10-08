@@ -1,8 +1,8 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationBranch.php";
-include "../BranchCommon/head.php"
+include "../common/Authorization.php";
+include "../common/head.php";
 ?>
 
 <body>
@@ -12,7 +12,7 @@ include "../BranchCommon/head.php"
             <!-- Menu -->
 
             <?php
-            include "../BranchCommon/sidebar.php"
+            include "../common/sidebar.php";
             ?>
             <!-- / Menu -->
 
@@ -21,7 +21,8 @@ include "../BranchCommon/head.php"
                 <!-- Navbar -->
 
                 <?php
-                include "../BranchCommon/nav.php"
+                include "../common/nav.php";
+
                 ?>
 
                 <!-- / Navbar -->
@@ -141,7 +142,7 @@ include "../BranchCommon/head.php"
 
                     <!-- Footer -->
                     <?php
-                    include "../BranchCommon/footer.php"
+                    include "../common/footer.php";
                     ?>
                     <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
                     <script src="../assets/js/transactiondetail.js"></script>

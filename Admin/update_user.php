@@ -2,7 +2,7 @@
 include "../connect.php";
 include "../User/functions.php";
 session_start();
-include "./AuthorizationAdmin.php";
+include "../common/Authorization.php";
 
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -13,7 +13,10 @@ require '../assets/PHPMailer/PHPMailer.php';
 require '../assets/PHPMailer/SMTP.php';
 require '../assets/PHPMailer/Exception.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $_SESSION['token']) {
+    echo json_encode(['error' => 'Authorization Error']);
+    exit;
+} else if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get the updated user data from the form
     $userId = $_POST["id"];
     $name = $_POST["name"];

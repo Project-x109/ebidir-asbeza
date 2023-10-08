@@ -1,10 +1,7 @@
 <?php
 session_start();
 include "./connect.php";
-
 $_SESSION['on_newpassword_page'] = true;
-
-
 ?>
 <!DOCTYPE html>
 

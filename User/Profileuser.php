@@ -1,7 +1,7 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationUser.php";
+include "../common/Authorization.php";
 
 ?>
 
@@ -181,7 +181,7 @@ include "../common/head.php"
 
           <?php
 
-          include "../UsersCommon/footer.php"
+          include "../common/footer.php";
           ?>
           <!-- Page JS -->
           <script src="../assets/js/pages-account-settings-account.js"></script>

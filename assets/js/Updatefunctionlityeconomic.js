@@ -81,11 +81,15 @@ $(document).ready(function () {
   // Function to save changes when "Save Changes" is clicked
   function saveChanges() {
     showLoader();
+    var csrfToken = document.getElementById('csrf-token').getAttribute('value');
     var formData = new FormData($('#formAccountSettings')[0]);
     $.ajax({
       url: 'backend.php',
       method: 'POST',
       data: formData,
+      headers: {
+        'X-CSRF-Token': csrfToken // Send the CSRF token as a header
+      },
       contentType: false,
       processData: false,
       error: function (jqXHR, textStatus, errorThrown) {

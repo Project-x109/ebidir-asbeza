@@ -1,10 +1,10 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationAdmin.php";
+include "../common/Authorization.php";
 ?>
 <?php
-include "../AdminCommons/head.php"
+include "../common/head.php";
 
 ?>
 
@@ -16,14 +16,13 @@ include "../AdminCommons/head.php"
             <!-- Layout container -->
 
             <?php
-            include "../AdminCommons/sidebar.php"
+            include "../common/sidebar.php";
 
             ?>
             <div class="layout-page">
                 <!-- Navbar -->
                 <?php
-                include "../AdminCommons/nav.php";
-
+                include "../common/nav.php";
                 ?>
 
                 <!-- Content wrapper -->
@@ -82,7 +81,7 @@ include "../AdminCommons/head.php"
                     <!-- / Content -->
 
                     <?php
-                    include "../AdminCommons/footer.php"
+                    include "../common/footer.php"
 
                     ?>
                     <script src="../assets/js/jquery-3.7.0.js"></script>

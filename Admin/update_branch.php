@@ -1,10 +1,14 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationAdmin.php";
+include "../common/Authorization.php";
 
 
-// Get POST data
+
+if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $_SESSION['token']) {
+    echo json_encode(['error' => 'Authorization Error']);
+    exit;
+}
 $branchId = $_POST['branch_id']; // Assuming 'branch_id' is the identifier for branch data
 $location = $_POST['location'];
 
@@ -38,4 +42,3 @@ $conn->close();
 // Return JSON response
 header('Content-Type: application/json');
 echo json_encode($response);
-

@@ -12,13 +12,17 @@ require '../assets/PHPMailer/Exception.php';
 
 session_start();
 
-
+include "../common/Authorization.php";
 
 
 $validationErrors = array();
 $response = array();
-
-if (isset($_POST['add_user'])) {
+$token = htmlspecialchars($_POST['token'], ENT_QUOTES, 'UTF-8');
+if (!$token || $token !== $_SESSION['token']) {
+    $_SESSION['error'] = "Authorization Error";
+    header("Location: index.php");
+    exit;
+} else if (isset($_POST['add_user'])) {
     // Check if the phone number, TIN number, and email are already used
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
@@ -147,33 +151,7 @@ if (isset($_POST['add_user'])) {
 
     header('Content-Type: application/json');
     echo json_encode($response);
-}
-
-
-
-// Handle errors (display them in the toast if needed)
-/* if (isset($_SESSION['error'])) {
-  echo '<script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var errorToast = new bootstrap.Toast(document.getElementById("error-toast"));
-            errorToast.show();
-            document.querySelector("#error-toast .toast-body").innerHTML = "' . $_SESSION['error'] . '";
-        });
-      </script>';
-  unset($_SESSION['error']); // Clear the error message
-} */
-// Function to generate a random password
-
-
-
-
-
-
-
-
-
-
-if (isset($_POST['addbranch'])) {
+} else if (isset($_POST['addbranch'])) {
     // Validation functions (similar to those in add_users)
     $response = array();
     $branchValidationErrors = array();
@@ -286,13 +264,7 @@ if (isset($_POST['addbranch'])) {
     header('Content-Type: application/json');
     echo json_encode($response);
 }
-
-
 // Always return a JSON response
-
-
-
-
 function generateRandomPassword($length = 8)
 {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -493,33 +465,3 @@ function sendPasswordEmail($recipientEmail, $password, $conn)
         echo "<script>alert('Message could not be sent. Mailer Error: " . $mail->ErrorInfo . "')</script>";
     }
 }
-
-
-
-
-
-/* if (isset($_POST['addbranch'])) {
-
-    $sql = "SELECT * FROM admin_setting";
-    $res = $conn->query($sql);
-    $row = $res->fetch_assoc();
-    $branch_id = "EB" . sprintf('%04d', $row['branch']);
-    $sql = "INSERT INTO `users`(`name`, `phone`, `password`, `role`, `status`, `email`,`user_id`) 
-    VALUES ('$_POST[branch_name]', '$_POST[phonenumber]', '123', 'branch', 'waiting','$_POST[email]','$branch_id')";
-    $res = $conn->query($sql);
-    if ($res) {
-        $sql = "UPDATE admin_setting set branch=" . ($row['branch'] + 1);
-        $conn->query($sql);
-        $sql = "INSERT INTO `branch`(`branch_name`,`location`,`branch_id`)
-    VALUES ('$_POST[branch_name]','$_POST[location]','$branch_id')";
-        $res = $conn->query($sql);
-        if ($res) {
-            header("location:addbranch.php");
-            $_SESSION['success'] = "Branch Account created successfully";
-        } else {
-            header("location:addbranch.php");
-            $_SESSION['error'] = "Error Occured";
-        }
-    }
-    header("location:addbranch.php");
-} */

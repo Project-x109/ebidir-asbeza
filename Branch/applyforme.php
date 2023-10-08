@@ -1,7 +1,8 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationBranch.php";
+include "../common/Authorization.php";
+$_SESSION['token'] = bin2hex(random_bytes(35));
 // head part and all links
 ?>
 <!DOCTYPE html>
@@ -47,16 +48,19 @@ include "./AuthorizationBranch.php";
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
-            <?php include '../BranchCommon/sidebar.php'; ?> <!-- sidebar -->
+            <?php include "../common/sidebar.php"; ?> <!-- sidebar -->
             <div class="layout-page">
                 <?php
-                include "../BranchCommon/nav.php";  //<!-- sidebar -->
+                include "../common/nav.php";
+
                 ?>
                 <div class="content-wrapper">
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1  container-p-y">
                         <div class="row justify-content-center align-items-center mt-5">
                             <form class="form-card" id="creditFormmain" action="backend.php" method="POST">
+                                <input type="hidden" name="token" id="csrf-token" value="<?php echo $_SESSION['token'] ?? '' ?>">
+
                                 <p class="form-card-title">You can apply for credit here</p>
                                 <p class="form-card-prompt">Insert the user's six-digit identification number</p>
                                 <div class="form-card-input-wrapper">
@@ -93,7 +97,7 @@ include "./AuthorizationBranch.php";
                     </div>
 
                     <?php
-                    include "../BranchCommon/footer.php";
+                    include "../common/footer.php";;
                     ?>
                     <script src="../assets/js/applyform.js"></script>
 

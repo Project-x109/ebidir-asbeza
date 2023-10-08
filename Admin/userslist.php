@@ -1,7 +1,8 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationAdmin.php";
+include "../common/Authorization.php";
+$_SESSION['token'] = bin2hex(random_bytes(35));
 // Execute the query
 
 ?>
@@ -12,7 +13,7 @@ $result = $conn->query($sql);
 ?>
 
 <?php
-include "../AdminCommons/head.php";
+include "../common/head.php";
 ?>
 
 <body>
@@ -22,7 +23,7 @@ include "../AdminCommons/head.php";
       <!-- Menu -->
 
       <?php
-      include "../AdminCommons/sidebar.php";
+      include "../common/sidebar.php";
       ?>
       <!-- / Menu -->
 
@@ -31,7 +32,7 @@ include "../AdminCommons/head.php";
         <!-- Navbar -->
 
         <?php
-        include "../AdminCommons/nav.php";
+        include "../common/nav.php";
         ?>
 
         <!-- / Navbar -->
@@ -148,7 +149,7 @@ include "../AdminCommons/head.php";
                       <div class="modal-dialog">
                         <form class="modal-content">
 
-
+                          <input type="hidden" name="token" id="csrf-token" value="<?php echo $_SESSION['token'] ?? ''; ?>">
                           <div class="modal-header">
                             <h5 class="modal-title" id="backDropModalTitle">Update User</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -221,7 +222,7 @@ include "../AdminCommons/head.php";
           </div>
           <!-- / Content -->
           <?php
-          include "../AdminCommons/footer.php";
+          include "../common/footer.php";
           ?>
           <script src="../assets/js/jquery-3.7.0.js"></script>
           <script src="../assets/js/jquery.dataTables.min.js"></script>

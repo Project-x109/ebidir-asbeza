@@ -1,11 +1,11 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationBranch.php";
+include "../common/Authorization.php";
 
 ?>
 <?php
-include "../BranchCommon/head.php"
+include "../common/head.php";
 ?>
 
 <body>
@@ -13,13 +13,13 @@ include "../BranchCommon/head.php"
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
             <?php
-            include "../BranchCommon/sidebar.php"
+            include "../common/sidebar.php";
             ?>
             <div class="layout-page">
                 <!-- Navbar -->
 
                 <?php
-                include "../BranchCommon/nav.php";
+                include "../common/nav.php";
 
                 ?>
 
@@ -108,7 +108,7 @@ include "../BranchCommon/head.php"
                     <!-- / Content -->
 
                     <?php
-                    include "../BranchCommon/footer.php"
+                    include "../common/footer.php";
                     ?>
 
 

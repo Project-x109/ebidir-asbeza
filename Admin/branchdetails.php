@@ -1,8 +1,8 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationAdmin.php";
-include "../AdminCommons/head.php";
+include "../common/Authorization.php";
+include "../common/head.php";
 ?>
 
 <body>
@@ -12,7 +12,7 @@ include "../AdminCommons/head.php";
             <!-- Menu -->
 
             <?php
-            include "../AdminCommons/sidebar.php";
+            include "../common/sidebar.php";
             ?>
             <!-- / Menu -->
 
@@ -21,7 +21,7 @@ include "../AdminCommons/head.php";
                 <!-- Navbar -->
 
                 <?php
-                include "../AdminCommons/nav.php";
+                include "../common/nav.php";
                 ?>
 
                 <!-- / Navbar -->

@@ -1,10 +1,10 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationUser.php";
+include "../common/Authorization.php";
 ?>
 <?php
-include "../UsersCommon/head.php";
+include "../common/head.php";
 ?>
 
 <body>
@@ -120,7 +120,7 @@ include "../UsersCommon/head.php";
 
                     <!-- Footer -->
                     <?php
-                    include "../UsersCommon/footer.php";
+                    include "../common/footer.php";
                     ?>
                     <script src="../assets/js/jquery-3.7.0.js"></script>
                     <script src="../assets/js/jquery.dataTables.min.js"></script>

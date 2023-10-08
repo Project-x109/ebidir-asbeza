@@ -1,8 +1,8 @@
 <?php
 include "../connect.php";
 session_start();
-include "./AuthorizationBranch.php";
-include "../BranchCommon/head.php";
+include "../common/Authorization.php";
+include "../common/head.php";;
 ?>
 <body>
     <!-- Layout wrapper -->
@@ -10,14 +10,15 @@ include "../BranchCommon/head.php";
         <div class="layout-container">
             <!-- Menu -->
             <?php
-            include "../BranchCommon/sidebar.php"
+            include "../common/sidebar.php";
             ?>
             <!-- / Menu -->
             <!-- Layout container -->
             <div class="layout-page">
                 <!-- Navbar -->
                 <?php
-                include "../BranchCommon/nav.php"
+                include "../common/nav.php";
+
                 ?>
                 <!-- / Navbar -->
 
@@ -445,7 +446,7 @@ include "../BranchCommon/head.php";
                         </div>
                     </div>
                     <?php
-                    include "../BranchCommon/footer.php"
+                    include "../common/footer.php";
                     ?>
                     <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
                     <script src="../assets/js/branchdetail.js"></script>
