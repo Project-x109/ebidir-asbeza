@@ -19,7 +19,7 @@ include "../AdminCommons/head.php";
             ?>
             <div class="layout-page">
                 <?php
-                include "../common/nav.php";
+                include "../AdminCommons/nav.php";
 
                 ?>
                 <!-- Navbar -->
@@ -198,7 +198,7 @@ include "../AdminCommons/head.php";
                 <?php
                 include "../AdminCommons/footer.php";
                 ?>
-                 <script>
+                <!--  <script>
                     function update(e) {
                         let x = e.value;
                         let xhr = new XMLHttpRequest();
@@ -209,8 +209,8 @@ include "../AdminCommons/head.php";
                         xhr.open("GET", "ajax.php?loan_id=" + x)
                         xhr.send();
                     }
-                </script>
-                <!-- <script>
+                </script> -->
+                <script>
                     function update(e) {
                         let x = e.value;
                         Swal.fire({
@@ -233,7 +233,7 @@ include "../AdminCommons/head.php";
                             }
                         })
                     }
-                </script> -->
+                </script>
                 <script>
                     new DataTable('#table-striped');
                 </script>
