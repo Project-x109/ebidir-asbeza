@@ -55,6 +55,10 @@ if (isset($_GET['loan_id'])) {
             $Number_Of_Loans = 0;
         $fully_repaid_loans++;
         $sql = "update economic set Number_Of_Loans=$Number_Of_Loans, economic_score=$score,fully_repaid_loans=$fully_repaid_loans where user_id='$row[user_id]'";
-        $conn->query($sql);
+       $res= $conn->query($sql);
+        if($res)
+        echo 1;
+    else 
+    echo 0;
     }
 }

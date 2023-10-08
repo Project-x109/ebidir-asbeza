@@ -225,9 +225,19 @@ include "../common/head.php";
                                 // If the user confirms, proceed with the update
                                 let xhr = new XMLHttpRequest();
                                 xhr.onload = function() {
-                                    document.location = '';
+                                    if(this.responseText)
+                                    Swal.fire(
+  'Credit Updated!',
+  'Payment is updates successfully!',
+  'success'
+)
+                 setTimeout(() => {
+                    document.location = '';
+                 }, 1000);
+                                  
+                                    // alert(this.responseText)
                                 }
-                                xhr.open("GET", "ajax.php?loan_id=" + x)
+                                xhr.open("GET", "../branch/ajax.php?loan_id=" + x)
                                 xhr.send();
                             }
                         })
