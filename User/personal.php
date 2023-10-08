@@ -164,7 +164,7 @@ include "../common/head.php"
           <!-- Footer -->
           <?php
 
-          include "../UsersCommon/footer.php"
+          include "../common/footer.php";
           ?>
 
 

@@ -124,7 +124,7 @@ include "./AuthorizationAdmin.php";
                         <div class="toast-body"></div>
                     </div>
                     <?php
-                    include "../AdminCommons/footer.php";
+                    include "../common/footer.php";
                     ?>
                     <!-- / Footer -->
                     <!-- Page JS -->

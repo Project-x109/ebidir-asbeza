@@ -120,7 +120,7 @@ include "../common/head.php";
 
                     <!-- Footer -->
                     <?php
-                    include "../UsersCommon/footer.php";
+                    include "../common/footer.php";
                     ?>
                     <script src="../assets/js/jquery-3.7.0.js"></script>
                     <script src="../assets/js/jquery.dataTables.min.js"></script>

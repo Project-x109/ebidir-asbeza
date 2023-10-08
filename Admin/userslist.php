@@ -221,7 +221,7 @@ include "../common/head.php";
           </div>
           <!-- / Content -->
           <?php
-          include "../AdminCommons/footer.php";
+          include "../common/footer.php";
           ?>
           <script src="../assets/js/jquery-3.7.0.js"></script>
           <script src="../assets/js/jquery.dataTables.min.js"></script>

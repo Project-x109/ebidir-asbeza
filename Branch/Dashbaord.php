@@ -446,7 +446,7 @@ include "../common/head.php";;
                         </div>
                     </div>
                     <?php
-                    include "../BranchCommon/footer.php"
+                    include "../common/footer.php";
                     ?>
                     <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
                     <script src="../assets/js/branchdetail.js"></script>

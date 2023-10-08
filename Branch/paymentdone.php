@@ -210,7 +210,7 @@ include "../common/head.php";
                     </div>
                     <!-- / Content -->
                     <?php
-                    include "../BranchCommon/footer.php"
+                    include "../common/footer.php";
                     ?>
 </body>
 

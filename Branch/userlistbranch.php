@@ -108,7 +108,7 @@ include "../common/head.php";
                     <!-- / Content -->
 
                     <?php
-                    include "../BranchCommon/footer.php"
+                    include "../common/footer.php";
                     ?>
 
 

@@ -94,7 +94,7 @@ include "./AuthorizationBranch.php";
                     </div>
 
                     <?php
-                    include "../BranchCommon/footer.php";
+                    include "../common/footer.php";;
                     ?>
                     <script src="../assets/js/applyform.js"></script>
 

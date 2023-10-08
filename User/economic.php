@@ -201,7 +201,7 @@ include "../common/head.php";
         <!-- / Content -->
 
         <?php
-        include "../UsersCommon/footer.php";
+        include "../common/footer.php";
         ?>
 
 

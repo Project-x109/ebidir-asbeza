@@ -208,7 +208,7 @@ include "../common/head.php";
 
                     <!-- Footer -->
                     <?php
-                    include "../UsersCommon/footer.php";
+                    include "../common/footer.php";
                     ?>
                     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 

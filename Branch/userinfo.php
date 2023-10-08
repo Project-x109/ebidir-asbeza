@@ -120,7 +120,7 @@ include "../connect.php";
                                             <div class="promo">
                                                 <span>Enter Total Amount</span>
                                                 <form id="checkoutForm" class="form" action="backend.php" method="POST">
-                                                    <input class="input_field" id="total_price" name="total_price" placeholder="Enter Total Amount" type="number" step="0" onkeyup="filldata(this)">
+                                                    <input class="input_field" id="total_price" name="total_price" placeholder="Enter Total Amount" required max='<?= $row['credit_limit'] ?>'  type="number" step="0" onkeyup="filldata(this)">
                                                     <input type='hidden' name="user_id" id="user_id" value='<?= $id ?>' />
                                                     <button name="branch_checkout" type='submit'>Apply</button>
                                                 </form>
@@ -159,7 +159,7 @@ include "../connect.php";
                     </script>
                     <!-- / Content -->
 
-                    <?php include '../BranchCommon/footer.php'; ?> <!-- sidebar -->
+                    <?php include include "../common/footer.php"; ?> <!-- sidebar -->
 
                     <script>
                         function showLoader() {

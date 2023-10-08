@@ -454,7 +454,7 @@ include "../common/head.php";
 
                         <!-- Footer -->
                         <?php
-                        include "../AdminCommons/footer.php";
+                        include "../common/footer.php";
                         ?>
                         <!-- / Footer -->
                         <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>

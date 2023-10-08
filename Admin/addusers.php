@@ -143,7 +143,7 @@ include "../common/head.php";
             <!-- / Content -->
 
             <?php
-            include "../AdminCommons/footer.php";
+            include "../common/footer.php";
             ?>
 
             <!-- Page JS -->

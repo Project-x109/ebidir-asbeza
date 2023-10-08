@@ -142,7 +142,7 @@ include "./AuthorizationAdmin.php";
 
                     <!-- Footer -->
                     <?php
-                    include "../AdminCommons/footer.php";
+                    include "../common/footer.php";
                     ?>
 
                     <script src="../assets/js/transactiondetail.js"></script>
