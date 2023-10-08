@@ -2,7 +2,6 @@
 include "../connect.php";
 session_start();
 include "./AuthorizationUser.php";
-
 ?>
 <!DOCTYPE html>
 
@@ -31,6 +30,8 @@ include "./AuthorizationUser.php";
     <link rel="stylesheet" href="../assets/vendor/css/core.css" class="template-customizer-core-css" />
     <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="../assets/css/demo.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
@@ -72,15 +73,6 @@ include "./AuthorizationUser.php";
     </div>
 
     <div class="container-xxl">
-        <div class="bs-toast toast toast-placement-ex m-2 bg-primary top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="success-toast">
-            <div class="toast-header">
-                <i class="bx bx-bell me-2"></i>
-                <div class="me-auto toast-title fw-semibold">success</div>
-                <small></small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body"></div>
-        </div>
         <div class="authentication-wrapper authentication-basic container-p-y">
             <div class="authentication-inner py-4">
                 <!-- Forgot Password -->
@@ -88,7 +80,7 @@ include "./AuthorizationUser.php";
                     <div class="card-body">
                         <!-- Logo -->
                         <div class="app-brand justify-content-center">
-                            <a href="index.html" class="app-brand-link gap-2">
+                            <a href="dashbaord.html" class="app-brand-link gap-2">
                                 <span class="app-brand-logo demo">
                                     <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                         <defs>
@@ -163,30 +155,9 @@ include "./AuthorizationUser.php";
     <div id="error-message" class="alert alert-danger" style="display: none;"></div>
 
 
-    <!-- / Content -->
-
-
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
-    <script src="../assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="../assets/vendor/libs/popper/popper.js"></script>
-    <script src="../assets/vendor/js/bootstrap.js"></script>
-    <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-
-    <script src="../assets/vendor/js/menu.js"></script>
-    <!-- endbuild -->
-    <script src="../assets/js/common.js"></script>
-
-    <!-- Vendors JS -->
-
-
-    <!-- Main JS -->
-    <script src="../assets/js/main.js"></script>
-
-    <!-- Page JS -->
-
-    <!-- Place this tag in your head or just before your close body tag. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <?php
+    include "../common/footer.php";
+    ?>
 
 
     <script>
@@ -260,41 +231,51 @@ include "./AuthorizationUser.php";
     </script>
     <script>
         $(document).ready(function() {
-
             $('#password-change-form').on('submit', function(e) {
-                /*  e.preventDefault(); */
+                e.preventDefault();
 
+                // Get form data
+                var formData = $(this).serialize();
+
+                // Send AJAX request
                 $.ajax({
                     type: 'POST',
-                    url: 'changeanypasswordbackend.php',
-                    data: $(this).serialize(),
+                    url: 'changeanypasswordbackend.php', // Backend PHP script
+                    data: formData,
                     dataType: 'json',
                     success: function(response) {
-                        console.log(response)
                         if (response.success) {
-                            console.log("hello")
                             // Password updated successfully
-                            $('#success-message').html(response.message).show();
-                            $('#error-message').hide();
-                            // Redirect to the dashboard after a delay
-                            setTimeout(function() {
-                                window.location.href = 'dashboard.php';
-                            }, 3000); // Redirect after 3 seconds (adjust as needed)
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: response.message,
+                            }).then(function() {
+                                // Redirect to the dashboard or another page
+                                window.location.href = 'dashbaord.php';
+                            });
                         } else {
-                            console.log("error")
                             // Display error messages
-                            let errorMessage = Array.isArray(response.message) ? response.message.join('<br>') : response.message;
-                            $('#error-message').html(errorMessage).show();
-                            $('#success-message').hide();
-                            setTimeout(function() {
-                                window.location.href = 'changeanypassword.php.php';
-                            }, 3000);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                html: response.message,
+                            });
                         }
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.log(xhr.responseText);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An error occurred while processing your request.',
+                        });
                     }
                 });
             });
         });
     </script>
+
 </body>
 
 

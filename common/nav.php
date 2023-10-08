@@ -97,10 +97,11 @@ $row = $res->fetch_assoc();
                             <span class="align-middle">My Profile</span>
                         </a>
                     </li>
+
                     <li>
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="./changeanypassword.php">
                             <i class="bx bx-cog me-2"></i>
-                            <span class="align-middle">Settings</span>
+                            <span class="align-middle">Change Password</span>
                         </a>
                     </li>
                     <li>
