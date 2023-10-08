@@ -22,7 +22,7 @@ include "../BranchCommon/head.php"
             <div class="layout-page">
                 <!-- Navbar -->
                 <?php
-                include "../BranchCommon/nav.php";
+                include "../common/nav.php";
 
                 ?>
 

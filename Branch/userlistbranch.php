@@ -19,7 +19,7 @@ include "../BranchCommon/head.php"
                 <!-- Navbar -->
 
                 <?php
-                include "../BranchCommon/nav.php";
+                include "../common/nav.php";
 
                 ?>
 

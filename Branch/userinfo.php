@@ -68,7 +68,10 @@ include "../connect.php";
             <div class="layout-page">
                 <!-- Navbar -->
 
-                <?php include '../BranchCommon/nav.php'; ?>
+                <?php
+                include "../common/nav.php";
+
+                ?>
 
                 <!-- / Navbar -->
                 <!-- Content wrapper -->

@@ -18,7 +18,8 @@ include "../BranchCommon/head.php"
             ?>
             <div class="layout-page">
                 <?php
-                include "../BranchCommon/nav.php"
+                include "../common/nav.php";
+
                 ?>
                 <!-- Navbar -->
 

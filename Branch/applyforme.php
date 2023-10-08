@@ -50,7 +50,8 @@ include "./AuthorizationBranch.php";
             <?php include '../BranchCommon/sidebar.php'; ?> <!-- sidebar -->
             <div class="layout-page">
                 <?php
-                include "../BranchCommon/nav.php";  //<!-- sidebar -->
+                include "../common/nav.php";
+
                 ?>
                 <div class="content-wrapper">
                     <!-- Content -->

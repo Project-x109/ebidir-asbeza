@@ -22,7 +22,7 @@ include "./AuthorizationAdmin.php";
                 <!-- Navbar -->
 
                 <?php
-                include "../AdminCommons/nav.php";
+                include "../common/nav.php";
                 ?>
 
                 <!-- / Navbar -->

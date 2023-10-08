@@ -31,7 +31,7 @@ include "../AdminCommons/head.php";
             <div class="layout-page">
                 <!-- Navbar -->
                 <?php
-                include "../AdminCommons/nav.php";
+                include "../common/nav.php";
                 ?>
                 <!-- / Navbar -->
                 <!-- Content wrapper -->
