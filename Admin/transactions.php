@@ -81,7 +81,7 @@ include "../common/head.php";
                     <!-- / Content -->
 
                     <?php
-                    include "../AdminCommons/footer.php"
+                    include "../common/footer.php"
 
                     ?>
                     <script src="../assets/js/jquery-3.7.0.js"></script>

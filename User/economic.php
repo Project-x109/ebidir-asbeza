@@ -16,7 +16,7 @@ include "../common/head.php";
       <!-- Menu -->
 
       <?php
-      include "../UsersCommon/sidebar.php";
+      include "../common/sidebar.php";
       ?>
 
       <!-- / Menu -->
@@ -26,7 +26,7 @@ include "../common/head.php";
         <!-- Navbar -->
 
         <?php
-        include "../UsersCommon/nav.php";
+        include "../common/nav.php";
         ?>
 
 
