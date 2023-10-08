@@ -10,6 +10,7 @@ $(document).ready(function () {
   $("#economicForm").on("submit", function (event) {
     event.preventDefault();
     showLoader();
+    var csrfToken = document.getElementById('csrf-token').getAttribute('value');
     // Perform form validation here
     if (!validateForm()) {
       return; // Stop further processing if validation fails
@@ -22,6 +23,9 @@ $(document).ready(function () {
       url: "backend.php", // Change the URL to the appropriate endpoint
       method: "POST",
       data: formData,
+      headers: {
+        'X-CSRF-Token': csrfToken // Send the CSRF token as a header
+      },
       contentType: false,
       processData: false,
       error: function (jqXHR, textStatus, errorThrown) {

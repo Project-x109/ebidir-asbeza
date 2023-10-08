@@ -2,6 +2,7 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
+$_SESSION['token'] = bin2hex(random_bytes(35));
 // head part and all links
 ?>
 <!DOCTYPE html>
@@ -58,6 +59,8 @@ include "../common/Authorization.php";
                     <div class="container-xxl flex-grow-1  container-p-y">
                         <div class="row justify-content-center align-items-center mt-5">
                             <form class="form-card" id="creditFormmain" action="backend.php" method="POST">
+                                <input type="hidden" name="token" id="csrf-token" value="<?php echo $_SESSION['token'] ?? '' ?>">
+
                                 <p class="form-card-title">You can apply for credit here</p>
                                 <p class="form-card-prompt">Insert the user's six-digit identification number</p>
                                 <div class="form-card-input-wrapper">

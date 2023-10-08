@@ -24,7 +24,10 @@ require '../assets/PHPMailer/Exception.php';
     }
 } */
 
-if (isset($_POST['user'])) {
+if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $_SESSION['token']) {
+    echo json_encode(['error' => 'Authorization Error']);
+    exit;
+} else if (isset($_POST['user'])) {
     $user_id = $_POST['user'];
 
     // Validate user_id (should be exactly 6 digits)
@@ -55,40 +58,7 @@ if (isset($_POST['user'])) {
     header('Content-Type: application/json');
     echo json_encode($response);
     exit();
-}
-
-
-
-/* 
-if (isset($_POST['branch_checkout'])) {
-    $user_id = $_POST['user_id'];
-    $sql = "SELECT * FROM users where user_id='$user_id'";
-    $res = $conn->query($sql);
-    $row = $res->fetch_assoc();
-    $date = date('Y-m-d h:i:s');
-    $sql = "SELECT (personal.personal_score+economic.economic_score) as score from personal INNER JOIN economic on personal.user_id=economic.user_id WHERE personal.user_id='$_POST[user_id]'";
-    $res = $conn->query($sql);
-    $row1 = $res->fetch_assoc();
-    $score = $row1['score'];
-    $sql2 = "INSERT INTO loans(`user_id`,`price`,`credit_score`,`createdOn`,`provider`) Values('$_POST[user_id]',$_POST[total_price],'$score','$date','$_SESSION[id]')";
-    $res = $conn->query($sql2);
-    if ($res) {
-        $last_id = mysqli_insert_id($conn);
-        $limit = $row['credit_limit'] - $_POST['total_price'];
-        $sql = "update users set credit_limit=$limit WHERE user_id='$_POST[user_id]'";
-        $res = $conn->query($sql);
-        //// send success message here 
-
-        $_SESSION['user_id'] = $last_id;
-        echo $sql;
-        header("location:paymentdone.php");
-    }
-}
-
-*/
-
-
-if (isset($_POST['branch_checkout'])) {
+} else if (isset($_POST['branch_checkout'])) {
     $user_id = $_POST['user_id'];
     $total_price = $_POST['total_price'];
 
@@ -364,3 +334,35 @@ function sendPasswordEmail($recipientEmail, $recipientName, $conn)
         echo "<script>alert('Message could not be sent. Mailer Error: " . $mail->ErrorInfo . "')</script>";
     }
 }
+
+
+
+
+
+/* 
+if (isset($_POST['branch_checkout'])) {
+    $user_id = $_POST['user_id'];
+    $sql = "SELECT * FROM users where user_id='$user_id'";
+    $res = $conn->query($sql);
+    $row = $res->fetch_assoc();
+    $date = date('Y-m-d h:i:s');
+    $sql = "SELECT (personal.personal_score+economic.economic_score) as score from personal INNER JOIN economic on personal.user_id=economic.user_id WHERE personal.user_id='$_POST[user_id]'";
+    $res = $conn->query($sql);
+    $row1 = $res->fetch_assoc();
+    $score = $row1['score'];
+    $sql2 = "INSERT INTO loans(`user_id`,`price`,`credit_score`,`createdOn`,`provider`) Values('$_POST[user_id]',$_POST[total_price],'$score','$date','$_SESSION[id]')";
+    $res = $conn->query($sql2);
+    if ($res) {
+        $last_id = mysqli_insert_id($conn);
+        $limit = $row['credit_limit'] - $_POST['total_price'];
+        $sql = "update users set credit_limit=$limit WHERE user_id='$_POST[user_id]'";
+        $res = $conn->query($sql);
+        //// send success message here 
+
+        $_SESSION['user_id'] = $last_id;
+        echo $sql;
+        header("location:paymentdone.php");
+    }
+}
+
+*/

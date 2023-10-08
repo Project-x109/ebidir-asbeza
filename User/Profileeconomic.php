@@ -2,6 +2,7 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
+$_SESSION['token'] = bin2hex(random_bytes(35));
 
 ?>
 
@@ -113,6 +114,7 @@ include "../common/head.php";
                                     <div class="card-body">
                                         <form id="formAccountSettings" action="backend.php" method="POST" onsubmit="return false">
                                             <div class="row">
+                                                <input type="hidden" name="token" id="csrf-token" value="<?php echo $_SESSION['token'] ?? '' ?>">
                                                 <input type="hidden" name="update_economic" value="1">
                                                 <input type="hidden" name="id" value='<?php echo $_SESSION['id'] ?>' />
                                                 <div class="mb-3 col-md-6">
