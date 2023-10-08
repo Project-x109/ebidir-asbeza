@@ -2,7 +2,7 @@
 include "../connect.php";
 session_start();
 include "./AuthorizationAdmin.php";
-include "../AdminCommons/head.php";
+include "../common/head.php";
 ?>
 
 
@@ -22,8 +22,8 @@ include "../AdminCommons/head.php";
         <!-- Navbar -->
 
         <?php
-                include "../common/nav.php";
-                ?>
+        include "../common/nav.php";
+        ?>
 
         <!-- / Navbar -->
 

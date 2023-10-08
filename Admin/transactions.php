@@ -4,7 +4,7 @@ session_start();
 include "./AuthorizationAdmin.php";
 ?>
 <?php
-include "../AdminCommons/head.php"
+include "../common/head.php";
 
 ?>
 
@@ -16,7 +16,7 @@ include "../AdminCommons/head.php"
             <!-- Layout container -->
 
             <?php
-           include "../common/sidebar.php";
+            include "../common/sidebar.php";
 
             ?>
             <div class="layout-page">

@@ -4,7 +4,7 @@ session_start();
 include "./AuthorizationAdmin.php";
 ?>
 <?php
-include "../AdminCommons/head.php";
+include "../common/head.php";
 ?>
 
 

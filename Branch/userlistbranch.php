@@ -5,7 +5,7 @@ include "./AuthorizationBranch.php";
 
 ?>
 <?php
-include "../BranchCommon/head.php"
+include "../common/head.php";
 ?>
 
 <body>

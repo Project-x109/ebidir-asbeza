@@ -5,7 +5,7 @@ include "./AuthorizationUser.php";
 ?>
 
 <?php
-include "../UsersCommon/head.php";
+include "../common/head.php";
 ?>
 
 

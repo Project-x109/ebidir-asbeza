@@ -2,7 +2,7 @@
 include "../connect.php";
 session_start();
 include "./AuthorizationBranch.php";
-include "../BranchCommon/head.php";
+include "../common/head.php";;
 ?>
 <body>
     <!-- Layout wrapper -->

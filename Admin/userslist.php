@@ -12,7 +12,7 @@ $result = $conn->query($sql);
 ?>
 
 <?php
-include "../AdminCommons/head.php";
+include "../common/head.php";
 ?>
 
 <body>
