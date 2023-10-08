@@ -87,7 +87,7 @@ include "../common/head.php"
                   <div class="card-body">
                     <form id="formAccountSettings" method="POST" action="backend.php" onsubmit="return false">
                       <div class="row">
-                      <input type="hidden" name="token" id="csrf-token" value="<?php echo $_SESSION['token'] ?? '' ?>">
+                        <input type="hidden" name="token" id="csrf-token" value="<?php echo $_SESSION['token'] ?? '' ?>">
                         <input type="hidden" name="update_personal" value="1">
                         <input type="hidden" name="id" value="<?php echo $row2['user_id']; ?>">
                         <div class="mb-3 col-md-6">
@@ -185,6 +185,8 @@ include "../common/head.php"
           <!-- / Content -->
 
           <!-- Footer -->
+        </div>
+        <div class="container my-5">
           <?php
 
           include "../common/footer.php";

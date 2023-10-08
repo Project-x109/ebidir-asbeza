@@ -209,13 +209,14 @@ include "../common/head.php";
                     <!-- / Content -->
 
                     <!-- Footer -->
-                    <?php
-                    include "../common/footer.php";
-                    ?>
-                    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+                    <div class="container my-5">
+                        <?php
+                        include "../common/footer.php";
+                        ?>
+                        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-                    <!-- Page JS -->
-                    <script src="../assets/js/Updatefunctionlityeconomic.js"></script>
+                        <!-- Page JS -->
+                        <script src="../assets/js/Updatefunctionlityeconomic.js"></script>
 </body>
 
 </html>

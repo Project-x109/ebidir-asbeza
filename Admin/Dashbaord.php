@@ -20,8 +20,8 @@ include "../common/head.php";
                 <div class="layout-page">
                     <!-- Navbar -->
                     <?php
-                include "../common/nav.php";
-                ?>
+                    include "../common/nav.php";
+                    ?>
                     <!-- / Navbar -->
                     <!-- Content wrapper -->
                     <div class="content-wrapper">
@@ -451,24 +451,24 @@ include "../common/head.php";
                             </div>
                         </div>
                         <!-- / Content -->
+                        <div class="container my-5">
+                            <!-- Footer -->
+                            <?php
+                            include "../common/footer.php";
+                            ?>
+                            <!-- / Footer -->
+                            <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
+                            <script src="../assets/js/branchpicahrt.js"></script>
+                            <script src="../assets/js/branchgrowthchart.js"></script>
+                            <script>
+                                window.addEventListener('load', updateUIBasedOnAuthStatus);
+                            </script>
+                            <script src="../assets/js/tablefunctionalities.js"></script>
+                            <script src="../assets/js/branchdetail.js"></script>
+                            <script src="../assets/js/branchtotalRevenueChart.js"></script>
+                            <script src="../assets/js/BranchorderStatisticsChart.js"></script>
 
-                        <!-- Footer -->
-                        <?php
-                        include "../common/footer.php";
-                        ?>
-                        <!-- / Footer -->
-                        <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
-                        <script src="../assets/js/branchpicahrt.js"></script>
-                        <script src="../assets/js/branchgrowthchart.js"></script>
-                        <script>
-                            window.addEventListener('load', updateUIBasedOnAuthStatus);
-                        </script>
-                        <script src="../assets/js/tablefunctionalities.js"></script>
-                        <script src="../assets/js/branchdetail.js"></script>
-                        <script src="../assets/js/branchtotalRevenueChart.js"></script>
-                        <script src="../assets/js/BranchorderStatisticsChart.js"></script>
-
-                        <!-- <script src="../assets/js/dashboards-analytics.js"></script> -->
+                            <!-- <script src="../assets/js/dashboards-analytics.js"></script> -->
 
 
 </body>

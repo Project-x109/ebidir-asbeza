@@ -87,7 +87,7 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
                             <span class="input-group-text"><i class="bx bx-envelope"></i></span>
                             <input type="text" id="basic-icon-default-email" class="form-control" placeholder="john.doe" aria-label="john.doe" aria-describedby="basic-icon-default-email2" name="email" />
                           </div>
-                          <!--<div class="form-text">You can use letters, numbers & periods</div> -->
+                          <div class="form-text">You can use letters, numbers & periods</div>
                         </div>
 
                         <label class="col-sm-2 form-label" for="basic-icon-default-phone">Phone Number :<span class="text-danger">*</span></label>
@@ -143,7 +143,8 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
               </div>
             </div>
             <!-- / Content -->
-
+          </div>
+          <div class="container my-5">
             <?php
             include "../common/footer.php";
             ?>

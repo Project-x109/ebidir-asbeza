@@ -4,6 +4,7 @@ session_start();
 include "../common/Authorization.php";
 include "../common/head.php";;
 ?>
+
 <body>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
@@ -445,17 +446,18 @@ include "../common/head.php";;
                             <!--/ Transactions -->
                         </div>
                     </div>
-                    <?php
-                    include "../common/footer.php";
-                    ?>
-                    <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
-                    <script src="../assets/js/branchdetail.js"></script>
-                    <script src="../assets/js/branchtotalRevenueChart.js"></script>
-                    <script src="../assets/js/BranchorderStatisticsChart.js"></script>
-                    <script src="../assets/js/tablefunctionalities.js"></script>
-                    <script async defer src="https://buttons.github.io/buttons.js"></script>
-                    <script src="../assets/js/branchgrowthchart.js"></script>
-                    <script src="../assets/js/branchpicahrt.js"></script>
+                    <div class="container my-5">
+                        <?php
+                        include "../common/footer.php";
+                        ?>
+                        <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
+                        <script src="../assets/js/branchdetail.js"></script>
+                        <script src="../assets/js/branchtotalRevenueChart.js"></script>
+                        <script src="../assets/js/BranchorderStatisticsChart.js"></script>
+                        <script src="../assets/js/tablefunctionalities.js"></script>
+                        <script async defer src="https://buttons.github.io/buttons.js"></script>
+                        <script src="../assets/js/branchgrowthchart.js"></script>
+                        <script src="../assets/js/branchpicahrt.js"></script>
 
 
 </body>

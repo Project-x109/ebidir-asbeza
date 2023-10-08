@@ -30,6 +30,8 @@ include "../common/head.php";
                     <!-- Content -->
 
                     <div class="container-xxl flex-grow-1  container-p-y ">
+                        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">User/</span>Applications</h4>
+
 
                         <div class="row">
                             <!-- Striped Rows -->
@@ -53,7 +55,7 @@ include "../common/head.php";
                                             <tbody>
                                                 <?php
                                                 $sql = "SELECT *,loans.user_id as userID ,loans.status as status,loans.id as loan_id FROM `loans`  INNER join users on users.user_id=loans.user_id where loans.status!='paid'";
-                                                
+
                                                 $res = $conn->query($sql);
                                                 if ($res->num_rows > 0)
                                                     while ($row = $res->fetch_assoc()) {
@@ -146,109 +148,99 @@ include "../common/head.php";
                             </div>
                         </div>
                         <!--/ Striped Rows -->
-                    </div>
 
 
-
-                    <!-- Modal Structure (empty modal) -->
-                    <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none;" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="modalToggleLabel">Loan Details</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="card">
-                                        <div class="card-body" id="modalContent">
-                                            <!-- Modal content will be dynamically generated here -->
+                        <!-- Modal Structure (empty modal) -->
+                        <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none;" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalToggleLabel">Loan Details</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="card">
+                                            <div class="card-body" id="modalContent">
+                                                <!-- Modal content will be dynamically generated here -->
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Status Update Modal -->
-                    <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="statusModalLabel">Update Status</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <!-- Status update radio buttons will be dynamically generated here -->
-                                    <div id="statusRadioContainer">
-                                        <!-- Radio buttons will be generated here dynamically using JavaScript -->
+                        <!-- Status Update Modal -->
+                        <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="statusModalLabel">Update Status</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                </div>
-                                <input type="hidden" id="loanID">
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" onclick="saveStatus()">Save Changes</button>
+                                    <div class="modal-body">
+                                        <!-- Status update radio buttons will be dynamically generated here -->
+                                        <div id="statusRadioContainer">
+                                            <!-- Radio buttons will be generated here dynamically using JavaScript -->
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="loanID">
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" onclick="saveStatus()">Save Changes</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
-                </div>
-                <!-- / Content -->
+                    <div class="container my-5">
+                        <?php
+                        include "../common/footer.php";
+                        ?>
 
-                <?php
-                include "../common/footer.php";
-                ?>
-                <!--  <script>
-                    function update(e) {
-                        let x = e.value;
-                        let xhr = new XMLHttpRequest();
-                        xhr.onload = function() {
-                            // alert(this.responseText)
-                            document.location = '';
-                        }
-                        xhr.open("GET", "ajax.php?loan_id=" + x)
-                        xhr.send();
-                    }
-                </script> -->
-                <script>
-                    function update(e) {
-                        let x = e.value;
-                        Swal.fire({
-                            title: 'Are you sure?',
-                            text: 'You are about to update this record.',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Yes, update it!'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                // If the user confirms, proceed with the update
-                                let xhr = new XMLHttpRequest();
-                                xhr.onload = function() {
-                                    if(this.responseText)
-                                    Swal.fire(
-  'Credit Updated!',
-  'Payment is updates successfully!',
-  'success'
-)
-                 setTimeout(() => {
-                    document.location = '';
-                 }, 1000);
-                                  
-                                    // alert(this.responseText)
-                                }
-                                xhr.open("GET", "../branch/ajax.php?loan_id=" + x)
-                                xhr.send();
+                        <script>
+                            function update(e) {
+                                let x = e.value;
+                                Swal.fire({
+                                    title: 'Are you sure?',
+                                    text: 'You are about to update this record.',
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Yes, update it!'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // If the user confirms, proceed with the update
+                                        let xhr = new XMLHttpRequest();
+                                        xhr.onload = function() {
+                                            if (this.responseText)
+                                                Swal.fire(
+                                                    'Credit Updated!',
+                                                    'Payment is updates successfully!',
+                                                    'success'
+                                                )
+                                            setTimeout(() => {
+                                                document.location = '';
+                                            }, 1000);
+
+                                            // alert(this.responseText)
+                                        }
+                                        xhr.open("GET", "../branch/ajax.php?loan_id=" + x)
+                                        xhr.send();
+                                    }
+                                })
                             }
-                        })
-                    }
-                </script>
-                <script>
-                    new DataTable('#table-striped');
-                </script>
+                        </script>
+                        <script>
+                            new DataTable('#table-striped');
+                        </script>
 
-                <script src="../assets/js/jquery-3.7.0.js"></script>
-                <script src="../assets/js/jquery.dataTables.min.js"></script>
+                        <script src="../assets/js/jquery-3.7.0.js"></script>
+                        <script src="../assets/js/jquery.dataTables.min.js"></script>
+
+
+
 
 
 </body>

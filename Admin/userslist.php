@@ -221,6 +221,7 @@ include "../common/head.php";
             </div>
           </div>
           <!-- / Content -->
+          <div class="container my-5">
           <?php
           include "../common/footer.php";
           ?>

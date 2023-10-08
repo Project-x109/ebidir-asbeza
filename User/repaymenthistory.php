@@ -83,16 +83,16 @@ include "../common/head.php";
                         </div>
                     </div>
                     <!-- / Content -->
+                    <div class="container my-5">
+                        <?php
+                        include "../common/footer.php";
+                        ?>
+                        <script src="../assets/js/jquery-3.7.0.js"></script>
+                        <script src="../assets/js/jquery.dataTables.min.js"></script>
 
-                    <?php
-                    include "../common/footer.php";
-                    ?>
-                    <script src="../assets/js/jquery-3.7.0.js"></script>
-                    <script src="../assets/js/jquery.dataTables.min.js"></script>
-
-                    <script>
-                        new DataTable('#table-striped');
-                    </script>
+                        <script>
+                            new DataTable('#table-striped');
+                        </script>
 
 </body>
 

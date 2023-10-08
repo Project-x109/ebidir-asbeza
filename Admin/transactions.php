@@ -30,6 +30,7 @@ include "../common/head.php";
                     <!-- Content -->
 
                     <div class="container-xxl flex-grow-1  container-p-y">
+                        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">User/</span>Repayments</h4>
 
                         <div class="row">
                             <!-- Striped Rows -->
@@ -79,19 +80,19 @@ include "../common/head.php";
                         </div>
                     </div>
                     <!-- / Content -->
+                    <div class="container my-5">
+                        <?php
+                        include "../common/footer.php"
 
-                    <?php
-                    include "../common/footer.php"
+                        ?>
+                        <script src="../assets/js/jquery-3.7.0.js"></script>
+                        <script src="../assets/js/jquery.dataTables.min.js"></script>
 
-                    ?>
-                    <script src="../assets/js/jquery-3.7.0.js"></script>
-                    <script src="../assets/js/jquery.dataTables.min.js"></script>
+                        <script>
+                            new DataTable('#table-striped');
+                        </script>
 
-                    <script>
-                        new DataTable('#table-striped');
-                    </script>
-
-                    <!-- Page JS -->
+                        <!-- Page JS -->
 </body>
 
 </html>

@@ -108,32 +108,36 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- / Content -->
-                    <div class="loader" id="loader">
-                        <div class="loader-content">
-                            <div class="spinner"></div>
+
+                        <div class="loader" id="loader">
+                            <div class="loader-content">
+                                <div class="spinner"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="error-toast">
-                        <div class="toast-header">
-                            <i class="bx bx-bell me-2"></i>
-                            <div class="me-auto toast-title fw-semibold">Error</div>
-                            <small></small>
-                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="error-toast">
+                            <div class="toast-header">
+                                <i class="bx bx-bell me-2"></i>
+                                <div class="me-auto toast-title fw-semibold">Error</div>
+                                <small></small>
+                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                            <div class="toast-body"></div>
                         </div>
-                        <div class="toast-body"></div>
+
                     </div>
-                    <?php
-                    include "../common/footer.php";
-                    ?>
-                    <!-- / Footer -->
-                    <!-- Page JS -->
-                    <script src="../assets/js/ui-toasts-branch.js"></script>
+                    <div class="container my-5">
+                        <?php
+                        include "../common/footer.php";
+                        ?>
+                        <!-- / Footer -->
+                        <!-- Page JS -->
+                        <script src="../assets/js/ui-toasts-branch.js"></script>
 
 
-                    <!-- Place this tag in your head or just before your close body tag. -->
-                    <script async defer src="https://buttons.github.io/buttons.js"></script>
+                        <!-- Place this tag in your head or just before your close body tag. -->
+                        <script async defer src="https://buttons.github.io/buttons.js"></script>
+                        <!-- / Content -->
+
 
 </body>
 

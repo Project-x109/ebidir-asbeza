@@ -95,11 +95,11 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
                         <div class="toast-body">
                         </div>
                     </div>
-
-                    <?php
-                    include "../common/footer.php";;
-                    ?>
-                    <script src="../assets/js/applyform.js"></script>
+                    <div class="container my-5">
+                        <?php
+                        include "../common/footer.php";;
+                        ?>
+                        <script src="../assets/js/applyform.js"></script>
 
 </body>
 

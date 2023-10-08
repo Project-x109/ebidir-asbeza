@@ -9,6 +9,7 @@ include "../common/Authorization.php";
 
 include "../common/head.php"
 ?>
+
 <body>
   <!-- Layout wrapper -->
   <div class="layout-wrapper layout-content-navbar">
@@ -460,18 +461,19 @@ include "../common/head.php"
               <!--/ Transactions -->
             </div>
           </div>
-          <?php
+          <div class="container my-5">
+            <?php
 
-          include "../common/footer.php";
-          ?>
-          <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
-          <script src="../assets/js/populatetable.js"></script>
-          <script src="../assets/js/userorderstatisticschart.js"></script>
-          <script src="../assets/js/mark-Notification-read.js"></script>
+            include "../common/footer.php";
+            ?>
+            <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
+            <script src="../assets/js/populatetable.js"></script>
+            <script src="../assets/js/userorderstatisticschart.js"></script>
+            <script src="../assets/js/mark-Notification-read.js"></script>
 
-          <!-- <script src="../assets/js/userdashboarddata.js"></script> -->
+            <!-- <script src="../assets/js/userdashboarddata.js"></script> -->
 
-          <script src="../assets/js/tablefunctionalities.js"></script>
+            <script src="../assets/js/tablefunctionalities.js"></script>
 </body>
 
 </html>
