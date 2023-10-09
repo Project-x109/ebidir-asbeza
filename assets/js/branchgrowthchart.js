@@ -1,243 +1,171 @@
-/**
- * Dashboard Analytics
- */
-
 'use strict';
 
-(function () {
-  function getRandomNumber1(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+// Define a function to handle the data fetching and chart update
+let loansData = []; // Declare loansData here
+
+async function fetchDataAndRenderChart(year) {
+  try {
+    // Include year in the fetch URL
+    const response = await fetch(`chart.php?year=${year}`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const responseData = await response.json();
+    loansData = responseData.data; // Update loansData
+
+    // Extract percentages from the response
+    const pendingPercentage = responseData.pendingPercentage;
+    const paidPercentage = responseData.paidPercentage;
+    const unpaidPercentage = responseData.unpaidPercentage;
+
+    // Update the chart with the new data and percentages
+    updateGrowthChart(year, pendingPercentage, paidPercentage, unpaidPercentage);
+  } catch (error) {
+    console.error('Error fetching or processing data:', error);
   }
+}
 
-  // Function to generate a random date within a range of years
-  function getRandomDate(startYear, endYear) {
-    const year = getRandomNumber1(startYear, endYear);
-    const month = getRandomNumber1(1, 12);
-    const day = getRandomNumber1(1, 28); // Assuming all months have up to 28 days
-    return `${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}-${year}`;
-  }
+// Function to update the growth chart
+function updateGrowthChart(year, pendingPercentage, paidPercentage, unpaidPercentage) {
+  // Update the chart with the new data
+  const growthChartEl = document.getElementById('growthChart');
 
-  // Function to generate random status
-  function getRandomStatus() {
-    const statuses = ['overdue', 'completed', 'scheduled'];
-    return statuses[getRandomNumber1(0, 2)];
-  }
+  const growthChartOptions = {
+    series: [pendingPercentage.toFixed(2), paidPercentage.toFixed(2), unpaidPercentage.toFixed(2)],
+    labels: ['Pending', 'Paid', 'Unpaid'],
+    subtitle: {
+      text: `Year: ${year}`
+    },
+    chart: {
+      height: 240,
+      type: 'radialBar'
+    },
+    plotOptions: {
+      radialBar: {
+        size: 150,
+        offsetY: 10,
+        startAngle: -150,
+        endAngle: 150,
+        hollow: {
+          size: '55%'
+        },
+        track: {
+          background: '#e6e6e6',
+          strokeWidth: '100%'
+        },
+        dataLabels: {
+          name: {
+            offsetY: 15,
+            color: '#888888',
+            fontSize: '15px',
+            fontWeight: '600',
+            fontFamily: 'Public Sans'
+          },
+          value: {
+            offsetY: -25,
+            color: '#333',
+            fontSize: '22px',
+            fontWeight: '500',
+            fontFamily: 'Public Sans'
+          }
+        }
+      }
+    },
+    colors: ['#F39C12', '#2ECC71', '#E74C3C'],
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shade: 'dark',
+        shadeIntensity: 0.5,
+        gradientToColors: ['#F39C12', '#2ECC71', '#E74C3C'],
+        inverseColors: false,
+        opacityFrom: 1,
+        opacityTo: 0.6,
+        stops: [30, 70, 100]
+      }
+    },
+    stroke: {
+      dashArray: 5
+    },
+    grid: {
+      padding: {
+        top: -35,
+        bottom: -10
+      }
+    },
+    states: {
+      hover: {
+        filter: {
+          type: 'none'
+        }
+      },
+      active: {
+        filter: {
+          type: 'none'
+        }
+      }
+    }
+  };
 
-  // Array of random account names
-  const randomAccountNames1 = [
-    'Amanuel Girma',
-    'John Doe',
-    'Jane Smith',
-    'Alice Johnson',
-    'Bob Wilson'
-    // Add more names as needed
-  ];
+  const growthChart = new ApexCharts(growthChartEl, growthChartOptions);
+  growthChart.render();
 
-  // Generate up to 100 records
-  const dummyData1 = [];
+  console.log(`Updated chart for year: ${year}`);
+}
 
-  for (let i = 0; i < 1000; i++) {
-    const record = {
-      accountName: randomAccountNames1[getRandomNumber1(0, randomAccountNames1.length - 1)],
-      id: `eb0${getRandomNumber1(1000000, 9999999)}`,
-      loanAmount: `$${getRandomNumber1(1000, 5000)}`,
-      paymentDate: getRandomDate(2020, 2023),
-      status: getRandomStatus(),
-      loanID: `eb0${getRandomNumber1(1000000, 9999999)}`,
-      originalAmount: `$${getRandomNumber1(3000, 10000)}`,
-      amountPaid: `$${getRandomNumber1(0, 5000)}`
-    };
-    dummyData1.push(record);
-  }
-
-  // Function to calculate the count of each status
-  function getStatusCounts(data) {
-    const counts = {
-      completed: 0,
-      overdue: 0,
-      scheduled: 0
-    };
-
-    data.forEach(record => {
-      counts[record.status]++;
-    });
-
-    return counts;
-  }
-
-  // Calculate the status counts
-  const statusCounts = getStatusCounts(dummyData1);
-
-  let cardColor, headingColor, axisColor, shadeColor, borderColor;
-
-  cardColor = config.colors.white;
-  headingColor = config.colors.headingColor;
-  axisColor = config.colors.axisColor;
-  borderColor = config.colors.borderColor;
-
+// Function to populate the year dropdown
+function populateYearDropdown(uniqueYears) {
   const growthReportSelect = document.getElementById('growthReportSelect');
-  const statusSelect = document.getElementById('statusSelect');
-  const uniqueYears = getUniqueYears(dummyData1); // Get unique years from the dummy data
 
-  // Populate the dropdown with unique years
+  // Clear existing options
+  growthReportSelect.innerHTML = '';
+
+  // Add an "All" option
+  const allOption = document.createElement('option');
+  allOption.value = 'all';
+  allOption.text = 'All';
+  growthReportSelect.appendChild(allOption);
+
   uniqueYears.forEach(year => {
     const option = document.createElement('option');
     option.value = year;
     option.text = year;
     growthReportSelect.appendChild(option);
   });
+}
 
-  // Event listeners for the select elements
-  growthReportSelect.addEventListener('change', () => {
-    const selectedYear = parseInt(growthReportSelect.value); // Parse the selected year
-    const selectedStatus = statusSelect.value; // Get the selected status
-    updateGrowthChart(selectedYear, selectedStatus);
-  });
-
-  statusSelect.addEventListener('change', () => {
-    const selectedYear = parseInt(growthReportSelect.value); // Parse the selected year
-    const selectedStatus = statusSelect.value; // Get the selected status
-    updateGrowthChart(selectedYear, selectedStatus);
-  });
-
-  // Function to update the growth chart based on the selected year and status
-  function updateGrowthChart(selectedYear, selectedStatus) {
-
-    // Filter the dummyData1 based on the selected year and status
-    const filteredData = dummyData1.filter(record => {
-      const paymentYear = new Date(record.paymentDate).getFullYear();
-      return paymentYear === selectedYear;
-    });
-
-
-    // Calculate the status counts for the filtered data
-    const filteredStatusCounts = getStatusCounts(filteredData);
-
-
-    // Calculate the percentage for the selected status
-    let percentage;
-    if (selectedStatus === 'completed') {
-      percentage = (filteredStatusCounts.completed /
-        (filteredStatusCounts.completed + filteredStatusCounts.overdue + filteredStatusCounts.scheduled)) * 100;
-    } 
-    else if (selectedStatus === 'overdue') {
-      percentage = (filteredStatusCounts.overdue /
-        (filteredStatusCounts.completed + filteredStatusCounts.overdue + filteredStatusCounts.scheduled)) * 100;
+// Initialize the application by fetching initial data
+async function initializeApp() {
+  try {
+    const response = await fetch('chart.php?year=all');
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
     }
-    else if (selectedStatus === 'scheduled') {
-      percentage = (filteredStatusCounts.scheduled /
-        (filteredStatusCounts.completed + filteredStatusCounts.overdue + filteredStatusCounts.scheduled)) * 100;
-    }
-    else {
-      // Handle other statuses here as needed
-      // Example: calculate percentage for overdue or scheduled
-      // percentage = ...
-    }
+    const responseData = await response.json();
+    loansData = responseData.data;
 
+    // Extract unique years from the data
+    const uniqueYears = [...new Set(loansData.map(record => new Date(record.createdOn).getFullYear()))];
 
-    // Destroy the previous chart instance
-    if (growthChart) {
-      growthChart.destroy();
-    }
+    // Populate the year dropdown with unique years
+    populateYearDropdown(uniqueYears);
 
-    // Create and render a new chart
-    const growthChartEl = document.querySelector('#growthChart');
-    const growthChartOptions = {
-      series: [percentage.toFixed(2)],
-      labels: [selectedStatus.charAt(0).toUpperCase() + selectedStatus.slice(1)], // Capitalize the first letter
-      chart: {
-        height: 240,
-        type: 'radialBar'
-      },
-      plotOptions: {
-        radialBar: {
-          size: 150,
-          offsetY: 10,
-          startAngle: -150,
-          endAngle: 150,
-          hollow: {
-            size: '55%'
-          },
-          track: {
-            background: cardColor,
-            strokeWidth: '100%'
-          },
-          dataLabels: {
-            name: {
-              offsetY: 15,
-              color: headingColor,
-              fontSize: '15px',
-              fontWeight: '600',
-              fontFamily: 'Public Sans'
-            },
-            value: {
-              offsetY: -25,
-              color: headingColor,
-              fontSize: '22px',
-              fontWeight: '500',
-              fontFamily: 'Public Sans'
-            }
-          }
-        }
-      },
-      colors: [config.colors.primary],
-      fill: {
-        type: 'gradient',
-        gradient: {
-          shade: 'dark',
-          shadeIntensity: 0.5,
-          gradientToColors: [config.colors.primary],
-          inverseColors: true,
-          opacityFrom: 1,
-          opacityTo: 0.6,
-          stops: [30, 70, 100]
-        }
-      },
-      stroke: {
-        dashArray: 5
-      },
-      grid: {
-        padding: {
-          top: -35,
-          bottom: -10
-        }
-      },
-      states: {
-        hover: {
-          filter: {
-            type: 'none'
-          }
-        },
-        active: {
-          filter: {
-            type: 'none'
-          }
-        }
-      }
-    };
-
-    const newGrowthChart = new ApexCharts(growthChartEl, growthChartOptions);
-    newGrowthChart.render();
-
-    // Update the global growthChart variable with the new instance
-    growthChart = newGrowthChart;
+    // Initialize the chart with default percentages
+    updateGrowthChart('all', 0, 0, 0);
+  } catch (error) {
+    console.error('Error fetching initial data:', error);
   }
+}
 
-  // Initialize the chart with the default value (the first year in uniqueYears) and status (completed)
-  let growthChart = null;
-  if (uniqueYears.length > 0) {
-    updateGrowthChart(uniqueYears[0], 'completed');
-  } else {
-  }
+// Event listener for the year dropdown
+const growthReportSelect = document.getElementById('growthReportSelect');
 
-  // Function to extract unique years from the dummy data
-  function getUniqueYears(data) {
-    const uniqueYears = new Set();
-    data.forEach(record => {
-      const paymentYear = new Date(record.paymentDate).getFullYear();
-      uniqueYears.add(paymentYear);
-    });
-    return Array.from(uniqueYears);
-  }
-})();
+growthReportSelect.addEventListener('change', () => {
+  const selectedYear = growthReportSelect.value;
 
+  // Call fetchDataAndRenderChart with selectedYear
+  fetchDataAndRenderChart(selectedYear);
+});
+
+// Initialize the application when the page loads
+initializeApp();

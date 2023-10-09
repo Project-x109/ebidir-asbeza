@@ -290,11 +290,12 @@ function sendPasswordEmail($recipientEmail, $password, $conn)
         $mail->Password = 'xbpnzmxccxgpvnly'; // Replace with your SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587; // Port may vary depending on the service
-        $recipientQuery = "SELECT  name FROM users WHERE email = '$recipientEmail'";
+        $recipientQuery = "SELECT  name,user_id FROM users WHERE email = '$recipientEmail'";
         $recipientResult = $conn->query($recipientQuery);
         if ($recipientResult->num_rows > 0) {
             $row = $recipientResult->fetch_assoc();
             $recipientName = $row['name'];
+            $recipientUsrId = $row['user_id'];
             // Sender info
             $mail->setFrom('amanuelgirma108@gmail.com', 'E-Bidir'); // Replace with your name and email
             $mail->addAddress($recipientEmail, $recipientName); // Add recipient from the database
@@ -449,6 +450,7 @@ function sendPasswordEmail($recipientEmail, $password, $conn)
             <p class="card-title">Hi ' . $recipientName . '</p>
             <p class="card-body">Your E-bidir Asbeza Account has been created.</p>
             <p class="card-body">Your Login password is ' . $password . '</p>
+            <p class="card-body">Your User Id is ' . $recipientUsrId . '</p>
             <p class="card-body">Login to your account with provided Link and Change Your Password<a href=' . $loginlink . '> Click Here to login</a></p>
             <p class="card-body">Please Dont Share this Password with anyone even if tehy say they are rom E-bidir.</p>
             <p class="card-body">We\'re here for you if you need support:</p>

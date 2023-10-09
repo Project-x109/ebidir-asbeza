@@ -30,7 +30,7 @@ include "../common/head.php";
                     <!-- Content -->
 
                     <div class="container-xxl flex-grow-1  container-p-y">
-                    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">User/</span>User List</h4>
+                        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">User/</span>User List</h4>
 
                         <div class="row">
                             <!-- Striped Rows -->
@@ -39,42 +39,78 @@ include "../common/head.php";
                                     <h5 class="card-header">Lists of Users</h5>
                                     <div class="table-responsive text-nowrap ms-3 me-3">
                                         <table class="table table-striped" id="table-striped">
+                                            <?php
+                                            $sql = "SELECT *,users.status as status FROM `users` where role='user'";
+                                            $result = $conn->query($sql);
+                                            ?>
                                             <thead>
                                                 <tr>
-                                                    <th>No</th>
-                                                    <th>Name</th>
-                                                    <th>User ID</th>
+                                                    <th>Id</th>
+                                                    <th>Image</th>
+                                                    <th>User Full Name</th>
+                                                    <th>Phone Number</th>
+                                                    <th>Email</th>
                                                     <th>TIN Number</th>
                                                     <th>Date of Birth</th>
                                                     <th>Status</th>
-                                                    <th>Email</th>
-                                                    <th>Phone Number</th>
                                                     <th>Credit Limit</th>
+                                                    <th>Level</th>
+                                                    <th>Created On</th>
+                                                    <th>User Id</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody class="table-border-bottom-0">
                                                 <?php
-                                                $sql = "SELECT *,users.status as status FROM `users`";
-                                                $res = $conn->query($sql);
-                                                $x = 1;
-                                                if ($res->num_rows > 0)
-                                                    while ($row = $res->fetch_assoc()) {
-                                                        $disabled = $row['status'] == 'paid' ? "disabled" : "";
-                                                        echo "<tr>
-                                        <td>" . ($x++) . "</td>
-                                        <td>" . $row['name'] . "</td>
-                                        <td>" . $row['user_id'] . "</td>
-                                        <td>" . $row['TIN_Number'] . "</td>
-                                        <td>" . $row['dob'] . "</td> 
-                                        <td>" . $row['status'] . "</td>   
-                                        <td>" . $row['email'] . "</td>   
-                                        <td>" . $row['phone'] . "</td>   
-                                        <td>$row[credit_limit]</td>   
-                                        </tr>";
+                                                // Loop through the database results and generate table rows
+                                                while ($row = $result->fetch_assoc()) {
+                                                    echo "<tr id='row-{$row['id']}'>";
+                                                    echo "<td>{$row['id']}</td>";
+                                                    // Assuming the 'profile' column contains image URLs
+                                                    echo "<td>
+                          <ul class='list-unstyled users-list m-0 avatar-group d-flex align-items-center'>
+                            <li
+                              data-bs-toggle='tooltip'
+                              data-popup='tooltip-custom'
+                              data-bs-placement='top'
+                              class='avatar avatar-xs pull-up'
+                              title='{$row['name']}'
+                            >
+                          <img src='{$row['profile']}' alt='Profile Image' class='rounded-circle'>
+                            </li>
+                            </ul>
+                          </td>";
+                                                    echo "<td>{$row['name']}</td>";
+                                                    echo "<td>{$row['phone']}</td>";
+                                                    echo "<td>{$row['email']}</td>";
+                                                    echo "<td>{$row['TIN_Number']}</td>";
+                                                    echo "<td>{$row['dob']}</td>";
+                                                    $status = $row['status'];
+                                                    $badgeClass = '';
+
+                                                    if ($status === 'active') {
+                                                        $badgeClass = 'success';
+                                                    } elseif ($status === 'inactive') {
+                                                        $badgeClass = 'danger';
+                                                    } elseif ($status === 'waiting') {
+                                                        $badgeClass = 'info';
+                                                    } else {
+                                                        $badgeClass = 'warning';
                                                     }
+                                                    echo "<td><span class=\"badge bg-label-$badgeClass me-1\">$status</span></td>";
+                                                    echo "<td>{$row['credit_limit']}</td>";
+                                                    echo "<td>{$row['level']}</td>";
+                                                    echo "<td>{$row['createdOn']}</td>";
+                                                    echo "<td>{$row['user_id']}</td>";
+
+                                                    echo "</tr>";
+                                                }
+
+                                                // Close the database connection
+                                                $conn->close();
                                                 ?>
                                             </tbody>
                                         </table>
+
 
                                         <!-- Modal Structure (empty modal) -->
                                         <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">

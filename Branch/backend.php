@@ -96,7 +96,7 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
     $date = date('Y-m-d h:i:s');
     $sql2 = "INSERT INTO loans(`user_id`,`price`,`credit_score`,`createdOn`,`provider`) VALUES (?, ?, ?, ?, ?)";
     $stmt2 = $conn->prepare($sql2);
-    $stmt2->bind_param("sdsds", $user_id, $total_price, $score, $date, $_SESSION['id']);
+    $stmt2->bind_param("sdsss", $user_id, $total_price, $score, $date, $_SESSION['id']);
 
     if ($stmt2->execute()) {
         $last_id = $stmt2->insert_id;
