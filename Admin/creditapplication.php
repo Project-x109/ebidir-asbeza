@@ -49,7 +49,11 @@ include "../common/head.php";
                                                     <th>Credit Score</th>
                                                     <th>Requsted Date</th>
                                                     <th>Provider</th>
-                                                    <th>Update payment</th>
+                                                    <?php
+                                                    if($_SESSION['role']!='EA')
+                                                    echo "<th>Update payment</th>";
+                                                else echo "<th></th>";
+                                                ?>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -61,14 +65,14 @@ include "../common/head.php";
                                                     while ($row = $res->fetch_assoc()) {
                                                         $disabled = $row['status'] == 'paid' ? "disabled" : "";
                                                         echo "<tr>
-                                                                <td>" . $row['userID'] . "</td>
+                                                                <td>" . $row['userID']."</td>
                                                                 <td>" . $row['name'] . "</td>
                                                                 <td>" . $row['price'] . "</td>
                                                                 <td>" . $row['credit_limit'] . "</td> 
                                                                 <td>" . $row['credit_score'] . "</td>   
                                                                 <td>" . $row['createdOn'] . "</td>   
-                                                                <td>" . $row['provider'] . "</td>   
-                                                                <td><button class='btn btn-success' $disabled value='$row[loan_id]' onclick='update(this)'>update</button></td>   
+                                                                <td>" . $row['provider'] . "</td>";   
+                                                                echo $_SESSION['role']=="EA"?"<td></td>":"<td><button class='btn btn-success' $disabled value='$row[loan_id]' onclick='update(this)'>update</button></td>   
                                                                 </tr>";
                                                     }
                                                 ?>

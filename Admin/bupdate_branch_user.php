@@ -52,16 +52,16 @@ if (!empty($validationErrors)) {
     $response['errors'] = $validationErrors;
 } else {
     // Check if the email is already registered by another user
-    $emailQuery = "SELECT id FROM users WHERE email = ? AND id != ?";
+    $emailQuery = "SELECT user_id FROM users WHERE email = ? AND user_id != ?";
     $stmtEmail = $conn->prepare($emailQuery);
-    $stmtEmail->bind_param("si", $email, $userId);
+    $stmtEmail->bind_param("ss", $email, $userId);
     $stmtEmail->execute();
     $stmtEmail->store_result();
 
     // Check if the phone number is already registered by another user
-    $phoneQuery = "SELECT id FROM users WHERE phone = ? AND id != ?";
+    $phoneQuery = "SELECT user_id FROM users WHERE phone = ? AND user_id != ?";
     $stmtPhone = $conn->prepare($phoneQuery);
-    $stmtPhone->bind_param("si", $phone, $userId);
+    $stmtPhone->bind_param("ss", $phone, $userId);
     $stmtPhone->execute();
     $stmtPhone->store_result();
 
@@ -79,7 +79,7 @@ if (!empty($validationErrors)) {
         $response['errors'] = $validationErrors;
     } else {
         // Update user data
-        $queryUser = "UPDATE users SET name = ?, email = ?, status = ?, phone = ? WHERE id = ?";
+        $queryUser = "UPDATE users SET name = ?, email = ?, status = ?, phone = ? WHERE user_id = ?";
         $stmtUser = $conn->prepare($queryUser);
 
         if (!$stmtUser) {

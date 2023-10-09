@@ -79,7 +79,7 @@ include "../common/head.php"
                           $_SESSION['price'] = $_POST['totalprice'];
                         }
                         echo   "Total price :" . $_SESSION['price'];
-                        $sql = "SELECT * from users where id='$_SESSION[id]'";
+                        $sql = "SELECT * from users where user_id='$_SESSION[id]'";
                         $res = $conn->query($sql);
                         $row = $res->fetch_assoc();
                         echo "<br>Credit Limit:" . $row['credit_limit'];

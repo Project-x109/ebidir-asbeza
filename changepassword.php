@@ -88,9 +88,10 @@ if (isset($_SESSION['status']) && $_SESSION['status'] === 'waiting' && isset($_P
     }
 } else {
     // If the user is not in waiting status or there were validation errors, redirect to the appropriate dashboard
-    $loc = $_SESSION['role'] . "/";
-    header("location: " . $loc);
-    exit();
+    // $loc = $_SESSION['role'] . "/";
+    $loc = $_SESSION['role']=="EA"?"Admin":$_SESSION['role'] . "/";
+    // header("location: " . $loc);
+    // exit();
 }
 
 

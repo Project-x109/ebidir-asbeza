@@ -25,16 +25,17 @@ if (!$token || $token !== $_SESSION['token']) {
     $stmt->bind_param("s", $phone);
     $stmt->execute();
     $result = $stmt->get_result();
-
     if ($result) {
+     
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $hashedPassword = $row['password'];
             $status = $row['status'];
-
+            echo $status;
             // Verify the user-entered plain text password against the retrieved hashed password
             if (password_verify($userEnteredPassword, $hashedPassword)) {
                 $_SESSION['role'] = $row['role'];
+             
 
                 // Store the user's ID in the session
                 $_SESSION['id'] = $row['user_id'];
@@ -49,9 +50,9 @@ if (!$token || $token !== $_SESSION['token']) {
                     // Redirect to change password page
                     header("location: newpassword.php");
                     exit();
-                } elseif ($status === 'active') {
+                } elseif (strtolower($status) === 'active') {
                     // User is already active, redirect to the appropriate dashboard
-                    $loc = $_SESSION['role'] . "/";
+                    $loc = $_SESSION['role']=="EA"?"Admin":$_SESSION['role'] . "/";
                     echo $loc;
                     header("location: " . $loc);
                     exit();

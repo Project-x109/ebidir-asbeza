@@ -4,10 +4,11 @@ include "../connect.php";
 session_start();
 include "../common/Authorization.php";
 include "./functions.php";
+if (isset($_POST['add_personal']) || isset($_POST['Number_of_dependents'])) {
 if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $_SESSION['token']) {
     echo json_encode(['error' => 'Authorization Error']);
     exit;
-} else if (isset($_POST['add_personal']) || isset($_POST['Number_of_dependents'])) {
+}
     // Form validation
     $errors = array();
     $response = array();
@@ -325,17 +326,18 @@ if (!$token || $token !== $_SESSION['token']) {
     exit;
 } else if (isset($_POST['checkout'])) {
 
-    $sql = "SELECT * FROM users where id=$_POST[id]";
+    $sql = "SELECT * FROM users where user_id='$_POST[id]'";
     $res = $conn->query($sql);
     $row = $res->fetch_assoc();
     $date = date('Y-m-d h:i:s');
-    $sql = "INSERT INTO loans(`user_id`,`price`,`createdOn`)Values($_POST[id],$_POST[price],'$date')";
+    $sql = "INSERT INTO loans(`user_id`,`price`,`createdOn`)Values('$_POST[id]',$_POST[price],'$date')";
     $res = $conn->query($sql);
     if ($res) {
+        $_SESSION['user_id']=$conn->insert_id;
         $limit = $row['credit_limit'] - $_POST['price'];
-        $sql = "update users set credit_limit=$limit WHERE id=$_POST[id]";
+        $sql = "update users set credit_limit=$limit WHERE user_id='$_POST[id]'";
         $res = $conn->query($sql);
-        header("location:report.php");
+        header("location:../branch/paymentDone.php");
     }
 }
 ?>

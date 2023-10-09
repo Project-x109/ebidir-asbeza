@@ -3,10 +3,11 @@
 if (!isset($_SESSION['role'])) {
     header("location: ../index.php");
 } else {
-    $allowedRoles = array('Admin', 'user', 'branch');
+    $allowedRoles = array('Admin', 'user', 'branch',"EA");
     if (!in_array($_SESSION['role'], $allowedRoles)) {
         // Redirect based on the user's role
-        header("location: " . $_SESSION['role'] . "/");
+        $role=$_SESSION['role']=="EA"?"Admin":$_SESSION['role'];
+        header("location:$role/");
     }
 }
 ?>

@@ -78,10 +78,12 @@ include "../common/head.php";
                                             </thead>
                                             <tbody class="table-border-bottom-0">
                                                 <?php
+                                                $x=0;
                                                 // Loop through the database results and generate table rows
                                                 while ($row = $result->fetch_assoc()) {
-                                                    echo "<tr id='row-{$row['id']}'>";
-                                                    echo "<td>{$row['id']}</td>";
+                                                    $x++;
+                                                    echo "<tr id='row-{$row['user_id']}'>";
+                                                    echo "<td>{$row['user_id']}</td>";
                                                     // Assuming the 'profile' column contains image URLs
 
                                                     echo "<td>{$row['name']}</td>";
@@ -101,25 +103,30 @@ include "../common/head.php";
                                                         $badgeClass = 'info';
                                                     } else { 
                                                         $badgeClass = 'warning';
+                                                    
                                                     }
+                                                    $user=$row['user_id'];
                                                     echo "<td><span class=\"badge bg-label-$badgeClass me-1\">$status</span></td>";
                                                     echo "<td>{$row['createdOn']}</td>"; 
                                                     echo "<td>
                                                         </td>";
-                                                    echo "<td>
+                                                        ?>
+                                                    <td>
                                                                 <div class='dropdown'>
                                                                     <button type='button' class='btn p-0 dropdown-toggle hide-arrow' data-bs-toggle='dropdown'>
                                                                         <i class='bx bx-dots-vertical-rounded'></i>
                                                                     </button>
                                                                     <div class='dropdown-menu'>
-                                                                    <a class='dropdown-item' href='javascript:void(0);' onclick='editUser({$row['id']});'>
+                                                                    <a class='dropdown-item' href='javascript:void(0);' onclick="editUser('<?=$user?>')">
                                                                     <i class='bx bx-edit-alt me-1'></i> Edit</a>
                                                                         <a class='dropdown-item' href='javascript:void(0);'><i class='bx bx-trash me-1'></i> Delete</a>
                                                                     </div>
                                                                 </div>
-                                                            </td>";
-                                                    echo "</tr>";
+                                                            </td>
+                                                </tr>
+                                                <?php
                                                 }
+
 
                                                 // Close the database connection
                                                 $conn->close();

@@ -9,7 +9,7 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
     exit;
 } else if (isset($_GET['id'])) {
     $userId = $_GET['id'];
-    $sql = "SELECT * FROM users WHERE id = $userId";
+    $sql = "SELECT * FROM users WHERE user_id = '$userId'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
