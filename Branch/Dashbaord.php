@@ -34,6 +34,8 @@ include "../common/head.php";;
                                         <h5 class="card-header m-0 me-2 pb-3">Credit Status</h5>
                                         <div id="totalRevenueChart" class="px-2"></div>
                                     </div>
+
+
                                     <div class="col-md-4">
                                         <div class="card-body">
                                             <div class="text-center">
@@ -44,15 +46,17 @@ include "../common/head.php";;
                                         <!-- Add an empty div with an id for rendering the chart -->
                                         <div id="growthChart"></div>
                                         <div class="d-flex px-xxl-4 px-lg-2 p-4 gap-xxl-3 gap-lg-1 gap-3 justify-content-between">
-                                            <div class="text-center">
+                                            <!-- <div class="text-center">
                                                 <select class="form-select" id="statusSelect" aria-label="Select a status">
-                                                    <option value="completed">Completed</option>
-                                                    <option value="overdue">Overdue</option>
-                                                    <option value="scheduled">Scheduled</option>
+                                                <option value="all">All</option>
+                                                    <option value="paid">Paid</option>
+                                                    <option value="unpaid">Unpaid</option>
+                                                    <option value="pending">Pending</option>
                                                 </select>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -452,9 +456,9 @@ include "../common/head.php";;
                         ?>
                         <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
                         <script src="../assets/js/branchdetail.js"></script>
-                        <script src="../assets/js/branchtotalRevenueChart.js"></script>
-                        <script src="../assets/js/BranchorderStatisticsChart.js"></script>
-                        <script src="../assets/js/tablefunctionalities.js"></script>
+                       <script src="../assets/js/branchtotalRevenueChart1.js"></script>
+<!--                         <script src="../assets/js/BranchorderStatisticsChart.js"></script> 
+ -->                        <script src="../assets/js/tablefunctionalities.js"></script>
                         <script async defer src="https://buttons.github.io/buttons.js"></script>
                         <script src="../assets/js/branchgrowthchart.js"></script>
                         <script src="../assets/js/branchpicahrt.js"></script>
