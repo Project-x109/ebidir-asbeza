@@ -132,49 +132,6 @@ include "../common/head.php";;
                                             </tbody>
                                         </table>
 
-                                        <!-- Modal Structure (empty modal) -->
-                                        <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="modalToggleLabel">Loan Details</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="card">
-                                                            <div class="card-body" id="modalContent">
-                                                                <!-- Modal content will be dynamically generated here -->
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Status Update Modal -->
-
-                                        <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="statusModalLabel">Update Status</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <!-- Status update radio buttons will be dynamically generated here -->
-                                                        <div class="form-row form-check form-check-inline">
-                                                            <!-- Include the radio buttons within this div -->
-                                                        </div>
-                                                    </div>
-                                                    <input type="hidden" id="loanID">
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-primary" onclick="saveStatus()">Save Changes</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
                                     </div>
 
                                 </div>
@@ -317,10 +274,10 @@ include "../common/head.php";;
                                                     <div class="flex-shrink-0">
                                                         <div id="expensesOfWeek"></div>
                                                     </div>
-                                                    <div>
+                                                    <!-- <div>
                                                         <p class="mb-n1 mt-1">Expenses This Week</p>
                                                         <small class="text-muted">$39 less than last week</small>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                             <div class="tab-pane fade show" id="navs-tabs-line-card-expenses" role="tabpanel">
@@ -330,13 +287,13 @@ include "../common/head.php";;
                                                     </div>
                                                     <div>
                                                         <small class="text-muted d-block">Loan Status</small>
-                                                        <div class="d-flex align-items-center">
+                                                        <!-- <div class="d-flex align-items-center">
                                                             <h6 class="mb-0 me-1">$459.10</h6>
                                                             <small class="text-success fw-semibold">
                                                                 <i class="bx bx-chevron-up"></i>
                                                                 42.9%
                                                             </small>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </div>
                                                 <canvas id="pieChart" style="margin-top: -50px;" width="400" height="100"></canvas>

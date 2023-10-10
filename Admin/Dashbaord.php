@@ -32,7 +32,7 @@ include "../common/head.php";
                                     <div class="card">
                                         <div class="row row-bordered g-0">
                                             <div class="col-md-8">
-                                                <h5 class="card-header m-0 me-2 pb-3">Credit Status</h5>
+                                                <h5 class="card-header m-0 me-2 pb-3">Credits for the last two years</h5>
                                                 <div id="totalRevenueChart" class="px-2"></div>
                                             </div>
                                             <div class="col-md-4">
@@ -45,13 +45,13 @@ include "../common/head.php";
                                                 <!-- Add an empty div with an id for rendering the chart -->
                                                 <div id="growthChart"></div>
                                                 <div class="d-flex px-xxl-4 px-lg-2 p-4 gap-xxl-3 gap-lg-1 gap-3 justify-content-between">
-                                                    <div class="text-center">
+                                                    <!--  <div class="text-center">
                                                         <select class="form-select" id="statusSelect" aria-label="Select a status">
                                                             <option value="completed">Completed</option>
                                                             <option value="overdue">Overdue</option>
                                                             <option value="scheduled">Scheduled</option>
                                                         </select>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -66,103 +66,73 @@ include "../common/head.php";
                                 <!-- Striped Rows -->
                                 <div class="col-md-6 col-lg-12 col-xl-12 order-0 mb-4">
                                     <div class="card">
-                                        <div class="d-flex  mt-3">
-                                            <div style="margin-left: 20px;">
-                                                <input type="text" class="form-control form-control-sm" id="tableSearch" placeholder="Search..." />
-                                            </div>
-                                        </div>
+
                                         <h5 class="card-header">List of Current Credit Accounts/Loans</h5>
-                                        <div class="table-responsive text-nowrap">
+                                        <div class="table-responsive text-nowrap ms-3 me-3">
                                             <table class="table table-striped" id="table-striped">
                                                 <thead>
                                                     <tr>
                                                         <th>Account Name</th>
                                                         <th>ID</th>
+                                                        <th>Total Loan </th>
+                                                        <th>Total Loan Paid</th>
+                                                        <th>Total Loan Pending</th>
+                                                        <th>Total Loan Unpaid</th>
                                                         <th>Credit Limit</th>
-                                                        <th>Total Credit Spent</th>
-                                                        <th>Credit Left</th>
-                                                        <th>Payment Date</th>
-                                                        <th>Status</th>
-                                                        <th>Minors</th>
-                                                        <th>Update Status</th>
+                                                        <th>Level</th>
+                                                        <th>Branch Name(Location)</th>
                                                         <th>Detail</th>
-                                                        <th>Actions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="table-border-bottom-0">
+                                                    <?php
+                                                    $sql = "SELECT 
+                                                    u.user_id AS user_id, 
+                                                    u.name AS user_name, 
+                                                    u.credit_limit AS user_credit_limit, 
+                                                    u.level AS user_credit_level, 
+                                                    SUM(l.price) AS total_loan_amount,
+                                                    SUM(CASE WHEN l.status = 'paid' THEN l.price ELSE 0 END) AS total_paid_amount,
+                                                    SUM(CASE WHEN l.status = 'pending' THEN l.price ELSE 0 END) AS total_pending_amount,
+                                                    SUM(CASE WHEN l.status != 'paid' AND l.status != 'pending' THEN l.price ELSE 0 END) AS total_unpaid_amount,
+                                                    b.branch_id AS branch_id,   -- Include branch_id
+                                                    b.branch_name AS branch_name,
+                                                    b.location AS branch_location
+                                                    
+                                                FROM users AS u
+                                                LEFT JOIN loans AS l ON u.user_id = l.user_id 
+                                                LEFT JOIN branch AS b ON l.provider = b.branch_id
+                                                WHERE u.role = 'user' 
+                                                GROUP BY u.user_id, u.name, u.credit_limit, u.level, b.branch_name, b.location,b.branch_Id
+                                                ORDER BY u.user_id";
+
+                                                    $result = $conn->query($sql);
+                                                    if ($result->num_rows > 0) {
+                                                        while ($row = $result->fetch_assoc()) {
+                                                            echo '<tr>';
+                                                            echo '<td>' . $row['user_name'] . '</td>';
+                                                            echo '<td>' . $row['user_id'] . '</td>';
+                                                            echo '<td>' . $row['total_loan_amount'] . '</td>';
+                                                            echo '<td>' . $row['total_paid_amount'] . '</td>';
+                                                            echo '<td>' . $row['total_pending_amount'] . '</td>';
+                                                            echo '<td>' . $row['total_unpaid_amount'] . '</td>';
+                                                            echo '<td>' . $row['user_credit_limit'] . '</td>';
+                                                            echo '<td>' . $row['user_credit_level'] . '</td>';
+                                                            echo '<td>' . $row['branch_name'] . ' (' . $row['branch_location'] . ')</td>';
+                                                            echo '<td><a href="userdetail.php?user_id=' . $row['user_id'] . '&branch_id=' . $row['branch_id'] . '">Detail</a></td>';
+                                                            echo '</tr>';
+                                                        }
+                                                    } else {
+                                                        echo '<tr><td colspan="7">No users found</td></tr>';
+                                                    }
+
+                                                    // Close the database connection
+
+                                                    ?>
                                                 </tbody>
                                             </table>
 
-                                            <!-- Modal Structure (empty modal) -->
-                                            <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="modalToggleLabel">Loan Details</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="card">
-                                                                <div class="card-body" id="modalContent">
-                                                                    <!-- Modal content will be dynamically generated here -->
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
 
-                                            <!-- Status Update Modal -->
-
-                                            <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="statusModalLabel">Update Status</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <!-- Status update radio buttons will be dynamically generated here -->
-                                                            <div class="form-row form-check form-check-inline">
-                                                                <!-- Include the radio buttons within this div -->
-                                                            </div>
-                                                        </div>
-                                                        <input type="hidden" id="loanID">
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                            <button type="button" class="btn btn-primary" onclick="saveStatus()">Save Changes</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <!-- Pagination and Search Controls -->
-                                        <div class="d-flex justify-content-between mt-3">
-                                            <div style="margin-left: 20px;">
-                                                <!--   <label for="recordsPerPage">Records per page:</label> -->
-                                                <select id="recordsPerPage" class="form-select form-select-sm">
-                                                    <option value="5">5</option>
-                                                    <option value="10">10</option>
-                                                    <option value="15">15</option>
-                                                </select>
-                                            </div>
-                                            <div style="margin-right: 20px;">
-                                                <nav aria-label="Page navigation">
-                                                    <ul class="pagination pagination-sm">
-                                                        <li class="page-item">
-                                                            <a class="page-link btn btn-xs btn-dark" href="#" id="prevPage">
-                                                                Previous
-                                                            </a>
-                                                        </li>
-                                                        <li class="page-item">
-                                                            <a class="page-link btn btn-xs btn-primary" href="#" id="nextPage">
-                                                                Next
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </nav>
-                                            </div>
                                         </div>
                                     </div>
 
@@ -207,11 +177,11 @@ include "../common/head.php";
                                                     </div>
                                                     <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                                         <div class="me-2">
-                                                            <h6 class="mb-0">Completed</h6>
+                                                            <h6 class="mb-0">Paid</h6>
                                                             <small class="text-muted">Payment Total</small>
                                                         </div>
                                                         <div class="user-progress">
-                                                            <small class="fw-semibold" id="completedLoanAmount">82.5k</small>
+                                                            <small class="fw-semibold" id="paidLoanAmount">82.5k</small>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -221,11 +191,11 @@ include "../common/head.php";
                                                     </div>
                                                     <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                                         <div class="me-2">
-                                                            <h6 class="mb-0">Overdue</h6>
+                                                            <h6 class="mb-0">Unpaid</h6>
                                                             <small class="text-muted">Total</small>
                                                         </div>
                                                         <div class="user-progress">
-                                                            <small class="fw-semibold" id="overdueLoanAmount">23.8k</small>
+                                                            <small class="fw-semibold" id="unpaidLoanAmount">23.8k</small>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -235,11 +205,11 @@ include "../common/head.php";
                                                     </div>
                                                     <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                                         <div class="me-2">
-                                                            <h6 class="mb-0">Scheduled</h6>
+                                                            <h6 class="mb-0">Pending</h6>
                                                             <small class="text-muted">Total</small>
                                                         </div>
                                                         <div class="user-progress">
-                                                            <small class="fw-semibold" id="scheduledLoanAmount">849k</small>
+                                                            <small class="fw-semibold" id="pendingLoanAmount">849k</small>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -456,6 +426,13 @@ include "../common/head.php";
                             <?php
                             include "../common/footer.php";
                             ?>
+                            <script>
+                                $(document).ready(function() {
+                                    $('#table-striped').DataTable();
+                                });
+                            </script>
+                            <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+                            <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
                             <!-- / Footer -->
                             <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
                             <script src="../assets/js/branchpicahrt.js"></script>
@@ -463,12 +440,12 @@ include "../common/head.php";
                             <script>
                                 window.addEventListener('load', updateUIBasedOnAuthStatus);
                             </script>
-                            <script src="../assets/js/tablefunctionalities.js"></script>
-                            <script src="../assets/js/branchdetail.js"></script>
-                            <script src="../assets/js/branchtotalRevenueChart.js"></script>
-                            <script src="../assets/js/BranchorderStatisticsChart.js"></script>
+                            <script src="../assets/js/branchtotalRevenueChart1.js"></script>
+                            <script src="../assets/js/linegraphp.js"></script>
+                            <script src="../assets/js/chartdount.js"></script>
+                            <script src="../assets/js/branchpicahrt1.js"></script>
 
-                            <!-- <script src="../assets/js/dashboards-analytics.js"></script> -->
+
 
 
 </body>
