@@ -75,23 +75,23 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
     }
 
     // Check if the phone number already exists in the database, excluding the current user's ID
-    $phoneQuery = "SELECT * FROM users WHERE phone = ? AND id != ?";
+    $phoneQuery = "SELECT * FROM users WHERE phone = ? AND user_id != ?";
     $phoneStmt = $conn->prepare($phoneQuery);
-    $phoneStmt->bind_param("si", $phone, $userId);
+    $phoneStmt->bind_param("ss", $phone, $userId);
     $phoneStmt->execute();
     $phoneResult = $phoneStmt->get_result();
 
     // Check if the email already exists in the database, excluding the current user's ID
-    $emailQuery = "SELECT * FROM users WHERE email = ? AND id != ?";
+    $emailQuery = "SELECT * FROM users WHERE email = ? AND user_id != ?";
     $emailStmt = $conn->prepare($emailQuery);
-    $emailStmt->bind_param("si", $email, $userId);
+    $emailStmt->bind_param("ss", $email, $userId);
     $emailStmt->execute();
     $emailResult = $emailStmt->get_result();
 
     // Check if the TIN number already exists in the database, excluding the current user's ID
-    $TINQuery = "SELECT * FROM users WHERE TIN_Number = ? AND id != ?";
+    $TINQuery = "SELECT * FROM users WHERE TIN_Number = ? AND user_id != ?";
     $TINStmt = $conn->prepare($TINQuery);
-    $TINStmt->bind_param("si", $TIN_Number, $userId);
+    $TINStmt->bind_param("ss", $TIN_Number, $userId);
     $TINStmt->execute();
     $TINResult = $TINStmt->get_result();
 
@@ -125,9 +125,9 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
 
         // No validation errors and no conflicts, proceed with the database update
         // Perform the database update using prepared statement and parameterized query
-        $updateQuery = "UPDATE users SET name=?, email=?, dob=?, status=?, TIN_Number=?, phone=? WHERE id=?";
+        $updateQuery = "UPDATE users SET name=?, email=?, dob=?, status=?, TIN_Number=?, phone=? WHERE user_id=?";
         $updateStmt = $conn->prepare($updateQuery);
-        $updateStmt->bind_param("ssssdsi", $name, $email, $dob, $status, $TIN_Number, $phone, $userId);
+        $updateStmt->bind_param("ssssdss", $name, $email, $dob, $status, $TIN_Number, $phone, $userId);
 
         if ($updateStmt->execute()) {
             // Update successful

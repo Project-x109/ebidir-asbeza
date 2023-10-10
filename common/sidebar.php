@@ -89,7 +89,7 @@
         ?>
 
         <?php
-        if ($_SESSION['role'] == 'Admin') {
+        if ($_SESSION['role'] == 'Admin'||$_SESSION['role']=='EA') {
         ?>
             <li class="menu-item">
                 <a href="Dashbaord.php" class="menu-link">

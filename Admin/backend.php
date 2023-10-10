@@ -229,7 +229,7 @@ if (!$token || $token !== $_SESSION['token']) {
         $sql = "SELECT * FROM admin_setting";
         $res = $conn->query($sql);
         $row = $res->fetch_assoc();
-        $branch_id = "EB" . ($row ? sprintf('%04d', $row['branch']) : '0000');
+        $branch_id = "EBR" . ($row ? sprintf('%04d', $row['branch']) : '0000');
 
         // Create prepared statements for user and branch insertion
         $userInsertStmt = $conn->prepare("INSERT INTO `users`(`name`, `phone`, `password`, `role`, `status`, `email`, `user_id`) 

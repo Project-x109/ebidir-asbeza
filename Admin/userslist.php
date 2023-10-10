@@ -87,8 +87,8 @@ include "../common/head.php";
                         <?php
                         // Loop through the database results and generate table rows
                         while ($row = $result->fetch_assoc()) {
-                          echo "<tr id='row-{$row['id']}'>";
-                          echo "<td>{$row['id']}</td>";
+                          echo "<tr id='row-{$row['user_id']}'>";
+                          echo "<td>{$row['user_id']}</td>";
                           // Assuming the 'profile' column contains image URLs
                           echo "<td>
                           <ul class='list-unstyled users-list m-0 avatar-group d-flex align-items-center'>
@@ -125,17 +125,19 @@ include "../common/head.php";
                           echo "<td>{$row['level']}</td>";
                           echo "<td>{$row['createdOn']}</td>";
                           echo "<td>{$row['user_id']}</td>";
-                          echo "<td>
+                          ?>
+                          <td>
                                   <div class='dropdown'>
                                       <button type='button' class='btn p-0 dropdown-toggle hide-arrow' data-bs-toggle='dropdown'>
                                           <i class='bx bx-dots-vertical-rounded'></i>
                                       </button>
                                       <div class='dropdown-menu'>
-                                      <a class='dropdown-item' href='javascript:void(0);' onclick='editUser({$row['id']});'><i class='bx bx-edit-alt me-1'></i> Edit</a>
+                                      <a class='dropdown-item' href='javascript:void(0);' onclick="editUser('<?=$row['user_id']?>');"><i class='bx bx-edit-alt me-1'></i> Edit</a>
                                           <a class='dropdown-item' href='javascript:void(0);'><i class='bx bx-trash me-1'></i> Delete</a>
                                       </div>
                                   </div>
-                              </td>";
+                              </td>
+                              <?php
                           echo "</tr>";
                         }
 
