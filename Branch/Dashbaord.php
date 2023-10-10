@@ -196,7 +196,7 @@ include "../common/head.php";;
                                         <div class="d-flex justify-content-between align-items-center mb-3">
                                             <div class="d-flex flex-column align-items-center gap-1">
                                                 <h2 class="mb-2" id="creditScore">750</h2>
-                                                <span>Total Records</span>
+                                                <span>Total Loaned</span>
                                             </div>
                                             <div id="orderStatisticsChart"></div>
                                         </div>
@@ -207,11 +207,11 @@ include "../common/head.php";;
                                                 </div>
                                                 <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                                     <div class="me-2">
-                                                        <h6 class="mb-0">Completed</h6>
+                                                        <h6 class="mb-0">Paid</h6>
                                                         <small class="text-muted">Payment Total</small>
                                                     </div>
                                                     <div class="user-progress">
-                                                        <small class="fw-semibold" id="completedLoanAmount">82.5k</small>
+                                                        <small class="fw-semibold" id="paidLoanAmount">82.5k</small>
                                                     </div>
                                                 </div>
                                             </li>
@@ -221,11 +221,11 @@ include "../common/head.php";;
                                                 </div>
                                                 <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                                     <div class="me-2">
-                                                        <h6 class="mb-0">Overdue</h6>
+                                                        <h6 class="mb-0">Unpaid</h6>
                                                         <small class="text-muted">Total</small>
                                                     </div>
                                                     <div class="user-progress">
-                                                        <small class="fw-semibold" id="overdueLoanAmount">23.8k</small>
+                                                        <small class="fw-semibold" id="unpaidLoanAmount">23.8k</small>
                                                     </div>
                                                 </div>
                                             </li>
@@ -235,11 +235,11 @@ include "../common/head.php";;
                                                 </div>
                                                 <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                                     <div class="me-2">
-                                                        <h6 class="mb-0">Scheduled</h6>
+                                                        <h6 class="mb-0">Pending</h6>
                                                         <small class="text-muted">Total</small>
                                                     </div>
                                                     <div class="user-progress">
-                                                        <small class="fw-semibold" id="scheduledLoanAmount">849k</small>
+                                                        <small class="fw-semibold" id="pendingLoanAmount">849k</small>
                                                     </div>
                                                 </div>
                                             </li>
@@ -456,9 +456,10 @@ include "../common/head.php";;
                         ?>
                         <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
                         <script src="../assets/js/branchdetail.js"></script>
-                       <script src="../assets/js/branchtotalRevenueChart1.js"></script>
-<!--                         <script src="../assets/js/BranchorderStatisticsChart.js"></script> 
- -->                        <script src="../assets/js/tablefunctionalities.js"></script>
+                        <script src="../assets/js/branchtotalRevenueChart1.js"></script>
+                        <script src="../assets/js/linegraphp.js"></script>
+                        <script src="../assets/js/chartdount.js"></script>
+                        <script src="../assets/js/tablefunctionalities.js"></script>
                         <script async defer src="https://buttons.github.io/buttons.js"></script>
                         <script src="../assets/js/branchgrowthchart.js"></script>
                         <script src="../assets/js/branchpicahrt.js"></script>
