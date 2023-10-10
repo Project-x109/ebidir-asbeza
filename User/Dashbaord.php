@@ -125,7 +125,7 @@ include "../common/head.php"
 
             <div class="row">
               <!-- Striped Rows -->
-              <div class="col-md-6 col-lg-12 col-xl-12 order-0 mb-4">
+              <!--  <div class="col-md-6 col-lg-12 col-xl-12 order-0 mb-4">
                 <div class="card">
                   <div class="d-flex  mt-3">
                     <div style="margin-left: 20px;">
@@ -153,30 +153,12 @@ include "../common/head.php"
                       </tbody>
                     </table>
 
-                    <!-- Modal Structure (empty modal) -->
-                    <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="modalToggleLabel">Purchase History</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            <div class="card">
-                              <div class="card-body" id="modalContent">
-                                <!-- Modal content will be dynamically generated here -->
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
 
                   </div>
-                  <!-- Pagination and Search Controls -->
+     
                   <div class="d-flex justify-content-between mt-3">
                     <div style="margin-left: 20px;">
-                      <!--   <label for="recordsPerPage">Records per page:</label> -->
+                     
                       <select id="recordsPerPage" class="form-select form-select-sm">
                         <option value="5">5</option>
                         <option value="10">10</option>
@@ -203,7 +185,7 @@ include "../common/head.php"
                 </div>
 
 
-              </div>
+              </div> -->
 
               <!--/ Striped Rows -->
             </div>
@@ -231,23 +213,23 @@ include "../common/head.php"
                   <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                       <div class="d-flex flex-column align-items-center gap-1">
-                        <h2 class="mb-2" id="TotalCreditbystatus">750</h2>
+                        <h2 class="mb-2" id="creditScore">750</h2>
                         <span>Total Used Credit</span>
                       </div>
                       <div id="orderStatisticsChart"></div>
                     </div>
-                    <ul id="topItemsList" class="p-0 m-0">
+                    <ul class="p-0 m-0">
                       <li class="d-flex mb-4 pb-1">
                         <div class="avatar flex-shrink-0 me-3">
                           <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-mobile-alt"></i></span>
                         </div>
                         <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                           <div class="me-2">
-                            <h6 class="mb-0">Credit Snapshot</h6>
-                            <small class="text-muted">As of August 2022</small>
+                            <h6 class="mb-0">Paid</h6>
+                            <small class="text-muted">Payment Total</small>
                           </div>
                           <div class="user-progress">
-                            <small class="fw-semibold">82.5k</small>
+                            <small class="fw-semibold" id="paidLoanAmount">82.5k</small>
                           </div>
                         </div>
                       </li>
@@ -257,11 +239,11 @@ include "../common/head.php"
                         </div>
                         <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                           <div class="me-2">
-                            <h6 class="mb-0">Credit Limit</h6>
-                            <small class="text-muted">Total approved limit</small>
+                            <h6 class="mb-0">Unpaid</h6>
+                            <small class="text-muted">Total</small>
                           </div>
                           <div class="user-progress">
-                            <small class="fw-semibold">23.8k</small>
+                            <small class="fw-semibold" id="unpaidLoanAmount">23.8k</small>
                           </div>
                         </div>
                       </li>
@@ -271,11 +253,11 @@ include "../common/head.php"
                         </div>
                         <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                           <div class="me-2">
-                            <h6 class="mb-0">Available</h6>
-                            <small class="text-muted">Unused credit amount</small>
+                            <h6 class="mb-0">Pending</h6>
+                            <small class="text-muted">Total</small>
                           </div>
                           <div class="user-progress">
-                            <small class="fw-semibold">849k</small>
+                            <small class="fw-semibold" id="pendingLoanAmount">849k</small>
                           </div>
                         </div>
                       </li>
@@ -285,11 +267,11 @@ include "../common/head.php"
                         </div>
                         <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                           <div class="me-2">
-                            <h6 class="mb-0">Total Due</h6>
+                            <h6 class="mb-0">Total</h6>
                             <small class="text-muted">For all accounts</small>
                           </div>
                           <div class="user-progress">
-                            <small class="fw-semibold">99k</small>
+                            <small class="fw-semibold" id="totalforll">99k</small>
                           </div>
                         </div>
                       </li>
@@ -306,7 +288,7 @@ include "../common/head.php"
                     <ul class="nav nav-pills" role="tablist">
                       <li class="nav-item">
                         <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-tabs-line-card-income" aria-controls="navs-tabs-line-card-income" aria-selected="true">
-                          Six Month Purchase Report
+                          Six Month Credit Report
                         </button>
                       </li>
                     </ul>
@@ -319,14 +301,14 @@ include "../common/head.php"
                             <img src="../assets/img/icons/unicons/wallet.png" alt="User" />
                           </div>
                           <div>
-                            <small class="text-muted d-block">Total Expenditure</small>
-                            <div class="d-flex align-items-center">
+                            <small class="text-muted d-block">Total Credit in the past Six month</small>
+                            <!-- <div class="d-flex align-items-center">
                               <h6 class="mb-0 me-1" id="totalspent"></h6>
                               <small class="text-success fw-semibold" id="totalspentchange">
                                 <i class="bx bx-chevron-up"></i>
 
                               </small>
-                            </div>
+                            </div> -->
                           </div>
                         </div>
                         <div id="incomeChart"></div>
@@ -466,14 +448,18 @@ include "../common/head.php"
 
             include "../common/footer.php";
             ?>
-            <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
-            <script src="../assets/js/populatetable.js"></script>
-            <script src="../assets/js/userorderstatisticschart.js"></script>
-            <script src="../assets/js/mark-Notification-read.js"></script>
 
-            <!-- <script src="../assets/js/userdashboarddata.js"></script> -->
+            <!-- <script src="../assets/js/populatetable.js"></script> -->
+            <script src="../assets/js/chartdount.js"></script>
+            <!-- <script src="../assets/js/userorderstatisticschart.js"></script>
+
+            <script src="../assets/js/userdashboarddata.js"></script> -->
 
             <script src="../assets/js/tablefunctionalities.js"></script>
+            <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
+            <script src="../assets/js/branchpicahrt1.js"></script>
+            <script src="../assets/js/linegraphp.js"></script>
+
 </body>
 
 </html>
