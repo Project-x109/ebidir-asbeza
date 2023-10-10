@@ -63,8 +63,8 @@ include "../common/head.php";
                                                 <?php
                                                 // Loop through the database results and generate table rows
                                                 while ($row = $result->fetch_assoc()) {
-                                                    echo "<tr id='row-{$row['id']}'>";
-                                                    echo "<td>{$row['id']}</td>";
+                                                    echo "<tr>";
+                                                    echo "<td>{$row['user_id']}</td>";
                                                     // Assuming the 'profile' column contains image URLs
                                                     echo "<td>
                           <ul class='list-unstyled users-list m-0 avatar-group d-flex align-items-center'>

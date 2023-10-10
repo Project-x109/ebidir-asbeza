@@ -1,7 +1,10 @@
 <?php
 include "../connect.php"; // Include your database connection script
 
-// SQL query to retrieve loan data for the past 6 months for all providers
+// Get the provider ID from the session
+session_start();
+
+// SQL query to retrieve loan data for the past 6 months
 $sql = "SELECT price, status FROM loans";
 $stmt = $conn->prepare($sql);
 $stmt->execute();
@@ -38,10 +41,15 @@ if ($result->num_rows > 0) {
 } else {
     // Handle the case when no data is found
     header('HTTP/1.0 404 Not Found');
-    echo json_encode(['error' => 'Data not found']);
+    $loanData = array(
+        'total' => 0,
+        'paid' => 0,
+        'unpaid' => 0,
+        'pending' => 0
+    );
+    echo json_encode($loanData);
 }
 
 // Close the database connection
 $stmt->close();
 $conn->close();
-?>
