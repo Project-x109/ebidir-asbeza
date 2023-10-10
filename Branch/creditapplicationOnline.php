@@ -6,7 +6,6 @@ include "../common/Authorization.php";
 <?php
 include "../common/head.php";
 ?>
-
 <body>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
@@ -47,13 +46,12 @@ include "../common/head.php";
                                                     <th>Credit Limit</th>
                                                     <th>Credit Score</th>
                                                     <th>Requsted Date</th>
-                                                    <th>Provider</th>
                                                     <th>Update payment</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $sql = "SELECT *, loans.user_id AS userID, loans.status AS status, loans.id AS loan_id FROM loans INNER JOIN users ON users.user_id = loans.user_id WHERE (loans.status != 'paid' AND loans.provider = '$_SESSION[id]') or (loans.status='approved' and loans.provider='SELF')";
+                                                $sql = "SELECT *, loans.user_id AS userID, loans.status AS status, loans.id AS loan_id FROM loans INNER JOIN users ON users.user_id = loans.user_id WHERE loans.status != 'paid' and loans.status != 'approved' AND loans.provider = 'SELF'";
                                                 $res = $conn->query($sql);
                                                 if ($res->num_rows > 0)
                                                     while ($row = $res->fetch_assoc()) {
@@ -65,8 +63,7 @@ include "../common/head.php";
                                                             <td>" . $row['credit_limit'] . "</td> 
                                                             <td>" . $row['credit_score'] . "</td>   
                                                             <td>" . $row['createdOn'] . "</td>   
-                                                            <td>" . $row['provider'] . "</td>   
-                                                            <td><button class='btn btn-success' $disabled value='$row[loan_id]' onclick='update(this)'>update</button></td>   
+                                                            <td><button class='btn btn-primary' $disabled value='$row[loan_id]' onclick='update(this)'>Approve</button></td>   
                                                             </tr>";
                                                     }
                                                 ?>
@@ -226,7 +223,7 @@ include "../common/head.php";
                                     xhr.onload = function() {
                                         document.location = '';
                                     }
-                                    xhr.open("GET", "ajax.php?loan_id=" + x)
+                                    xhr.open("GET", "ajax.php?loan_id_online=" + x)
                                     xhr.send();
                                 }
                             })

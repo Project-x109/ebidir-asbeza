@@ -2,6 +2,11 @@
 session_start();
 $_SESSION['token'] = bin2hex(random_bytes(35));
 if (isset($_SESSION['role'])) {
+  $loc=$_SESSION['role'];
+  if($_SESSION['role'] == "EA")
+  $loc ="Admin";
+if($_SESSION['role'] == "delivery")
+  $loc ="branch";
   header("Location:" . $_SESSION['role'] . "/index.php");
 }
 include "./sessioncheck.php";

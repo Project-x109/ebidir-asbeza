@@ -62,3 +62,32 @@ if (isset($_GET['loan_id'])) {
     echo 0;
     }
 }
+if (isset($_GET['loan_id_online'])) {
+    $id = $_GET['loan_id_online'];
+    $sql = "SELECT * from loans where id='$id'";
+    $res = $conn->query($sql);
+    $row = $res->fetch_assoc();
+
+    $sql = "SELECT * from users where user_id='$row[user_id]'";
+    $res2 = $conn->query($sql);
+    $row2 = $res2->fetch_assoc();
+    if ($res2) {
+        $sql = "UPDATE loans set status='approved' where id='$id'";
+        $conn->query($sql);
+        $sql = "SELECT * FROM economic where user_id='$row[user_id]'";
+        $res3 = $conn->query($sql);
+        $row3 = $res3->fetch_assoc();
+        $Number_Of_Loans = $row3['Number_Of_Loans'];
+        $fully_repaid_loans = $row3['fully_repaid_loans'];
+        $Source_of_income = $row3['number_of_income'];
+        $Experience = $row3['year'];
+        $score = EconomicScore($Source_of_income, $Experience, $Number_Of_Loans, $fully_repaid_loans);
+        $Number_Of_Loans++;
+        $sql = "update economic set Number_Of_Loans=$Number_Of_Loans, economic_score=$score,fully_repaid_loans=$fully_repaid_loans where user_id='$row[user_id]'";
+       $res= $conn->query($sql);
+        if($res)
+        echo 1;
+    else 
+    echo 0;
+    }
+}

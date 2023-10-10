@@ -52,26 +52,26 @@ include "../common/head.php";
                                                     <?php
                                                     if($_SESSION['role']!='EA')
                                                     echo "<th>Update payment</th>";
-                                                else echo "<th></th>";
+                                                else 
+                                                echo "<th></th>";
                                                 ?>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
                                                 $sql = "SELECT *,loans.user_id as userID ,loans.status as status,loans.id as loan_id FROM `loans`  INNER join users on users.user_id=loans.user_id where loans.status!='paid'";
-
                                                 $res = $conn->query($sql);
                                                 if ($res->num_rows > 0)
                                                     while ($row = $res->fetch_assoc()) {
                                                         $disabled = $row['status'] == 'paid' ? "disabled" : "";
                                                         echo "<tr>
-                                                                <td>" . $row['userID']."</td>
-                                                                <td>" . $row['name'] . "</td>
-                                                                <td>" . $row['price'] . "</td>
-                                                                <td>" . $row['credit_limit'] . "</td> 
-                                                                <td>" . $row['credit_score'] . "</td>   
-                                                                <td>" . $row['createdOn'] . "</td>   
-                                                                <td>" . $row['provider'] . "</td>";   
+                                                                <td>".$row['userID']."</td>
+                                                                <td>".$row['name']."</td>
+                                                                <td>".$row['price']."</td>
+                                                                <td>".$row['credit_limit']."</td> 
+                                                                <td>".$row['credit_score']."</td>   
+                                                                <td>".$row['createdOn']."</td>   
+                                                                <td>".$row['provider']."</td>";   
                                                                 echo $_SESSION['role']=="EA"?"<td></td>":"<td><button class='btn btn-success' $disabled value='$row[loan_id]' onclick='update(this)'>update</button></td>   
                                                                 </tr>";
                                                     }
@@ -79,8 +79,6 @@ include "../common/head.php";
                                             </tbody>
                                         </table>
                                     </div>
-
-
                                     <!-- Modal Structure (empty modal) -->
                                     <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
@@ -152,8 +150,6 @@ include "../common/head.php";
                             </div>
                         </div>
                         <!--/ Striped Rows -->
-
-
                         <!-- Modal Structure (empty modal) -->
                         <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none;" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
@@ -172,7 +168,6 @@ include "../common/head.php";
                                 </div>
                             </div>
                         </div>
-
                         <!-- Status Update Modal -->
                         <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -201,7 +196,6 @@ include "../common/head.php";
                         <?php
                         include "../common/footer.php";
                         ?>
-
                         <script>
                             function update(e) {
                                 let x = e.value;
@@ -227,26 +221,18 @@ include "../common/head.php";
                                             setTimeout(() => {
                                                 document.location = '';
                                             }, 1000);
-
                                             // alert(this.responseText)
                                         }
                                         xhr.open("GET", "../branch/ajax.php?loan_id=" + x)
                                         xhr.send();
                                     }
-                                })
-                            }
+                                })}
                         </script>
                         <script>
                             new DataTable('#table-striped');
                         </script>
-
                         <script src="../assets/js/jquery-3.7.0.js"></script>
                         <script src="../assets/js/jquery.dataTables.min.js"></script>
-
-
-
-
-
 </body>
 
 </html>

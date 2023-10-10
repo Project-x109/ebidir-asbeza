@@ -51,7 +51,12 @@ if (!$token || $token !== $_SESSION['token']) {
                     exit();
                 } elseif (strtolower($status) === 'active') {
                     // User is already active, redirect to the appropriate dashboard
-                    $loc = $_SESSION['role'] == "EA" ? "Admin" : $_SESSION['role'] . "/";
+                    $loc=$_SESSION['role'];
+                    if($_SESSION['role'] == "EA")
+                    $loc ="Admin";
+                if($_SESSION['role'] == "delivery")
+                    $loc ="branch";
+                    $loc.="/"
                     header("location: " . $loc);
                     exit();
                 }
