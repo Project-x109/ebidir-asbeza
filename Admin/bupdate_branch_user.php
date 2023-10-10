@@ -72,13 +72,13 @@ if (!empty($validationErrors)) {
     if ($stmtPhone->num_rows > 0) {
         $validationErrors[] = "Phone number is already registered by another user.";
     }
+    // Update user data
 
     if (!empty($validationErrors)) {
         $response['status'] = 'error';
         $response['message'] = 'Validation error(s)';
         $response['errors'] = $validationErrors;
     } else {
-        // Update user data
         $queryUser = "UPDATE users SET name = ?, email = ?, status = ?, phone = ? WHERE user_id = ?";
         $stmtUser = $conn->prepare($queryUser);
 
@@ -101,7 +101,6 @@ if (!empty($validationErrors)) {
             $stmtUser->close();
         }
     }
-
     $stmtEmail->close();
     $stmtPhone->close();
 }

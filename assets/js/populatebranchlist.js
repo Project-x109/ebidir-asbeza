@@ -80,7 +80,7 @@ function editUser(userId) {
     type: 'GET',
     url: 'get_user_data.php',
     data: {
-      id: userId
+      user_id: userId
     },
     headers: {
       'X-CSRF-Token': csrfToken // Send the CSRF token as a header
@@ -93,7 +93,7 @@ function editUser(userId) {
       $('#emailBackdrop').val(userData.email);
       $('#phoneBackdrop').val(userData.phone);
       $('#status').val(userData.status);
-
+      
       // Fetch branch data using user_id
       $.ajax({
         type: 'GET',
@@ -109,7 +109,7 @@ function editUser(userId) {
           $('#locationBackdrop').val(branchData.location);
 
           // Populate the AJAX data (for saving changes)
-          $('#userIdToUpdate').val(userData.id);
+          $('#userIdToUpdate').val(userData.user_id);
           $('#userIdToUpdatebranch').val(branchData.branch_id);
 
           // Set the modal title

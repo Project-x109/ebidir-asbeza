@@ -7,8 +7,8 @@ include "../common/Authorization.php";
 if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $_SESSION['token']) {
     echo json_encode(['error' => 'Authorization Error']);
     exit;
-} else if (isset($_GET['id'])) {
-    $userId = $_GET['id'];
+} else if (isset($_GET['user_id'])) {
+    $userId = $_GET['user_id'];
     $sql = "SELECT * FROM users WHERE user_id = '$userId'";
     $result = $conn->query($sql);
 
