@@ -2909,7 +2909,7 @@ sneat-bootstrap-html-admin-template-free
 │  │  │  ├─ 5.jpg
 │  │  │  └─ 7.jpg
 │  │  ├─ favicon
-│  │  │  └─ favicon.ico
+│  │  │  └─ favicon-16x16.png
 │  │  ├─ icons
 │  │  │  ├─ brands
 │  │  │  │  ├─ asana.png

@@ -16,7 +16,7 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
     <title>Dashboard - Analytics | e-bidir - Bootstrap 5 HTML Admin Template - Pro</title>
     <meta name="description" content="" />
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="./assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="./assets/img/favicon/favicon-16x16.png" />
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
