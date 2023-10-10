@@ -455,7 +455,6 @@ include "../common/head.php"
 
             <script src="../assets/js/userdashboarddata.js"></script> -->
 
-            <script src="../assets/js/tablefunctionalities.js"></script>
             <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
             <script src="../assets/js/branchpicahrt1.js"></script>
             <script src="../assets/js/linegraphp.js"></script>

@@ -25,17 +25,16 @@ if (!$token || $token !== $_SESSION['token']) {
     $stmt->bind_param("s", $phone);
     $stmt->execute();
     $result = $stmt->get_result();
+
     if ($result) {
-     
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $hashedPassword = $row['password'];
             $status = $row['status'];
-            echo $status;
+
             // Verify the user-entered plain text password against the retrieved hashed password
             if (password_verify($userEnteredPassword, $hashedPassword)) {
                 $_SESSION['role'] = $row['role'];
-             
 
                 // Store the user's ID in the session
                 $_SESSION['id'] = $row['user_id'];
@@ -52,8 +51,7 @@ if (!$token || $token !== $_SESSION['token']) {
                     exit();
                 } elseif (strtolower($status) === 'active') {
                     // User is already active, redirect to the appropriate dashboard
-                    $loc = $_SESSION['role']=="EA"?"Admin":$_SESSION['role'] . "/";
-                    echo $loc;
+                    $loc = $_SESSION['role'] == "EA" ? "Admin" : $_SESSION['role'] . "/";
                     header("location: " . $loc);
                     exit();
                 }
@@ -63,10 +61,15 @@ if (!$token || $token !== $_SESSION['token']) {
                 header("Location: index.php");
                 exit();
             }
+        } else {
+            // User with this phone number does not exist, store error message in session
+            $_SESSION['error'] = "User with this phone number does not exist";
+            header("Location: index.php");
+            exit();
         }
     } else {
-        // User with this phone number does not exist, store error message in session
-        $_SESSION['error'] = "User with this phone number does not exist";
+        // Error in executing the SQL query, store error message in session
+        $_SESSION['error'] = "An error occurred while processing your request";
         header("Location: index.php");
         exit();
     }

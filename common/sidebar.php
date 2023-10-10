@@ -88,8 +88,8 @@
 
             <li class="menu-item">
                 <a href="branches.php" class="menu-link">
+                    <i class=" menu-icon tf-iconsbi bi-card-checklist"></i>
 
-                    <i class="menu-icon tf-icons bx bx-table"></i>
                     <div data-i18n="Analytics">Branch Lists</div>
                 </a>
             </li>

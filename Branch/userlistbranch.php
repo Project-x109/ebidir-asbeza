@@ -150,10 +150,6 @@ include "../common/head.php";
 
 
                         <script src="../assets/js/populateuserlistbranch.js"></script>
-
-                        <script src="../assets/js/tablefunctionalities.js">
-                            // JavaScript for pagination and search functionality
-                        </script>
                         <script src="../assets/js/jquery-3.7.0.js"></script>
                         <script src="../assets/js/jquery.dataTables.min.js"></script>
 

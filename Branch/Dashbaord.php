@@ -433,7 +433,6 @@ include "../common/head.php";;
                         <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
                         <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
-                        <!-- <script src="../assets/js/branchdetail.js"></script> -->
                         <script src="../assets/js/branchtotalRevenueChart1.js"></script>
                         <script src="../assets/js/linegraphp.js"></script>
                         <script src="../assets/js/chartdount.js"></script>

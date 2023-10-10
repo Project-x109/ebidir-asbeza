@@ -521,13 +521,9 @@ include "../common/head.php";
     <!--     <script src="../assets/js/dashboards-analytics.js"></script>
  -->
     <script src="../assets/js/mark-Notification-read.js"></script>
-    <script src="../assets/js/branchdetail.js"></script>
+ 
     <script src="../assets/js/branchtotalRevenueChart.js"></script>
     <script src="../assets/js/BranchorderStatisticsChart.js"></script>
-
-    <script src="../assets/js/tablefunctionalities.js">
-        // JavaScript for pagination and search functionality
-    </script>
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
