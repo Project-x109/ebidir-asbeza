@@ -19,7 +19,7 @@
 
         <?php
         // session_start();
-        if ($_SESSION['role'] == 'branch') {
+        if ($_SESSION['role'] == 'branch' || $_SESSION['role']=="delivery") {
         ?>
             <li class="menu-item">
                 <a href="Dashbaord.php" class="menu-link">
@@ -53,12 +53,24 @@
                     <div data-i18n="Analytics">Credit Applications</div>
                 </a>
             </li>
-
+         
 
         <?php
         }
         ?>
-
+       <?php
+if($_SESSION['role']=='delivery')
+{
+?>
+   <li class="menu-item">
+                <a href="creditapplicationOnline.php" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-table"></i>
+                    <div data-i18n="Analytics">Online Applications</div>
+                </a>
+</li>
+<?php
+}
+?>
         <?php
         if ($_SESSION['role'] == 'Admin' || $_SESSION['role'] == 'EA') {
         ?>

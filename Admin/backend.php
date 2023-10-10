@@ -238,7 +238,7 @@ if (!$token || $token !== $_SESSION['token']) {
 
         if ($userInsertStmt->execute()) {
             // Update the branch counter in the 'admin_setting' table
-            $sql = "UPDATE admin_setting SET branch=" . ($row['branch'] + 1);
+            $sql = "UPDATE admin_setting SET branch=".($row['branch'] + 1);
             $conn->query($sql);
 
             // Insert branch information into the 'branch' table
