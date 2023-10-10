@@ -43,7 +43,13 @@ if ($result->num_rows > 0) {
 } else {
     // Handle the case when no data is found
     header('HTTP/1.0 404 Not Found');
-    echo json_encode(['error' => 'Data not found']);
+    $loanData = array(
+        'total' => 0,
+        'paid' => 0,
+        'unpaid' => 0,
+        'pending' => 0
+    );
+    echo json_encode($loanData);
 }
 
 // Close the database connection
