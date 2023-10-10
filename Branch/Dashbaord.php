@@ -66,30 +66,69 @@ include "../common/head.php";;
                             <!-- Striped Rows -->
                             <div class="col-md-6 col-lg-12 col-xl-12 order-0 mb-4">
                                 <div class="card">
-                                    <div class="d-flex  mt-3">
-                                        <div style="margin-left: 20px;">
-                                            <input type="text" class="form-control form-control-sm" id="tableSearch" placeholder="Search..." />
-                                        </div>
-                                    </div>
-                                    <h5 class="card-header">List of Current Credit Accounts/Loans</h5>
-                                    <div class="table-responsive text-nowrap">
+
+                                    <h5 class="card-header">Over View of User Credits</h5>
+                                    <div class="table-responsive text-nowrap  ms-3 me-3">
+
+
                                         <table class="table table-striped" id="table-striped">
                                             <thead>
                                                 <tr>
                                                     <th>Account Name</th>
                                                     <th>ID</th>
+                                                    <th>Total Loan </th>
+                                                    <th>Total Loan Paid</th>
+                                                    <th>Total Loan Pending</th>
+                                                    <th>Total Loan Unpaid</th>
                                                     <th>Credit Limit</th>
-                                                    <th>Total Credit Spent</th>
-                                                    <th>Credit Left</th>
-                                                    <th>Payment Date</th>
-                                                    <th>Status</th>
-                                                    <th>Minors</th>
-                                                    <th>Update Status</th>
+                                                    <th>Level</th>
+                                                    <th>Branch Name(Location)</th>
                                                     <th>Detail</th>
-                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="table-border-bottom-0">
+                                                <?php
+                                                $sql = "SELECT 
+                                                    u.user_id AS user_id, 
+                                                    u.name AS user_name, 
+                                                    u.credit_limit AS user_credit_limit, 
+                                                    u.level AS user_credit_level, 
+                                                    SUM(l.price) AS total_loan_amount,
+                                                    SUM(CASE WHEN l.status = 'paid' THEN l.price ELSE 0 END) AS total_paid_amount,
+                                                    SUM(CASE WHEN l.status = 'pending' THEN l.price ELSE 0 END) AS total_pending_amount,
+                                                    SUM(CASE WHEN l.status != 'paid' AND l.status != 'pending' THEN l.price ELSE 0 END) AS total_unpaid_amount,
+                                                    b.branch_name AS branch_name,
+                                                    b.location AS branch_location
+                                                FROM users AS u
+                                                LEFT JOIN loans AS l ON u.user_id = l.user_id
+                                                LEFT JOIN branch AS b ON l.provider = b.branch_id
+                                                WHERE u.role = 'user' AND b.branch_id = '" . $_SESSION['id'] . "'
+                                                GROUP BY u.user_id, u.name, u.credit_limit, u.level, b.branch_name, b.location
+                                                ORDER BY u.user_id";
+
+                                                $result = $conn->query($sql);
+                                                if ($result->num_rows > 0) {
+                                                    while ($row = $result->fetch_assoc()) {
+                                                        echo '<tr>';
+                                                        echo '<td>' . $row['user_name'] . '</td>';
+                                                        echo '<td>' . $row['user_id'] . '</td>';
+                                                        echo '<td>' . $row['total_loan_amount'] . '</td>';
+                                                        echo '<td>' . $row['total_paid_amount'] . '</td>';
+                                                        echo '<td>' . $row['total_pending_amount'] . '</td>';
+                                                        echo '<td>' . $row['total_unpaid_amount'] . '</td>';
+                                                        echo '<td>' . $row['user_credit_limit'] . '</td>';
+                                                        echo '<td>' . $row['user_credit_level'] . '</td>';
+                                                        echo '<td>' . $row['branch_name'] . ' (' . $row['branch_location'] . ')</td>';
+                                                        echo '<td><a href="userdetail.php?user_id=' . $row['user_id'] . '">Detail</a></td>'; // Replace 'user_detail.php' with the actual URL
+                                                        echo '</tr>';
+                                                    }
+                                                } else {
+                                                    echo '<tr><td colspan="7">No users found</td></tr>';
+                                                }
+
+                                                // Close the database connection
+
+                                                ?>
                                             </tbody>
                                         </table>
 
@@ -137,33 +176,7 @@ include "../common/head.php";;
                                         </div>
 
                                     </div>
-                                    <!-- Pagination and Search Controls -->
-                                    <div class="d-flex justify-content-between mt-3">
-                                        <div style="margin-left: 20px;">
-                                            <!--   <label for="recordsPerPage">Records per page:</label> -->
-                                            <select id="recordsPerPage" class="form-select form-select-sm">
-                                                <option value="5">5</option>
-                                                <option value="10">10</option>
-                                                <option value="15">15</option>
-                                            </select>
-                                        </div>
-                                        <div style="margin-right: 20px;">
-                                            <nav aria-label="Page navigation">
-                                                <ul class="pagination pagination-sm">
-                                                    <li class="page-item">
-                                                        <a class="page-link btn btn-xs btn-dark" href="#" id="prevPage">
-                                                            Previous
-                                                        </a>
-                                                    </li>
-                                                    <li class="page-item">
-                                                        <a class="page-link btn btn-xs btn-primary" href="#" id="nextPage">
-                                                            Next
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </nav>
-                                        </div>
-                                    </div>
+
                                 </div>
 
 
@@ -454,15 +467,23 @@ include "../common/head.php";;
                         <?php
                         include "../common/footer.php";
                         ?>
+                        <script>
+                            $(document).ready(function() {
+                                $('#table-striped').DataTable();
+                            });
+                        </script>
+                        <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+                        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
                         <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
-                        <script src="../assets/js/branchdetail.js"></script>
+                        <!-- <script src="../assets/js/branchdetail.js"></script> -->
                         <script src="../assets/js/branchtotalRevenueChart1.js"></script>
                         <script src="../assets/js/linegraphp.js"></script>
                         <script src="../assets/js/chartdount.js"></script>
-                        <script src="../assets/js/tablefunctionalities.js"></script>
+
                         <script async defer src="https://buttons.github.io/buttons.js"></script>
                         <script src="../assets/js/branchgrowthchart.js"></script>
-                        <script src="../assets/js/branchpicahrt.js"></script>
+                        <script src="../assets/js/branchpicahrt1.js"></script>
 
 
 </body>
