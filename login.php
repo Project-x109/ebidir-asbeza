@@ -108,8 +108,8 @@ if (!$token || $token !== $_SESSION['token']) {
                 $mail->isSMTP();
                 $mail->Host = 'smtp.gmail.com'; // Replace with your SMTP server
                 $mail->SMTPAuth = true;
-                $mail->Username = 'amanuelgirma108@gmail.com'; // Replace with your SMTP username
-                $mail->Password = 'fyupdrokktlcghpb'; // Replace with your SMTP password
+                $mail->Username = 'elite.ethiopia@gmail.com'; // Replace with your SMTP username
+                $mail->Password = 'asybyikorkslidwa'; // Replace with your SMTP password
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587; // Port may vary depending on the service
                 $recipientQuery = "SELECT  name FROM users WHERE email = '$email'";
@@ -119,7 +119,7 @@ if (!$token || $token !== $_SESSION['token']) {
                     $recipientName = $row['name'];
 
                     // Recipients
-                    $mail->setFrom('amanuelgirma108@gmail.com', 'E-bidir');
+                    $mail->setFrom('elite.ethiopia@gmail.com', 'E-bidir');
                     $mail->addAddress($email, $recipientName); // Add recipient from the database
                 } else {
                     // If the token doesn't match any user, handle the error
@@ -437,8 +437,8 @@ function sendEmailNotification($newToken, $conn)
         $mail->isSMTP(); // Send using SMTP
         $mail->Host = 'smtp.gmail.com'; // Your SMTP server
         $mail->SMTPAuth = true; // Enable SMTP authentication
-        $mail->Username = 'amanuelgirma108@gmail.com'; // SMTP username
-        $mail->Password = 'kvwgyeutctlizikd'; // SMTP password
+        $mail->Username = 'elite.ethiopia@gmail.com'; // SMTP username
+        $mail->Password = 'wpewmjfquezekosh'; // SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587; // TCP port to connect to
         // Get recipient's email address from the database using the token
@@ -450,7 +450,7 @@ function sendEmailNotification($newToken, $conn)
             $recipientName = $row['name'];
 
             // Recipients
-            $mail->setFrom('amanuelgirma108@gmail.com', 'E-bidir');
+            $mail->setFrom('elite.ethiopia@gmail.com', 'E-bidir');
             $mail->addAddress($recipientEmail, $recipientName); // Add recipient from the database
         } else {
             // If the token doesn't match any user, handle the error

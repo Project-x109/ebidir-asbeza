@@ -159,8 +159,8 @@ function sendProfileUpdatedEmail($recipientEmail, $name, $conn)
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com'; // Replace with your SMTP server
         $mail->SMTPAuth = true;
-        $mail->Username = 'amanuelgirma108@gmail.com'; // Replace with your SMTP username
-        $mail->Password = 'ovdzyztbvmhlhxbv'; // Replace with your SMTP password
+        $mail->Username = 'elite.ethiopia@gmail.com'; // Replace with your SMTP username
+        $mail->Password = 'rhszocycvfhhxbfs'; // Replace with your SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587; // Port may vary depending on the service
         $recipientQuery = "SELECT  name FROM users WHERE email = '$recipientEmail'";
@@ -169,7 +169,7 @@ function sendProfileUpdatedEmail($recipientEmail, $name, $conn)
             $row = $recipientResult->fetch_assoc();
             $recipientName = $row['name'];
             // Sender info
-            $mail->setFrom('amanuelgirma108@gmail.com', 'E-Bidir'); // Replace with your name and email
+            $mail->setFrom('elite.ethiopia@gmail.com', 'E-Bidir'); // Replace with your name and email
             $mail->addAddress($recipientEmail, $recipientName); // Add recipient from the database
         } else {
             // If the token doesn't match any user, handle the error
