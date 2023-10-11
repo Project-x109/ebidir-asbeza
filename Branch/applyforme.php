@@ -14,7 +14,8 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
     <title>Dashboard - Analytics | e-bidir - Bootstrap 5 HTML Admin Template - Pro</title>
-    <meta name="description" content="" />
+    <meta name="description" content="Unlock financial opportunities and secure your future with E-bidir Asbeza. We provide accessible credit solutions that empower you to take control of your financial journey. Discover the key to financial freedom and seize the opportunities you deserve." />
+
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="./assets/img/favicon/favicon-16x16.png" />
     <!-- Fonts -->

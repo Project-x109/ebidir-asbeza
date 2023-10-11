@@ -17,9 +17,9 @@ if (isset($_GET['token'])) {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Forgot Password Basic - Pages | ThemeSelection - Bootstrap 5 HTML Admin Template - Pro</title>
+ <title>Credit Empowerment at E-bidir Asbeza - Your Path to Financial Freedom</title>
+    <meta name="description" content="Unlock financial opportunities and secure your future with E-bidir Asbeza. We provide accessible credit solutions that empower you to take control of your financial journey. Discover the key to financial freedom and seize the opportunities you deserve." />
 
-    <meta name="description" content="" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="./assets/img/favicon/favicon-16x16.png" />
