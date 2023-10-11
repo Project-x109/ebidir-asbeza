@@ -88,6 +88,7 @@ $row = $res->fetch_assoc();
                             </div>
                         </a>
                     </li>
+
                     <li>
                         <div class="dropdown-divider"></div>
                     </li>
@@ -97,15 +98,24 @@ $row = $res->fetch_assoc();
                             <span class="align-middle">Change Password</span>
                         </a>
                     </li>
-<!--                     <li>
-                        <a class="dropdown-item" href="#">
-                            <span class="d-flex align-items-center align-middle">
-                                <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                                <span class="flex-grow-1 align-middle">Billing</span>
-                                <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                            </span>
-                        </a>
-                    </li> -->
+                    <?php
+                    // session_start();
+                    if ($_SESSION['role'] == 'user') {
+                        if (!$row || $row['form_done'] == 0) {
+                            // Display the link only if "form_done" is not set or is 0
+                    ?>
+                            <li>
+                                <a class="dropdown-item" href="../User/personal.php">
+                                    <span class="d-flex align-items-center align-middle">
+                                        <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
+                                        <span class="flex-grow-1 align-middle">Add Personal Information</span>
+                                    </span>
+                                </a>
+                            </li>
+                    <?php
+                        }
+                    }
+                    ?>
                     <li>
                         <div class="dropdown-divider"></div>
                     </li>
