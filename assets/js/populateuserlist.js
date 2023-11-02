@@ -135,18 +135,20 @@ function editUser(userId) {
   showLoader();
   var csrfToken = document.getElementById('csrf-token').getAttribute('value');
   console.log(csrfToken);
+  console.log(userId);
  
   $.ajax({
     type: 'GET',
     url: 'get_user_data.php', // Create a PHP file to fetch user data
     data: {
-      id: userId
+      user_id: userId
     },
     headers: {
       'X-CSRF-Token': csrfToken // Send the CSRF token as a header
     },
     dataType: 'json',
     success: function (data) {
+      console.log(data);
       hideLoader();
       // Populate the modal with user data
       $('#nameBackdrop').val(data.name);
@@ -157,7 +159,7 @@ function editUser(userId) {
       $('#status').val(data.status);
 
       // Populate the AJAX data (for saving changes)
-      $('#userIdToUpdate').val(data.id); // Assuming you have an input field with id="userIdToUpdate"
+      $('#userIdToUpdate').val(data.user_id); // Assuming you have an input field with id="userIdToUpdate"
 
       // Set the modal title
       $('#backDropModalTitle').text('Edit User');
@@ -315,9 +317,6 @@ function initializeDataTable() {
       {
         data: 'createdOn'
       },
-      {
-        data: 'user_id'
-      },
       // Define columns for other data you have
       {
         // Define 'Actions' column
@@ -332,7 +331,6 @@ function initializeDataTable() {
             '<a class="dropdown-item" href="javascript:void(0);" onclick="editUser(\'' +
             data.id +
             '\');"><i class="bx bx-edit-alt me-1"></i> Edit</a>' +
-            '<a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>' +
             '</div>' +
             '</div>'
           );

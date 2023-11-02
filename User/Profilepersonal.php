@@ -2,7 +2,11 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
+$requiredRoles = array('user'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 $_SESSION['token'] = bin2hex(random_bytes(35));
+
+
 ?>
 
 <?php
@@ -71,6 +75,10 @@ include "../common/head.php"
                 $sql2 = "SELECT * from personal where user_id='$id'";
                 $res2 = $conn->query($sql2);
                 $row2 = $res2->fetch_assoc();
+
+                $sql1 = "SELECT * from users where user_id='$id'";
+                $res = $conn->query($sql1);
+                $row = $res->fetch_assoc();
                 // Check if data exists, if not, set default values
                 if (!$row2) {
                   $row2 = array(
@@ -157,11 +165,21 @@ include "../common/head.php"
                           </select>
                         </div>
                         <input type="hidden" id="originalCriminalRecord" value="<?php echo $row2['Criminal_record']; ?>">
-                        <div class="mt-2">
-                          <!-- Change the button text -->
-                          <button name="update_personal" type="submit" class="btn btn-primary me-2" id="updateButton">Update</button>
-                          <button type="submit" id="cancelButton" class="btn btn-outline-secondary">Cancel</button>
-                        </div>
+                        <?php
+                        // session_start();
+
+                        if (!$row || $row['form_done'] == 1) {
+                          // Display the link only if "form_done" is not set or is 0
+                        ?>
+                          <div class="mt-2">
+                            <!-- Change the button text -->
+                            <button name="update_personal" type="submit" class="btn btn-primary me-2" id="updateButton">Update</button>
+                            <button type="submit" id="cancelButton" class="btn btn-outline-secondary">Cancel</button>
+                          </div>
+                        <?php
+                        }
+
+                        ?>
                     </form>
                   </div>
                 </div>

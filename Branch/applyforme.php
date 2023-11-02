@@ -2,6 +2,8 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
+$requiredRoles = array('branch','delivery'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 $_SESSION['token'] = bin2hex(random_bytes(35));
 // head part and all links
 ?>

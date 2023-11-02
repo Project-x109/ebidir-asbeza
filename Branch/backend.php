@@ -2,6 +2,8 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
+$requiredRoles = array('branch','delivery'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 include '../user/functions.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -176,7 +178,7 @@ function sendPasswordEmail($recipientEmail, $recipientName, $conn)
         // Content
         $mail->isHTML(true);
         $mail->Subject = 'Your Password';
-        $loginlink = "http://localhost/sneat-bootstrap-html-admin-template-free/index.php";
+        $loginlink = "http://asbeza.ebidir.net/index.php";
         $mail->Body = '
     <html>
     <head>

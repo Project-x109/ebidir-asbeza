@@ -2,6 +2,9 @@
 // Include your database connection code here
 include "../connect.php";
 session_start();
+include "../common/Authorization.php";
+$requiredRoles = array('branch','delivery'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 
 // Define an SQL query to fetch loan status counts
 $loanQuery = "SELECT

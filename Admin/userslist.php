@@ -2,6 +2,8 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
+$requiredRoles = array('Admin','EA'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 $_SESSION['token'] = bin2hex(random_bytes(35));
 // Execute the query
 
@@ -79,7 +81,7 @@ include "../common/head.php";
                           <th>Credit Limit</th>
                           <th>Level</th>
                           <th>Created On</th>
-                          <th>User Id</th>
+                          
                           <th>Actions</th>
                         </tr>
                       </thead>
@@ -110,6 +112,7 @@ include "../common/head.php";
                           echo "<td>{$row['dob']}</td>";
                           $status = $row['status'];
                           $badgeClass = '';
+                          $user=$row['user_id'];
 
                           if ($status === 'active') {
                             $badgeClass = 'success';
@@ -124,7 +127,7 @@ include "../common/head.php";
                           echo "<td>{$row['credit_limit']}</td>";
                           echo "<td>{$row['level']}</td>";
                           echo "<td>{$row['createdOn']}</td>";
-                          echo "<td>{$row['user_id']}</td>";
+                         
                           ?>
                           <td>
                                   <div class='dropdown'>
@@ -132,8 +135,9 @@ include "../common/head.php";
                                           <i class='bx bx-dots-vertical-rounded'></i>
                                       </button>
                                       <div class='dropdown-menu'>
-                                      <a class='dropdown-item' href='javascript:void(0);' onclick="editUser('<?=$row['user_id']?>');"><i class='bx bx-edit-alt me-1'></i> Edit</a>
-                                          <a class='dropdown-item' href='javascript:void(0);'><i class='bx bx-trash me-1'></i> Delete</a>
+                                      <a class='dropdown-item' href='javascript:void(0);' onclick="editUser('<?=$user?>')">
+
+                                      <i class='bx bx-edit-alt me-1'></i> Edit</a>
                                       </div>
                                   </div>
                               </td>
@@ -169,7 +173,7 @@ include "../common/head.php";
                                 <input type="text" id="emailBackdrop" name="emailBackdrop" itemid="emailBackdrop" class="form-control" placeholder="xxxx@xxx.xx" />
                               </div>
                               <div class="col mb-0">
-                                <label for="dobBackdrop" class="form-label">DOB</label>
+                                <label for="dobBackdrop" class="form-label">Date of Birth</label>
                                 <input type="date" id="dobBackdrop" name="dobBackdrop" itemid="dobBackdrop" class="form-control" placeholder="DD / MM / YY" />
                               </div>
                             </div>
@@ -195,6 +199,7 @@ include "../common/head.php";
                                     <option value="waiting">Waiting </option>
                                     <option value="active">Active</option>
                                     <option value="inactive">Inactive</option>
+                                    
                                   </select>
                                 </div>
                               </div>

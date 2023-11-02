@@ -2,6 +2,9 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
+$requiredRoles = array('branch','delivery'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
+
 ?>
 <?php
 include "../common/head.php";

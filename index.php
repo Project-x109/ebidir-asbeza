@@ -110,7 +110,7 @@ include "./sessioncheck.php";
               </div>
               <div class="mb-3">
                 <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
-                <div class="my-2 mx-auto center"><?php echo isset($_SESSION['error']) ? $_SESSION['error'] : ""; ?></div>
+                <div class="my-2 mx-auto center"></div>
               </div>
             </form>
 

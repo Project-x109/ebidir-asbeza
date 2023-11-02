@@ -1,6 +1,9 @@
 <?php
 include '../connect.php';
 include '../user/functions.php';
+include "../common/Authorization.php";
+$requiredRoles = array('branch'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 session_start();
 function dateDiffInDays($date1, $date2)
 {

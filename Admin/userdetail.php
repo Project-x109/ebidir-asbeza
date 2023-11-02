@@ -3,6 +3,8 @@ include "../connect.php";
 session_start();
 include "../common/Authorization.php";
 include "../common/head.php";
+$requiredRoles = array('Admin','EA'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 ?>
 
 <body>

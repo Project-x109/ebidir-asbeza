@@ -41,7 +41,7 @@
                 <!-- Grid column -->
                 <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
                     <!-- Content -->
-                    <h6 class="text-uppercase fw-bold">Company name</h6>
+                    <h6 class="text-uppercase fw-bold">Elite FinTech's Solution</h6>
                     <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
                     <p>
                         Here you can use rows and columns to organize your footer
@@ -57,16 +57,10 @@
                     <h6 class="text-uppercase fw-bold">Products</h6>
                     <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
                     <p>
-                        <a href="#!" class="text-dark">MDBootstrap</a>
+                        <a href="#!" class="text-dark">E-bidir</a>
                     </p>
                     <p>
-                        <a href="#!" class="text-dark">MDWordPress</a>
-                    </p>
-                    <p>
-                        <a href="#!" class="text-dark">BrandFlow</a>
-                    </p>
-                    <p>
-                        <a href="#!" class="text-dark">Bootstrap Angular</a>
+                        <a href="#!" class="text-dark">E-bidir Asbeza</a>
                     </p>
                 </div>
                 <!-- Grid column -->
@@ -77,16 +71,7 @@
                     <h6 class="text-uppercase fw-bold">Useful links</h6>
                     <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
                     <p>
-                        <a href="#!" class="text-dark">Your Account</a>
-                    </p>
-                    <p>
-                        <a href="#!" class="text-dark">Become an Affiliate</a>
-                    </p>
-                    <p>
-                        <a href="#!" class="text-dark">Shipping Rates</a>
-                    </p>
-                    <p>
-                        <a href="#!" class="text-dark">Help</a>
+                        <a href="http://e-bidir.com/" class="text-dark">E-bidir</a>
                     </p>
                 </div>
                 <!-- Grid column -->
@@ -96,7 +81,7 @@
                     <!-- Links -->
                     <h6 class="text-uppercase fw-bold">Contact</h6>
                     <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
-                    <p><i class="fas fa-home mr-3"></i> New York, NY 10012, US</p>
+                    <p><i class="fas fa-home mr-3"></i> Addis Ababa, ET 10012, US</p>
                     <p><i class="fas fa-envelope mr-3"></i> info@example.com</p>
                     <p><i class="fas fa-phone mr-3"></i> + 01 234 567 88</p>
                     <p><i class="fas fa-print mr-3"></i> + 01 234 567 89</p>
@@ -155,7 +140,6 @@
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 <!-- Include the JavaScript file for authorization -->
-<script src="../assets/js/authorization.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="../assets/js/logout.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

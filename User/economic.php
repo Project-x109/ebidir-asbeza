@@ -2,6 +2,8 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
+$requiredRoles = array('user'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 $_SESSION['token'] = bin2hex(random_bytes(35));
 ?>
 
@@ -60,12 +62,15 @@ include "../common/head.php";
                   </div>
                   <?php
                   $sql = "SELECT * FROM economic WHERE user_id = '" . $_SESSION['id'] . "'";
+                  $sql1 = "SELECT * from users where user_id='$id'";
+                  $res1 = $conn->query($sql1);
+                  $row1 = $res1->fetch_assoc();
+
                   $res = $conn->query($sql);
                   $found = $res->num_rows;
                   $field_of_employeement = "";
                   $number_of_income = "";
                   $year = "";
-                  $branch = "";
                   $position = "";
                   $salary = "";
                   if ($res->num_rows) {
@@ -73,7 +78,6 @@ include "../common/head.php";
                     $field_of_employeement = $row['field_of_employeement'];
                     $number_of_income = $row['number_of_income'];
                     $year = $row['year'];
-                    $branch = $row['branch'];
                     $position = $row['position'];
                     $salary = $row['salary'];
                   }
@@ -82,7 +86,7 @@ include "../common/head.php";
                   <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
                   <div class="card-body">
                     <form id="economicForm" action="backend.php" method="POST">
-                    <input type="hidden" name="token" id="csrf-token" value="<?php echo $_SESSION['token'] ?? '' ?>">
+                      <input type="hidden" name="token" id="csrf-token" value="<?php echo $_SESSION['token'] ?? '' ?>">
                       <input type="hidden" name="add_economic" value="1">
                       <input type="hidden" name="id" value='<?php echo $_SESSION['id'] ?>' />
                       <div class="row mb-4">
@@ -115,7 +119,7 @@ include "../common/head.php";
                           </div>
                         </div>
 
-                        <label class="col-sm-2 col-form-label" for="marrigeStatus">Branch Name:<span class="text-danger">*</span></label>
+                        <!-- <label class="col-sm-2 col-form-label" for="marrigeStatus">Branch Name:<span class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
                             <span id="basic-icon-default-companyname2" class="input-group-text"><i class="bx bx-map-pin"></i></span>
@@ -145,11 +149,7 @@ include "../common/head.php";
                               ?>
                             </select>
                           </div>
-                        </div>
-
-                      </div>
-
-                      <div class="row mb-4">
+                        </div> -->
                         <label for="html5-datetime-local-input" class="col-md-2 col-form-label">Position :<span class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
@@ -157,8 +157,13 @@ include "../common/head.php";
                             <input type="text" id="basic-icon-default-position" class="form-control" placeholder="Manger" aria-label="Manger" aria-describedby="basic-icon-default-position2" name="position" value='<?php echo $position ?>' />
 
                           </div>
+
                         </div>
 
+                      </div>
+
+
+                      <div class="row mb-4">
                         <label class="col-sm-2 col-form-label" for="basic-icon-default-salary">Salary :<span class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
@@ -167,15 +172,21 @@ include "../common/head.php";
                           </div>
                         </div>
                       </div>
+                      <?php
 
-
-                      <div class="row justify-content-end">
-                        <div class="col-sm-10">
-                          <button type="submit" id="submit-btn" name='<?php echo $found ? "update_economic" : "add_economic" ?>' class="btn btn-primary mb-4">
-                            <?php echo $found ? "Update" : "Submit" ?>
-                          </button>
+                      if (!$row1 || $row1['form_done'] == 0) {
+                        // Display the link only if "form_done" is not set or is 0
+                      ?>
+                        <div class="row justify-content-end">
+                          <div class="col-sm-10">
+                            <button type="submit" id="submit-btn" name='<?php echo $found ? "update_economic" : "add_economic" ?>' class="btn btn-primary mb-4">
+                              <?php echo $found ? "Update" : "Submit" ?>
+                            </button>
+                          </div>
                         </div>
-                      </div>
+                      <?php
+                      }
+                      ?>
                     </form>
                   </div>
                   <div class="loader" id="loader">
@@ -201,14 +212,14 @@ include "../common/head.php";
         <div class="buy-now">
         </div>
         <!-- / Content -->
+        <div class="container my-5">
+          <?php
+          include "../common/footer.php";
+          ?>
 
-        <?php
-        include "../common/footer.php";
-        ?>
 
-
-        <!-- Page JS -->
-        <script src="../assets/js/ui-toasts-economic.js"></script>
+          <!-- Page JS -->
+          <script src="../assets/js/ui-toasts-economic.js"></script>
 
 </body>
 

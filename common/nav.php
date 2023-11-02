@@ -22,13 +22,26 @@ $row = $res->fetch_assoc();
         </div>
         <!-- /Search -->
 
+
         <ul class="navbar-nav flex-row align-items-center ms-auto">
+            <?php
+            // session_start();
+            if ($_SESSION['role'] == 'user') {
+            ?>
+                <li class="nav-item lh-1 me-3 ms-4">
+                    <a class="github-button" data-icon="octicon-star" data-size="large" data-show-count="false" aria-label="Star ThemeSelection/e-bidir-html-admin-template-free on GitHub">
+                        <span id="creditLevel"><?php echo $_SESSION['level']; ?></span>
+                    </a>
+                </li>
+            <?php
+            }
+            ?>
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
 
                     <?php
                     // session_start();
-                    if ($_SESSION['role'] == 'branch' || $_SESSION['role'] == 'Admin') {
+                    if ($_SESSION['role'] == 'branch' || $_SESSION['role'] == 'Admin' || $_SESSION['role'] == 'delivery' || $_SESSION['role'] == 'EA') {
                     ?>
                         <div class="avatar avatar-online">
                             <img src="../assets/img/avatars/OIP.jfif" alt class="w-px-40 h-auto rounded-circle" />
@@ -105,7 +118,7 @@ $row = $res->fetch_assoc();
                             // Display the link only if "form_done" is not set or is 0
                     ?>
                             <li>
-                                <a class="dropdown-item" href="../User/personal.php">
+                                <a class="dropdown-item" href="../user/personal.php">
                                     <span class="d-flex align-items-center align-middle">
                                         <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
                                         <span class="flex-grow-1 align-middle">Add Personal Information</span>

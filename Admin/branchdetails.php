@@ -3,6 +3,8 @@ include "../connect.php";
 session_start();
 include "../common/Authorization.php";
 include "../common/head.php";
+$requiredRoles = array('Admin','EA'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 ?>
 
 <body>
@@ -185,18 +187,18 @@ include "../common/head.php";
                                             <button class="btn p-0" type="button" id="orederStatistics" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="bx bx-dots-vertical-rounded"></i>
                                             </button>
-                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
+                                            <!-- <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
                                                 <a class="dropdown-item" href="javascript:void(0);">Select All</a>
                                                 <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
                                                 <a class="dropdown-item" href="javascript:void(0);">Share</a>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-center mb-3">
                                             <div class="d-flex flex-column align-items-center gap-1">
                                                 <h2 class="mb-2" id="creditScore">750</h2>
-                                                <span>Total Records</span>
+                                                <span>Total Loaned</span>
                                             </div>
                                             <div id="orderStatisticsChart"></div>
                                         </div>
@@ -317,13 +319,13 @@ include "../common/head.php";
                                                     </div>
                                                     <div>
                                                         <small class="text-muted d-block">Loan Status</small>
-                                                        <div class="d-flex align-items-center">
+                                                        <!-- <div class="d-flex align-items-center">
                                                             <h6 class="mb-0 me-1">$459.10</h6>
                                                             <small class="text-success fw-semibold">
                                                                 <i class="bx bx-chevron-up"></i>
                                                                 42.9%
                                                             </small>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </div>
                                                 <canvas id="pieChart" style="margin-top: -50px;" width="400" height="100"></canvas>

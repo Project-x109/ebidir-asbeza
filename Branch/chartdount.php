@@ -1,10 +1,11 @@
 <?php
 include "../connect.php"; // Include your database connection script
-
 // Get the provider ID from the session
 session_start();
+include "../common/Authorization.php";
+$requiredRoles = array('branch','delivery'); // Define the required roles for the specific page
 $provider_id = $_SESSION['id'];
-
+checkAuthorization($requiredRoles);
 // SQL query to retrieve loan data for the past 6 months
 $sql = "SELECT price, status FROM loans WHERE provider = ?";
 $stmt = $conn->prepare($sql);

@@ -2,6 +2,8 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
+$requiredRoles = array('user'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 
 ?>
 
@@ -138,7 +140,7 @@ include "../common/head.php"
                   </div>
                   <!-- /Account -->
                 </div>
-                <div class="card">
+                <!-- <div class="card">
                   <h5 class="card-header">Delete Account</h5>
                   <div class="card-body">
                     <div class="mb-3 col-12 mb-0">
@@ -156,7 +158,7 @@ include "../common/head.php"
                       <button type="submit" class="btn btn-danger deactivate-account">Deactivate Account</button>
                     </form>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>

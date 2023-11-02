@@ -3,6 +3,8 @@ include "../connect.php";
 session_start();
 include "../common/head.php";
 include "../common/Authorization.php";
+$requiredRoles = array('Admin','EA'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 $_SESSION['token'] = bin2hex(random_bytes(35));
 ?>
 
@@ -51,13 +53,28 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
                                 <div class="card mb-4">
                                     <div class="card-header d-flex align-items-center justify-content-between">
                                         <h5 class="mb-0">1. Branch Information</h5>
-                                        <small class="text-muted float-end">Merged input group</small>
+                                        <small class="text-muted float-end"></small>
                                     </div>
                                     <div class="card-body">
                                         <form id="branchForm" action="backend.php" method="POST">
                                             <input type="hidden" name="token" value="<?php echo $_SESSION['token'] ?? '' ?>">
                                             <div class="row mb-4">
                                                 <input type="hidden" name="addbranch" value="1">
+                                                <div class="row mb-4">
+                                                    <label class="col-sm-2 col-form-label" for="basic-icon-default-role">Role :<span class="text-danger">*</span></label>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="role" value="branch" id="radio-role-branch">
+                                                            <label class="form-check-label" for="radio-role-branch">Branch</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="role" value="delivery" id="radio-role-delivery">
+                                                            <label class="form-check-label" for="radio-role-delivery">Delivery</label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
                                                 <label class="col-sm-2 col-form-label" for="basic-icon-default-branchname">Branch Name :<span class="text-danger">*</span></label>
                                                 <div class="col-sm-4">
                                                     <div class="input-group input-group-merge">
@@ -66,12 +83,12 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
                                                     </div>
                                                 </div>
 
-                                                <label class="col-sm-2 form-label" for="basic-icon-default-phone">Phone
+                                                <label class="col-sm-2 col-form-label" for="basic-icon-default-phone">Phone
                                                     Number :<span class="text-danger">*</span></label>
                                                 <div class="col-sm-4">
                                                     <div class="input-group input-group-merge">
                                                         <span id="basic-icon-default-phone2" class="input-group-text"><i class="bx bx-phone"></i></span>
-                                                        <input name="phonenumber" type="text" id="basic-icon-default-phone" class="form-control phone-mask" placeholder="658 799 8941" aria-label="658 799 8941" aria-describedby="basic-icon-default-phone2" />
+                                                        <input name="phonenumber" type="text" id="basic-icon-default-phone" class="form-control phone-mask" placeholder="0919485189" aria-label="658 799 8941" aria-describedby="basic-icon-default-phone2" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -97,6 +114,10 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
                                                 </div>
 
                                             </div>
+
+
+
+
                                             <div class="row justify-content-end">
                                                 <div class="col-sm-10">
 

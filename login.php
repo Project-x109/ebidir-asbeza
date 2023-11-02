@@ -1,6 +1,64 @@
 <?php
-session_start();
 include "connect.php";
+session_start();
+// Define your rate limiting parameters
+$maxRequests = 60; // Maximum number of requests allowed
+$perSecond = 60;  // Requests per second
+$ip = $_SERVER['REMOTE_ADDR']; // Get the client's IP address
+
+// Create a unique identifier for the client
+$identifier = md5($ip);
+
+// Create a storage directory for rate limiting data
+$storageDir = __DIR__ . '/rate_limit_storage/';
+if (!is_dir($storageDir)) {
+    mkdir($storageDir, 0777, true);
+}
+
+// Calculate the current timestamp and the expiration time
+$timestamp = time();
+$expiration = $timestamp - $perSecond;
+
+// Clean up old rate limiting data
+$files = scandir($storageDir);
+foreach ($files as $file) {
+    $filePath = $storageDir . $file;
+    if (is_file($filePath) && filemtime($filePath) < $expiration) {
+        unlink($filePath);
+    }
+}
+
+// Count the number of requests made by the client
+$requests = 1; // Initial request
+$files = scandir($storageDir);
+foreach ($files as $file) {
+    $filePath = $storageDir . $file;
+    if (is_file($filePath)) {
+        $data = file_get_contents($filePath);
+        $requestData = json_decode($data, true);
+        if ($requestData['ip'] === $ip) {
+            $requests++;
+        }
+    }
+}
+
+// Check if the client has exceeded the rate limit
+if ($requests > $maxRequests) {
+    // You can take action here, e.g., return an error response or log the event
+    http_response_code(429); // HTTP 429 Too Many Requests
+    $_SESSION['error'] = "Too Many Requestes Try again Letter";
+    header("Location: index.php");
+    die("Too Many Requestes Try again Letter.");
+}
+
+// Record the client's request
+$filename = $storageDir . $timestamp . '-' . $identifier . '.json';
+$data = json_encode(['ip' => $ip, 'timestamp' => $timestamp]);
+file_put_contents($filename, $data);
+
+// Continue with your application logic
+include "./common/jwt.php";
+
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
@@ -9,6 +67,7 @@ use PHPMailer\PHPMailer\Exception;
 require './assets/PHPMailer/PHPMailer.php';
 require './assets/PHPMailer/SMTP.php';
 require './assets/PHPMailer/Exception.php';
+require './vendor/firebase/php-jwt/src/JWT.php';
 
 $token = htmlspecialchars($_POST['token'], ENT_QUOTES, 'UTF-8');
 if (!$token || $token !== $_SESSION['token']) {
@@ -31,9 +90,29 @@ if (!$token || $token !== $_SESSION['token']) {
             $row = $result->fetch_assoc();
             $hashedPassword = $row['password'];
             $status = $row['status'];
+            $attempt = $row['attempt'];
+            // Check if the account is inactive due to multiple failed attempts
+            if ($attempt >= 3 && $status === 'dormant') {
+                $_SESSION['error'] = "Your account is blocked due to multiple failed attempts.";
+                header("Location: index.php");
+                exit();
+            }
+            if ($status === 'inactive') {
+                $_SESSION['error'] = "Your account is blocked Contact Adminstrators.";
+                header("Location: index.php");
+                exit();
+            }
 
             // Verify the user-entered plain text password against the retrieved hashed password
             if (password_verify($userEnteredPassword, $hashedPassword)) {
+                $attempt = 0;
+
+                // Update the user's login attempts and status
+                $updateSql = "UPDATE `users` SET attempt = ? WHERE user_id = ?";
+                $updateStmt = $conn->prepare($updateSql);
+                $updateStmt->bind_param("is", $attempt, $row['user_id']);
+                $updateStmt->execute();
+
                 $_SESSION['role'] = $row['role'];
 
                 // Store the user's ID in the session
@@ -41,6 +120,10 @@ if (!$token || $token !== $_SESSION['token']) {
                 $_SESSION['dob'] = $row['dob'];
                 $_SESSION['credit_limit'] = $row['credit_limit'];
                 $_SESSION['level'] = $row['level'];
+
+                $tokenjwt = generateJWT($_SESSION['id'], $_SESSION['role']);
+                $_SESSION['tokenjwt'] = $tokenjwt;
+                setcookie('jwt_token', $tokenjwt, time() + 1800, '/');
 
                 // Check user status
                 if ($status === 'waiting') {
@@ -62,8 +145,31 @@ if (!$token || $token !== $_SESSION['token']) {
                 }
             } else {
                 // Password is incorrect, store error message in session
-                $_SESSION['error'] = "Password is incorrect";
+                $_SESSION['attempt'] = $row['attempt'];
+                $attempt = $_SESSION['attempt'];
+                $attempt++;
+
+                if ($attempt >= 3) {
+                    // If login attempts reach the limit, set user status to 'inactive'
+                    $status = 'dormant';
+                    $attempt = 3;
+                }
+
+                // Update the user's login attempts and status
+                $updateSql = "UPDATE `users` SET attempt = ?, status = ? WHERE user_id = ?";
+                $updateStmt = $conn->prepare($updateSql);
+                $updateStmt->bind_param("iss", $attempt, $status, $row['user_id']);
+                $updateStmt->execute();
+
+                // Store error message in session
+                if ($attempt < 3) {
+                    $_SESSION['error'] = "Password is incorrect.You have made " . $attempt . " attempts";
+                } else {
+                    $_SESSION['error'] = "Invalid login attempt. Your account may be blocked due to multiple failed attempts.";
+                }
+
                 header("Location: index.php");
+
                 exit();
             }
         } else {
@@ -97,7 +203,7 @@ if (!$token || $token !== $_SESSION['token']) {
 
         if ($updateTokenResult) {
             // Send an email to the user with the reset password link
-            $resetLink = "http://localhost/sneat-bootstrap-html-admin-template-free/reset_password.php?token=$token";
+            $resetLink = "http://asbeza.ebidir.net/reset_password.php?token=$token";
 
             // Create a new PHPMailer instance
             $mail = new PHPMailer(true);

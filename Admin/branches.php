@@ -2,6 +2,8 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
+$requiredRoles = array('Admin','EA'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 $_SESSION['token'] = bin2hex(random_bytes(35));
 
 
@@ -9,7 +11,7 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
 $sql = "SELECT u.*, b.branch_name, b.location,b.branch_id 
 FROM users AS u
 JOIN branch AS b ON u.user_id = b.branch_id
-WHERE u.role = 'branch'";
+WHERE u.role = 'branch' OR u.role='delivery'";
 
 $result = $conn->query($sql);
 ?>
@@ -72,7 +74,7 @@ include "../common/head.php";
                                                     <th>Phone Number</th>
                                                     <th>Status</th>
                                                     <th>Created On</th>
-                                                    <th></th>
+                                                
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -108,8 +110,7 @@ include "../common/head.php";
                                                     $user=$row['user_id'];
                                                     echo "<td><span class=\"badge bg-label-$badgeClass me-1\">$status</span></td>";
                                                     echo "<td>{$row['createdOn']}</td>"; 
-                                                    echo "<td>
-                                                        </td>";
+                                                
                                                         ?>
                                                     <td>
                                                                 <div class='dropdown'>
@@ -119,7 +120,6 @@ include "../common/head.php";
                                                                     <div class='dropdown-menu'>
                                                                     <a class='dropdown-item' href='javascript:void(0);' onclick="editUser('<?=$user?>')">
                                                                     <i class='bx bx-edit-alt me-1'></i> Edit</a>
-                                                                        <a class='dropdown-item' href='javascript:void(0);'><i class='bx bx-trash me-1'></i> Delete</a>
                                                                     </div>
                                                                 </div>
                                                             </td>

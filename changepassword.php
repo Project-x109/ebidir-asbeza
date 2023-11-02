@@ -71,7 +71,12 @@ if (isset($_SESSION['status']) && $_SESSION['status'] === 'waiting' && isset($_P
                 unset($_SESSION['on_newpassword_page']);
                 // Password updated successfully, redirect to the dashboard
                 $_SESSION['success'] = "Password updated successfully!";
-                $loc = $_SESSION['role'] . "/";
+                $loc = $_SESSION['role'];
+                if ($_SESSION['role'] == "EA")
+                    $loc = "Admin";
+                if ($_SESSION['role'] == "delivery")
+                    $loc = "branch";
+                $loc .= "/";
                 header("location: " . $loc);
                 exit();
             } else {

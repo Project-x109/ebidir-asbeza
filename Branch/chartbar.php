@@ -2,7 +2,9 @@
 
 include "../connect.php";
 session_start();
-
+include "../common/Authorization.php";
+$requiredRoles = array('branch','delivery'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 // Check if the session variable 'id' is set
 if (isset($_SESSION['id'])) {
     // Retrieve data for the last two years

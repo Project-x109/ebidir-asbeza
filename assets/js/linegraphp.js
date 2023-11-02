@@ -130,7 +130,10 @@ fetch('chartline.php')
         },
         yaxis: {
           labels: {
-            show: false
+            show: false,
+            formatter: function (value) {
+              return value + ' ETB';
+            }
           },
           min: 0,
           max: Math.max(...monthlyData) + 1,
@@ -146,5 +149,3 @@ fetch('chartline.php')
   .catch(error => {
     console.error('Error fetching or processing data:', error);
   });
-
-

@@ -1,6 +1,7 @@
 <?php
+include "../common/ratelimiter.php";
 include "../connect.php";
-include "../User/functions.php";
+include "../user/functions.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
@@ -13,6 +14,8 @@ require '../assets/PHPMailer/Exception.php';
 session_start();
 
 include "../common/Authorization.php";
+$requiredRoles = array('Admin', 'EA'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 
 
 $validationErrors = array();
@@ -23,51 +26,8 @@ if (!$token || $token !== $_SESSION['token']) {
     header("Location: index.php");
     exit;
 } else if (isset($_POST['add_user'])) {
-    // Check if the phone number, TIN number, and email are already used
-    $phone = mysqli_real_escape_string($conn, $_POST['phone']);
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $TIN_Number = mysqli_real_escape_string($conn, $_POST['TIN_Number']);
-
-    $phoneQuery = "SELECT * FROM `users` WHERE `phone`=?";
-    $emailQuery = "SELECT * FROM `users` WHERE `email`=?";
-    $TINQuery = "SELECT * FROM `users` WHERE `TIN_Number`=?";
-    $user_idQuery = "SELECT * FROM `users` WHERE `user_id`=?";
-
-    // Create prepared statements
-    $phoneStmt = $conn->prepare($phoneQuery);
-    $phoneStmt->bind_param("s", $phone);
-    $phoneStmt->execute();
-    $phoneResult = $phoneStmt->get_result();
-
-    $emailStmt = $conn->prepare($emailQuery);
-    $emailStmt->bind_param("s", $email);
-    $emailStmt->execute();
-    $emailResult = $emailStmt->get_result();
-
-    $TINStmt = $conn->prepare($TINQuery);
-    $TINStmt->bind_param("d", $TIN_Number);
-    $TINStmt->execute();
-    $TINResult = $TINStmt->get_result();
-
-    $user_idStmt = $conn->prepare($user_idQuery);
-    $user_idStmt->bind_param("s", $user_id);
-    $user_idStmt->execute();
-    $user_idResult = $user_idStmt->get_result();
-
+    // Initialize the validation errors array
     $validationErrors = array();
-
-    if ($phoneResult->num_rows > 0) {
-        $validationErrors[] = "Phone number is already registered.";
-    }
-    if ($emailResult->num_rows > 0) {
-        $validationErrors[] = "Email is already registered.";
-    }
-    if ($TINResult->num_rows > 0) {
-        $validationErrors[] = "TIN number is already registered.";
-    }
-    if ($user_idResult->num_rows > 0) {
-        $validationErrors[] = "User ID is already in use.";
-    }
 
     // Check individual validation conditions and add specific errors to the array
     if (!validatePhone($_POST['phone'])) {
@@ -85,8 +45,45 @@ if (!$token || $token !== $_SESSION['token']) {
     if (!validateAge($_POST['dob'])) {
         $validationErrors[] = "You must be at least 18 years old.";
     }
-    if (!validateImage($_FILES["profile"])) {
+    /* if (!validateImage($_FILES["profile"])) {
         $validationErrors[] = "Invalid image format or file size exceeds the limit.";
+    } */
+
+    // If there are no individual field validation errors, check for duplicates
+    if (empty($validationErrors)) {
+        $phone = mysqli_real_escape_string($conn, $_POST['phone']);
+        $email = mysqli_real_escape_string($conn, $_POST['email']);
+        $TIN_Number = mysqli_real_escape_string($conn, $_POST['TIN_Number']);
+
+        $phoneQuery = "SELECT * FROM `users` WHERE `phone`=?";
+        $emailQuery = "SELECT * FROM `users` WHERE `email`=?";
+        $TINQuery = "SELECT * FROM `users` WHERE `TIN_Number`=?";
+
+        // Create prepared statements
+        $phoneStmt = $conn->prepare($phoneQuery);
+        $phoneStmt->bind_param("s", $phone);
+        $phoneStmt->execute();
+        $phoneResult = $phoneStmt->get_result();
+
+        $emailStmt = $conn->prepare($emailQuery);
+        $emailStmt->bind_param("s", $email);
+        $emailStmt->execute();
+        $emailResult = $emailStmt->get_result();
+
+        $TINStmt = $conn->prepare($TINQuery);
+        $TINStmt->bind_param("d", $TIN_Number);
+        $TINStmt->execute();
+        $TINResult = $TINStmt->get_result();
+
+        if ($phoneResult->num_rows > 0) {
+            $validationErrors[] = "Phone number is already registered.";
+        }
+        if ($emailResult->num_rows > 0) {
+            $validationErrors[] = "Email is already registered.";
+        }
+        if ($TINResult->num_rows > 0) {
+            $validationErrors[] = "TIN number is already registered.";
+        }
     }
 
     if (empty($validationErrors)) {
@@ -101,10 +98,16 @@ if (!$token || $token !== $_SESSION['token']) {
         // Hash and salt the password
         $password = password_hash($randomPassword, PASSWORD_DEFAULT);
 
-        $filename = $_FILES["profile"]["name"];
-        $tempname = $_FILES["profile"]["tmp_name"];
+        // Process the cropped image data
+        $data = $_POST['croppedImageData'];
+        $image_array_1 = explode(";", $data);
+        $image_array_2 = explode(",", $image_array_1[1]);
+        $data = base64_decode($image_array_2[1]);
+
+        // Save the image in a directory (e.g., 'images/')
         $date = date("s-h-d-m-Y");
-        $folder = "../images/" . $date . $filename;
+        $image_name = '../images/' . $date . '.png';
+        file_put_contents($image_name, $data);
 
         // Generate a unique user ID (e.g., "EB0001")
         $sql = "SELECT * FROM admin_setting";
@@ -115,25 +118,21 @@ if (!$token || $token !== $_SESSION['token']) {
         // Create a prepared statement for user insertion
         $userInsertStmt = $conn->prepare("INSERT INTO `users`(`name`, `dob`, `phone`, `password`, `role`, `TIN_Number`, `profile`, `status`, `email`, `user_id`) 
                 VALUES (?, ?, ?, ?, 'user', ?, ?, ?, ?, ?)");
-        $userInsertStmt->bind_param("ssssdssss", $name, $dob, $phone, $password, $TIN_Number, $folder, $status, $email, $user_id);
+        $userInsertStmt->bind_param("ssssdssss", $name, $dob, $phone, $password, $TIN_Number, $image_name, $status, $email, $user_id);
 
         if ($userInsertStmt->execute()) {
-            if (move_uploaded_file($tempname, $folder)) {
-                // Send an email to the user with their unhashed password
-                sendPasswordEmail($email, $randomPassword, $conn);
+            // Send an email to the user with their unhashed password
+            sendPasswordEmail($email, $randomPassword, $conn);
 
-                $_SESSION['success'] = "User created successfully";
-                $sql = "UPDATE admin_setting SET user=" . ($row['user'] + 1);
-                $conn->query($sql);
+            $_SESSION['success'] = "User created successfully";
+            $sql = "UPDATE admin_setting SET user=" . ($row['user'] + 1);
+            $conn->query($sql);
 
-                // Set the success message in the response
-                $response = array('success' => $_SESSION['success']);
-                header('Content-Type: application/json');
-                echo json_encode($response);
-                exit();
-            } else {
-                $_SESSION['error'] = "Failed to upload image";
-            }
+            // Set the success message in the response
+            $response = array('success' => $_SESSION['success']);
+            header('Content-Type: application/json');
+            echo json_encode($response);
+            exit();
         } else {
             $_SESSION['error'] = "Error creating user: " . $conn->error;
         }
@@ -158,6 +157,7 @@ if (!$token || $token !== $_SESSION['token']) {
 
     // Check if the phone number and email are already used
     $branchPhone = mysqli_real_escape_string($conn, $_POST['phonenumber']);
+    $role = mysqli_real_escape_string($conn, $_POST['role']);
     $branchEmail = mysqli_real_escape_string($conn, $_POST['email']);
     $branchName = mysqli_real_escape_string($conn, $_POST['branch_name']);
 
@@ -231,14 +231,15 @@ if (!$token || $token !== $_SESSION['token']) {
         $row = $res->fetch_assoc();
         $branch_id = "EBR" . ($row ? sprintf('%04d', $row['branch']) : '0000');
 
+
         // Create prepared statements for user and branch insertion
         $userInsertStmt = $conn->prepare("INSERT INTO `users`(`name`, `phone`, `password`, `role`, `status`, `email`, `user_id`) 
-                VALUES (?, ?, ?, 'branch', 'waiting', ?, ?)");
-        $userInsertStmt->bind_param("sssss", $branchName, $branchPhone, $password, $branchEmail, $branch_id);
+                VALUES (?, ?, ?, ?, 'waiting', ?, ?)");
+        $userInsertStmt->bind_param("ssssss", $branchName, $branchPhone, $password, $role, $branchEmail, $branch_id);
 
         if ($userInsertStmt->execute()) {
             // Update the branch counter in the 'admin_setting' table
-            $sql = "UPDATE admin_setting SET branch=".($row['branch'] + 1);
+            $sql = "UPDATE admin_setting SET branch=" . ($row['branch'] + 1);
             $conn->query($sql);
 
             // Insert branch information into the 'branch' table
@@ -306,7 +307,7 @@ function sendPasswordEmail($recipientEmail, $password, $conn)
         // Content
         $mail->isHTML(true);
         $mail->Subject = 'Your Password';
-        $loginlink = "http://localhost/sneat-bootstrap-html-admin-template-free/index.php";
+        $loginlink = "http://asbeza.ebidir.net/index.php";
         $mail->Body = '
     <html>
     <head>

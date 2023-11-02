@@ -2,6 +2,8 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
+$requiredRoles = array('user'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 $_SESSION['token'] = bin2hex(random_bytes(35));
 ?>
 
@@ -51,6 +53,9 @@ include "../common/head.php"
                     <?php
                     $sql = "SELECT * FROM personal WHERE user_id = '" . $_SESSION['id'] . "'";
                     $res = $conn->query($sql);
+                    $sql1 = "SELECT * from users where user_id='$id'";
+                    $res1 = $conn->query($sql1);
+                    $row1 = $res1->fetch_assoc();
 
                     if (!$res) {
                       // Handle the SQL query error
@@ -67,7 +72,7 @@ include "../common/head.php"
                     }
                     ?>
                     <h5 class="mb-0">1.Personal Information</h5>
-                    <!-- <small class="text-muted float-end">Merged input group</small> -->
+                    <!-- <small class="text-muted float-end"></small> -->
                   </div>
                   <div class="card-body">
                     <form id="personalForm" action="backend.php" method="POST">
@@ -131,13 +136,21 @@ include "../common/head.php"
                         </div>
 
                       </div>
-                      <div class="row justify-content-end">
-                        <div class="col-sm-10">
-                          <button id="submit-btn" type="submit" name='<?php echo $found ? "update_personal" : "add_personal" ?>' class="btn btn-primary">
-                            <?php echo $found ? "Update" : "Submit" ?>
-                          </button>
+                      <?php
+
+                      if (!$row1 || $row1['form_done'] == 0) {
+                        // Display the link only if "form_done" is not set or is 0
+                      ?>
+                        <div class="row justify-content-end">
+                          <div class="col-sm-10">
+                            <button id="submit-btn" type="submit" name='<?php echo $found ? "update_personal" : "add_personal" ?>' class="btn btn-primary">
+                              <?php echo $found ? "Update" : "Submit" ?>
+                            </button>
+                          </div>
                         </div>
-                      </div>
+                      <?php
+                      }
+                      ?>
                     </form>
                   </div>
 

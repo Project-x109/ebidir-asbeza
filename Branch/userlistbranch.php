@@ -2,6 +2,8 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
+$requiredRoles = array('branch','delivery'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 
 ?>
 <?php
@@ -56,7 +58,7 @@ include "../common/head.php";
                                                     <th>Credit Limit</th>
                                                     <th>Level</th>
                                                     <th>Created On</th>
-                                                    <th>User Id</th>
+                                                    
                                                 </tr>
                                             </thead>
                                             <tbody class="table-border-bottom-0">
@@ -100,7 +102,7 @@ include "../common/head.php";
                                                     echo "<td>{$row['credit_limit']}</td>";
                                                     echo "<td>{$row['level']}</td>";
                                                     echo "<td>{$row['createdOn']}</td>";
-                                                    echo "<td>{$row['user_id']}</td>";
+                                                   
 
                                                     echo "</tr>";
                                                 }
@@ -149,7 +151,6 @@ include "../common/head.php";
                         ?>
 
 
-                        <script src="../assets/js/populateuserlistbranch.js"></script>
                         <script src="../assets/js/jquery-3.7.0.js"></script>
                         <script src="../assets/js/jquery.dataTables.min.js"></script>
 

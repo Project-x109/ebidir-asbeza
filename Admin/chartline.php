@@ -1,7 +1,9 @@
 <?php
 include "../connect.php"; // Include your database connection script
 session_start();
-
+include "../common/Authorization.php";
+$requiredRoles = array('Admin','EA'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 // Check if the 'id' is set in the session
 if (isset($_SESSION['id'])) {
     // SQL query using prepared statement to retrieve loan data for the past 6 months

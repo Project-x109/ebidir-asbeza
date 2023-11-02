@@ -115,7 +115,7 @@ $(document).ready(function () {
           $('#originalnumberOfIncome').val($('#numberOfIncome').val());
           $('#originalyearOfEmployment').val($('#yearOfEmployment').val());
           $('#originalposition').val($('#position').val());
-          $('#originalbranch').val($('#branch').val());
+        /*   $('#originalbranch').val($('#branch').val()); */
 
           Swal.fire({
             icon: 'success',
@@ -153,10 +153,6 @@ $(document).ready(function () {
       {
         id: 'position',
         error: 'Position is required.'
-      },
-      {
-        id: 'branch',
-        error: 'Branch is required.'
       },
       {
         id: 'basic-icon-default-salary',

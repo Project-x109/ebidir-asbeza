@@ -56,7 +56,7 @@ $(document).ready(function () {
             }).then((result) => {
               if (result.isConfirmed) {
                 // Redirect or perform any other action here
-                window.location.href = "Dashbaord.php"; // Replace with the appropriate URL
+                window.location.href = "dashbaord.php"; // Replace with the appropriate URL
               }
             });
           }
@@ -83,10 +83,7 @@ $(document).ready(function () {
         id: "html5-datetime-local-input-YearofEmployment",
         error: "Year of Employment is required.",
       },
-      {
-        id: "basic-icon-default-branchname",
-        error: "Branch Name is required.",
-      },
+     
       {
         id: "basic-icon-default-position",
         error: "Position is required.",

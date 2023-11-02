@@ -2,6 +2,8 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
+$requiredRoles = array('user'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 
 ?>
 
@@ -53,7 +55,7 @@ include "../common/head.php"
                         </h5>
                         <p class="mb-4">Your current credit is <span class="fw-bold"><?php echo $row['credit_limit'] ?> Birr</span> Check your new level badge in
                           your profile.</p>
-                        <a href="#table-striped" class="btn btn-sm btn-outline-primary">View Table</a>
+                        <!-- <a href="#table-striped" class="btn btn-sm btn-outline-primary">View Table</a> -->
                       </div>
                     </div>
                     <div class="col-sm-5 text-center text-sm-left">
@@ -77,16 +79,16 @@ include "../common/head.php"
                             <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               <i class="bx bx-dots-vertical-rounded"></i>
                             </button>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+                            <!-- <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
                               <a class="dropdown-item" href="javascript:void(0);">View More</a>
                               <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                            </div>
+                            </div> -->
                           </div>
                         </div>
                         <div id="CreditLimitCardID">
                           <span class="fw-semibold d-block mb-1">Credit Level</span>
                           <h5 class="card-title mb-2"><?php echo $row['level'];  ?>
-                            <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> </small>
+                            <!-- <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> </small> -->
                           </h5>
 
                         </div>
@@ -104,16 +106,16 @@ include "../common/head.php"
                             <button class="btn p-0" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               <i class="bx bx-dots-vertical-rounded"></i>
                             </button>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
+                            <!-- <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
                               <a class="dropdown-item" href="javascript:void(0);">View More</a>
                               <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                            </div>
+                            </div> -->
                           </div>
                         </div>
                         <div id="AvailableCreditID">
                           <span class="fw-semibold d-block mb-1">Available Credit</span>
                           <h5 class="card-title text-nowrap mb-2"><?php echo $_SESSION['credit_limit'] ?>
-                            <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i></small>
+                           <!--  <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i></small> -->
                           </h5>
                         </div>
                       </div>

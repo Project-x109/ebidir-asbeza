@@ -2,6 +2,8 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
+$requiredRoles = array('user'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 
 ?>
 <script>
@@ -65,7 +67,7 @@ include "../common/Authorization.php";
 
       <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
         <div class="app-brand demo">
-          <a href="Dashbaord.php" class="app-brand-link">
+          <a href="dashbaord.php" class="app-brand-link">
             <span class="app-brand-logo demo">
               <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <defs>
@@ -113,7 +115,7 @@ include "../common/Authorization.php";
         <ul class="menu-inner py-1">
           <!-- Dashboard -->
           <li class="menu-item active open">
-            <a href="Dashbaord.php" class="menu-link">
+            <a href="dashbaord.php" class="menu-link">
               <i class="menu-icon tf-icons bx bx-home-circle"></i>
               <div data-i18n="Analytics">User Dashboard</div>
             </a>
@@ -350,7 +352,7 @@ include "../common/Authorization.php";
                 <div class="card mb-4">
                   <div class="card-header d-flex align-items-center justify-content-between">
                     <h5 class="mb-0">3. Application Detail</h5>
-                    <!-- <small class="text-muted float-end">Merged input group</small> -->
+                    <!-- <small class="text-muted float-end"></small> -->
                   </div>
                   <div class="card-body" id='bdy' style="margin-left:auto;margin-right:auto;">
                     <div class="col-md">

@@ -1,9 +1,12 @@
 <?php
+include "../common/ratelimiter.php";
 include "../connect.php";
 
 include "../user/functions.php";
 session_start();
 include "../common/Authorization.php";
+$requiredRoles = array('Admin','EA'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
@@ -79,19 +82,20 @@ if (!empty($validationErrors)) {
         $response['message'] = 'Validation error(s)';
         $response['errors'] = $validationErrors;
     } else {
-        $queryUser = "UPDATE users SET name = ?, email = ?, status = ?, phone = ? WHERE user_id = ?";
+        $attempt = 0;
+        $queryUser = "UPDATE users SET name = ?, email = ?, status = ?, phone = ?,attempt=? WHERE user_id = ?";
         $stmtUser = $conn->prepare($queryUser);
 
         if (!$stmtUser) {
             $response['status'] = 'error';
             $response['message'] = 'Error preparing the SQL statement for user data update: ' . $conn->error;
         } else {
-            $stmtUser->bind_param("sssss", $name, $email, $status, $phone, $userId);
+            $stmtUser->bind_param("ssssis", $name, $email, $status, $phone,$attempt, $userId);
 
             if ($stmtUser->execute()) {
                 // User data updated successfully
                 $response['status'] = 'success';
-                sendProfileUpdatedEmail($email, $name, $conn);
+               /*  sendProfileUpdatedEmail($email, $name, $conn); */
             } else {
                 // User data update failed
                 $response['status'] = 'error';
@@ -141,7 +145,7 @@ function sendProfileUpdatedEmail($recipientEmail, $name, $conn)
         // Content
         $mail->isHTML(true);
         $mail->Subject = 'Profile Updated';
-        $loginlink = "http://localhost/sneat-bootstrap-html-admin-template-free/index.php";
+        $loginlink = "http://asbeza.ebidir.net/index.php";
         $mail->Body = '
     <html>
     <head>

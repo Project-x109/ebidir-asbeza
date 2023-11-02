@@ -2,6 +2,8 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
+$requiredRoles = array('user'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 $_SESSION['token'] = bin2hex(random_bytes(35));
 
 ?>
@@ -69,13 +71,15 @@ include "../common/head.php";
                                 $sql3 = "SELECT * from economic where user_id='$id'";
                                 $res3 = $conn->query($sql3);
                                 $row3 = $res3->fetch_assoc();
+                                $sql1 = "SELECT * from users where user_id='$id'";
+                                $res = $conn->query($sql1);
+                                $row = $res->fetch_assoc();
                                 // Check if data exists, if not, set default values
                                 if (!$row3) {
                                     $row3 = array(
                                         'field_of_employeement' => 'No data',
                                         'number_of_income' => 'No data',
                                         'year' => 'No data',
-                                        'branch' => 'No data',
                                         'position' => 'No data',
                                         'user_id' => 'No Id',
                                         'salary' => 'No data'
@@ -86,7 +90,7 @@ include "../common/head.php";
                                 if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                     // Retrieve form data
                                     $fieldOfEmployment = $_POST['fieldOfEmployment'];
-                                    $branch = $_POST['branch'];
+                                   /*  $branch = $_POST['branch']; */
                                     $yearOfEmployment = $_POST['yearOfEmployment'];
                                     $numberOfIncome = $_POST['numberOfIncome'];
                                     $position = $_POST['position'];
@@ -97,7 +101,7 @@ include "../common/head.php";
                                     field_of_employeement='$fieldOfEmployment',
                                     number_of_income='$numberOfIncome',
                                     year='$yearOfEmployment',
-                                    branch='$branch',
+                                   /*  branch='$branch', */
                                     position='$position'
                                     WHERE user_id=$id";
                                     if ($conn->query($sqlUpdate) === TRUE) {
@@ -137,7 +141,7 @@ include "../common/head.php";
                                                 </div>
                                                 <input type="hidden" id="originalyearOfEmployment" value="<?php echo $row3['year']; ?>">
 
-                                                <div class="mb-3 col-md-6">
+                                                <!-- <div class="mb-3 col-md-6">
                                                     <label for="branch" class="form-label">Branch Name</label>
                                                     <select type="text" class="form-control" id="branch" name="branch" autofocus readonly>
                                                         <?php
@@ -163,8 +167,8 @@ include "../common/head.php";
                                                         }
                                                         ?>
                                                     </select>
-                                                </div>
-                                                <input type="hidden" id="originalbranch" value="<?php echo $row3['branch']; ?>">
+                                                </div> -->
+                                                <!-- <input type="hidden" id="originalbranch" value="<?php echo $row3['branch']; ?>"> -->
                                                 <div class="mb-3 col-md-6">
                                                     <label class="form-label" for="position">Position</label>
                                                     <div class="input-group input-group-merge">
@@ -182,10 +186,18 @@ include "../common/head.php";
                                                 <input type="hidden" id="originalsalary" value="<?php echo $row3['salary']; ?>">
 
                                             </div>
-                                            <div class="mt-2">
-                                                <button type="submit" id="updateButton" name="update_economic" class="btn btn-primary me-2">Update</button>
-                                                <button type="submit" id="cancelButton" class="btn btn-outline-secondary">Cancel</button>
-                                            </div>
+                                            <?php
+                                            if (!$row || $row['form_done'] == 1) {
+                                                // Display the link only if "form_done" is not set or is 0
+                                            ?>
+                                                <div class="mt-2">
+                                                    <button type="submit" id="updateButton" name="update_economic" class="btn btn-primary me-2">Update</button>
+                                                    <button type="submit" id="cancelButton" class="btn btn-outline-secondary">Cancel</button>
+                                                </div>
+                                            <?php
+                                            }
+
+                                            ?>
                                         </form>
                                     </div>
                                     <div class="bs-toast toast toast-placement-ex m-2 bg-danger top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="error-toast">

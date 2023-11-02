@@ -1,8 +1,11 @@
 <?php
+include "../common/ratelimiter.php";
 include "../connect.php";
-include "../User/functions.php";
+include "../user/functions.php";
 session_start();
 include "../common/Authorization.php";
+$requiredRoles = array('Admin','EA'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -95,6 +98,8 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
     $TINStmt->execute();
     $TINResult = $TINStmt->get_result();
 
+   
+
     // Check if there are validation errors
     if (!empty($validationErrors)) {
         // Return validation errors in JSON format
@@ -125,9 +130,10 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
 
         // No validation errors and no conflicts, proceed with the database update
         // Perform the database update using prepared statement and parameterized query
-        $updateQuery = "UPDATE users SET name=?, email=?, dob=?, status=?, TIN_Number=?, phone=? WHERE user_id=?";
+        $attempt = 0;
+        $updateQuery = "UPDATE users SET name=?, email=?, dob=?, status=?, TIN_Number=?, phone=?,attempt=? WHERE user_id=?";
         $updateStmt = $conn->prepare($updateQuery);
-        $updateStmt->bind_param("ssssdss", $name, $email, $dob, $status, $TIN_Number, $phone, $userId);
+        $updateStmt->bind_param("ssssdsis", $name, $email, $dob, $status, $TIN_Number, $phone, $attempt, $userId);
 
         if ($updateStmt->execute()) {
             // Update successful
@@ -178,7 +184,7 @@ function sendProfileUpdatedEmail($recipientEmail, $name, $conn)
         // Content
         $mail->isHTML(true);
         $mail->Subject = 'Profile Updated';
-        $loginlink = "http://localhost/sneat-bootstrap-html-admin-template-free/index.php";
+        $loginlink = "http://asbeza.ebidir.net/index.php";
         $mail->Body = '
     <html>
     <head>

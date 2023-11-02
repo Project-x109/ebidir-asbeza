@@ -1,6 +1,9 @@
 <?php
 include "../connect.php"; // Include your database connection script
 session_start();
+include "../common/Authorization.php";
+$requiredRoles = array('user'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 // Check if the 'id' is set in the session
 if (isset($_SESSION['id'])) {
     // Get the provider from the session

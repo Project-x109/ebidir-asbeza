@@ -1,7 +1,10 @@
 <?php
+include "../common/ratelimiter.php";
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
+$requiredRoles = array('Admin','EA'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 
 
 

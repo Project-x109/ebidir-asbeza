@@ -1,14 +1,16 @@
  
 <?php
+include "../common/ratelimiter.php";
 include "../connect.php";
 session_start();
-include "../common/Authorization.php";
+/* include "../common/Authorization.php";
+$requiredRoles = array('user'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles); */
 include "./functions.php";
-if (isset($_POST['add_personal']) || isset($_POST['Number_of_dependents'])) {
 if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $_SESSION['token']) {
     echo json_encode(['error' => 'Authorization Error']);
     exit;
-}
+} else if (isset($_POST['add_personal']) || isset($_POST['Number_of_dependents'])) {
     // Form validation
     $errors = array();
     $response = array();
@@ -182,13 +184,6 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
     if (empty($year)) {
         $errors[] = "Year of Employment is required.";
     }
-
-    // Validate Branch Name
-    $branch = $_POST['branch'];
-    if (empty($branch)) {
-        $errors[] = "Branch Name is required.";
-    }
-
     // Validate Position
     $position = $_POST['position'];
     if (empty($position)) {
@@ -210,8 +205,8 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
         $score = EconomicScore($Source_of_income, $Experience, $Number_Of_Loans, $fully_repaid_loans);
 
         // Prepare and bind the SQL insert statement
-        $stmt = $conn->prepare("INSERT INTO `economic`(`field_of_employeement`, `number_of_income`, `year`, `branch`, `user_id`, `position`, `salary`, `economic_score`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sissssii", $field_of_employment, $number_of_income, $year, $branch, $_POST['id'], $position, $salary, $score);
+        $stmt = $conn->prepare("INSERT INTO `economic`(`field_of_employeement`, `number_of_income`, `year`, `user_id`, `position`, `salary`, `economic_score`) VALUES (?, ?, ?, ?, ?,  ?, ?)");
+        $stmt->bind_param("sisssii", $field_of_employment, $number_of_income, $year, $_POST['id'], $position, $salary, $score);
 
         // Execute the SQL insert statement
         if ($stmt->execute()) {
@@ -264,11 +259,6 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
         $errors[] = "Year of Employment is required.";
     }
 
-    // Validate Branch Name
-    $branch = $_POST['branch'];
-    if (empty($branch)) {
-        $errors[] = "Branch Name is required.";
-    }
 
     // Validate Position
     $position = $_POST['position'];
@@ -291,8 +281,8 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
         $score = EconomicScore($Source_of_income, $Experience, $Number_Of_Loans, $fully_repaid_loans);
 
         // Prepare and bind the SQL update statement
-        $stmt = $conn->prepare("UPDATE `economic` SET `field_of_employeement`=?, `number_of_income`=?, `year`=?, `branch`=?, `position`=?, `salary`=?, `economic_score`=? WHERE user_id=?");
-        $stmt->bind_param("sisssiis", $field_of_employment, $number_of_income, $year, $branch, $position, $salary, $score, $_POST['id']);
+        $stmt = $conn->prepare("UPDATE `economic` SET `field_of_employeement`=?, `number_of_income`=?, `year`=?, `position`=?, `salary`=?, `economic_score`=? WHERE user_id=?");
+        $stmt->bind_param("sissiis", $field_of_employment, $number_of_income, $year, $position, $salary, $score, $_POST['id']);
 
         // Execute the SQL update statement
         if ($stmt->execute()) {
@@ -325,7 +315,7 @@ if (!$token || $token !== $_SESSION['token']) {
     header("Location: index.php");
     exit;
 } else if (isset($_POST['checkout'])) {
-
+    $_SESSION['price'] = $_POST['totalprice'];
     $sql = "SELECT * FROM users where user_id='$_POST[id]'";
     $res = $conn->query($sql);
     $row = $res->fetch_assoc();
@@ -333,11 +323,11 @@ if (!$token || $token !== $_SESSION['token']) {
     $sql = "INSERT INTO loans(`user_id`,`price`,`createdOn`)Values('$_POST[id]',$_POST[price],'$date')";
     $res = $conn->query($sql);
     if ($res) {
-        $_SESSION['user_id']=$conn->insert_id;
+        $_SESSION['user_id'] = $conn->insert_id;
         $limit = $row['credit_limit'] - $_POST['price'];
         $sql = "update users set credit_limit=$limit WHERE user_id='$_POST[id]'";
         $res = $conn->query($sql);
-        header("location:../branch/paymentDone.php");
+        header("location:../branch/paymentdone.php");
     }
 }
 ?>

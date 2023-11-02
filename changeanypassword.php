@@ -1,7 +1,33 @@
 <?php
 include "./connect.php";
 session_start();
-include "./common/Authorization.php";
+/* include "./common/Authorization.php"; */
+
+include "./common/jwt.php";
+require './vendor/firebase/php-jwt/src/JWT.php';
+if (!isset($_SESSION['role'])) {
+    header("location: ../index.php");
+} else {
+    $allowedRoles = array('Admin', 'user', 'branch', "EA", "delivery");
+    if (!in_array($_SESSION['role'], $allowedRoles)) {
+        // Redirect based on the user's role
+        $role = $_SESSION['role'] == "EA" ? "Admin" : $_SESSION['role'];
+        $role = $_SESSION['role'] == "delivery" ? "branch" : $_SESSION['role'] . "/";
+        header("location:$role/");
+    }
+}
+
+
+
+if (!isset($_COOKIE['jwt_token']) || isTokenExpired($_COOKIE['jwt_token'])) {
+    // Token is missing or has expired, handle unauthorized access
+    session_destroy();
+    // Set an error message
+    $_SESSION['error'] = "Unauthorized access. Please log in again.";
+    // Redirect to the login page
+    header("Location: ./common/pages-misc-error.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 
@@ -11,7 +37,7 @@ include "./common/Authorization.php";
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
- <title>Credit Empowerment at E-bidir Asbeza - Your Path to Financial Freedom</title>
+    <title>Credit Empowerment at E-bidir Asbeza - Your Path to Financial Freedom</title>
     <meta name="description" content="Unlock financial opportunities and secure your future with E-bidir Asbeza. We provide accessible credit solutions that empower you to take control of your financial journey. Discover the key to financial freedom and seize the opportunities you deserve." />
 
 
@@ -148,7 +174,6 @@ include "./common/Authorization.php";
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Include the JavaScript file for authorization -->
-    <script src="./assets/js/authorization.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="./assets/js/logout.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -2,7 +2,8 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
-
+$requiredRoles = array('Admin','EA'); // Define the required roles for the specific page
+checkAuthorization($requiredRoles);
 // Check if the CSRF token is present in the request headers
 if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $_SESSION['token']) {
     echo json_encode(['error' => 'Authorization Error']);
