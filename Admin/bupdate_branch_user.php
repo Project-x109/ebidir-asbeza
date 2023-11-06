@@ -5,7 +5,7 @@ include "../connect.php";
 include "../user/functions.php";
 session_start();
 include "../common/Authorization.php";
-$requiredRoles = array('Admin','EA'); // Define the required roles for the specific page
+$requiredRoles = array('Admin', 'EA'); // Define the required roles for the specific page
 checkAuthorization($requiredRoles);
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -90,14 +90,16 @@ if (!empty($validationErrors)) {
             $response['status'] = 'error';
             $response['message'] = 'Error preparing the SQL statement for user data update: ' . $conn->error;
         } else {
-            $stmtUser->bind_param("ssssis", $name, $email, $status, $phone,$attempt, $userId);
+            $stmtUser->bind_param("ssssis", $name, $email, $status, $phone, $attempt, $userId);
 
             if ($stmtUser->execute()) {
                 // User data updated successfully
                 $response['status'] = 'success';
-               /*  sendProfileUpdatedEmail($email, $name, $conn); */
+                insertLog($conn, $_SESSION['id'], "User with user ID " . $userId . "Have been Updated");
+                /*  sendProfileUpdatedEmail($email, $name, $conn); */
             } else {
                 // User data update failed
+                insertLog($conn, $_SESSION['id'], "Unable to update user with user ID " . $userId . " Reason " . $stmtUser->error);
                 $response['status'] = 'error';
                 $response['message'] = 'Error updating user data: ' . $stmtUser->error;
             }

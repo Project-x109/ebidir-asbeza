@@ -278,3 +278,21 @@ function validateImage($file)
 
   return in_array($fileExtension, $allowedExtensions) && $fileSize <= $maxFileSize;
 }
+
+function insertLog($conn, $user_id, $action)
+{
+  // Prepare an SQL statement to insert the log entry
+  $sql = "INSERT INTO log (user_id, action, timestamp) VALUES (?, ?, NOW())";
+  $stmt = $conn->prepare($sql);
+
+  if ($stmt) {
+    $stmt->bind_param("ss", $user_id, $action);
+    if ($stmt->execute()) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}

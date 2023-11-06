@@ -1,25 +1,18 @@
 <?php
 include "connect.php";
+include "./user/functions.php";
 session_start();
-// Define your rate limiting parameters
-$maxRequests = 60; // Maximum number of requests allowed
-$perSecond = 60;  // Requests per second
-$ip = $_SERVER['REMOTE_ADDR']; // Get the client's IP address
-
-// Create a unique identifier for the client
+$maxRequests = 60;
+$perSecond = 60;
+$ip = $_SERVER['REMOTE_ADDR'];
 $identifier = md5($ip);
-
-// Create a storage directory for rate limiting data
 $storageDir = __DIR__ . '/rate_limit_storage/';
 if (!is_dir($storageDir)) {
     mkdir($storageDir, 0777, true);
 }
 
-// Calculate the current timestamp and the expiration time
 $timestamp = time();
 $expiration = $timestamp - $perSecond;
-
-// Clean up old rate limiting data
 $files = scandir($storageDir);
 foreach ($files as $file) {
     $filePath = $storageDir . $file;
@@ -28,7 +21,6 @@ foreach ($files as $file) {
     }
 }
 
-// Count the number of requests made by the client
 $requests = 1; // Initial request
 $files = scandir($storageDir);
 foreach ($files as $file) {
@@ -41,10 +33,7 @@ foreach ($files as $file) {
         }
     }
 }
-
-// Check if the client has exceeded the rate limit
 if ($requests > $maxRequests) {
-    // You can take action here, e.g., return an error response or log the event
     http_response_code(429); // HTTP 429 Too Many Requests
     $_SESSION['error'] = "Too Many Requestes Try again Letter";
     header("Location: index.php");
@@ -77,8 +66,6 @@ if (!$token || $token !== $_SESSION['token']) {
 } else if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['phone']) && isset($_POST['password'])) {
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
     $userEnteredPassword = $_POST['password'];
-
-    // Prepare a statement to retrieve the user data from the database based on the phone number
     $sql = "SELECT * FROM `users` WHERE phone = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $phone);
@@ -91,121 +78,117 @@ if (!$token || $token !== $_SESSION['token']) {
             $hashedPassword = $row['password'];
             $status = $row['status'];
             $attempt = $row['attempt'];
-            // Check if the account is inactive due to multiple failed attempts
+
             if ($attempt >= 3 && $status === 'dormant') {
                 $_SESSION['error'] = "Your account is blocked due to multiple failed attempts.";
+                insertLog($conn, $row['user_id'], "User with id {$row['user_id']} has tried to login and failed due to multiple attempt");
                 header("Location: index.php");
                 exit();
             }
             if ($status === 'inactive') {
-                $_SESSION['error'] = "Your account is blocked Contact Adminstrators.";
+                $_SESSION['error'] = "Your account is blocked Contact Administrators.";
+                insertLog($conn, $row['user_id'], "User with id {$row['user_id']} has tried to login and failed becasue account is incactive");
                 header("Location: index.php");
                 exit();
             }
 
-            // Verify the user-entered plain text password against the retrieved hashed password
-            if (password_verify($userEnteredPassword, $hashedPassword)) {
+            if (password_verify($userEnteredPassword, $hashedPassword) && $status != "dormant") {
                 $attempt = 0;
-
-                // Update the user's login attempts and status
                 $updateSql = "UPDATE `users` SET attempt = ? WHERE user_id = ?";
                 $updateStmt = $conn->prepare($updateSql);
                 $updateStmt->bind_param("is", $attempt, $row['user_id']);
                 $updateStmt->execute();
-
                 $_SESSION['role'] = $row['role'];
-
-                // Store the user's ID in the session
                 $_SESSION['id'] = $row['user_id'];
                 $_SESSION['dob'] = $row['dob'];
                 $_SESSION['credit_limit'] = $row['credit_limit'];
                 $_SESSION['level'] = $row['level'];
-
                 $tokenjwt = generateJWT($_SESSION['id'], $_SESSION['role']);
                 $_SESSION['tokenjwt'] = $tokenjwt;
                 setcookie('jwt_token', $tokenjwt, time() + 1800, '/');
 
-                // Check user status
                 if ($status === 'waiting') {
-                    $_SESSION['status'] = 'waiting'; // Set a session variable to indicate the status
-
-                    // Redirect to change password page
+                    $_SESSION['status'] = 'waiting';
                     header("location: newpassword.php");
                     exit();
                 } elseif (strtolower($status) === 'active') {
-                    // User is already active, redirect to the appropriate dashboard
                     $loc = $_SESSION['role'];
                     if ($_SESSION['role'] == "EA")
                         $loc = "Admin";
                     if ($_SESSION['role'] == "delivery")
                         $loc = "branch";
+                    if ($_SESSION['role'] == "user") {
+                        if (!empty($_SESSION['temp_cart'])) {
+                            if (!isset($_SESSION['cart'])) {
+                                $_SESSION['cart'] = [];
+                            }
+                            $_SESSION['cart'] = array_merge($_SESSION['cart'], $_SESSION['temp_cart']);
+                            unset($_SESSION['temp_cart']);
+                        }
+                        $loc .= "/loan";
+                    }
+                } else {
                     $loc .= "/";
-                    header("location: " . $loc);
+                }
+                header("location: " . $loc);
+                insertLog($conn, $row['user_id'], "User with id {$row['user_id']} has tried to login and was successfull");
+                exit();
+            } else {
+                if ($status === 'dormant') {
+                    $_SESSION['error'] = "Your account is blocked Contact Administrators.";
+                    insertLog($conn, $row['user_id'], "User with id {$row['user_id']} has tried to login and failed becasue account is dormant");
+                    header("Location: index.php");
                     exit();
                 }
-            } else {
-                // Password is incorrect, store error message in session
                 $_SESSION['attempt'] = $row['attempt'];
                 $attempt = $_SESSION['attempt'];
                 $attempt++;
-
                 if ($attempt >= 3) {
-                    // If login attempts reach the limit, set user status to 'inactive'
                     $status = 'dormant';
                     $attempt = 3;
+                    insertLog($conn, $row['user_id'], "User with id {$row['user_id']} has tried to login more than three times and account had been blocked");
                 }
-
-                // Update the user's login attempts and status
                 $updateSql = "UPDATE `users` SET attempt = ?, status = ? WHERE user_id = ?";
                 $updateStmt = $conn->prepare($updateSql);
                 $updateStmt->bind_param("iss", $attempt, $status, $row['user_id']);
                 $updateStmt->execute();
 
-                // Store error message in session
                 if ($attempt < 3) {
-                    $_SESSION['error'] = "Password is incorrect.You have made " . $attempt . " attempts";
+                    $_SESSION['error'] = "Password is incorrect. You have made " . $attempt . " attempts";
+                    insertLog($conn, $row['user_id'], "User with id {$row['user_id']} has tried to login and Password is incorrect. You have made " . $attempt . " attempts");
                 } else {
                     $_SESSION['error'] = "Invalid login attempt. Your account may be blocked due to multiple failed attempts.";
+                    insertLog($conn, $row['user_id'], "User with id {$row['user_id']} has tried to login but account has been blocked due too multiple attempt");
                 }
-
                 header("Location: index.php");
-
                 exit();
             }
         } else {
-            // User with this phone number does not exist, store error message in session
             $_SESSION['error'] = "User with this phone number does not exist";
             header("Location: index.php");
             exit();
         }
     } else {
-        // Error in executing the SQL query, store error message in session
         $_SESSION['error'] = "An error occurred while processing your request";
         header("Location: index.php");
         exit();
     }
 } else if (isset($_POST['forgot_password'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
-    // Check if the email exists in the database
     $checkEmailQuery = "SELECT * FROM users WHERE email = '$email'";
     $checkEmailResult = $conn->query($checkEmailQuery);
+    $row = $checkEmailResult->fetch_assoc();
+
+    insertLog($conn, $row['user_id'], "User with id {$row['user_id']} has made a forgot password request");
+
     if ($checkEmailResult->num_rows > 0) {
-
-        // Generate a unique token
         $token = bin2hex(random_bytes(16));
-
-        // Calculate the expiration time (e.g., 1 hour from now)
         $expireTime = date('Y-m-d H:i:s', strtotime('+1 hour'));
-
-        // Insert the token into the database
         $updateTokenQuery = "UPDATE users SET token = '$token', expire_time = '$expireTime' WHERE email = '$email'";
+        insertLog($conn, $row['user_id'], "A token has been generated for User with id {$row['user_id']}");
         $updateTokenResult = $conn->query($updateTokenQuery);
-
         if ($updateTokenResult) {
-            // Send an email to the user with the reset password link
             $resetLink = "http://asbeza.ebidir.net/reset_password.php?token=$token";
-
-            // Create a new PHPMailer instance
             $mail = new PHPMailer(true);
 
             try {
@@ -223,15 +206,11 @@ if (!$token || $token !== $_SESSION['token']) {
                 if ($recipientResult->num_rows > 0) {
                     $row = $recipientResult->fetch_assoc();
                     $recipientName = $row['name'];
-
-                    // Recipients
                     $mail->setFrom('elite.ethiopia@gmail.com', 'E-bidir');
-                    $mail->addAddress($email, $recipientName); // Add recipient from the database
+                    $mail->addAddress($email, $recipientName);
                 } else {
-                    // If the token doesn't match any user, handle the error
                     throw new Exception("Recipient not found in the database.");
                 }
-                // Content
                 $mail->isHTML(true);
                 $mail->Subject = 'Password Reset Request';
                 $mail->Body = '
@@ -405,9 +384,6 @@ if (!$token || $token !== $_SESSION['token']) {
     }
 }
 
-
-// ... (the rest of your code)
-
 if (isset($_SESSION['success'])) {
     echo '<script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -418,7 +394,6 @@ if (isset($_SESSION['success'])) {
       </script>';
     unset($_SESSION['success']); // Clear the success message
 }
-// Add this part to display an error alert if $_SESSION['error'] is set
 if (isset($_SESSION['error'])) {
     echo '<script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -433,8 +408,7 @@ if (isset($_SESSION['error'])) {
 //reset password
 if (isset($_GET['token'])) {
     $token = $_GET['token'];
-    // Check if the token has expired (e.g., 24 hours)
-    $expireTime = 3600; // 24 hours in seconds
+    $expireTime = 3600;
     $currentTime = time();
 
     $tokenQuery = "SELECT expire_time FROM users WHERE token = '$token'";
@@ -454,26 +428,25 @@ if (isset($_GET['token'])) {
         header("Location: forgotpassword.php");
         exit();
     }
-
     if (isset($_POST['change_password'])) {
         $newPassword = mysqli_real_escape_string($conn, $_POST['newpassword']);
         $confirmPassword = mysqli_real_escape_string($conn, $_POST['confirmpassword']);
 
         if (isValidPassword($newPassword)) {
             if ($newPassword === $confirmPassword) {
+                $row = $tokenResult->fetch_assoc();
                 $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-
-                // Update the user's password in the database using the token
                 $updatePasswordQuery = "UPDATE users SET password = '$hashedPassword' WHERE token = '$token'";
+                $selectasswordQuery = "SELECT user_id from  users  WHERE token = '$token'";
+                $selectasswordQueryResult = $conn->query($selectasswordQuery);
+                $row1 = $selectasswordQueryResult->fetch_assoc();
                 $updatePasswordResult = $conn->query($updatePasswordQuery);
-
+                insertLog($conn, $row1['user_id'], "Password Has been changed for User with id {$row1['user_id']}");
                 if ($updatePasswordResult) {
-                    // Regenerate the token after successful reset
                     $newToken = generateRandomToken();
                     $updateTokenQuery = "UPDATE users SET token = '$newToken' WHERE token = '$token'";
                     $conn->query($updateTokenQuery);
                     sendEmailNotification($newToken, $conn);
-
                     $_SESSION['success'] = "Password has been changed successfully!";
                     header("Location: index.php");
                     exit();
@@ -498,11 +471,6 @@ if (isset($_GET['token'])) {
         exit();
     }
 }
-
-
-
-
-// Function to validate password strength, complexity, and length
 function isValidPassword($password)
 {
     // Check if the password meets the requirements
@@ -525,14 +493,10 @@ function isValidPassword($password)
     // All requirements met
     return true;
 }
-
-// Function to generate a random token
 function generateRandomToken()
 {
     return bin2hex(random_bytes(32));
 }
-
-
 function sendEmailNotification($newToken, $conn)
 {
     // Create a new PHPMailer instance
@@ -725,9 +689,6 @@ function sendEmailNotification($newToken, $conn)
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }
 }
-
-// ... (the rest of your code)
-
 if (isset($_SESSION['success'])) {
     echo '<script>
         document.addEventListener("DOMContentLoaded", function () {

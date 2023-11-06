@@ -2,7 +2,7 @@
 include "./connect.php";
 session_start();
 /* include "./common/Authorization.php"; */
-
+include "./user/functions.php";
 include "./common/jwt.php";
 require './vendor/firebase/php-jwt/src/JWT.php';
 if (!isset($_SESSION['role'])) {
@@ -16,8 +16,6 @@ if (!isset($_SESSION['role'])) {
         header("location:$role/");
     }
 }
-
-
 
 if (!isset($_COOKIE['jwt_token']) || isTokenExpired($_COOKIE['jwt_token'])) {
     // Token is missing or has expired, handle unauthorized access
@@ -37,15 +35,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $oldPassword = mysqli_real_escape_string($conn, $_POST['oldpassword']);
     $newPassword = mysqli_real_escape_string($conn, $_POST['newpassword']);
     $confirmPassword = mysqli_real_escape_string($conn, $_POST['confirmpassword']);
-
-    // Define password validation rules
     $minPasswordLength = 8;
     $uppercaseRequired = true;
     $lowercaseRequired = true;
     $numberRequired = true;
     $specialCharRequired = true;
-
-    // Password complexity check
     $errors = array();
     $response = array();
 
@@ -68,12 +62,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($specialCharRequired && !preg_match('/[\W_]/', $newPassword)) {
         $errors[] = "Password must contain at least one special character.";
     }
-
-    // Retrieve the user's current password hash from the database
     $getCurrentPasswordSql = "SELECT `password` FROM `users` WHERE `user_id` = '" . $userId . "'";
-
     $result = $conn->query($getCurrentPasswordSql);
-
     if ($result && $row = $result->fetch_assoc()) {
         $currentPasswordHash = $row['password'];
 
@@ -99,12 +89,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($errors)) {
         // Hash the new password
         $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-
-        // Update the user's password
         $updateSql = "UPDATE `users` SET `password` = '$hashedPassword' WHERE `user_id` = '" . $userId . "'";
-
         if ($conn->query($updateSql)) {
-            // Password updated successfully
+            insertLog($conn, $_SESSION['id'], "Password Has been changed for User with id {$_SESSION['id']}");
             $response = array(
                 'success' => true,
                 'message' => 'Password updated successfully!'

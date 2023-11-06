@@ -2,13 +2,14 @@
 session_start();
 $_SESSION['token'] = bin2hex(random_bytes(35));
 if (isset($_SESSION['role'])) {
-  $loc=$_SESSION['role'];
-  if($_SESSION['role'] == "EA")
-  $loc ="Admin";
-if($_SESSION['role'] == "delivery")
-  $loc ="branch";
+  $loc = $_SESSION['role'];
+  if ($_SESSION['role'] == "EA")
+    $loc = "Admin";
+  if ($_SESSION['role'] == "delivery")
+    $loc = "branch";
   header("Location:" . $_SESSION['role'] . "/index.php");
 }
+
 include "./sessioncheck.php";
 
 ?>
@@ -21,13 +22,13 @@ include "./sessioncheck.php";
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-   <title>Credit Empowerment at E-bidir Asbeza - Your Path to Financial Freedom</title>
+  <title>Credit Empowerment at E-bidir Asbeza - Your Path to Financial Freedom</title>
 
   <meta name="description" content="Unlock financial opportunities and secure your future with E-bidir Asbeza. We provide accessible credit solutions that empower you to take control of your financial journey. Discover the key to financial freedom and seize the opportunities you deserve." />
 
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="16x16"  href="../assets/img/favicon/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon/favicon-16x16.png">
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -83,7 +84,6 @@ include "./sessioncheck.php";
             <!-- /Logo -->
             <h4 class="mb-2">Welcome to E-bidir! 👋</h4>
             <p class="mb-4">Please sign-in to your account</p>
-
             <form id="formAuthentication" class="mb-3" action="login.php" method="POST">
               <div class="mb-3">
                 <label for="email" class="form-label">Phone</label>

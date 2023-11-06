@@ -87,67 +87,51 @@ if (!$token || $token !== $_SESSION['token']) {
     }
 
     if (empty($validationErrors)) {
-        // All form fields are valid, proceed with database insertion
         $name = mysqli_real_escape_string($conn, $_POST['name']);
         $dob = mysqli_real_escape_string($conn, $_POST['dob']);
         $status = 'waiting';
-
-        // Generate a random password
         $randomPassword = generateRandomPassword();
-
-        // Hash and salt the password
         $password = password_hash($randomPassword, PASSWORD_DEFAULT);
-
-        // Process the cropped image data
         $data = $_POST['croppedImageData'];
         $image_array_1 = explode(";", $data);
         $image_array_2 = explode(",", $image_array_1[1]);
         $data = base64_decode($image_array_2[1]);
-
-        // Save the image in a directory (e.g., 'images/')
         $date = date("s-h-d-m-Y");
         $image_name = '../images/' . $date . '.png';
         file_put_contents($image_name, $data);
-
-        // Generate a unique user ID (e.g., "EB0001")
         $sql = "SELECT * FROM admin_setting";
         $res = $conn->query($sql);
         $row = $res->fetch_assoc();
         $user_id = "EB" . ($row ? sprintf('%04d', $row['user']) : '0000');
-
-        // Create a prepared statement for user insertion
         $userInsertStmt = $conn->prepare("INSERT INTO `users`(`name`, `dob`, `phone`, `password`, `role`, `TIN_Number`, `profile`, `status`, `email`, `user_id`) 
                 VALUES (?, ?, ?, ?, 'user', ?, ?, ?, ?, ?)");
         $userInsertStmt->bind_param("ssssdssss", $name, $dob, $phone, $password, $TIN_Number, $image_name, $status, $email, $user_id);
 
         if ($userInsertStmt->execute()) {
-            // Send an email to the user with their unhashed password
             sendPasswordEmail($email, $randomPassword, $conn);
-
             $_SESSION['success'] = "User created successfully";
+            insertLog($conn, $_SESSION['id'], "Added User with user ID " . $user_id);
             $sql = "UPDATE admin_setting SET user=" . ($row['user'] + 1);
             $conn->query($sql);
-
-            // Set the success message in the response
             $response = array('success' => $_SESSION['success']);
             header('Content-Type: application/json');
             echo json_encode($response);
             exit();
         } else {
+            insertLog($conn, $_SESSION['id'], "Failed To Add user becasue of  " .  $conn->error);
             $_SESSION['error'] = "Error creating user: " . $conn->error;
         }
     } else {
+        $errorString = implode("\n", $validationErrors);
+        insertLog($conn, $_SESSION['id'], "Failed To Add " . $_POST['name'] . " becasue " .  $errorString);
         $_SESSION['error'] = implode("<br>", $validationErrors);
     }
 
     if (!empty($validationErrors)) {
-        // Validation errors occurred
         $response = array('errors' => $validationErrors);
     } else {
-        // No errors, success response
         $response = array('success' => 'User created successfully');
     }
-
     header('Content-Type: application/json');
     echo json_encode($response);
 } else if (isset($_POST['addbranch'])) {
@@ -208,49 +192,30 @@ if (!$token || $token !== $_SESSION['token']) {
     if (!validateName($_POST['location'])) {
         $branchValidationErrors[] = "Location can only contain letters and spaces.";
     }
-
-    // Additional validation for branch-specific fields (e.g., branch name, location)
-
-    // Check if there are any validation errors
     if (empty($branchValidationErrors)) {
-        // Generate a random password
         $randomPassword = generateRandomPassword();
-
-        // Sanitize user inputs
         $branchName = mysqli_real_escape_string($conn, $_POST['branch_name']);
         $branchPhone = mysqli_real_escape_string($conn, $_POST['phonenumber']);
         $branchEmail = mysqli_real_escape_string($conn, $_POST['email']);
         $branchLocation = mysqli_real_escape_string($conn, $_POST['location']);
-
-        // Hash and salt the password
         $password = password_hash($randomPassword, PASSWORD_DEFAULT);
-
-        // Generate a unique branch ID (e.g., "EB0001")
         $sql = "SELECT * FROM admin_setting";
         $res = $conn->query($sql);
         $row = $res->fetch_assoc();
         $branch_id = "EBR" . ($row ? sprintf('%04d', $row['branch']) : '0000');
-
-
-        // Create prepared statements for user and branch insertion
         $userInsertStmt = $conn->prepare("INSERT INTO `users`(`name`, `phone`, `password`, `role`, `status`, `email`, `user_id`) 
                 VALUES (?, ?, ?, ?, 'waiting', ?, ?)");
         $userInsertStmt->bind_param("ssssss", $branchName, $branchPhone, $password, $role, $branchEmail, $branch_id);
-
         if ($userInsertStmt->execute()) {
-            // Update the branch counter in the 'admin_setting' table
             $sql = "UPDATE admin_setting SET branch=" . ($row['branch'] + 1);
             $conn->query($sql);
-
-            // Insert branch information into the 'branch' table
             $branchInsertStmt = $conn->prepare("INSERT INTO `branch`(`branch_name`, `location`, `branch_id`)
                     VALUES (?, ?, ?)");
             $branchInsertStmt->bind_param("sss", $branchName, $branchLocation, $branch_id);
-
             if ($branchInsertStmt->execute()) {
-                // Send an email with the generated password to the branch
                 sendPasswordEmail($branchEmail, $randomPassword, $conn);
                 $_SESSION['success'] = "Branch Account created successfully";
+                insertLog($conn, $_SESSION['id'], "Added " . $role . " with user ID " . $branch_id);
                 $response = array('success' => $_SESSION['success']);
             } else {
                 $_SESSION['error'] = "Error Occurred";
@@ -260,6 +225,8 @@ if (!$token || $token !== $_SESSION['token']) {
             $_SESSION['error'] = "Error Occurred";
         }
     } else {
+        $errorString = implode("\n", $branchValidationErrors);
+        insertLog($conn, $_SESSION['id'], "Failed To Add " . $branchName . " becasue " .  $errorString);
         $response = array('errors' => $branchValidationErrors);
     }
     header('Content-Type: application/json');
@@ -464,7 +431,9 @@ function sendPasswordEmail($recipientEmail, $password, $conn)
 
         // Send the email
         $mail->send();
+        insertLog($conn, $_SESSION['id'], "Email Has been sent to " . $recipientEmail . " with user ID " . $recipientUsrId);
     } catch (Exception $e) {
+        insertLog($conn, $_SESSION['id'], "Message could not be sent to " . $recipientEmail . " with user ID " . $recipientUsrId . "Due to " . $mail->ErrorInfo);
         echo "<script>alert('Message could not be sent. Mailer Error: " . $mail->ErrorInfo . "')</script>";
     }
 }

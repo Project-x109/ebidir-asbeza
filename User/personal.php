@@ -52,22 +52,29 @@ include "../common/head.php"
                   <div class="card-header d-flex align-items-center justify-content-between">
                     <?php
                     $sql = "SELECT * FROM personal WHERE user_id = '" . $_SESSION['id'] . "'";
-                    $res = $conn->query($sql);
-                    $sql1 = "SELECT * from users where user_id='$id'";
-                    $res1 = $conn->query($sql1);
-                    $row1 = $res1->fetch_assoc();
+                    $res2 = $conn->query($sql);
 
-                    if (!$res) {
+                    $sql1 = "SELECT * from users WHERE user_id = '" . $_SESSION['id'] . "'";
+                    $res1 = $conn->query($sql1);
+
+                    $row1 = $res2->fetch_assoc();
+                    $row2 = $res1->fetch_assoc();
+                    $Number_of_dependents = "";
+                    $Marriage_Status = "";
+                    $Educational_Status = "";
+                    $Criminal_record = "";
+
+                    if (!$res1) {
                       // Handle the SQL query error
                       echo "Error: " . $conn->error;
                     } else {
-                      $found = $res->num_rows;
-
+                      $found = $res2->num_rows;
                       if ($found > 0) {
-                        $row = $res->fetch_assoc();
-                        // Now you can safely access the result data
+                        $Number_of_dependents = $row1['Number_of_dependents'];
+                        $Marriage_Status = $row1['Marriage_Status'];
+                        $Educational_Status = $row1['Educational_Status'];
+                        $Criminal_record = $row1['Criminal_record'];
                       } else {
-                        // No rows found
                       }
                     }
                     ?>
@@ -85,7 +92,7 @@ include "../common/head.php"
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
                             <span id="numberOfDependents2" class="input-group-text"><i class="bx bx-user"></i></span>
-                            <input type="number" class="form-control" id="numberOfDependents" name="Number_of_dependents" placeholder="5" aria-label="John Doe" aria-describedby="numberOfDependents2" />
+                            <input type="number" class="form-control" id="numberOfDependents" name="Number_of_dependents" value='<?php echo $Number_of_dependents ?>' placeholder="5" aria-label="John Doe" aria-describedby="numberOfDependents2" />
                           </div>
                         </div>
 
@@ -94,8 +101,8 @@ include "../common/head.php"
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
                             <span id="marrigeStatus2" class="input-group-text"><i class="bx bx-map-pin"></i></span>
-                            <select id="marrigeStatus" class="form-select" name="Marriage_Status">
-                              <option value="">Default select</option>
+                            <select value='<?php echo $Marriage_Status ?>' id="marrigeStatus" class="form-select" name="Marriage_Status">
+                              <option value=""><?php echo $found ? $Marriage_Status : "Default Value" ?></option>
                               <option value="Married">Married</option>
                               <option value="Single">Single</option>
                               <option value="Divorced">Divorced</option>
@@ -110,8 +117,8 @@ include "../common/head.php"
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
                             <span id="educationalStatus2" class="input-group-text"><i class="bx bx-book-reader"></i></span>
-                            <select id="educationalStatus" class="form-select" name="Educational_Status">
-                              <option value="">Default select</option>
+                            <select value='<?php echo $Educational_Status ?>' id="educationalStatus" class="form-select" name="Educational_Status">
+                              <option value=""><?php echo $found ? $Educational_Status : "Default Value" ?></option>
                               <option value="Below highSchool">Below highSchool </option>
                               <option value="Diploma">Diploma</option>
                               <option value="Degree">Degree</option>
@@ -126,8 +133,8 @@ include "../common/head.php"
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
                             <span id="criminalRecord2" class="input-group-text"><i class="bx bx-book-reader"></i></span>
-                            <select id="criminalRecord" class="form-select" name="Criminal_record">
-                              <option value="">Default select</option>
+                            <select value='<?php echo $Criminal_record ?>' id="criminalRecord" class="form-select" name="Criminal_record">
+                              <option value=""><?php echo $found ? $Criminal_record : "Default Value" ?></option>
                               <option value="No">No</option>
                               <option value="Yes/Past Five Years">Yes/Past Five Years</option>
                               <option value="Yes/More Than Five Years">Yes/More Than Five Years</option>
@@ -138,7 +145,7 @@ include "../common/head.php"
                       </div>
                       <?php
 
-                      if (!$row1 || $row1['form_done'] == 0) {
+                      if (!$row2 || $row2['form_done'] == 0) {
                         // Display the link only if "form_done" is not set or is 0
                       ?>
                         <div class="row justify-content-end">

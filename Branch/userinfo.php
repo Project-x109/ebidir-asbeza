@@ -2,7 +2,7 @@
 session_start();
 include "../connect.php";
 include "../common/Authorization.php";
-$requiredRoles = array('branch','delivery'); // Define the required roles for the specific page
+$requiredRoles = array('branch', 'delivery'); // Define the required roles for the specific page
 checkAuthorization($requiredRoles);
 $_SESSION['token'] = bin2hex(random_bytes(35));
 
@@ -16,7 +16,7 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-   <title>Credit Empowerment at E-bidir Asbeza - Your Path to Financial Freedom</title>
+    <title>Credit Empowerment at E-bidir Asbeza - Your Path to Financial Freedom</title>
 
     <meta name="description" content="Unlock financial opportunities and secure your future with E-bidir Asbeza. We provide accessible credit solutions that empower you to take control of your financial journey. Discover the key to financial freedom and seize the opportunities you deserve." />
 
@@ -159,123 +159,121 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
                         <div class="toast-body">
                         </div>
                     </div>
-                    <script>
+                    <div class="container my-5">
+                        <!-- / Content -->
 
-                    </script>
-                    <!-- / Content -->
+                        <?php include "../common/footer.php"; ?> <!-- sidebar -->
 
-                    <?php include "../common/footer.php"; ?> <!-- sidebar -->
+                        <script>
+                            function showLoader() {
+                                $("#loader").fadeIn();
+                            }
 
-                    <script>
-                        function showLoader() {
-                            $("#loader").fadeIn();
-                        }
+                            // Hide the loader when the response is received
+                            function hideLoader() {
+                                $("#loader").fadeOut();
+                            }
+                            // Function to check if the amount is valid
+                            function filldata(e) {
+                                document.getElementById('price').innerHTML = e.value + " Birr";
+                            }
 
-                        // Hide the loader when the response is received
-                        function hideLoader() {
-                            $("#loader").fadeOut();
-                        }
-                        // Function to check if the amount is valid
-                        function filldata(e) {
-                            document.getElementById('price').innerHTML = e.value + " Birr";
-                        }
+                            function isValidAmount(amount) {
+                                return $.isNumeric(amount) && amount <= <?= $row['credit_limit'] ?>;
+                            }
 
-                        function isValidAmount(amount) {
-                            return $.isNumeric(amount) && amount <= <?= $row['credit_limit'] ?>;
-                        }
-
-                        $(document).ready(function() {
-                            // Add event listener to the total_price input field
-                            $("#total_price").on("input", function() {
-                                var total_price = $(this).val();
+                            $(document).ready(function() {
+                                // Add event listener to the total_price input field
+                                $("#total_price").on("input", function() {
+                                    var total_price = $(this).val();
 
 
-                                // Frontend validation for total_price
-                                if (!isValidAmount(total_price)) {
-                                    // Display an error message in the toast
-                                    showErrorToast('Invalid amount or exceeds credit limit.');
+                                    // Frontend validation for total_price
+                                    if (!isValidAmount(total_price)) {
+                                        // Display an error message in the toast
+                                        showErrorToast('Invalid amount or exceeds credit limit.');
 
-                                } else {
-                                    // Hide the error message if the amount is valid
-                                    hideErrorToast();
-                                }
-                            });
-
-                            // Form submission and AJAX code
-                            $("#checkoutForm").on("submit", function(event) {
-                                event.preventDefault();
-                                var csrfToken = document.getElementById('csrf-token').getAttribute('value');
-                                showLoader();
-
-                                var user_id = $("#user_id").val();
-                                var total_price = $("#total_price").val();
-
-                                // Frontend validation for total_price
-                                if (!isValidAmount(total_price)) {
-
-                                    // Display error message in the toast
-                                    showErrorToast('Invalid amount or exceeds credit limit.');
-                                    return; // Don't proceed with the AJAX request
-                                }
-
-
-                                $.ajax({
-
-                                    url: "backend.php",
-                                    method: "POST",
-                                    data: {
-                                        user_id: user_id,
-                                        total_price: total_price,
-                                        branch_checkout: true
-                                    },
-                                    headers: {
-                                        'X-CSRF-Token': csrfToken // Send the CSRF token as a header
-                                    },
-                                    dataType: "json",
-                                    success: function(response) {
-
-                                        if (response.success) {
-                                            hideLoader();
-                                            // Transaction successful, show success message using SweetAlert
-                                            /*   Swal.fire({
-                                                  icon: "success",
-                                                  title: "Success",
-                                                  text: response.success,
-                                              }).then((result) => {
-                                                  if (result.isConfirmed) { */
-                                            // Redirect to the paymentdone.php page
-                                            window.location.href = "paymentdone.php";
-                                            /*    }
-                                            }); */
-                                        } else if (response.error) {
-                                            hideLoader();
-                                            // Display error message in the toast
-                                            showErrorToast(response.error);
-                                        }
-                                    },
-                                    error: function(xhr, status, error) {
-                                        hideLoader();
-                                        // Display a generic error message in the toast for AJAX errors
-                                        showErrorToast('An error occurred during the transaction.');
+                                    } else {
+                                        // Hide the error message if the amount is valid
+                                        hideErrorToast();
                                     }
                                 });
+
+                                // Form submission and AJAX code
+                                $("#checkoutForm").on("submit", function(event) {
+                                    event.preventDefault();
+                                    var csrfToken = document.getElementById('csrf-token').getAttribute('value');
+                                    showLoader();
+
+                                    var user_id = $("#user_id").val();
+                                    var total_price = $("#total_price").val();
+
+                                    // Frontend validation for total_price
+                                    if (!isValidAmount(total_price)) {
+
+                                        // Display error message in the toast
+                                        showErrorToast('Invalid amount or exceeds credit limit.');
+                                        return; // Don't proceed with the AJAX request
+                                    }
+
+
+                                    $.ajax({
+
+                                        url: "backend.php",
+                                        method: "POST",
+                                        data: {
+                                            user_id: user_id,
+                                            total_price: total_price,
+                                            branch_checkout: true
+                                        },
+                                        headers: {
+                                            'X-CSRF-Token': csrfToken // Send the CSRF token as a header
+                                        },
+                                        dataType: "json",
+                                        success: function(response) {
+
+                                            if (response.success) {
+                                                hideLoader();
+                                                // Transaction successful, show success message using SweetAlert
+                                                /*   Swal.fire({
+                                                      icon: "success",
+                                                      title: "Success",
+                                                      text: response.success,
+                                                  }).then((result) => {
+                                                      if (result.isConfirmed) { */
+                                                // Redirect to the paymentdone.php page
+                                                window.location.href = "paymentdone.php";
+                                                /*    }
+                                                }); */
+                                            } else if (response.error) {
+                                                hideLoader();
+                                                // Display error message in the toast
+                                                showErrorToast(response.error);
+                                            }
+                                        },
+                                        error: function(xhr, status, error) {
+                                            hideLoader();
+                                            // Display a generic error message in the toast for AJAX errors
+                                            showErrorToast('An error occurred during the transaction.');
+                                        }
+                                    });
+                                });
+
+                                // Function to display an error message in the toast
+                                function showErrorToast(message) {
+                                    hideLoader();
+                                    $("#errorToast").removeClass("bg-success").addClass("bg-danger");
+                                    $("#errorToast .toast-title").text("Error");
+                                    $("#errorToast .toast-body").text(message);
+                                    $("#errorToast").fadeIn();
+                                }
+
+                                // Function to hide the error toast
+                                function hideErrorToast() {
+                                    $("#errorToast").fadeOut();
+                                }
                             });
-
-                            // Function to display an error message in the toast
-                            function showErrorToast(message) {
-                                hideLoader();
-                                $("#errorToast").removeClass("bg-success").addClass("bg-danger");
-                                $("#errorToast .toast-title").text("Error");
-                                $("#errorToast .toast-body").text(message);
-                                $("#errorToast").fadeIn();
-                            }
-
-                            // Function to hide the error toast
-                            function hideErrorToast() {
-                                $("#errorToast").fadeOut();
-                            }
-                        });
-                    </script>
+                        </script>
 
 </body>
 

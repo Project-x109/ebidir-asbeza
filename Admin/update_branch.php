@@ -1,9 +1,10 @@
 <?php
 include "../common/ratelimiter.php";
 include "../connect.php";
+include "../user/functions.php";
 session_start();
 include "../common/Authorization.php";
-$requiredRoles = array('Admin','EA'); // Define the required roles for the specific page
+$requiredRoles = array('Admin', 'EA'); // Define the required roles for the specific page
 checkAuthorization($requiredRoles);
 
 
@@ -12,7 +13,7 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
     echo json_encode(['error' => 'Authorization Error']);
     exit;
 }
-$branchId = $_POST['branch_id']; // Assuming 'branch_id' is the identifier for branch data
+$branchId = $_POST['branch_id'];
 $location = $_POST['location'];
 
 // Initialize response array
@@ -28,11 +29,12 @@ if (!$stmtBranch) {
     $stmtBranch->bind_param("ss", $location, $branchId);
 
     if ($stmtBranch->execute()) {
-        // Branch data updated successfully
         $response['status'] = 'success';
+        insertLog($conn, $_SESSION['id'], "The Location of Branch with user ID " . $branchId . " Have been Updated to " . $location);
     } else {
         // Branch data update failed
         $response['status'] = 'error';
+        insertLog($conn, $_SESSION['id'], "Unable to update branch with branch ID " . $branchId);
         $response['message'] = 'Error updating branch data: ' . $stmtBranch->error;
     }
 

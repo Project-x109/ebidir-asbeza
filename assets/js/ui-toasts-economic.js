@@ -48,15 +48,14 @@ $(document).ready(function () {
           if (response.success) {
             // Clear and reset the form
             $("#economicForm")[0].reset();
-            // Show success message using SweetAlert2 modal
             Swal.fire({
               icon: "success",
               title: "Success",
               text: response.success,
             }).then((result) => {
               if (result.isConfirmed) {
-                // Redirect or perform any other action here
-                window.location.href = "dashbaord.php"; // Replace with the appropriate URL
+          
+                window.location.href = "loan.php";
               }
             });
           }

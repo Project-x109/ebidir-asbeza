@@ -122,43 +122,12 @@ include "../common/head.php"
                           <label for="dateOfBirth" class="form-label">Date of Birth</label>
                           <input class="form-control" type="date" id="dateOfBirth" name="dateOfBirth" value="<?php echo $row['dob']; ?>" autofocus disabled placeholder="01-12-2023" />
                         </div>
-                        <!--  <div class="mb-3 col-md-6">
-                          <label for="branch" class="form-label">Branch Name</label>
-                          <select type="text" class="form-control" id="branch" name="branch" autofocus disabled>
-                            <option value="Employed" <?php if ($row['job_status'] === 'Employed')
-                                                        echo ' selected'; ?>>
-                              Employed</option>
-                            <option value="Unemployed" <?php if ($row['job_status'] === 'Unemployed')
-                                                          echo ' selected'; ?>>Unemployed</option>
-                            <option value="Self Employed" <?php if ($row['job_status'] === 'Self Employed')
-                                                            echo ' selected'; ?>>Self Employed</option>
-                          </select>
-                        </div> -->
 
                       </div>
                     </form>
                   </div>
                   <!-- /Account -->
                 </div>
-                <!-- <div class="card">
-                  <h5 class="card-header">Delete Account</h5>
-                  <div class="card-body">
-                    <div class="mb-3 col-12 mb-0">
-                      <div class="alert alert-warning">
-                        <h6 class="alert-heading fw-bold mb-1">Are you sure you want to delete your account?</h6>
-                        <p class="mb-0">Once you delete your account, there is no going back. Please be certain.</p>
-                      </div>
-                    </div>
-                    <form id="formAccountDeactivation" onsubmit="return false">
-                      <div class="form-check mb-3">
-                        <input class="form-check-input" type="checkbox" name="accountActivation" id="accountActivation" />
-                        <label class="form-check-label" for="accountActivation">I confirm my account
-                          deactivation</label>
-                      </div>
-                      <button type="submit" class="btn btn-danger deactivate-account">Deactivate Account</button>
-                    </form>
-                  </div>
-                </div> -->
               </div>
             </div>
           </div>

@@ -42,7 +42,7 @@ function initializeDataTable() {
       {
         // Define 'Actions' column
         data: null,
-        render: function (data, type, row, meta) { 
+        render: function (data, type, row, meta) {
           return (
             '<div class="dropdown">' +
             '<button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">' +
@@ -62,13 +62,10 @@ function initializeDataTable() {
     destroy: true // This allows reinitialization of DataTable
   });
 }
-
-// Call the initializeDataTable() function once when the page is loaded
 $(document).ready(function () {
   initializeDataTable();
 });
 
-// Function to edit user data and display it in a modal
 function editUser(userId) {
   showLoader();
   var csrfToken = document.getElementById('csrf-token').getAttribute('value');
@@ -89,7 +86,7 @@ function editUser(userId) {
       $('#emailBackdrop').val(userData.email);
       $('#phoneBackdrop').val(userData.phone);
       $('#status').val(userData.status);
-      
+
       // Fetch branch data using user_id
       $.ajax({
         type: 'GET',

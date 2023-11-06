@@ -4,7 +4,7 @@ include "../connect.php";
 include "../user/functions.php";
 session_start();
 include "../common/Authorization.php";
-$requiredRoles = array('Admin','EA'); // Define the required roles for the specific page
+$requiredRoles = array('Admin', 'EA'); // Define the required roles for the specific page
 checkAuthorization($requiredRoles);
 
 
@@ -20,7 +20,6 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
     echo json_encode(['error' => 'Authorization Error']);
     exit;
 } else if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get the updated user data from the form
     $userId = $_POST["id"];
     $name = $_POST["name"];
     $email = $_POST["email"];
@@ -28,36 +27,22 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
     $status = $_POST["status"];
     $TIN_Number = $_POST["TIN_Number"];
     $phone = $_POST["phone"];
-
-    // Create an array to store validation errors
     $validationErrors = array();
-
-    // Check if the name is empty or invalid
     if (!validateName($name)) {
         $validationErrors[] = "Name can only contain letters and spaces.";
     }
-
-    // Check if TIN Number is empty or invalid
     if (!validateTINNumber($TIN_Number)) {
         $validationErrors[] = "Invalid TIN number format.";
     }
-
-    // Check if Date of Birth is empty or user is not at least 18 years old
     if (!validateAge($dob)) {
         $validationErrors[] = "You must be at least 18 years old.";
     }
-
-    // Check if the email is empty or invalid
     if (!validateEmail($email)) {
         $validationErrors[] = "Invalid email address.";
     }
-
-    // Check if the phone is empty or invalid
     if (!validatePhone($phone)) {
         $validationErrors[] = "Invalid phone number format.";
     }
-
-    // Check if the status is empty
     if (empty($phone)) {
         $validationErrors[] = "Phone is required.";
     }
@@ -76,40 +61,27 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
     if (empty($name)) {
         $validationErrors[] = "Full Name is required.";
     }
-
-    // Check if the phone number already exists in the database, excluding the current user's ID
     $phoneQuery = "SELECT * FROM users WHERE phone = ? AND user_id != ?";
     $phoneStmt = $conn->prepare($phoneQuery);
     $phoneStmt->bind_param("ss", $phone, $userId);
     $phoneStmt->execute();
     $phoneResult = $phoneStmt->get_result();
-
-    // Check if the email already exists in the database, excluding the current user's ID
     $emailQuery = "SELECT * FROM users WHERE email = ? AND user_id != ?";
     $emailStmt = $conn->prepare($emailQuery);
     $emailStmt->bind_param("ss", $email, $userId);
     $emailStmt->execute();
     $emailResult = $emailStmt->get_result();
-
-    // Check if the TIN number already exists in the database, excluding the current user's ID
     $TINQuery = "SELECT * FROM users WHERE TIN_Number = ? AND user_id != ?";
     $TINStmt = $conn->prepare($TINQuery);
     $TINStmt->bind_param("ss", $TIN_Number, $userId);
     $TINStmt->execute();
     $TINResult = $TINStmt->get_result();
 
-   
-
-    // Check if there are validation errors
     if (!empty($validationErrors)) {
-        // Return validation errors in JSON format
         echo json_encode(["status" => "error", "errors" => $validationErrors]);
     } else {
-        // Check if the same user's records are being updated
         if ($phoneResult->num_rows > 0 && $emailResult->num_rows > 0 && $TINResult->num_rows > 0) {
-            // Allow updates since the same user is updating their own records
         } else {
-            // Check if there are no other records with the same values
             $conflictingErrors = array();
             if ($phoneResult->num_rows > 0) {
                 $conflictingErrors[] = "Phone number is already registered by another user.";
@@ -122,14 +94,10 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
             }
 
             if (!empty($conflictingErrors)) {
-                // Block updates due to conflicts
                 echo json_encode(["status" => "error", "errors" => $conflictingErrors]);
-                exit; // Stop further execution
+                exit;
             }
         }
-
-        // No validation errors and no conflicts, proceed with the database update
-        // Perform the database update using prepared statement and parameterized query
         $attempt = 0;
         $updateQuery = "UPDATE users SET name=?, email=?, dob=?, status=?, TIN_Number=?, phone=?,attempt=? WHERE user_id=?";
         $updateStmt = $conn->prepare($updateQuery);
@@ -138,17 +106,15 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
         if ($updateStmt->execute()) {
             // Update successful
             echo json_encode(["status" => "success", "message" => "User updated successfully!"]);
+            insertLog($conn, $_SESSION['id'], "User with user ID " . $userId . " Have been Updated");
             sendProfileUpdatedEmail($email, $name, $conn);
         } else {
-            // Update failed
+            insertLog($conn, $_SESSION['id'], "Unable to update user with user ID " . $userId);
             echo json_encode(["status" => "error", "message" => $conn->error]);
         }
     }
-
-    // Close the database connection
     $conn->close();
 } else {
-    // Handle the case where this script is accessed without a POST request
     echo json_encode(["status" => "error", "message" => "Invalid request method"]);
 }
 

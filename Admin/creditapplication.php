@@ -23,11 +23,6 @@ include "../common/head.php";
                 <?php
                 include "../common/nav.php";
                 ?>
-                <!-- Navbar -->
-
-                <!-- / Navbar -->
-
-                <!-- Content wrapper -->
                 <div class="content-wrapper">
                     <!-- Content -->
 

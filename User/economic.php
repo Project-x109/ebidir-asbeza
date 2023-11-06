@@ -65,7 +65,6 @@ include "../common/head.php";
                   $sql1 = "SELECT * from users where user_id='$id'";
                   $res1 = $conn->query($sql1);
                   $row1 = $res1->fetch_assoc();
-
                   $res = $conn->query($sql);
                   $found = $res->num_rows;
                   $field_of_employeement = "";
@@ -95,7 +94,8 @@ include "../common/head.php";
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
                             <span id="basic-icon-default-fieldofEmployment2" class="input-group-text"><i class="bx bx-award"></i></span>
-                            <input type="text" class="form-control" id="basic-icon-default-fieldofEmployment" placeholder="Engineer" aria-label="Electrical Engineer" aria-describedby="basic-icon-default-fieldofEmployment2" name="field_of_employeement" value='<?php echo $field_of_employeement ?>' />
+                            <input type="text" class="form-control" id="basic-icon-default-fieldofEmployment" placeholder="Engineer" aria-label="Electrical Engineer" 
+                            aria-describedby="basic-icon-default-fieldofEmployment2" name="field_of_employeement" value='<?php echo $field_of_employeement ?>' />
                           </div>
                         </div>
 
@@ -118,38 +118,6 @@ include "../common/head.php";
                             <input class="form-control" type="date" value="2021-06-18" id="html5-datetime-local-input-YearofEmployment" placeholder="5" name="year" value='<?php echo $year ?>' />
                           </div>
                         </div>
-
-                        <!-- <label class="col-sm-2 col-form-label" for="marrigeStatus">Branch Name:<span class="text-danger">*</span></label>
-                        <div class="col-sm-4">
-                          <div class="input-group input-group-merge">
-                            <span id="basic-icon-default-companyname2" class="input-group-text"><i class="bx bx-map-pin"></i></span>
-                            <select id="basic-icon-default-branchname" class="form-select" name="branch" value='<?php echo $branch ?>'>
-                              <option value="">Choose Branch</option>
-                              <?php
-                              // Query to fetch branch names from the "branch" table
-                              $branchQuery = "SELECT branch_name FROM branch";
-                              $branchResult = $conn->query($branchQuery);
-
-                              // Check if there are rows in the result
-                              if ($branchResult && $branchResult->num_rows > 0) {
-                                while ($branchRow = $branchResult->fetch_assoc()) {
-                                  $branchName = $branchRow['branch_name'];
-                                  // Use the branch name to generate an <option> element
-                                  echo "<option value=\"$branchName\"";
-                                  // Check if the branch name matches the value in $branch and mark it as selected
-                                  if ($branch === $branchName) {
-                                    echo ' selected';
-                                  }
-                                  echo ">$branchName</option>";
-                                }
-                              } else {
-                                // If there are no branch names in the database, you can display a default option
-                                echo '<option value="No data">No data</option>';
-                              }
-                              ?>
-                            </select>
-                          </div>
-                        </div> -->
                         <label for="html5-datetime-local-input" class="col-md-2 col-form-label">Position :<span class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">

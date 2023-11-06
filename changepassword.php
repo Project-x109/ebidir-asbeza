@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "connect.php";
+var_dump($_SESSION['cart']);
 //changepassword
 if (isset($_SESSION['status']) && $_SESSION['status'] === 'waiting' && isset($_POST['new_password'])) {
     // User is in waiting status, allow them to change their password
@@ -69,14 +70,27 @@ if (isset($_SESSION['status']) && $_SESSION['status'] === 'waiting' && isset($_P
 
             if ($stmt->execute()) {
                 unset($_SESSION['on_newpassword_page']);
-                // Password updated successfully, redirect to the dashboard
                 $_SESSION['success'] = "Password updated successfully!";
                 $loc = $_SESSION['role'];
                 if ($_SESSION['role'] == "EA")
                     $loc = "Admin";
                 if ($_SESSION['role'] == "delivery")
                     $loc = "branch";
-                $loc .= "/";
+                if ($_SESSION['role'] == "user") {
+                    if (!empty($_SESSION['temp_cart'])) {
+                        if (!isset($_SESSION['cart'])) {
+                            $_SESSION['cart'] = [];
+                        }
+                        $_SESSION['cart'] = array_merge($_SESSION['cart'], $_SESSION['temp_cart']);
+                        unset($_SESSION['temp_cart']);
+                    }
+                    $loc .= "/loan";
+                } else {
+                    $loc .= "/";
+                }
+                if (!$_SESSION['role'] == "user") {
+                    $loc .= "/";
+                }
                 header("location: " . $loc);
                 exit();
             } else {
@@ -94,7 +108,7 @@ if (isset($_SESSION['status']) && $_SESSION['status'] === 'waiting' && isset($_P
 } else {
     // If the user is not in waiting status or there were validation errors, redirect to the appropriate dashboard
     // $loc = $_SESSION['role'] . "/";
-    $loc = $_SESSION['role']=="EA"?"Admin":$_SESSION['role'] . "/";
+    $loc = $_SESSION['role'] == "EA" ? "Admin" : $_SESSION['role'] . "/";
     // header("location: " . $loc);
     // exit();
 }

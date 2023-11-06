@@ -1,15 +1,11 @@
 <?php
-// Start the session
+include "connect.php";
+include "./user/functions.php";
 session_start();
-
-// Unset or remove session variables
+insertLog($conn, $_SESSION['id'], "User with id {$_SESSION['id']}  has logged out");
 unset($_SESSION['role']);
 unset($_SESSION['tokenjwt']);
-
-// Destroy the session
 session_destroy();
-
-// Clear the jwt_token cookie
 if (isset($_COOKIE['jwt_token'])) {
     setcookie('jwt_token', '', time() - 3600, '/');
 }

@@ -210,6 +210,7 @@ include "../common/head.php";
                         <div class="toast-body">
                         </div>
                     </div>
+                    <div class="container my-5">
                     <!-- / Content -->
                     <?php
                     include "../common/footer.php";

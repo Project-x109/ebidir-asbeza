@@ -135,7 +135,12 @@ if (!isset($_COOKIE['jwt_token']) || isTokenExpired($_COOKIE['jwt_token'])) {
                         </form>
                         <div class="text-center">
                             <?php
-                            $loc = $_SESSION['role'] . "/dashbaord";
+                            $loc = $_SESSION['role'];
+                            if ($_SESSION['role'] == "EA")
+                                $loc = "Admin";
+                            if ($_SESSION['role'] == "delivery")
+                                $loc = "branch";
+                            $loc .= "/dashbaord";
 
                             ?>
                             <a href="<?php echo $loc; ?>" onclick="return validateForm()" class="d-flex align-items-center justify-content-center">

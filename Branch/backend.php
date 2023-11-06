@@ -2,7 +2,7 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
-$requiredRoles = array('branch','delivery'); // Define the required roles for the specific page
+$requiredRoles = array('branch', 'delivery'); // Define the required roles for the specific page
 checkAuthorization($requiredRoles);
 include '../user/functions.php';
 
@@ -13,18 +13,6 @@ use PHPMailer\PHPMailer\Exception;
 require '../assets/PHPMailer/PHPMailer.php';
 require '../assets/PHPMailer/SMTP.php';
 require '../assets/PHPMailer/Exception.php';
-/* if (isset($_POST['user'])) {
-    $user_id = $_POST['user'];
-    $sql = "SELECT * FROM users where user_id='$user_id'";
-    $res = $conn->query($sql);
-    if ($res->num_rows > 0) {
-        $row = $res->fetch_assoc();
-        $_SESSION['user_id'] = $row['user_id'];
-        header('location:userinfo.php');
-    } else {
-        // send error message here 
-    }
-} */
 
 if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $_SESSION['token']) {
     echo json_encode(['error' => 'Authorization Error']);
@@ -48,15 +36,12 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
             $row = $res->fetch_assoc();
             $_SESSION['user_id'] = $row['user_id'];
             $response = array('success' => 'User found. Redirecting to User Information');
+            insertLog($conn, $_SESSION['id'], "Searched User with User id of {$user_id}");
         } else {
             $response = array('error' => 'User ID does not exist in the database.');
         }
-
-        // Close the prepared statement
         $stmt->close();
     }
-
-    // Send the response as JSON
     header('Content-Type: application/json');
     echo json_encode($response);
     exit();
@@ -76,10 +61,11 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
         $credit_limit = $row['credit_limit'];
 
         if ($total_price > $credit_limit) {
-            // Total price exceeds the credit limit, send an error response
             $response = array('error' => 'Total price exceeds your credit limit.');
             header('Content-Type: application/json');
             echo json_encode($response);
+            $errorString = implode("\n", $response);
+            insertLog($conn, $_SESSION['id'], "{$user_id} has tried to make a purchase of total price of {$total_price} via branch.failed due to" . $errorString);
             exit();
         }
     } else {
@@ -87,30 +73,28 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
         $response = array('error' => 'User not found.');
         header('Content-Type: application/json');
         echo json_encode($response);
+        insertLog($conn, $_SESSION['id'], "{$user_id} has tried to make a purchase of total price of {$total_price} via branch.failed due to" . $errorString);
         exit();
     }
-
     $sql = "SELECT (personal.personal_score+economic.economic_score) as score from personal INNER JOIN economic on personal.user_id=economic.user_id WHERE personal.user_id='$_POST[user_id]'";
     $res = $conn->query($sql);
     $row1 = $res->fetch_assoc();
     $score = $row1['score'];
-    // Continue with the rest of your code to insert the loan and update the credit limit
     $date = date('Y-m-d h:i:s');
     $sql2 = "INSERT INTO loans(`user_id`,`price`,`credit_score`,`createdOn`,`provider`) VALUES (?, ?, ?, ?, ?)";
     $stmt2 = $conn->prepare($sql2);
     $stmt2->bind_param("sdsss", $user_id, $total_price, $score, $date, $_SESSION['id']);
-
+    insertLog($conn, $_SESSION['id'], "A new loan has been created after a user with user id {$user_id} has made a purchase of total price of {$total_price} via branch");
     if ($stmt2->execute()) {
         $last_id = $stmt2->insert_id;
         $limit = $credit_limit - $total_price;
         $sql3 = "UPDATE users SET credit_limit = ? WHERE user_id = ?";
         $stmt3 = $conn->prepare($sql3);
         $stmt3->bind_param("ds", $limit, $user_id);
+        insertLog($conn, $_SESSION['id'], "The credit limit of user with user id {$user_id} has been updated from {$credit_limit} to {$limit} after making a purchase of total price of {$total_price} via branch");
 
         if ($stmt3->execute()) {
             $_SESSION['user_id'] = $last_id;
-
-            // Fetch user's email and name from the database using user_id
             $sql4 = "SELECT email, name FROM users WHERE user_id = ?";
             $stmt4 = $conn->prepare($sql4);
             $stmt4->bind_param("s", $user_id);
@@ -121,13 +105,10 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
                 $row4 = $result4->fetch_assoc();
                 $recipientEmail = $row4['email'];
                 $recipientName = $row4['name'];
-
-                // Send success message as a JSON response
                 $response = array('success' => 'Transaction completed successfully.');
                 header('Content-Type: application/json');
                 echo json_encode($response);
-
-                // Send an email to the user
+                insertLog($conn, $_SESSION['id'], "{$user_id} has made a purchase of total price of {$total_price} via branch");
                 sendPasswordEmail($recipientEmail, $recipientName, $conn);
 
                 exit();
@@ -147,8 +128,6 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
         exit();
     }
 }
-
-
 function sendPasswordEmail($recipientEmail, $recipientName, $conn)
 {
     $mail = new PHPMailer(true);
@@ -336,35 +315,3 @@ function sendPasswordEmail($recipientEmail, $recipientName, $conn)
         echo "<script>alert('Message could not be sent. Mailer Error: " . $mail->ErrorInfo . "')</script>";
     }
 }
-
-
-
-
-
-/* 
-if (isset($_POST['branch_checkout'])) {
-    $user_id = $_POST['user_id'];
-    $sql = "SELECT * FROM users where user_id='$user_id'";
-    $res = $conn->query($sql);
-    $row = $res->fetch_assoc();
-    $date = date('Y-m-d h:i:s');
-    $sql = "SELECT (personal.personal_score+economic.economic_score) as score from personal INNER JOIN economic on personal.user_id=economic.user_id WHERE personal.user_id='$_POST[user_id]'";
-    $res = $conn->query($sql);
-    $row1 = $res->fetch_assoc();
-    $score = $row1['score'];
-    $sql2 = "INSERT INTO loans(`user_id`,`price`,`credit_score`,`createdOn`,`provider`) Values('$_POST[user_id]',$_POST[total_price],'$score','$date','$_SESSION[id]')";
-    $res = $conn->query($sql2);
-    if ($res) {
-        $last_id = mysqli_insert_id($conn);
-        $limit = $row['credit_limit'] - $_POST['total_price'];
-        $sql = "update users set credit_limit=$limit WHERE user_id='$_POST[user_id]'";
-        $res = $conn->query($sql);
-        //// send success message here 
-
-        $_SESSION['user_id'] = $last_id;
-        echo $sql;
-        header("location:paymentdone.php");
-    }
-}
-
-*/

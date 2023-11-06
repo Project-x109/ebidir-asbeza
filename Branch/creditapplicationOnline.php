@@ -2,13 +2,14 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
-$requiredRoles = array('branch','delivery'); // Define the required roles for the specific page
+$requiredRoles = array('branch', 'delivery'); // Define the required roles for the specific page
 checkAuthorization($requiredRoles);
 
 ?>
 <?php
 include "../common/head.php";
 ?>
+
 <body>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
@@ -32,7 +33,7 @@ include "../common/head.php";
                     <!-- Content -->
 
                     <div class="container-xxl flex-grow-1  container-p-y">
-                    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">User/</span>Applications</h4>
+                        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">User/</span>Applications</h4>
 
                         <div class="row">
                             <!-- Striped Rows -->
@@ -92,103 +93,10 @@ include "../common/head.php";
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- Status Update Modal -->
-
-                                    <div class="modal fade" id="statusModal" aria-labelledby="statusModalLabel" tabindex="-1" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="statusModalLabel">Update Status</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <input type="hidden" id="loanID" />
-                                                    <div id="statusRadioContainer">
-                                                        <div class="radio-buttons-container">
-                                                            <div class="radio-button">
-                                                                <input name="radio-group" id="radio2" class="radio-button__input" type="radio">
-                                                                <label for="radio2" class="radio-button__label">
-                                                                    <span class="radio-button__custom"></span>
-
-                                                                    pending
-                                                                </label>
-                                                            </div>
-                                                            <div class="radio-button">
-                                                                <input name="radio-group" id="radio1" class="radio-button__input" type="radio">
-                                                                <label for="radio1" class="radio-button__label">
-                                                                    <span class="radio-button__custom"></span>
-
-                                                                    decline
-                                                                </label>
-                                                            </div>
-                                                            <div class="radio-button">
-                                                                <input name="radio-group" id="radio3" class="radio-button__input" type="radio">
-                                                                <label for="radio3" class="radio-button__label">
-                                                                    <span class="radio-button__custom"></span>
-
-                                                                    Closed
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-primary" onclick="updateStatus()">Save Changes</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
                         <!--/ Striped Rows -->
-                    </div>
-
-
-
-                    <!-- Modal Structure (empty modal) -->
-                    <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none;" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="modalToggleLabel">Loan Details</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="card">
-                                        <div class="card-body" id="modalContent">
-                                            <!-- Modal content will be dynamically generated here -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Status Update Modal -->
-                    <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="statusModalLabel">Update Status</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <!-- Status update radio buttons will be dynamically generated here -->
-                                    <div id="statusRadioContainer">
-                                        <!-- Radio buttons will be generated here dynamically using JavaScript -->
-                                    </div>
-                                </div>
-                                <input type="hidden" id="loanID">
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" onclick="saveStatus()">Save Changes</button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <!-- / Content -->
@@ -196,19 +104,19 @@ include "../common/head.php";
                     <?php
                     include "../common/footer.php";
                     ?>
-                    <!--  <script>
-                    function update(e) {
-                        let x = e.value;
-                        let xhr = new XMLHttpRequest();
-                        xhr.onload = function() {
-                            // alert(this.responseText)
-                            document.location = '';
+                   <!--  <script>
+                        function update(e) {
+                            let x = e.value;
+                            let xhr = new XMLHttpRequest();
+                            xhr.onload = function() {
+                                // alert(this.responseText)
+                                document.location = '';
+                            }
+                            xhr.open("GET", "ajax.php?loan_id_online=" + x)
+                            xhr.send();
                         }
-                        xhr.open("GET", "ajax.php?loan_id=" + x)
-                        xhr.send();
-                    }
-                </script> -->
-                    <script>
+                    </script> -->
+                     <script>
                         function update(e) {
                             let x = e.value;
                             Swal.fire({
