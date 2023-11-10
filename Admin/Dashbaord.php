@@ -3,7 +3,7 @@ session_start();
 include "../connect.php";
 include "../common/Authorization.php";
 include "../common/head.php";
-$requiredRoles = array('Admin','EA'); // Define the required roles for the specific page
+$requiredRoles = array('Admin', 'EA'); // Define the required roles for the specific page
 checkAuthorization($requiredRoles);
 
 
@@ -122,7 +122,7 @@ checkAuthorization($requiredRoles);
                                                             echo '<td>' . $row['total_unpaid_amount'] . '</td>';
                                                             echo '<td>' . $row['user_credit_limit'] . '</td>';
                                                             echo '<td>' . $row['user_credit_level'] . '</td>';
-                                                            echo '<td>' . $row['branch_name'] . ' (' . $row['branch_location'] . ')</td>';
+                                                            echo $row['branch_name'] ? '<td>' . $row['branch_name'] . ' (' . $row['branch_location'] . ')</td>' : '<td>' . 'SELF' . '</td>';
                                                             echo '<td><a href="userdetail.php?user_id=' . $row['user_id'] . '&branch_id=' . $row['branch_id'] . '">Detail</a></td>';
                                                             echo '</tr>';
                                                         }
@@ -439,7 +439,7 @@ checkAuthorization($requiredRoles);
                             <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
                             <!-- / Footer -->
                             <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
-                    
+
                             <script src="../assets/js/branchgrowthchart.js"></script>
                             <script>
                                 window.addEventListener('load', updateUIBasedOnAuthStatus);
