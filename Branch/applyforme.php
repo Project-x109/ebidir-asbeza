@@ -67,7 +67,7 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
                                 <p class="form-card-title">You can apply for credit here</p>
                                 <p class="form-card-prompt">Insert the user's six-digit identification number</p>
                                 <div class="form-card-input-wrapper">
-                                    <input class="form-card-input" id="user" name="user" placeholder="______" maxlength="6" type="tel" id="identificationNumber">
+                                    <input class="form-card-input" id="user" name="user" placeholder="______" maxlength="6" type="text" id="identificationNumber">
 
                                     <div class="form-card-input-bg"></div>
                                 </div>

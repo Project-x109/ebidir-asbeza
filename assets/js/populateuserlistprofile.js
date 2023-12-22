@@ -97,4 +97,3 @@ function getRandomNumber(min, max) {
   document.getElementById('phoneNumber').value=dummyData[0].phone;
   document.getElementById('uploadedAvatar').src = dummyData[0].image;
 
-  console.log(fullname);

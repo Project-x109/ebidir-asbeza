@@ -85,14 +85,14 @@ include "../common/head.php"
                     <form id="personalForm" action="backend.php" method="POST">
                       <input type="hidden" name="token" id="csrf-token" value="<?php echo $_SESSION['token'] ?? '' ?>">
                       <input type="hidden" name="add_user" value="1">
-                      <input type="hidden" name="id" value='<?php echo $_SESSION['id'] ?>' />
+                      <!--     <input type="hidden" name="id" value='<?php echo $_SESSION['id'] ?>' /> -->
                       <div class="row mb-4">
                         <label class="col-sm-2 col-form-label" for="numberOfDependents">Number of
                           Dependents:<span class="text-danger">*</span></label>
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
                             <span id="numberOfDependents2" class="input-group-text"><i class="bx bx-user"></i></span>
-                            <input type="number" class="form-control" id="numberOfDependents" name="Number_of_dependents" value='<?php echo $Number_of_dependents ?>' placeholder="5" aria-label="John Doe" aria-describedby="numberOfDependents2" />
+                            <input type="number" class="form-control" id="numberOfDependents" name="Number_of_dependents"  placeholder="5" aria-label="John Doe" aria-describedby="numberOfDependents2" />
                           </div>
                         </div>
 
@@ -101,8 +101,8 @@ include "../common/head.php"
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
                             <span id="marrigeStatus2" class="input-group-text"><i class="bx bx-map-pin"></i></span>
-                            <select value='<?php echo $Marriage_Status ?>' id="marrigeStatus" class="form-select" name="Marriage_Status">
-                              <option value=""><?php echo $found ? $Marriage_Status : "Default Value" ?></option>
+                            <select id="marrigeStatus" class="form-select" name="Marriage_Status">
+                              <option value="">Select from the drop down</option>
                               <option value="Married">Married</option>
                               <option value="Single">Single</option>
                               <option value="Divorced">Divorced</option>
@@ -117,8 +117,8 @@ include "../common/head.php"
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
                             <span id="educationalStatus2" class="input-group-text"><i class="bx bx-book-reader"></i></span>
-                            <select value='<?php echo $Educational_Status ?>' id="educationalStatus" class="form-select" name="Educational_Status">
-                              <option value=""><?php echo $found ? $Educational_Status : "Default Value" ?></option>
+                            <select id="educationalStatus" class="form-select" name="Educational_Status">
+                              <option value="">Select from the drop down</option>
                               <option value="Below highSchool">Below highSchool </option>
                               <option value="Diploma">Diploma</option>
                               <option value="Degree">Degree</option>
@@ -133,8 +133,8 @@ include "../common/head.php"
                         <div class="col-sm-4">
                           <div class="input-group input-group-merge">
                             <span id="criminalRecord2" class="input-group-text"><i class="bx bx-book-reader"></i></span>
-                            <select value='<?php echo $Criminal_record ?>' id="criminalRecord" class="form-select" name="Criminal_record">
-                              <option value=""><?php echo $found ? $Criminal_record : "Default Value" ?></option>
+                            <select id="criminalRecord" class="form-select" name="Criminal_record">
+                              <option value="">Select from the drop down</option>
                               <option value="No">No</option>
                               <option value="Yes/Past Five Years">Yes/Past Five Years</option>
                               <option value="Yes/More Than Five Years">Yes/More Than Five Years</option>
@@ -151,7 +151,7 @@ include "../common/head.php"
                         <div class="row justify-content-end">
                           <div class="col-sm-10">
                             <button id="submit-btn" type="submit" name='<?php echo $found ? "update_personal" : "add_personal" ?>' class="btn btn-primary">
-                              <?php echo $found ? "Update" : "Submit" ?>
+                              <?php echo $found ? "Submit" : "Submit" ?>
                             </button>
                           </div>
                         </div>

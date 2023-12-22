@@ -125,7 +125,7 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
                                                 <span>Enter Total Amount</span>
                                                 <form id="checkoutForm" class="form" action="backend.php" method="POST">
                                                     <input type="hidden" name="token" id="csrf-token" value="<?php echo $_SESSION['token'] ?? '' ?>">
-                                                    <input class="input_field" id="total_price" name="total_price" placeholder="Enter Total Amount" required max='<?= $row['credit_limit'] ?>' type="number" step="0" onkeyup="filldata(this)">
+                                                    <input class="input_field" id="total_price"  name="total_price" placeholder="Enter Total Amount" min="1" required max='<?= $row['credit_limit'] ?>' type="number" step="0" onkeyup="filldata(this)">
                                                     <input type='hidden' name="user_id" id="user_id" value='<?= $id ?>' />
                                                     <button name="branch_checkout" type='submit'>Apply</button>
                                                 </form>
@@ -169,11 +169,10 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
                                 $("#loader").fadeIn();
                             }
 
-                            // Hide the loader when the response is received
                             function hideLoader() {
                                 $("#loader").fadeOut();
                             }
-                            // Function to check if the amount is valid
+
                             function filldata(e) {
                                 document.getElementById('price').innerHTML = e.value + " Birr";
                             }
@@ -183,23 +182,15 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
                             }
 
                             $(document).ready(function() {
-                                // Add event listener to the total_price input field
                                 $("#total_price").on("input", function() {
                                     var total_price = $(this).val();
-
-
-                                    // Frontend validation for total_price
                                     if (!isValidAmount(total_price)) {
-                                        // Display an error message in the toast
                                         showErrorToast('Invalid amount or exceeds credit limit.');
 
                                     } else {
-                                        // Hide the error message if the amount is valid
                                         hideErrorToast();
                                     }
                                 });
-
-                                // Form submission and AJAX code
                                 $("#checkoutForm").on("submit", function(event) {
                                     event.preventDefault();
                                     var csrfToken = document.getElementById('csrf-token').getAttribute('value');
@@ -207,11 +198,8 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
 
                                     var user_id = $("#user_id").val();
                                     var total_price = $("#total_price").val();
-
-                                    // Frontend validation for total_price
                                     if (!isValidAmount(total_price)) {
 
-                                        // Display error message in the toast
                                         showErrorToast('Invalid amount or exceeds credit limit.');
                                         return; // Don't proceed with the AJAX request
                                     }
@@ -247,19 +235,16 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
                                                 }); */
                                             } else if (response.error) {
                                                 hideLoader();
-                                                // Display error message in the toast
                                                 showErrorToast(response.error);
                                             }
                                         },
                                         error: function(xhr, status, error) {
                                             hideLoader();
-                                            // Display a generic error message in the toast for AJAX errors
                                             showErrorToast('An error occurred during the transaction.');
                                         }
                                     });
                                 });
 
-                                // Function to display an error message in the toast
                                 function showErrorToast(message) {
                                     hideLoader();
                                     $("#errorToast").removeClass("bg-success").addClass("bg-danger");

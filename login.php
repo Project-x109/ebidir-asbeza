@@ -91,7 +91,6 @@ if (!$token || $token !== $_SESSION['token']) {
                 header("Location: index.php");
                 exit();
             }
-
             if (password_verify($userEnteredPassword, $hashedPassword) && $status != "dormant") {
                 $attempt = 0;
                 $updateSql = "UPDATE `users` SET attempt = ? WHERE user_id = ?";
@@ -118,14 +117,14 @@ if (!$token || $token !== $_SESSION['token']) {
                     if ($_SESSION['role'] == "delivery")
                         $loc = "branch";
                     if ($_SESSION['role'] == "user") {
-                        if (!empty($_SESSION['temp_cart'])) {
+                        if (isset($_SESSION['temp_cart']) && !empty($_SESSION['temp_cart'])) {
                             if (!isset($_SESSION['cart'])) {
                                 $_SESSION['cart'] = [];
                             }
                             $_SESSION['cart'] = array_merge($_SESSION['cart'], $_SESSION['temp_cart']);
                             unset($_SESSION['temp_cart']);
+                            $loc .= "/loan.php";
                         }
-                        $loc .= "/loan";
                     }
                 } else {
                     $loc .= "/";

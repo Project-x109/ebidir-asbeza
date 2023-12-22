@@ -107,7 +107,7 @@ include "../common/head.php";
                                                         LEFT JOIN transactions AS t ON l.id = t.loan_id
                                                         LEFT JOIN branch AS b ON t.updatedBy = b.branch_id
                                                         LEFT JOIN users AS u ON l.user_id = u.user_id
-                                                        WHERE l.user_id = '$user_id' AND (b.branch_id = '" . $_SESSION['id'] . "' OR l.status <> 'paid')
+                                                        WHERE l.user_id = '$user_id' AND (l.provider = '" . $_SESSION['id'] . "')
                                                         ORDER BY l.id DESC";
 
                                                     $loan_transaction_result = $conn->query($loan_transaction_sql);

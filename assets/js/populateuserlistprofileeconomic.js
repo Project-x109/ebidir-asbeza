@@ -67,5 +67,4 @@ function getRandomNumber(min, max) {
   document.getElementById('companyName').value = dummyData[0].companyName;
   document.getElementById('position').value = dummyData[0].position;
   
-  console.log(fullname);
   

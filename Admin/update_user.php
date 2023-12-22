@@ -1,5 +1,5 @@
 <?php
-include "../common/ratelimiter.php";
+include "../ratelimiter.php";
 include "../connect.php";
 include "../user/functions.php";
 session_start();

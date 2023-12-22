@@ -10,7 +10,6 @@ $(document).ready(function () {
   var button = $('#updateButton'); // Cache the button elemen
 
   function storeOriginalValues() {
-    // Store the original values of the fields as data attributes
     $('#formAccountSettings :input').each(function () {
       $(this).data('original-value', $(this).val());
     });
@@ -25,46 +24,33 @@ $(document).ready(function () {
       var value = $(this).val().trim();
       if ($(this).val() !== $(this).data('original-value')) {
         anyFieldEdited = true;
-        return false; // Exit the loop early if any field is edited
+        return false; 
       }
-
       if (value === '') {
         anyFieldEmpty = true;
       }
     });
-
-    // Enable the "Save Changes" button if any field is edited
     button.prop('disabled', !anyFieldEdited);
   }
-
-  // Store original values when the page loads
-  storeOriginalValues();
-
-  $('#formAccountSettings :input').on('input', toggleButtonState);
+  /* storeOriginalValues();
+  $('#formAccountSettings :input').on('input', toggleButtonState); */
   $('#updateButton').on('click', function () {
     if (button.text() === 'Update') {
-      // Switch to edit mode
       button.text('Save Changes');
       $('#formAccountSettings :input').removeAttr('readonly');
     } else {
-      // Save changes and switch back to update mode
       if (validateForm()) {
-        saveChanges(); // Only save changes if the form is valid
+        saveChanges(); 
       }
       button.text('Update');
       $('#formAccountSettings :input').attr('readonly', true);
-      // Re-check button state after switching back to update mode
     }
   });
   $('#cancelButton').on('click', function () {
-    // Change the button text to "Update"
     button.text('Update');
-    // Make the fields readonly
     $('#formAccountSettings :input').attr('readonly', true);
-    // Reset the form to its original values
   });
 
-  // Function to save changes when "Save Changes" is clicked
   function saveChanges() {
     showLoader();
     var csrfToken = document.getElementById('csrf-token').getAttribute('value');
@@ -79,13 +65,11 @@ $(document).ready(function () {
       contentType: false,
       processData: false,
       error: function (jqXHR, textStatus, errorThrown) {
-        console.log('AJAX request error:', textStatus, errorThrown);
         hideLoader();
         $('#error-toast .toast-body').text('Backend Error: ' + errorThrown);
         showErrorMessage();
       },
       success: function (response) {
-        console.log(response);
         hideLoader();
         if (response.errors) {
           var errorContainer = $('#error-toast .toast-body');
@@ -95,7 +79,6 @@ $(document).ready(function () {
           });
           showErrorMessage();
         } else if (response.success) {
-          console.log(response.success);
           // Update original values with the newly saved values
           $('#originalNumberOfDependents').val($('#numberOfDependents').val());
           $('#originalMarrigeStatus').val($('#marrigeStatus').val());
@@ -117,11 +100,8 @@ $(document).ready(function () {
       }
     });
   }
-
-  // ... Your form validation code here ...
   function validateForm() {
     let isValid = true;
-    // An array of field IDs and their corresponding error messages
     const fields = [
       {
         id: 'numberOfDependents',
@@ -157,7 +137,6 @@ $(document).ready(function () {
       }
 
       if (field.id === 'numberOfDependents') {
-        // Check if Dependetents Number field contains only numbers
         if (!numberRegex.test(value)) {
           const toastPlacementExample = document.querySelector('.toast-placement-ex');
           toastPlacementExample.querySelector('.toast-body').textContent = 'Dependetents must contain numbers.';
@@ -169,7 +148,6 @@ $(document).ready(function () {
         }
       }
     }
-    // If all fields are valid, return true to indicate success
     return isValid;
   }
 

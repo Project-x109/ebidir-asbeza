@@ -2,7 +2,7 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
-$requiredRoles = array('Admin','EA'); // Define the required roles for the specific page
+$requiredRoles = array('Admin', 'EA'); // Define the required roles for the specific page
 checkAuthorization($requiredRoles);
 ?>
 <?php
@@ -28,15 +28,105 @@ include "../common/head.php";
 
                     <div class="container-xxl flex-grow-1  container-p-y ">
                         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">User/</span>Applications</h4>
-
-
                         <div class="row">
                             <!-- Striped Rows -->
                             <div class="col-md-6 col-lg-12 col-xl-12 order-0 mb-4">
                                 <div class="card">
                                     <h5 class="card-header">Lists of Loans</h5>
                                     <div class="table-responsive text-nowrap ms-3 me-3">
+                                        <?php
+                                        $recordsPerPageOptions = array(5, 10, 25, 50, 100);
+                                        $defaultRecordsPerPage = 5;
+                                        $recordsPerPage = isset($_GET['recordsPerPage']) && in_array($_GET['recordsPerPage'], $recordsPerPageOptions)
+                                            ? intval($_GET['recordsPerPage'])
+                                            : $defaultRecordsPerPage;
+
+                                        $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+                                        $offset = ($page - 1) * $recordsPerPage;
+                                        $search = isset($_GET['search']) ? $_GET['search'] : '';
+                                        if (!empty($search)) {
+                                            $sql = "SELECT *, loans.user_id as userID, loans.status as status, loans.id as loan_id 
+                                          FROM `loans`  
+                                          INNER JOIN users ON users.user_id = loans.user_id 
+                                          WHERE loans.status != 'paid' AND (users.name LIKE ? OR users.user_id LIKE ? OR loans.price LIKE ? 
+                                          OR loans.credit_score LIKE ? OR users.credit_limit LIKE ? OR loans.createdOn LIKE ? OR loans.status LIKE ? 
+                                          OR loans.closedOn LIKE ? OR loans.provider LIKE ? OR loans.order_id LIKE ?)
+                                          ORDER BY loans.createdOn DESC
+                                          LIMIT ?, ?";
+                                            $stmt = $conn->prepare($sql);
+                                            $searchParam = "%$search%";
+                                            $stmt->bind_param("ssssssssssii", $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $offset, $recordsPerPage);
+                                        } else {
+                                            $sql = "SELECT *, loans.user_id as userID, loans.status as status, loans.id as loan_id 
+                                            FROM `loans`  
+                                            INNER JOIN users ON users.user_id = loans.user_id 
+                                            WHERE loans.status != 'paid'
+                                            ORDER BY loans.createdOn DESC
+                                            LIMIT ?, ?";
+                                            $stmt = $conn->prepare($sql);
+                                            $stmt->bind_param("ii", $offset, $recordsPerPage);
+                                        }
+                                        if (!empty($search)) {
+                                            $countQuery = "SELECT COUNT(*) as total 
+                                            FROM `loans`  
+                                            INNER JOIN users ON users.user_id = loans.user_id 
+                                            WHERE loans.status != 'paid' 
+                                            AND (users.name LIKE ? OR users.user_id LIKE ? OR loans.price LIKE ? OR loans.credit_score LIKE ? OR users.credit_limit LIKE ? OR loans.createdOn LIKE ? 
+                                            OR loans.status LIKE ? OR loans.closedOn LIKE ? OR loans.provider LIKE ? OR loans.order_id LIKE ?)";
+                                            $stmtCount = $conn->prepare($countQuery);
+                                            $searchParam = "%$search%";
+                                            $stmtCount->bind_param("ssssssssss", $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam);
+                                            $stmtCount->execute();
+                                            $totalRecords = $stmtCount->get_result()->fetch_assoc()['total'];
+                                        } else {
+
+                                            $countQuery = "SELECT COUNT(*) as total FROM `loans` WHERE status != 'paid'";
+                                            $countResult = $conn->query($countQuery);
+                                            $totalRecords = $countResult->fetch_assoc()['total'];
+                                        }
+                                        $stmt->execute();
+                                        $res = $stmt->get_result();
+
+                                        if (!$res) {
+                                            die("Error executing statement: " . $stmt->error);
+                                        }
+
+                                        $totalPages = ceil($totalRecords / $recordsPerPage);
+                                        ?>
+                                        <div class="row mb-4">
+                                            <div class="col-md-6 mb-md-0">
+                                                <div class="row records-per-page-search">
+                                                    <div class="col-sm-4 d-flex align-items-center"> <!-- Added a class to align items vertically -->
+                                                        <label for="recordsPerPage" class="col-sm-2 col-form-label me-3">Show</label>
+                                                        <div class="col-sm-6 me-2">
+                                                            <select class="form-select w-100" id="recordsPerPage" name="recordsPerPage" onchange="changeRecordsPerPage(this.value)">
+                                                                <?php
+                                                                foreach ($recordsPerPageOptions as $option) {
+                                                                    $selected = ($option == $recordsPerPage) ? 'selected' : '';
+                                                                    echo '<option value="' . $option . '" ' . $selected . '>' . $option . '</option>';
+                                                                }
+                                                                ?>
+                                                            </select>
+                                                        </div>
+                                                        <label for="recordsPerPage" class="col-form-label col-sm-4">entries</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <form class="row mb-3">
+                                                    <div class="col-12">
+                                                        <div class="input-group">
+                                                            <button type="submit" class="btn btn-primary">Search</button>
+                                                            <input type="text" class="form-control" placeholder="Search by Name, Email, Phone, etc." name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                                                            <a href="?page=<?php echo $page; ?>&recordsPerPage=<?php echo $recordsPerPage; ?>" class="btn btn-outline-secondary">Clear Search</a>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
                                         <table class="table table-striped" id="table-striped">
+
+
                                             <thead>
                                                 <tr>
                                                     <th>User ID</th>
@@ -47,147 +137,82 @@ include "../common/head.php";
                                                     <th>Requsted Date</th>
                                                     <th>Provider</th>
                                                     <?php
-                                                    if($_SESSION['role']!='EA')
-                                                    echo "<th>Update payment</th>";
-                                                else 
-                                                echo "<th></th>";
-                                                ?>
+                                                    if ($_SESSION['role'] != 'EA')
+                                                        echo "<th>Update payment</th>";
+                                                    else
+                                                        echo "<th></th>";
+                                                    ?>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $sql = "SELECT *,loans.user_id as userID ,loans.status as status,loans.id as loan_id FROM `loans`  INNER join users on users.user_id=loans.user_id where loans.status!='paid'";
-                                                $res = $conn->query($sql);
                                                 if ($res->num_rows > 0)
                                                     while ($row = $res->fetch_assoc()) {
                                                         $disabled = $row['status'] == 'paid' ? "disabled" : "";
                                                         echo "<tr>
-                                                                <td>".$row['userID']."</td>
-                                                                <td>".$row['name']."</td>
-                                                                <td>".$row['price']."</td>
-                                                                <td>".$row['credit_limit']."</td> 
-                                                                <td>".$row['credit_score']."</td>   
-                                                                <td>".$row['createdOn']."</td>   
-                                                                <td>".$row['provider']."</td>";   
-                                                                echo $_SESSION['role']=="EA"?"<td></td>":"<td><button class='btn btn-success' $disabled value='$row[loan_id]' onclick='update(this)'>update</button></td>   
+                                                                <td>" . $row['userID'] . "</td>
+                                                                <td>" . $row['name'] . "</td>
+                                                                <td>" . $row['price'] . "</td>
+                                                                <td>" . $row['credit_limit'] . "</td> 
+                                                                <td>" . $row['credit_score'] . "</td>   
+                                                                <td>" . $row['createdOn'] . "</td>   
+                                                                <td>" . $row['provider'] . "</td>";
+                                                        echo $_SESSION['role'] == "EA" ? "<td></td>" : "<td><button class='btn btn-success' $disabled value='$row[loan_id]' onclick='update(this)'>update</button></td>   
                                                                 </tr>";
                                                     }
                                                 ?>
                                             </tbody>
                                         </table>
+
                                     </div>
-                                    <!-- Modal Structure (empty modal) -->
-                                    <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="modalToggleLabel">Loan status</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="card">
-                                                        <div class="card-body" id="modalContent">
+                                    <?php
+                                    if ($res) {
+                                        echo '<nav aria-label="Page navigation" class="justify-content-center ms-5">';
+                                        echo '<ul class="pagination">';
 
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        // Previous page link
+                                        echo '<li class="page-item prev ' . ($page == 1 ? 'disabled' : '') . '">';
+                                        echo '<a class="page-link" href="?page=' . ($page - 1) . '&recordsPerPage=' . $recordsPerPage . '&search=' . urlencode($search) . '"><i class="tf-icon bx bx-chevrons-left"></i></a>';
+                                        echo '</li>';
 
-                                    <!-- Status Update Modal -->
+                                        // Display up to 5 page numbers with ellipsis
+                                        $maxPagesToShow = 5;
+                                        $startPage = max(1, $page - floor($maxPagesToShow / 2));
+                                        $endPage = min(ceil($totalRecords / $recordsPerPage), $startPage + $maxPagesToShow - 1);
 
-                                    <div class="modal fade" id="statusModal" aria-labelledby="statusModalLabel" tabindex="-1" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="statusModalLabel">Update Status</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <input type="hidden" id="loanID" />
-                                                    <div id="statusRadioContainer">
-                                                        <div class="radio-buttons-container">
-                                                            <div class="radio-button">
-                                                                <input name="radio-group" id="radio2" class="radio-button__input" type="radio">
-                                                                <label for="radio2" class="radio-button__label">
-                                                                    <span class="radio-button__custom"></span>
+                                        for ($i = $startPage; $i <= $endPage; $i++) {
+                                            $activeClass = ($i == $page) ? 'active' : '';
+                                            echo '<li class="page-item ' . $activeClass . '">';
+                                            echo '<a class="page-link" href="?page=' . $i . '&recordsPerPage=' . $recordsPerPage . '&search=' . urlencode($search) . '">' . $i . '</a>';
+                                            echo '</li>';
+                                        }
 
-                                                                    pending
-                                                                </label>
-                                                            </div>
-                                                            <div class="radio-button">
-                                                                <input name="radio-group" id="radio1" class="radio-button__input" type="radio">
-                                                                <label for="radio1" class="radio-button__label">
-                                                                    <span class="radio-button__custom"></span>
+                                        // Display ellipsis and last page link
+                                        if ($endPage < ceil($totalRecords / $recordsPerPage)) {
+                                            echo '<li class="page-item disabled"><span class="page-link">...</span></li>';
+                                            echo '<li class="page-item">';
+                                            echo '<a class="page-link" href="?page=' . ceil($totalRecords / $recordsPerPage) . '&recordsPerPage=' . $recordsPerPage . '&search=' . urlencode($search) . '">' . ceil($totalRecords / $recordsPerPage) . '</a>';
+                                            echo '</li>';
+                                        }
 
-                                                                    decline
-                                                                </label>
-                                                            </div>
-                                                            <div class="radio-button">
-                                                                <input name="radio-group" id="radio3" class="radio-button__input" type="radio">
-                                                                <label for="radio3" class="radio-button__label">
-                                                                    <span class="radio-button__custom"></span>
+                                        // Next page link
+                                        echo '<li class="page-item next ' . ($page == ceil($totalRecords / $recordsPerPage) ? 'disabled' : '') . '">';
+                                        echo '<a class="page-link" href="?page=' . ($page + 1) . '&recordsPerPage=' . $recordsPerPage . '&search=' . urlencode($search) . '"><i class="tf-icon bx bx-chevrons-right"></i></a>';
+                                        echo '</li>';
 
-                                                                    Closed
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-primary" onclick="updateStatus()">Save Changes</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        echo '</ul>';
+                                        echo '</nav>';
+                                    } else {
+                                        echo '<div>No records found</div>';
+                                    }
+                                    ?>
+
 
                                 </div>
+
                             </div>
                         </div>
                         <!--/ Striped Rows -->
-                        <!-- Modal Structure (empty modal) -->
-                        <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none;" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="modalToggleLabel">Loan Details</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="card">
-                                            <div class="card-body" id="modalContent">
-                                                <!-- Modal content will be dynamically generated here -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Status Update Modal -->
-                        <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="statusModalLabel">Update Status</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <!-- Status update radio buttons will be dynamically generated here -->
-                                        <div id="statusRadioContainer">
-                                            <!-- Radio buttons will be generated here dynamically using JavaScript -->
-                                        </div>
-                                    </div>
-                                    <input type="hidden" id="loanID">
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" onclick="saveStatus()">Save Changes</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                     <div class="container my-5">
                         <?php
@@ -223,10 +248,22 @@ include "../common/head.php";
                                         xhr.open("GET", "../branch/ajax.php?loan_id=" + x)
                                         xhr.send();
                                     }
-                                })}
+                                })
+                            }
                         </script>
                         <script>
-                            new DataTable('#table-striped');
+                            $(document).ready(function() {
+                                $("#table-striped").DataTable({
+                                    "paging": false,
+                                    "searching": false
+                                })
+                            });
+                        </script>
+                        <script>
+                            function changeRecordsPerPage(value) {
+                                window.location.href = '?page=1&recordsPerPage=' + value;
+                            }
+                        </script>
                         </script>
                         <script src="../assets/js/jquery-3.7.0.js"></script>
                         <script src="../assets/js/jquery.dataTables.min.js"></script>

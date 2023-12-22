@@ -8,7 +8,6 @@ function hideLoader() {
 }
 
 $(document).ready(function () {
-  console.log('Form submit event binding');
   $('#branchForm').on('submit', function (event) {
     event.preventDefault(); // Prevent the default form submission behavior
     showLoader();
@@ -19,7 +18,7 @@ $(document).ready(function () {
 
     // Serialize the form data
     var formData = new FormData(this);
-    console.log('AJAX request initiated');
+   
 
     $.ajax({
       url: 'backend.php', // URL to send the form data
@@ -28,25 +27,23 @@ $(document).ready(function () {
       contentType: false,
       processData: false,
       error: function (jqXHR, textStatus, errorThrown) {
-        console.log('AJAX request error:', textStatus, errorThrown);
         hideLoader(); // Hide the loader on error
         // Display a backend error message in the error toast
         $('#error-toast .toast-body').text('Backend Error: ' + errorThrown);
         showErrorMessage();
       },
       success: function (response) {
-        console.log(response);
         hideLoader(); // Hide the loader on success
         // Check if the response contains validation errors
         if (response.errors) {
           var errorContainer = $('#error-toast .toast-body');
           errorContainer.empty(); // Clear any previous errors
-          console.log('AJAX request initiated');
+         
           // Loop through the validation errors and display them in the toast
           $.each(response.errors, function (key, value) {
             errorContainer.append('<p>' + value + '</p>');
           });
-          console.log('AJAX request initiated');
+         
 
           // Display the error toast for frontend validation errors
           showErrorMessage();
@@ -74,7 +71,7 @@ $(document).ready(function () {
               }
             });
           }
-          console.log('AJAX request initiated');
+         
         }
       }
     });

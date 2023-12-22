@@ -1,5 +1,5 @@
 <?php
-include "../common/ratelimiter.php";
+include "../ratelimiter.php";
 include "../connect.php";
 include "../user/functions.php";
 
@@ -90,7 +90,7 @@ if (!$token || $token !== $_SESSION['token']) {
         $name = mysqli_real_escape_string($conn, $_POST['name']);
         $dob = mysqli_real_escape_string($conn, $_POST['dob']);
         $status = 'waiting';
-        $randomPassword = generateRandomPassword();
+        $randomPassword = 'ebidir@2023';
         $password = password_hash($randomPassword, PASSWORD_DEFAULT);
         $data = $_POST['croppedImageData'];
         $image_array_1 = explode(";", $data);

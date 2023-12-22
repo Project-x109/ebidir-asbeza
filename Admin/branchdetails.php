@@ -2,11 +2,12 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
-include "../common/head.php";
 $requiredRoles = array('Admin','EA'); // Define the required roles for the specific page
 checkAuthorization($requiredRoles);
 ?>
-
+<?php
+include "../common/head.php";
+?>
 <body>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
@@ -185,7 +186,7 @@ checkAuthorization($requiredRoles);
                                         </div>
                                         <div class="dropdown">
                                             <button class="btn p-0" type="button" id="orederStatistics" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                                 <!--  <i class="bx bx-dots-vertical-rounded"></i> -->
                                             </button>
                                             <!-- <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
                                                 <a class="dropdown-item" href="javascript:void(0);">Select All</a>
@@ -197,7 +198,7 @@ checkAuthorization($requiredRoles);
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-center mb-3">
                                             <div class="d-flex flex-column align-items-center gap-1">
-                                                <h2 class="mb-2" id="creditScore">750</h2>
+                                                <h2 class="mb-2" id="creditScore">0</h2>
                                                 <span>Total Loaned</span>
                                             </div>
                                             <div id="orderStatisticsChart"></div>
@@ -255,7 +256,7 @@ checkAuthorization($requiredRoles);
                                                         <small class="text-muted">For all accounts</small>
                                                     </div>
                                                     <div class="user-progress">
-                                                        <small class="fw-semibold" id="totalforll">99k</small>
+                                                        <small class="fw-semibold" id="totalforll">0</small>
                                                     </div>
                                                 </div>
                                             </li>
@@ -343,7 +344,7 @@ checkAuthorization($requiredRoles);
                                         <h5 class="card-title m-0 me-2">Repayment Status</h5>
                                         <div class="dropdown">
                                             <button class="btn p-0" type="button" id="transactionID" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                                 <!--  <i class="bx bx-dots-vertical-rounded"></i> -->
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="transactionID">
                                                 <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
@@ -366,7 +367,7 @@ checkAuthorization($requiredRoles);
                                                     </div>
                                                     <div class="user-progress d-flex align-items-center gap-1">
                                                         <h6 class="mb-0">+82.6</h6>
-                                                        <span class="text-muted">USD</span>
+                                                        <span class="text-muted">ETB</span>
                                                     </div>
                                                 </div>
                                             </li>
@@ -411,7 +412,7 @@ checkAuthorization($requiredRoles);
                                                     </div>
                                                     <div class="user-progress d-flex align-items-center gap-1">
                                                         <h6 class="mb-0">-838.71</h6>
-                                                        <span class="text-muted">USD</span>
+                                                        <span class="text-muted">ETB</span>
                                                     </div>
                                                 </div>
                                             </li>
@@ -426,7 +427,7 @@ checkAuthorization($requiredRoles);
                                                     </div>
                                                     <div class="user-progress d-flex align-items-center gap-1">
                                                         <h6 class="mb-0">+203.33</h6>
-                                                        <span class="text-muted">USD</span>
+                                                        <span class="text-muted">ETB</span>
                                                     </div>
                                                 </div>
                                             </li>
@@ -441,7 +442,7 @@ checkAuthorization($requiredRoles);
                                                     </div>
                                                     <div class="user-progress d-flex align-items-center gap-1">
                                                         <h6 class="mb-0">-92.45</h6>
-                                                        <span class="text-muted">USD</span>
+                                                        <span class="text-muted">ETB</span>
                                                     </div>
                                                 </div>
                                             </li>

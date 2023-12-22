@@ -1,5 +1,5 @@
 <?php
-include "../common/ratelimiter.php";
+include "../ratelimiter.php";
 include "../connect.php";
 include "./functions.php";
 session_start();
@@ -64,7 +64,7 @@ function sendPaymentResult($notify_url, $order_id, $result, $description, $api_k
 if (!$token || $token !== $_SESSION['token']) {
     $_SESSION['error'] = "Authorization Error";
     header("Location: index.php");
-    exit;
+    exit();
 } else if (isset($_POST['checkout'])) {
     $_SESSION['price'] = $_POST['totalprice'];
     $user_id = $_POST['id'];
@@ -75,7 +75,7 @@ if (!$token || $token !== $_SESSION['token']) {
     $validation_result = validateInput($user_id, $order_id, $notify_url, $return_url_failure, $return_url_success);
     if (!$validation_result) {
         header("Location: loan.php");
-        exit;
+        exit();
     }
     $sql = "SELECT * FROM users WHERE user_id = ?";
     $stmt = $conn->prepare($sql);
@@ -89,19 +89,30 @@ if (!$token || $token !== $_SESSION['token']) {
     $cartLog = array();
     if ($row['credit_limit'] < $_POST['totalprice']) {
         $payment_result = sendPaymentResult($notify_url, $order_id, 'error', 'The user Credit Limit is Not enough to cover the total amount', $api_key);
+        if (isset($_SESSION['form_submitted']) && $_SESSION['form_submitted']) {
+            $_SESSION['error'] = "Data Already Submitted ";
+            header("Location:  $return_url_failure");
+            exit();
+        }
+        $_SESSION['form_submitted'] = true;
         header("Location: $return_url_failure");
-        exit;
+        exit();
     } elseif ($row['credit_limit'] > $_POST['totalprice']) {
         $payment_result = sendPaymentResult($notify_url, $order_id, 'success', 'The user with an id of ' . $user_id . '  Has a Credit of ' . $row['credit_limit'] . ' ETB to make a purchases of ' . $_POST['totalprice'] . ' ETB', $api_key);
         var_dump($payment_result);
-
+        if (isset($_SESSION['form_submitted']) && $_SESSION['form_submitted']) {
+            $_SESSION['error'] = "Data Already Submitted ";
+            header("Location:  $return_url_success");
+            exit();
+        }
+        $_SESSION['form_submitted'] = true;
         $sql = "INSERT INTO loans (`user_id`, `price`, `credit_score`,`order_id`, `createdOn`) VALUES (?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("sddss", $user_id, $_POST['totalprice'], $_POST['credit_score'], $order_id, $date);
         $stmt->execute();
         if ($stmt) {
             $lastInsertedLoanId = $stmt->insert_id;
-            foreach ($_SESSION['cart'] as $product) {
+            foreach ($_SESSION['cart']['temp_cart']['orderItems'] as $product) {
                 if (isset($product['item_name'])) {
                     $item_name = $conn->real_escape_string(isset($product['item_name']) ? $product['item_name'] : '');
                     $item_price = $conn->real_escape_string(isset($product['item_price']) ? $product['item_price'] : '');
@@ -131,6 +142,7 @@ if (!$token || $token !== $_SESSION['token']) {
                 $payment_result = sendPaymentResult($notify_url, $order_id, 'success', 'The user with an id of ' . $user_id . '  Has a Credit of ' . $row['credit_limit'] . ' ETB to make a purchases of ' . $_POST['totalprice'] . ' ETB', $api_key);
                 if ($payment_result === 'success') {
                     try {
+
                         header("Location: $return_url_success");
                         unset($_SESSION['cart']);
                     } catch (Exception $e) {
@@ -141,7 +153,7 @@ if (!$token || $token !== $_SESSION['token']) {
                 } else {
                     $_SESSION['error'] = "There was An error finding the success url";
                     header("Location: loan.php");
-                    exit;
+                    exit();
                 }
             } else {
                 insertLog($conn, $user_id, "User with " . $user_id . " couldn't complete payment");

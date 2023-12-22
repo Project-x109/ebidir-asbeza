@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-   <title>Credit Empowerment at E-bidir Asbeza - Your Path to Financial Freedom</title>
+    <title>Credit Empowerment at E-bidir Asbeza - Your Path to Financial Freedom</title>
 
     <meta name="description" content="Unlock financial opportunities and secure your future with E-bidir Asbeza. We provide accessible credit solutions that empower you to take control of your financial journey. Discover the key to financial freedom and seize the opportunities you deserve." />
 
@@ -316,7 +316,7 @@
                                                     </div>
                                                     <div class="dropdown">
                                                         <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                                            <!-- <i class="bx bx-dots-vertical-rounded"></i> -->
                                                         </button>
                                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
                                                             <a class="dropdown-item" href="javascript:void(0);">View More</a>

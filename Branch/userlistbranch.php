@@ -2,7 +2,7 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
-$requiredRoles = array('branch','delivery'); // Define the required roles for the specific page
+$requiredRoles = array('branch', 'delivery'); // Define the required roles for the specific page
 checkAuthorization($requiredRoles);
 
 ?>
@@ -36,15 +36,79 @@ include "../common/head.php";
 
                         <div class="row">
                             <!-- Striped Rows -->
+                            <?php
+                            $recordsPerPageOptions = array(5, 10, 25, 50, 100);
+                            $defaultRecordsPerPage = 10;
+                            $recordsPerPage = isset($_GET['recordsPerPage']) && in_array($_GET['recordsPerPage'], $recordsPerPageOptions)
+                                ? intval($_GET['recordsPerPage']) : $defaultRecordsPerPage;
+
+                            $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+                            $offset = ($page - 1) * $recordsPerPage;
+                            $search = isset($_GET['search']) ? $_GET['search'] : '';
+
+                            // Construct the count query based on search criteria
+                            $countQuery = "SELECT COUNT(*) as total FROM `users` WHERE role='user'";
+
+                            // Check if a search is active
+                            if (!empty($_GET['search'])) {
+                                $search = $_GET['search'];
+                                $countQuery .= " AND (name LIKE '%$search%' OR phone LIKE '%$search%' OR user_id LIKE '%$search%' OR email LIKE '%$search%' OR TIN_Number LIKE '%$search%' OR dob LIKE '%$search%' OR status LIKE '%$search%' OR credit_limit LIKE '%$search%' OR level LIKE '%$search%' OR createdOn LIKE '%$search%')";
+                            }
+
+                            $countResult = $conn->query($countQuery);
+                            $totalRecords = $countResult->fetch_assoc()['total'];
+
+                            $sql = "SELECT *, users.status as status FROM `users` WHERE role='user'";
+
+                            // Check if a search is active
+                            if (!empty($_GET['search'])) {
+                                $search = $_GET['search'];
+                                $sql .= " AND (name LIKE '%$search%' OR phone LIKE '%$search%' OR user_id LIKE '%$search%' OR email LIKE '%$search%' OR TIN_Number LIKE '%$search%' OR dob LIKE '%$search%' OR status LIKE '%$search%' OR credit_limit LIKE '%$search%' OR level LIKE '%$search%' OR createdOn LIKE '%$search%')";
+                            }
+
+                            $sql .= " LIMIT ?, ?";
+                            $stmt = $conn->prepare($sql);
+                            $stmt->bind_param("ii", $offset, $recordsPerPage);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+                            ?>
                             <div class="col-md-6 col-lg-12 col-xl-12 order-0 mb-4">
                                 <div class="card">
                                     <h5 class="card-header">Lists of Users</h5>
                                     <div class="table-responsive text-nowrap ms-3 me-3">
-                                        <table class="table table-striped" id="table-striped">
-                                            <?php
-                                            $sql = "SELECT *,users.status as status FROM `users` where role='user'";
-                                            $result = $conn->query($sql);
-                                            ?>
+                                        <div class="row mb-4">
+                                            <div class="col-md-6 mb-md-0">
+                                                <div class="row records-per-page-search">
+                                                    <div class="col-sm-4 d-flex align-items-center">
+                                                        <!-- Added a class to align items vertically -->
+                                                        <label for="recordsPerPage" class="col-sm-2 col-form-label me-3">Show</label>
+                                                        <div class="col-sm-6 me-2">
+                                                            <select class="form-select w-100" id="recordsPerPage" name="recordsPerPage" onchange="changeRecordsPerPage(this.value)">
+                                                                <?php
+                                                                foreach ($recordsPerPageOptions as $option) {
+                                                                    $selected = ($option == $recordsPerPage) ? 'selected' : '';
+                                                                    echo '<option value="' . $option . '" ' . $selected . '>' . $option . '</option>';
+                                                                }
+                                                                ?>
+                                                            </select>
+                                                        </div>
+                                                        <label for="recordsPerPage" class="col-form-label col-sm-4">entries</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <form class="row mb-3">
+                                                    <div class="col-12">
+                                                        <div class="input-group">
+                                                            <button type="submit" class="btn btn-primary">Search</button>
+                                                            <input type="text" class="form-control" placeholder="Search by Name, Phone, Email, etc." name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                                                            <a href="?page=<?php echo $page; ?>&recordsPerPage=<?php echo $recordsPerPage; ?>" class="btn btn-outline-secondary">Clear Search</a>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <table class="table table-striped" id="table-stripedmain">
                                             <thead>
                                                 <tr>
                                                     <th>Id</th>
@@ -58,7 +122,6 @@ include "../common/head.php";
                                                     <th>Credit Limit</th>
                                                     <th>Level</th>
                                                     <th>Created On</th>
-                                                    
                                                 </tr>
                                             </thead>
                                             <tbody class="table-border-bottom-0">
@@ -69,18 +132,18 @@ include "../common/head.php";
                                                     echo "<td>{$row['user_id']}</td>";
                                                     // Assuming the 'profile' column contains image URLs
                                                     echo "<td>
-                          <ul class='list-unstyled users-list m-0 avatar-group d-flex align-items-center'>
-                            <li
-                              data-bs-toggle='tooltip'
-                              data-popup='tooltip-custom'
-                              data-bs-placement='top'
-                              class='avatar avatar-xs pull-up'
-                              title='{$row['name']}'
-                            >
-                          <img src='{$row['profile']}' alt='Profile Image' class='rounded-circle'>
-                            </li>
+                            <ul class='list-unstyled users-list m-0 avatar-group d-flex align-items-center'>
+                                <li
+                                data-bs-toggle='tooltip'
+                                data-popup='tooltip-custom'
+                                data-bs-placement='top'
+                                class='avatar avatar-xs pull-up'
+                                title='{$row['name']}'
+                                >
+                                    <img src='{$row['profile']}' alt='Profile Image' class='rounded-circle'>
+                                </li>
                             </ul>
-                          </td>";
+                        </td>";
                                                     echo "<td>{$row['name']}</td>";
                                                     echo "<td>{$row['phone']}</td>";
                                                     echo "<td>{$row['email']}</td>";
@@ -102,7 +165,6 @@ include "../common/head.php";
                                                     echo "<td>{$row['credit_limit']}</td>";
                                                     echo "<td>{$row['level']}</td>";
                                                     echo "<td>{$row['createdOn']}</td>";
-                                                   
 
                                                     echo "</tr>";
                                                 }
@@ -113,32 +175,29 @@ include "../common/head.php";
                                             </tbody>
                                         </table>
 
+                                        <?php
+                                        echo '<nav aria-label="Page navigation" class="justify-content-center ms-5">';
+                                        echo '<ul class="pagination">';
+                                        echo '<li class="page-item prev ' . ($page == 1 ? 'disabled' : '') . '">';
+                                        echo '<a class="page-link" href="?page=' . ($page - 1) . '&recordsPerPage=' . $recordsPerPage . '&search=' . urlencode($search) . '"><i class="tf-icon bx bx-chevrons-left"></i></a>';
+                                        echo '</li>';
 
-                                        <!-- Modal Structure (empty modal) -->
-                                        <div class="modal fade" id="modalToggle" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="modalToggleLabel">Loan Details</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="card">
-                                                            <div class="card-body" id="modalContent">
-                                                                <!-- Modal content will be dynamically generated here -->
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        for ($i = 1; $i <= ceil($totalRecords / $recordsPerPage); $i++) {
+                                            $activeClass = ($i == $page) ? 'active' : '';
+                                            echo '<li class="page-item ' . $activeClass . '">';
+                                            echo '<a class="page-link" href="?page=' . $i . '&recordsPerPage=' . $recordsPerPage . '&search=' . urlencode($search) . '">' . $i . '</a>';
+                                            echo '</li>';
+                                        }
 
+                                        echo '<li class="page-item next ' . ($page == ceil($totalRecords / $recordsPerPage) ? 'disabled' : '') . '">';
+                                        echo '<a class="page-link" href="?page=' . ($page + 1) . '&recordsPerPage=' . $recordsPerPage . '&search=' . urlencode($search) . '"><i class="tf-icon bx bx-chevrons-right"></i></a>';
+                                        echo '</li>';
+                                        echo '</ul>';
+                                        echo '</nav>';
+                                        ?>
                                     </div>
                                     <!-- Pagination and Search Controls -->
-
                                 </div>
-
-
                             </div>
 
                             <!--/ Striped Rows -->
@@ -153,6 +212,19 @@ include "../common/head.php";
 
                         <script src="../assets/js/jquery-3.7.0.js"></script>
                         <script src="../assets/js/jquery.dataTables.min.js"></script>
+                        <script>
+                            function changeRecordsPerPage(value) {
+                                window.location.href = '?page=1&recordsPerPage=' + value;
+                            }
+                        </script>
+                        <script>
+                            $(document).ready(function() {
+                                $("#table-stripedmain").DataTable({
+                                    "paging": false,
+                                    "searching": false
+                                })
+                            });
+                        </script>
 
                         <script>
                             new DataTable('#table-striped');

@@ -377,7 +377,7 @@ const percentageChangeElement = document.getElementById('percentageChange');
 
 totalOriginalAmountElement.textContent = `${totalOriginalAmountLastSixMonths.toLocaleString('en-US', {
     style: 'currency',
-    currency: 'USD'
+    currency: 'ETB'
   })}`;
 percentageChangeElement.textContent = `${percentageChange.toFixed(2)}%`;
 

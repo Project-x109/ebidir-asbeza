@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function () {
     .then(response => response.json())
     .then(data => {
       // Update credit score
-      console.log(data);
       const creditScoreEl = document.querySelector('#creditScore');
       creditScoreEl.textContent = abbreviateNumber(data.total); // Convert and update the value
 

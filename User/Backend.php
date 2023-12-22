@@ -1,6 +1,6 @@
  
 <?php
-include "../common/ratelimiter.php";
+include "../ratelimiter.php";
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
@@ -11,13 +11,18 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
     echo json_encode(['error' => 'Authorization Error']);
     exit;
 } else if (isset($_POST['add_personal']) || isset($_POST['Number_of_dependents'])) {
+    $existingPersonalRecord = checkExistingPersonalRecord($conn, $_SESSION['id']);
+    if ($existingPersonalRecord) {
+        $errors[] = "Personal Information already created";
+        exit();
+    }
     $errors = array();
     $response = array();
     $nod = $_POST['Number_of_dependents'];
     if (!is_numeric($nod) || $nod < 0) {
         $errors[] = "Number of Dependents must be a non-negative number.";
     }
-    if (empty($nod)) {
+    if ($nod === '' || $nod === null) {
         $errors[] = "Number of Dependents is Required";
     }
     if ($nod > 10) {
@@ -44,21 +49,22 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
     if (empty($cr)) {
         $errors[] = "Criminal Record is required.";
     }
+
     if (empty($errors)) {
         $age = getAge($_SESSION['dob']);
         $score = personalScore($age, $educational, $marriage, $nod, $cr);
         $stmt = $conn->prepare("INSERT INTO `personal`(`Number_of_dependents`, `Marriage_Status`, `Educational_Status`, `Criminal_record`, `user_id`, `personal_score`) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("issssi", $nod, $marriage, $educational, $cr, $_POST['id'], $score);
+        $stmt->bind_param("issssi", $nod, $marriage, $educational, $cr, $_SESSION['id'], $score);
         if ($stmt->execute()) {
             $_SESSION['success'] = "Personal information created Successfully";
             $response = array('success' => $_SESSION['success']);
             header('Content-Type: application/json');
             echo json_encode($response);
-            insertLog($conn, $_SESSION['id'], "Personal information created Successfully for user " . $_POST['id']);
+            insertLog($conn, $_SESSION['id'], "Personal information created Successfully for user " . $_SESSION['id']);
             exit();
         } else {
             $_SESSION['error'] = "Error inserting record: " . $stmt->error;
-            insertLog($conn, $_SESSION['id'], "Unable to create Personal information for user " . $_POST['id']);
+            insertLog($conn, $_SESSION['id'], "Unable to create Personal information for user " . $_SESSION['id']);
         }
         $stmt->close();
     } else {
@@ -75,8 +81,8 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
     if (!is_numeric($nod) || $nod < 0) {
         $errors[] = "Number of Dependents must be a non-negative number.";
     }
-    if (empty($nod)) {
-        $errors[] = "Number of Dependents is required.";
+    if ($nod === '' || $nod === null) {
+        $errors[] = "Number of Dependents is Required";
     }
     if ($nod > 10) {
         $errors[] = "Number of Dependents should be less than Ten.";
@@ -107,17 +113,17 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
         $age = getAge($_SESSION['dob']);
         $score = personalScore($age, $educational, $marriage, $nod, $cr);
         $stmt = $conn->prepare("UPDATE `personal` SET `Number_of_dependents`=?, `Marriage_Status`=?, `Educational_Status`=?, `Criminal_record`=?, `personal_score`=? WHERE user_id=?");
-        $stmt->bind_param("isssis", $_POST['numberOfDependents'], $_POST['marrigeStatus'], $_POST['educationalStatus'], $_POST['criminalRecord'], $score, $_POST['id']);
+        $stmt->bind_param("isssis", $_POST['numberOfDependents'], $_POST['marrigeStatus'], $_POST['educationalStatus'], $_POST['criminalRecord'], $score, $_SESSION['id']);
         if ($stmt->execute()) {
             $_SESSION['success'] = "Personal information updated Successfully";
             $response = array('success' => $_SESSION['success']);
             header('Content-Type: application/json');
             echo json_encode($response);
-            insertLog($conn, $_SESSION['id'], "Personal information Updated Successfully for user " . $_POST['id']);
+            insertLog($conn, $_SESSION['id'], "Personal information Updated Successfully for user " . $_SESSION['id']);
             exit();
         } else {
             $_SESSION['error'] = "Error updating record: " . $stmt->error;
-            insertLog($conn, $_SESSION['id'], "Unable to update Personal information for user " . $_POST['id']);
+            insertLog($conn, $_SESSION['id'], "Unable to update Personal information for user " . $_SESSION['id']);
         }
         $stmt->close();
     } else {
@@ -142,7 +148,7 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
     if (!is_numeric($number_of_income) || $number_of_income < 0) {
         $errors[] = "Number of Income must be a non-negative number.";
     }
-    if (empty($number_of_income)) {
+    if ($number_of_income === '' || $number_of_income === null) {
         $errors[] = "Number of Income is required.";
     }
 
@@ -162,6 +168,11 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
     if (!is_numeric($salary) || $salary < 0) {
         $errors[] = "Salary must be a non-negative number.";
     }
+    $existingEconomicRecord = checkExistingEconomicRecord($conn, $_SESSION['id']);
+    if ($existingEconomicRecord) {
+        $errors[] = "Economic Information already created";
+        exit();
+    }
 
     if (empty($errors)) {
         $Source_of_income = $_POST['number_of_income'];
@@ -170,20 +181,20 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
         $fully_repaid_loans = 0;
         $score = EconomicScore($Source_of_income, $Experience, $Number_Of_Loans, $fully_repaid_loans);
         $stmt = $conn->prepare("INSERT INTO `economic`(`field_of_employeement`, `number_of_income`, `year`, `user_id`, `position`, `salary`, `economic_score`) VALUES (?, ?, ?, ?, ?,  ?, ?)");
-        $stmt->bind_param("sisssii", $field_of_employment, $number_of_income, $year, $_POST['id'], $position, $salary, $score);
+        $stmt->bind_param("sisssii", $field_of_employment, $number_of_income, $year, $_SESSION['id'], $position, $salary, $score);
         if ($stmt->execute()) {
             $salary = $_POST['salary'];
             $level = getLevel($salary);
             $limit = $LEVEL[$level];
             $stmt = $conn->prepare("UPDATE users SET form_done=1, credit_limit=?, level=? WHERE user_id=?");
-            $stmt->bind_param("iss", $limit, $level, $_POST['id']);
+            $stmt->bind_param("iss", $limit, $level, $_SESSION['id']);
 
             if ($stmt->execute()) {
                 $_SESSION['success'] = "Economic information created Successfully";
                 $response = array('success' => $_SESSION['success']);
                 header('Content-Type: application/json');
                 echo json_encode($response);
-                insertLog($conn, $_SESSION['id'], "Economic information created Successfully for user " . $_POST['id']);
+                insertLog($conn, $_SESSION['id'], "Economic information created Successfully for user " . $_SESSION['id']);
                 exit();
             }
         }
@@ -192,7 +203,7 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
         $response = array('errors' => $errors);
         header('Content-Type: application/json');
         echo json_encode($response);
-        insertLog($conn, $_SESSION['id'], "Unable to create Economic information for user " . $_POST['id']);
+        insertLog($conn, $_SESSION['id'], "Unable to create Economic information for user " . $_SESSION['id']);
         exit();
     }
 } else if (isset($_POST['update_economic'])) {
@@ -206,7 +217,7 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
     if (!is_numeric($number_of_income) || $number_of_income < 0) {
         $errors[] = "Number of Income must be a non-negative number.";
     }
-    if (empty($number_of_income)) {
+    if ($number_of_income === '' || $number_of_income === null) {
         $errors[] = "Number of Income is required.";
     }
     $year = $_POST['year'];
@@ -230,20 +241,20 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
         $fully_repaid_loans = 0;
         $score = EconomicScore($Source_of_income, $Experience, $Number_Of_Loans, $fully_repaid_loans);
         $stmt = $conn->prepare("UPDATE `economic` SET `field_of_employeement`=?, `number_of_income`=?, `year`=?, `position`=?, `salary`=?, `economic_score`=? WHERE user_id=?");
-        $stmt->bind_param("sissiis", $field_of_employment, $number_of_income, $year, $position, $salary, $score, $_POST['id']);
+        $stmt->bind_param("sissiis", $field_of_employment, $number_of_income, $year, $position, $salary, $score, $_SESSION['id']);
         if ($stmt->execute()) {
             $salary = $_POST['salary'];
             $level = getLevel($salary);
             $limit = $LEVEL[$level];
             $stmt = $conn->prepare("UPDATE users SET form_done=1, credit_limit=?, level=? WHERE user_id=?");
-            $stmt->bind_param("iss", $limit, $level, $_POST['id']);
+            $stmt->bind_param("iss", $limit, $level, $_SESSION['id']);
 
             if ($stmt->execute()) {
                 $_SESSION['success'] = "Economic information updated Successfully";
                 $response = array('success' => $_SESSION['success']);
                 header('Content-Type: application/json');
                 echo json_encode($response);
-                insertLog($conn, $_SESSION['id'], "Economic Information Updated Successfully for user " . $_POST['id']);
+                insertLog($conn, $_SESSION['id'], "Economic Information Updated Successfully for user " . $_SESSION['id']);
                 exit(); // Add this to prevent further execution
             }
         }
@@ -251,10 +262,28 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
         // There are validation errors, return them as JSON
         $response = array('errors' => $errors);
         header('Content-Type: application/json');
-        insertLog($conn, $_SESSION['id'], "Unable to Update Economic information for user " . $_POST['id']);
+        insertLog($conn, $_SESSION['id'], "Unable to Update Economic information for user " . $_SESSION['id']);
         echo json_encode($response);
     }
 }
+function checkExistingPersonalRecord($conn, $userId)
+{
+    $stmt = $conn->prepare("SELECT * FROM `personal` WHERE `user_id` = ?");
+    $stmt->bind_param("s", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->num_rows > 0;
+}
+
+function checkExistingEconomicRecord($conn, $userId)
+{
+    $stmt = $conn->prepare("SELECT * FROM `economic` WHERE `user_id` = ?");
+    $stmt->bind_param("s", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->num_rows > 0;
+}
+
 ?>
 
 

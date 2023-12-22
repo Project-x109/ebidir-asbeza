@@ -2,9 +2,11 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
-include "../common/head.php";
-$requiredRoles = array('Admin','EA'); // Define the required roles for the specific page
+$requiredRoles = array('Admin', 'EA'); // Define the required roles for the specific page
 checkAuthorization($requiredRoles);
+?>
+<?php
+include "../common/head.php";
 ?>
 
 <body>
@@ -50,6 +52,7 @@ checkAuthorization($requiredRoles);
                                                     <th>Credit Limit</th>
                                                     <th>Credit Limit Level</th>
                                                     <th>Status</th>
+                                                    <th>Provider</th>
                                                     <th>Updated On</th>
                                                 </tr>
                                             </thead>
@@ -57,21 +60,17 @@ checkAuthorization($requiredRoles);
                                             <tbody class="table-border-bottom-0">
 
                                                 <?php
-                                                if (isset($_GET['user_id']) && isset($_GET['branch_id'])) {
+                                                if (isset($_GET['user_id'])) {
                                                     $user_id = $_GET['user_id'];
-                                                    $branch_id = $_GET['branch_id'];
-
-                                                    // Fetch user information
                                                     $user_sql = "SELECT * FROM users WHERE user_id = '$user_id'";
                                                     $user_result = $conn->query($user_sql);
                                                     $user = $user_result->fetch_assoc();
-
-                                                    // Fetch user's loans and transactions
                                                     $loan_transaction_sql = "SELECT 
                                                             l.id AS loan_id,
                                                             l.price AS loan_amount,
                                                             l.credit_score AS credit_limit,
                                                             l.status,
+                                                            l.provider,   
                                                             CASE
                                                                 WHEN l.status = 'paid' THEN t.transaction_id
                                                                
@@ -108,7 +107,7 @@ checkAuthorization($requiredRoles);
                                                         LEFT JOIN transactions AS t ON l.id = t.loan_id
                                                         LEFT JOIN branch AS b ON t.updatedBy = b.branch_id
                                                         LEFT JOIN users AS u ON l.user_id = u.user_id
-                                                        WHERE l.user_id = '$user_id' AND (b.branch_id = '$branch_id' OR l.status <> 'paid')
+                                                        WHERE l.user_id = '$user_id' 
                                                         ORDER BY l.id DESC";
 
                                                     $loan_transaction_result = $conn->query($loan_transaction_sql);
@@ -140,7 +139,7 @@ checkAuthorization($requiredRoles);
                                                                     <p id="userID"><?php echo $user['phone']; ?></p>
                                                                 </div>
                                                             </div>
-                                                            
+
                                                             <!-- Add other user information fields as needed -->
                                                         </div>
                                                     </div>
@@ -159,6 +158,7 @@ checkAuthorization($requiredRoles);
                                                             echo '<td>' . $row['transaction_credit_limit'] . '</td>';
                                                             echo '<td>' . $row['transaction_credit_level'] . '</td>';
                                                             echo '<td>' . $row['status'] . '</td>';
+                                                            echo '<td>' . $row['provider'] . '</td>';
                                                             echo '<td>' . $row['transaction_updatedOn'] . '</td>';
                                                             echo '</tr>';
                                                         }

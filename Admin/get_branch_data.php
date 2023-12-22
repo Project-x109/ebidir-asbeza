@@ -1,5 +1,6 @@
 <?php
 include "../connect.php";
+include "../user/functions.php";
 session_start();
 include "../common/Authorization.php";
 $requiredRoles = array('Admin', 'EA');

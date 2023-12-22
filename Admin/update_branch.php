@@ -1,14 +1,11 @@
 <?php
-include "../common/ratelimiter.php";
+include "../ratelimiter.php";
 include "../connect.php";
 include "../user/functions.php";
 session_start();
 include "../common/Authorization.php";
 $requiredRoles = array('Admin', 'EA'); // Define the required roles for the specific page
 checkAuthorization($requiredRoles);
-
-
-
 if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $_SESSION['token']) {
     echo json_encode(['error' => 'Authorization Error']);
     exit;

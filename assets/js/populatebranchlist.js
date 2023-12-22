@@ -1,4 +1,3 @@
-new DataTable('#table-striped');
 
 var dataTable; // Declare the dataTable variable outside of any function
 function showLoader() {
@@ -13,6 +12,8 @@ function hideLoader() {
 function initializeDataTable() {
   dataTable = $('#table-striped').DataTable({
     // DataTable configuration options
+    "paging": false,
+    "searching": false,
     columns: [
       {
         data: 'id'

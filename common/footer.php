@@ -44,14 +44,10 @@
                     <h6 class="text-uppercase fw-bold">Elite FinTech's Solution</h6>
                     <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
                     <p>
-                        Here you can use rows and columns to organize your footer
-                        content. Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit.
+                        Elite Fintech provides innovative financial solutions tailored for modern businesses, offering cutting-edge
+                        technologies and expertise to optimize financial processes and empower organizations for sustainable growth
                     </p>
                 </div>
-                <!-- Grid column -->
-
-                <!-- Grid column -->
                 <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
                     <!-- Links -->
                     <h6 class="text-uppercase fw-bold">Products</h6>
@@ -63,9 +59,6 @@
                         <a href="#!" class="text-dark">E-bidir Asbeza</a>
                     </p>
                 </div>
-                <!-- Grid column -->
-
-                <!-- Grid column -->
                 <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
                     <!-- Links -->
                     <h6 class="text-uppercase fw-bold">Useful links</h6>
@@ -74,19 +67,14 @@
                         <a href="http://e-bidir.com/" class="text-dark">E-bidir</a>
                     </p>
                 </div>
-                <!-- Grid column -->
-
-                <!-- Grid column -->
                 <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
                     <!-- Links -->
                     <h6 class="text-uppercase fw-bold">Contact</h6>
                     <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px" />
-                    <p><i class="fas fa-home mr-3"></i> Addis Ababa, ET 10012, US</p>
-                    <p><i class="fas fa-envelope mr-3"></i> info@example.com</p>
-                    <p><i class="fas fa-phone mr-3"></i> + 01 234 567 88</p>
-                    <p><i class="fas fa-print mr-3"></i> + 01 234 567 89</p>
+                    <p><i class="fas fa-home mr-3"></i> Addis Ababa, ET</p>
+                    <p><i class="fas fa-envelope mr-3"></i> elite.ethiopia@gmail.com</p>
+                    <p><i class="fas fa-phone mr-3"></i>+251-799-20-44-17</p>
                 </div>
-                <!-- Grid column -->
             </div>
             <!-- Grid row -->
         </div>
@@ -95,8 +83,8 @@
 
     <!-- Copyright -->
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
-        © 2020 Copyright:
-        <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+        © 2023:
+        <a class="text-dark" href="https://mdbootstrap.com/">E-bidir Asbeza</a>
     </div>
     <!-- Copyright -->
 </footer>
@@ -119,7 +107,7 @@
 </div>
 
 <!-- Core JS -->
-<!-- build:js assets/vendor/js/core.js -->
+<!-- build:js assets/vendor/js/core.js -->0
 <script src="../assets/vendor/libs/jquery/jquery.js"></script>
 <script src="../assets/vendor/libs/popper/popper.js"></script>
 <script src="../assets/vendor/js/bootstrap.js"></script>
@@ -134,12 +122,9 @@
 
 <!-- Main JS -->
 <script src="../assets/js/main.js"></script>
-
 <script src="../assets/js/mark-Notification-read.js"></script>
 <script src="../assets/js/active_open adder.js"></script>
-<!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
-<!-- Include the JavaScript file for authorization -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="../assets/js/logout.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

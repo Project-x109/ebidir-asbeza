@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
       tinNumber: getRandomNumber(100000000, 2000000000),
       loanAmount: `${getRandomNumber(1000, 5000).toLocaleString('en-US', {
         style: 'currency',
-        currency: 'USD'
+        currency: 'ETB'
       })}`,
       requesteddate: getRandomDate(2020, 2023),
       status: getRandomStatus(),

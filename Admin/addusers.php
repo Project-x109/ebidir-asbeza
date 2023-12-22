@@ -2,12 +2,13 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
-include "../common/head.php";
 $requiredRoles = array('Admin', 'EA'); // Define the required roles for the specific page
 checkAuthorization($requiredRoles);
 $_SESSION['token'] = bin2hex(random_bytes(35));
 ?>
-
+<?php
+include "../common/head.php";
+?>
 
 <body>
   <!-- Layout wrapper -->
@@ -140,9 +141,9 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
                           <div class="modal-content">
                             <div class="modal-header">
                               <h5 class="modal-title">Crop Image Before Upload</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
-                              </button>
+                              </button> -->
                             </div>
                             <div class="modal-body">
                               <div class="img-container">
@@ -175,13 +176,42 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
               </div>
               <!-- / Content -->
             </div>
-            <div class="container my-5">
+          
               <?php
               include "../common/footer.php";
               ?>
 
               <!-- Page JS -->
               <!-- <script src="../assets/js/ui-toasts-user.js"></script> -->
+              <script>
+                $(document).ready(function() {
+                  // Function to close the modal
+                  function closeModal() {
+                    $('#cropModal').modal('hide');
+                  }
+                  function clearFields() {
+                    $('#croppedImageData').val(''); // Clear the hidden input value
+                    $('#basic-icon-default-photo').val(''); // Clear the file input value
+                  }
+
+                  $('#cropModal').on('hidden.bs.modal', function() {
+                    if (!$(this).data('manual-close')) {
+                      clearFields();
+                    }
+                  });
+
+                  $('#cropModal').on('click', '[data-dismiss="cropModal"]', function() {
+                    closeModal();
+                  });
+
+                  $('#cropModal').on('click', '#crop-button', function() {
+                    $('#cropModal').data('manual-close', true);
+                  });
+                  $('#basic-icon-default-photo, #croppedImageData').on('click', function() {
+                    $(this).val(''); // Clear the input value when clicked
+                  });
+                });
+              </script>
 
               <script>
                 var croppedImageData = null;
@@ -190,7 +220,6 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
                   $('#loader').fadeIn();
                 }
 
-                // Hide the loader when the response is received
                 function hideLoader() {
                   $('#loader').fadeOut();
                 }
@@ -245,7 +274,6 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
                   $('#userForm').on('submit', function(event) {
                     event.preventDefault(); // Prevent the default form submission behavior
                     showLoader();
-                    // Perform form validation here
                     if (!validateForm()) {
                       return; // Stop further processing if validation fails
                     }
@@ -267,38 +295,24 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
                         showErrorMessage();
                       },
                       success: function(response) {
-                        console.log(response);
                         hideLoader(); // Hide the loader on success
-                        // Check if the response contains validation errors
                         if (response.errors) {
                           var errorContainer = $('#error-toast .toast-body');
                           errorContainer.empty(); // Clear any previous errors
-                          console.log('AJAX request initiated');
-                          // Loop through the validation errors and display them in the toast
                           $.each(response.errors, function(key, value) {
                             errorContainer.append('<p>' + value + '</p>');
                           });
-                          console.log('AJAX request initiated');
-
-                          // Display the error toast for frontend validation errors
                           showErrorMessage();
                         } else {
-                          // If no errors, you can redirect or show a success message as needed
                           if (response.success) {
                             Swal.fire({
                               icon: 'success',
                               title: 'Success',
                               text: response.success
                             }).then(result => {
-                              // You can add additional actions after the user clicks "OK"
                               if (result.isConfirmed) {
-                                // Clear and reset the form fields
                                 $('#userForm')[0].reset();
-
-                                // Create a new FormData object with the cleared form data
                                 var formData = new FormData($('#userForm')[0]);
-
-                                // Re-enable the submit button after a delay (e.g., 2 seconds)
                                 setTimeout(function() {
                                   $('#submit-btn').prop('disabled', false);
                                   $('#submit-btn').text('Submit');
@@ -306,7 +320,7 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
                               }
                             });
                           }
-                          console.log('AJAX request initiated');
+                         
                         }
                       }
                     });

@@ -2,12 +2,11 @@
 session_start();
 include "../connect.php";
 include "../common/Authorization.php";
-include "../common/head.php";
 $requiredRoles = array('Admin', 'EA'); // Define the required roles for the specific page
 checkAuthorization($requiredRoles);
-
-
-
+?>
+<?php
+include "../common/head.php";
 ?>
 <!DOCTYPE html>
 
@@ -49,13 +48,6 @@ checkAuthorization($requiredRoles);
                                                 <!-- Add an empty div with an id for rendering the chart -->
                                                 <div id="growthChart"></div>
                                                 <div class="d-flex px-xxl-4 px-lg-2 p-4 gap-xxl-3 gap-lg-1 gap-3 justify-content-between">
-                                                    <!--  <div class="text-center">
-                                                        <select class="form-select" id="statusSelect" aria-label="Select a status">
-                                                            <option value="completed">Completed</option>
-                                                            <option value="overdue">Overdue</option>
-                                                            <option value="scheduled">Scheduled</option>
-                                                        </select>
-                                                    </div> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -64,15 +56,116 @@ checkAuthorization($requiredRoles);
                                 <!--/ Total Revenue -->
 
                             </div>
+                            <?php
+                            $recordsPerPageOptions = array(5, 10, 25, 50, 100);
+                            $defaultRecordsPerPage = 5;
+                            $recordsPerPage = isset($_GET['recordsPerPage']) && in_array($_GET['recordsPerPage'], $recordsPerPageOptions)
+                                ? intval($_GET['recordsPerPage']) : $defaultRecordsPerPage;
+                            $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+                            $offset = ($page - 1) * $recordsPerPage;
+                            $search = isset($_GET['search']) ? $_GET['search'] : '';
 
+                            // Construct the count query based on search criteria
+                            $countQuery = "SELECT COUNT(*) as total FROM (
+                                            SELECT 
+                                                u.user_id AS user_id, 
+                                                u.name AS user_name, 
+                                                u.credit_limit AS user_credit_limit, 
+                                                u.level AS user_credit_level, 
+                                                SUM(l.price) AS total_loan_amount,
+                                                SUM(CASE WHEN l.status = 'paid' THEN l.price ELSE 0 END) AS total_paid_amount,
+                                                SUM(CASE WHEN l.status = 'pending' THEN l.price ELSE 0 END) AS total_pending_amount,
+                                                SUM(CASE WHEN l.status != 'paid' AND l.status != 'pending' THEN l.price ELSE 0 END) AS total_unpaid_amount,
+                                                b.branch_id AS branch_id,   -- Include branch_id
+                                                b.branch_name AS branch_name,
+                                                b.location AS branch_location
+                                            FROM users AS u
+                                            LEFT JOIN loans AS l ON u.user_id = l.user_id 
+                                            LEFT JOIN branch AS b ON l.provider = b.branch_id
+                                            WHERE u.role = 'user' ";
+
+                            // Check if a search is active
+                            if (!empty($_GET['search'])) {
+                                $search = $_GET['search'];
+                                $countQuery .= "AND (u.name LIKE '%$search%' OR u.level LIKE '%$search%' OR u.user_id LIKE '%$search%' OR b.branch_name LIKE '%$search%' OR b.location LIKE '%$search%')";
+                            }
+
+                            $countQuery .= " GROUP BY u.user_id, u.name, u.credit_limit, u.level, b.branch_name, b.location, b.branch_Id
+                            ) AS subquery";
+                            $countResult = $conn->query($countQuery);
+                            $totalRecords = $countResult->fetch_assoc()['total'];
+
+                            $sql = "SELECT 
+                            u.user_id AS user_id, 
+                            u.name AS user_name, 
+                            u.credit_limit AS user_credit_limit, 
+                            u.level AS user_credit_level, 
+                            SUM(l.price) AS total_loan_amount,
+                            SUM(CASE WHEN l.status = 'paid' THEN l.price ELSE 0 END) AS total_paid_amount,
+                            SUM(CASE WHEN l.status = 'pending' THEN l.price ELSE 0 END) AS total_pending_amount,
+                            SUM(CASE WHEN l.status != 'paid' AND l.status != 'pending' THEN l.price ELSE 0 END) AS total_unpaid_amount,
+                            b.branch_id AS branch_id,   -- Include branch_id
+                            b.branch_name AS branch_name,
+                            b.location AS branch_location
+                        FROM users AS u
+                        LEFT JOIN loans AS l ON u.user_id = l.user_id 
+                        LEFT JOIN branch AS b ON l.provider = b.branch_id
+                        WHERE u.role = 'user' ";
+
+                            // Check if a search is active
+                            if (!empty($_GET['search'])) {
+                                $search = $_GET['search'];
+                                $sql .= "AND (u.name LIKE '%$search%' OR u.level LIKE '%$search%' OR u.user_id LIKE '%$search%' OR b.branch_name LIKE '%$search%' OR b.location LIKE '%$search%')";
+                            }
+
+                            $sql .= " GROUP BY u.user_id, u.name, u.credit_limit, u.level, b.branch_name, b.location, b.branch_Id
+                            /* HAVING total_loan_amount > 0 */
+                            ORDER BY u.user_id
+                            LIMIT ?, ?";
+                            $stmt = $conn->prepare($sql);
+                            $stmt->bind_param("ii", $offset, $recordsPerPage);
+                            $stmt->execute();
+                            $res = $stmt->get_result();
+                            $x = ($page - 1) * $recordsPerPage + 1;
+                            ?>
 
                             <div class="row">
                                 <!-- Striped Rows -->
                                 <div class="col-md-6 col-lg-12 col-xl-12 order-0 mb-4">
                                     <div class="card">
-
                                         <h5 class="card-header">List of Current Credit Accounts/Loans</h5>
                                         <div class="table-responsive text-nowrap ms-3 me-3">
+                                            <div class="row mb-4">
+                                                <div class="col-md-6 mb-md-0">
+                                                    <div class="row records-per-page-search">
+                                                        <div class="col-sm-4 d-flex align-items-center"> <!-- Added a class to align items vertically -->
+                                                            <label for="recordsPerPage" class="col-sm-2 col-form-label me-3">Show</label>
+                                                            <div class="col-sm-6 me-2">
+                                                                <select class="form-select w-100" id="recordsPerPage" name="recordsPerPage" onchange="changeRecordsPerPage(this.value)">
+                                                                    <?php
+                                                                    foreach ($recordsPerPageOptions as $option) {
+                                                                        $selected = ($option == $recordsPerPage) ? 'selected' : '';
+                                                                        echo '<option value="' . $option . '" ' . $selected . '>' . $option . '</option>';
+                                                                    }
+                                                                    ?>
+                                                                </select>
+                                                            </div>
+                                                            <label for="recordsPerPage" class="col-form-label col-sm-4">entries</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <form class="row mb-3">
+                                                        <div class="col-12">
+                                                            <div class="input-group">
+                                                                <button type="submit" class="btn btn-primary">Search</button>
+                                                                <input type="text" class="form-control" placeholder="Search by Name, Email, Phone, etc." name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                                                                <a href="?page=<?php echo $page; ?>&recordsPerPage=<?php echo $recordsPerPage; ?>" class="btn btn-outline-secondary">Clear Search</a>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
                                             <table class="table table-striped" id="table-striped">
                                                 <thead>
                                                     <tr>
@@ -84,35 +177,14 @@ checkAuthorization($requiredRoles);
                                                         <th>Total Loan Unpaid</th>
                                                         <th>Credit Limit</th>
                                                         <th>Level</th>
-                                                        <th>Branch Name(Location)</th>
+                                                        
                                                         <th>Detail</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="table-border-bottom-0">
                                                     <?php
-                                                    $sql = "SELECT 
-                                                    u.user_id AS user_id, 
-                                                    u.name AS user_name, 
-                                                    u.credit_limit AS user_credit_limit, 
-                                                    u.level AS user_credit_level, 
-                                                    SUM(l.price) AS total_loan_amount,
-                                                    SUM(CASE WHEN l.status = 'paid' THEN l.price ELSE 0 END) AS total_paid_amount,
-                                                    SUM(CASE WHEN l.status = 'pending' THEN l.price ELSE 0 END) AS total_pending_amount,
-                                                    SUM(CASE WHEN l.status != 'paid' AND l.status != 'pending' THEN l.price ELSE 0 END) AS total_unpaid_amount,
-                                                    b.branch_id AS branch_id,   -- Include branch_id
-                                                    b.branch_name AS branch_name,
-                                                    b.location AS branch_location
-                                                    
-                                                FROM users AS u
-                                                LEFT JOIN loans AS l ON u.user_id = l.user_id 
-                                                LEFT JOIN branch AS b ON l.provider = b.branch_id
-                                                WHERE u.role = 'user' 
-                                                GROUP BY u.user_id, u.name, u.credit_limit, u.level, b.branch_name, b.location,b.branch_Id
-                                                ORDER BY u.user_id";
-
-                                                    $result = $conn->query($sql);
-                                                    if ($result->num_rows > 0) {
-                                                        while ($row = $result->fetch_assoc()) {
+                                                    if ($res->num_rows > 0) {
+                                                        while ($row = $res->fetch_assoc()) {
                                                             echo '<tr>';
                                                             echo '<td>' . $row['user_name'] . '</td>';
                                                             echo '<td>' . $row['user_id'] . '</td>';
@@ -122,29 +194,64 @@ checkAuthorization($requiredRoles);
                                                             echo '<td>' . $row['total_unpaid_amount'] . '</td>';
                                                             echo '<td>' . $row['user_credit_limit'] . '</td>';
                                                             echo '<td>' . $row['user_credit_level'] . '</td>';
-                                                            echo $row['branch_name'] ? '<td>' . $row['branch_name'] . ' (' . $row['branch_location'] . ')</td>' : '<td>' . 'SELF' . '</td>';
-                                                            echo '<td><a href="userdetail.php?user_id=' . $row['user_id'] . '&branch_id=' . $row['branch_id'] . '">Detail</a></td>';
+
+                                                            echo '<td><a href="userdetail.php?user_id=' . $row['user_id'] .'">Detail</a></td>';
                                                             echo '</tr>';
                                                         }
                                                     } else {
-                                                        echo '<tr><td colspan="7">No users found</td></tr>';
+                                                        echo '<div>No records found</div>';
                                                     }
-
-                                                    // Close the database connection
-
                                                     ?>
                                                 </tbody>
                                             </table>
 
+                                            <?php
+                                            if ($res) {
+                                                echo '<nav aria-label="Page navigation" class="justify-content-center ms-5">';
+                                                echo '<ul class="pagination">';
 
+                                                // Previous page link
+                                                echo '<li class="page-item prev ' . ($page == 1 ? 'disabled' : '') . '">';
+                                                echo '<a class="page-link" href="?page=' . ($page - 1) . '&recordsPerPage=' . $recordsPerPage . '&search=' . urlencode($search) . '"><i class="tf-icon bx bx-chevrons-left"></i></a>';
+                                                echo '</li>';
+
+                                                // Display up to 5 page numbers with ellipsis
+                                                $maxPagesToShow = 5;
+                                                $startPage = max(1, $page - floor($maxPagesToShow / 2));
+                                                $endPage = min(ceil($totalRecords / $recordsPerPage), $startPage + $maxPagesToShow - 1);
+
+                                                for ($i = $startPage; $i <= $endPage; $i++) {
+                                                    $activeClass = ($i == $page) ? 'active' : '';
+                                                    echo '<li class="page-item ' . $activeClass . '">';
+                                                    echo '<a class="page-link" href="?page=' . $i . '&recordsPerPage=' . $recordsPerPage . '&search=' . urlencode($search) . '">' . $i . '</a>';
+                                                    echo '</li>';
+                                                }
+
+                                                // Display ellipsis and last page link
+                                                if ($endPage < ceil($totalRecords / $recordsPerPage)) {
+                                                    echo '<li class="page-item disabled"><span class="page-link">...</span></li>';
+                                                    echo '<li class="page-item">';
+                                                    echo '<a class="page-link" href="?page=' . ceil($totalRecords / $recordsPerPage) . '&recordsPerPage=' . $recordsPerPage . '&search=' . urlencode($search) . '">' . ceil($totalRecords / $recordsPerPage) . '</a>';
+                                                    echo '</li>';
+                                                }
+
+                                                // Next page link
+                                                echo '<li class="page-item next ' . ($page == ceil($totalRecords / $recordsPerPage) ? 'disabled' : '') . '">';
+                                                echo '<a class="page-link" href="?page=' . ($page + 1) . '&recordsPerPage=' . $recordsPerPage . '&search=' . urlencode($search) . '"><i class="tf-icon bx bx-chevrons-right"></i></a>';
+                                                echo '</li>';
+
+                                                echo '</ul>';
+                                                echo '</nav>';
+                                            } else {
+                                                echo '<div>No records found</div>';
+                                            }
+                                            ?>
                                         </div>
                                     </div>
-
-
                                 </div>
-
                                 <!--/ Striped Rows -->
                             </div>
+
 
                             <div class="row">
                                 <!-- Order Statistics -->
@@ -157,19 +264,14 @@ checkAuthorization($requiredRoles);
                                             </div>
                                             <div class="dropdown">
                                                 <button class="btn p-0" type="button" id="orederStatistics" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                                    <!-- <i class="bx bx-dots-vertical-rounded"></i> -->
                                                 </button>
-                                                <!-- <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
-                                                    <a class="dropdown-item" href="javascript:void(0);">Select All</a>
-                                                    <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-                                                    <a class="dropdown-item" href="javascript:void(0);">Share</a>
-                                                </div> -->
                                             </div>
                                         </div>
                                         <div class="card-body">
                                             <div class="d-flex justify-content-between align-items-center mb-3">
                                                 <div class="d-flex flex-column align-items-center gap-1">
-                                                    <h2 class="mb-2" id="creditScore">750</h2>
+                                                    <h2 class="mb-2" id="creditScore">0</h2>
                                                     <span>Total Loaned</span>
                                                 </div>
                                                 <div id="orderStatisticsChart"></div>
@@ -213,7 +315,7 @@ checkAuthorization($requiredRoles);
                                                             <small class="text-muted">Total</small>
                                                         </div>
                                                         <div class="user-progress">
-                                                            <small class="fw-semibold" id="pendingLoanAmount">849k</small>
+                                                            <small class="fw-semibold" id="pendingLoanAmount">0</small>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -227,7 +329,7 @@ checkAuthorization($requiredRoles);
                                                             <small class="text-muted">For all accounts</small>
                                                         </div>
                                                         <div class="user-progress">
-                                                            <small class="fw-semibold" id="totalforll">99k</small>
+                                                            <small class="fw-semibold" id="totalforll">0</small>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -278,10 +380,7 @@ checkAuthorization($requiredRoles);
                                                         <div class="flex-shrink-0">
                                                             <div id="expensesOfWeek"></div>
                                                         </div>
-                                                        <div>
-                                                            <p class="mb-n1 mt-1">Expenses This Week</p>
-                                                            <small class="text-muted">$39 less than last week</small>
-                                                        </div>
+
                                                     </div>
                                                 </div>
                                                 <div class="tab-pane fade show" id="navs-tabs-line-card-expenses" role="tabpanel">
@@ -291,13 +390,6 @@ checkAuthorization($requiredRoles);
                                                         </div>
                                                         <div>
                                                             <small class="text-muted d-block">Loan Status</small>
-                                                            <!-- <div class="d-flex align-items-center">
-                                                                <h6 class="mb-0 me-1">$459.10</h6>
-                                                                <small class="text-success fw-semibold">
-                                                                    <i class="bx bx-chevron-up"></i>
-                                                                    42.9%
-                                                                </small>
-                                                            </div> -->
                                                         </div>
                                                     </div>
                                                     <canvas id="pieChart" style="margin-top: -50px;" width="400" height="100"></canvas>
@@ -307,117 +399,68 @@ checkAuthorization($requiredRoles);
                                     </div>
                                 </div>
                                 <!--/ Expense Overview -->
-
                                 <!-- Transactions -->
                                 <div class="col-md-6 col-lg-4 order-2 mb-4">
                                     <div class="card h-100">
                                         <div class="card-header d-flex align-items-center justify-content-between">
-                                            <h5 class="card-title m-0 me-2">Repayment Status</h5>
+                                            <h5 class="card-title m-0 me-2">Latest Repayment History</h5>
                                             <div class="dropdown">
                                                 <button class="btn p-0" type="button" id="transactionID" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                                    <!-- <i class="bx bx-dots-vertical-rounded"></i> -->
                                                 </button>
-                                                <!-- <div class="dropdown-menu dropdown-menu-end" aria-labelledby="transactionID">
-                                                    <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
-                                                    <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
-                                                    <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
-                                                </div> -->
                                             </div>
                                         </div>
+
                                         <div class="card-body">
                                             <ul class="p-0 m-0">
-                                                <li class="d-flex mb-4 pb-1">
-                                                    <div class="avatar flex-shrink-0 me-3">
-                                                        <img src="../assets/img/icons/unicons/paypal.png" alt="User" class="rounded" />
-                                                    </div>
-                                                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                                        <div class="me-2">
-                                                            <small class="text-muted d-block mb-1">Loans Paid On
-                                                                Time</small>
-                                                            <h6 class="mb-0">5</h6>
-                                                        </div>
-                                                        <div class="user-progress d-flex align-items-center gap-1">
-                                                            <h6 class="mb-0">+82.6</h6>
-                                                            <span class="text-muted">USD</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="d-flex mb-4 pb-1">
-                                                    <div class="avatar flex-shrink-0 me-3">
-                                                        <img src="../assets/img/icons/unicons/wallet.png" alt="User" class="rounded" />
-                                                    </div>
-                                                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                                        <div class="me-2">
-                                                            <small class="text-muted d-block mb-1">Loans Past Due</small>
-                                                            <h6 class="mb-0">2</h6>
-                                                        </div>
-                                                        <div class="user-progress d-flex align-items-center gap-1">
-                                                            <h6 class="mb-0">+1,250</h6>
-                                                            <span class="text-muted">ETB</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="d-flex mb-4 pb-1">
-                                                    <div class="avatar flex-shrink-0 me-3">
-                                                        <img src="../assets/img/icons/unicons/chart.png" alt="User" class="rounded" />
-                                                    </div>
-                                                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                                        <div class="me-2">
-                                                            <small class="text-muted d-block mb-1">Total Repaid</small>
-                                                            <h6 class="mb-0">3</h6>
-                                                        </div>
-                                                        <div class="user-progress d-flex align-items-center gap-1">
-                                                            <h6 class="mb-0">+1,250</h6>
-                                                            <span class="text-muted">ETB</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="d-flex mb-4 pb-1">
-                                                    <div class="avatar flex-shrink-0 me-3">
-                                                        <img src="../assets/img/icons/unicons/cc-success.png" alt="User" class="rounded" />
-                                                    </div>
-                                                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                                        <div class="me-2">
-                                                            <small class="text-muted d-block mb-1">Credit Card</small>
-                                                            <h6 class="mb-0">Ordered Food</h6>
-                                                        </div>
-                                                        <div class="user-progress d-flex align-items-center gap-1">
-                                                            <h6 class="mb-0">-838.71</h6>
-                                                            <span class="text-muted">USD</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="d-flex mb-4 pb-1">
-                                                    <div class="avatar flex-shrink-0 me-3">
-                                                        <img src="../assets/img/icons/unicons/wallet.png" alt="User" class="rounded" />
-                                                    </div>
-                                                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                                        <div class="me-2">
-                                                            <small class="text-muted d-block mb-1">Wallet</small>
-                                                            <h6 class="mb-0">Starbucks</h6>
-                                                        </div>
-                                                        <div class="user-progress d-flex align-items-center gap-1">
-                                                            <h6 class="mb-0">+203.33</h6>
-                                                            <span class="text-muted">USD</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="d-flex">
-                                                    <div class="avatar flex-shrink-0 me-3">
-                                                        <img src="../assets/img/icons/unicons/cc-warning.png" alt="User" class="rounded" />
-                                                    </div>
-                                                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                                        <div class="me-2">
-                                                            <small class="text-muted d-block mb-1">Mastercard</small>
-                                                            <h6 class="mb-0">Ordered Food</h6>
-                                                        </div>
-                                                        <div class="user-progress d-flex align-items-center gap-1">
-                                                            <h6 class="mb-0">-92.45</h6>
-                                                            <span class="text-muted">USD</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                                <?php
+                                                $images = [
+                                                    "../assets/img/icons/unicons/cc-success.png",
+                                                    "../assets/img/icons/unicons/wallet.png",
+                                                    "../assets/img/icons/unicons/chart.png",
+                                                    "../assets/img/icons/unicons/cc-success.png",
+                                                    "../assets/img/icons/unicons/cc-warning.png",
+                                                ];
+                                                shuffle($images);
+                                                $query = "SELECT t.*, u.* FROM transactions t
+                                                            JOIN users u ON t.user_id = u.user_id
+                                                            ORDER BY t.updatedOn DESC
+                                                            LIMIT 5";
+
+                                                // Use a prepared statement to execute the query
+                                                $stmt = $conn->prepare($query);
+                                                $stmt->execute();
+                                                $result = $stmt->get_result();
+
+                                                if ($result->num_rows > 0) {
+                                                    $i = 0;
+                                                    while ($row = $result->fetch_assoc()) {
+                                                        echo '<li class="d-flex mb-4 pb-1">';
+                                                        echo '<div class="avatar flex-shrink-0 me-3">';
+                                                        echo '        <img src="' . $images[$i] . '" alt="User" class="rounded" />';
+                                                        echo '</div>';
+                                                        echo '<div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">';
+                                                        echo '<div class="me-2">';
+                                                        echo '<small class="text-muted d-block mb-1">' . $row['name'] . '</small>';
+                                                        echo '<h6 class="mb-0">' . $row['credit_level'] . '</h6>';
+                                                        echo '</div>';
+                                                        echo '<div class="user-progress d-flex align-items-center gap-1">';
+                                                        echo '<h6 class="mb-0">+' . $row['loan_amount'] . '</h6>';
+                                                        echo '<span class="text-muted">ETB</span>';
+                                                        echo '</div>';
+                                                        echo '</div>';
+                                                        echo '</li>';
+                                                        $i++;
+                                                    }
+                                                } else {
+                                                    echo "No transactions found";
+                                                }
+
+                                                // Close the prepared statement
+                                                $stmt->close();
+                                                ?>
                                             </ul>
+
                                         </div>
                                     </div>
                                 </div>
@@ -432,8 +475,16 @@ checkAuthorization($requiredRoles);
                             ?>
                             <script>
                                 $(document).ready(function() {
-                                    $('#table-striped').DataTable();
+                                    $("#table-striped").DataTable({
+                                        "paging": false,
+                                        "searching": false
+                                    })
                                 });
+                            </script>
+                            <script>
+                                function changeRecordsPerPage(value) {
+                                    window.location.href = '?page=1&recordsPerPage=' + value;
+                                }
                             </script>
                             <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
                             <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>

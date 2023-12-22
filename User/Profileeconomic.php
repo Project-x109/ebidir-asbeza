@@ -120,7 +120,7 @@ include "../common/head.php";
                                             <div class="row">
                                                 <input type="hidden" name="token" id="csrf-token" value="<?php echo $_SESSION['token'] ?? '' ?>">
                                                 <input type="hidden" name="update_economic" value="1">
-                                                <input type="hidden" name="id" value='<?php echo $_SESSION['id'] ?>' />
+                                              <!--   <input type="hidden" name="id" value='<?php echo $_SESSION['id'] ?>' /> -->
                                                 <div class="mb-3 col-md-6">
                                                     <label for="fieldOfEmployment" class="form-label">Field of
                                                         Employement</label>

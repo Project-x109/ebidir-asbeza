@@ -2,7 +2,7 @@
 include "../connect.php";
 session_start();
 include "../common/Authorization.php";
-$requiredRoles = array('branch','delivery','user'); // Define the required roles for the specific page
+$requiredRoles = array('branch', 'delivery', 'user'); // Define the required roles for the specific page
 checkAuthorization($requiredRoles);
 ?>
 <?php
@@ -145,17 +145,11 @@ include "../common/head.php";
 </style>
 
 <body>
-    <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
-            <!-- Menu -->
-
             <?php
             include "../common/sidebar.php";
             ?>
-            <!-- / Menu -->
-
-            <!-- Layout container -->
             <div class="layout-page">
                 <!-- Navbar -->
 
@@ -211,10 +205,10 @@ include "../common/head.php";
                         </div>
                     </div>
                     <div class="container my-5">
-                    <!-- / Content -->
-                    <?php
-                    include "../common/footer.php";
-                    ?>
+                        <!-- / Content -->
+                        <?php
+                        include "../common/footer.php";
+                        ?>
 </body>
 
 </html>

@@ -83,8 +83,8 @@ if (isset($_SESSION['status']) && $_SESSION['status'] === 'waiting' && isset($_P
                         }
                         $_SESSION['cart'] = array_merge($_SESSION['cart'], $_SESSION['temp_cart']);
                         unset($_SESSION['temp_cart']);
+                        $loc .= "/loan.php";
                     }
-                    $loc .= "/loan";
                 } else {
                     $loc .= "/";
                 }

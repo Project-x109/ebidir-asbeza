@@ -109,8 +109,6 @@ function updateGrowthChart(year, pendingPercentage, paidPercentage, unpaidPercen
 
   const growthChart = new ApexCharts(growthChartEl, growthChartOptions);
   growthChart.render();
-
-  console.log(`Updated chart for year: ${year}`);
 }
 
 // Function to populate the year dropdown

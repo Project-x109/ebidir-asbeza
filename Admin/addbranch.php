@@ -1,13 +1,14 @@
 <?php
 include "../connect.php";
 session_start();
-include "../common/head.php";
 include "../common/Authorization.php";
 $requiredRoles = array('Admin','EA'); // Define the required roles for the specific page
 checkAuthorization($requiredRoles);
 $_SESSION['token'] = bin2hex(random_bytes(35));
 ?>
-
+<?php
+include "../common/head.php";
+?>
 <body>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
@@ -102,8 +103,6 @@ $_SESSION['token'] = bin2hex(random_bytes(35));
                                                     </div>
                                                     <!--<div class="form-text">You can use letters, numbers & periods</div> -->
                                                 </div>
-
-
                                                 <label class="col-sm-2 col-form-label" for="basic-icon-default-location">Location :<span class="text-danger">*</span></label>
                                                 <div class="col-sm-4">
                                                     <div class="input-group input-group-merge">

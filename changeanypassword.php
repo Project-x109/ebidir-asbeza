@@ -16,9 +16,6 @@ if (!isset($_SESSION['role'])) {
         header("location:$role/");
     }
 }
-
-
-
 if (!isset($_COOKIE['jwt_token']) || isTokenExpired($_COOKIE['jwt_token'])) {
     // Token is missing or has expired, handle unauthorized access
     session_destroy();
@@ -140,7 +137,7 @@ if (!isset($_COOKIE['jwt_token']) || isTokenExpired($_COOKIE['jwt_token'])) {
                                 $loc = "Admin";
                             if ($_SESSION['role'] == "delivery")
                                 $loc = "branch";
-                            $loc .= "/dashbaord";
+                            $loc .= "/dashbaord.php";
 
                             ?>
                             <a href="<?php echo $loc; ?>" onclick="return validateForm()" class="d-flex align-items-center justify-content-center">
@@ -292,7 +289,6 @@ if (!isset($_COOKIE['jwt_token']) || isTokenExpired($_COOKIE['jwt_token'])) {
                         }
                     },
                     error: function(xhr, textStatus, errorThrown) {
-                        console.log(xhr.responseText);
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',

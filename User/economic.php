@@ -87,7 +87,7 @@ include "../common/head.php";
                     <form id="economicForm" action="backend.php" method="POST">
                       <input type="hidden" name="token" id="csrf-token" value="<?php echo $_SESSION['token'] ?? '' ?>">
                       <input type="hidden" name="add_economic" value="1">
-                      <input type="hidden" name="id" value='<?php echo $_SESSION['id'] ?>' />
+                      <!-- <input type="hidden" name="id" value='<?php echo $_SESSION['id'] ?>' /> -->
                       <div class="row mb-4">
                         <label class="col-sm-2 col-form-label" for="basic-icon-default-fieldofEmployment">Field of
                           Employment :<span class="text-danger">*</span></label>

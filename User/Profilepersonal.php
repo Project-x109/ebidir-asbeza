@@ -75,7 +75,6 @@ include "../common/head.php"
                 $sql2 = "SELECT * from personal where user_id='$id'";
                 $res2 = $conn->query($sql2);
                 $row2 = $res2->fetch_assoc();
-
                 $sql1 = "SELECT * from users where user_id='$id'";
                 $res = $conn->query($sql1);
                 $row = $res->fetch_assoc();
@@ -97,7 +96,7 @@ include "../common/head.php"
                       <div class="row">
                         <input type="hidden" name="token" id="csrf-token" value="<?php echo $_SESSION['token'] ?? '' ?>">
                         <input type="hidden" name="update_personal" value="1">
-                        <input type="hidden" name="id" value="<?php echo $row2['user_id']; ?>">
+                       <!--  <input type="hidden" name="id" value="<?php echo $_SESSION['id']; ?>"> -->
                         <div class="mb-3 col-md-6">
                           <label for="numberOfDependents" class="form-label">Number of Dependents</label>
                           <input required class="form-control" placeholder="5" type="text" id="numberOfDependents" name="numberOfDependents" value=" <?php echo $row2['Number_of_dependents']; ?>" readonly autofocus />

@@ -1,5 +1,5 @@
-// Function to fetch user data and populate the modal and AJAX data
-new DataTable('#table-striped');
+// Function to fetch user data and populate the modal and AJAX
+
 function showLoader() {
   $('#loader').fadeIn();
 }
@@ -8,6 +8,71 @@ function showLoader() {
 function hideLoader() {
   $('#loader').fadeOut();
 }
+function initializeDataTable() {
+  dataTable = $('#table-striped').DataTable({
+    "paging": false,
+    "searching": false,
+    columns: [
+      {
+        data: 'id'
+      }, // Map 'id' column from your data
+      {
+        data: 'profile'
+      }, // Map 'profile' column from your data
+      {
+        data: 'name'
+      }, // Map 'name' column from your data
+      {
+        data: 'phone'
+      },
+      {
+        data: 'email'
+      },
+      {
+        data: 'TIN_Number'
+      },
+      {
+        data: 'dob'
+      },
+      {
+        data: 'status'
+      },
+      {
+        data: 'credit_limit'
+      },
+      {
+        data: 'level'
+      },
+      {
+        data: 'createdOn'
+      },
+      // Define columns for other data you have
+      {
+        // Define 'Actions' column
+        data: null,
+        render: function (data, type, row, meta) {
+          return (
+            '<div class="dropdown">' +
+            '<button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">' +
+            '<i class="bx bx-dots-vertical-rounded"></i>' +
+            '</button>' +
+            '<div class="dropdown-menu">' +
+            '<a class="dropdown-item" href="javascript:void(0);" onclick="editUser(\'' +
+            data.id +
+            '\');"><i class="bx bx-edit-alt me-1"></i> Edit</a>' +
+            '</div>' +
+            '</div>'
+          );
+        }
+      }
+    ],
+    // ...
+    destroy: true // This allows reinitialization of DataTable
+  });
+} $(document).ready(function () {
+  initializeDataTable();
+});
+
 function validateForm() {
   // Add your form validation logic here
   var isValid = true;
@@ -134,9 +199,7 @@ function showErrorMessage() {
 function editUser(userId) {
   showLoader();
   var csrfToken = document.getElementById('csrf-token').getAttribute('value');
-  console.log(csrfToken);
-  console.log(userId);
- 
+
   $.ajax({
     type: 'GET',
     url: 'get_user_data.php', // Create a PHP file to fetch user data
@@ -148,7 +211,6 @@ function editUser(userId) {
     },
     dataType: 'json',
     success: function (data) {
-      console.log(data);
       hideLoader();
       // Populate the modal with user data
       $('#nameBackdrop').val(data.name);
@@ -257,7 +319,7 @@ function saveUser() {
         } else {
           var errorContainer = $('#error-toast .toast-body');
           errorContainer.empty(); // Clear any previous errors
-          console.log('AJAX request initiated');
+
           // Loop through the validation errors and display them in the toast
           if (data.errors) {
             $.each(data.errors, function (key, value) {
@@ -266,7 +328,7 @@ function saveUser() {
           } else {
             errorContainer.append('<p>An error occurred on the server.</p>');
           }
-          console.log('AJAX request initiated');
+
 
           // Display the error toast for frontend validation errors
           showErrorMessage();
@@ -278,70 +340,3 @@ function saveUser() {
     });
   }
 }
-// Call this function once when the page is loaded to initialize DataTable
-function initializeDataTable() {
-  dataTable = $('#table-striped').DataTable({
-    // DataTable configuration options
-    // DataTable configuration options
-    columns: [
-      {
-        data: 'id'
-      }, // Map 'id' column from your data
-      {
-        data: 'profile'
-      }, // Map 'profile' column from your data
-      {
-        data: 'name'
-      }, // Map 'name' column from your data
-      {
-        data: 'phone'
-      },
-      {
-        data: 'email'
-      },
-      {
-        data: 'TIN_Number'
-      },
-      {
-        data: 'dob'
-      },
-      {
-        data: 'status'
-      },
-      {
-        data: 'credit_limit'
-      },
-      {
-        data: 'level'
-      },
-      {
-        data: 'createdOn'
-      },
-      // Define columns for other data you have
-      {
-        // Define 'Actions' column
-        data: null,
-        render: function (data, type, row, meta) {
-          return (
-            '<div class="dropdown">' +
-            '<button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">' +
-            '<i class="bx bx-dots-vertical-rounded"></i>' +
-            '</button>' +
-            '<div class="dropdown-menu">' +
-            '<a class="dropdown-item" href="javascript:void(0);" onclick="editUser(\'' +
-            data.id +
-            '\');"><i class="bx bx-edit-alt me-1"></i> Edit</a>' +
-            '</div>' +
-            '</div>'
-          );
-        }
-      }
-    ],
-    // ...
-    destroy: true // This allows reinitialization of DataTable
-  });
-}
-// Call the initializeDataTable() function once when the page is loaded
-$(document).ready(function () {
-  initializeDataTable();
-});

@@ -48,8 +48,6 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $
 } else if (isset($_POST['branch_checkout'])) {
     $user_id = $_POST['user_id'];
     $total_price = $_POST['total_price'];
-
-    // Check if the total_price exceeds the user's credit limit
     $sql = "SELECT credit_limit FROM users WHERE user_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $user_id);

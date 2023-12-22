@@ -29,13 +29,11 @@ $(document).ready(function () {
       contentType: false,
       processData: false,
       error: function (jqXHR, textStatus, errorThrown) {
-        console.log("AJAX request error:", textStatus, errorThrown);
         // Display a backend error message in the error toast
         $("#error-toast .toast-body").text("Backend Error: " + errorThrown);
         showErrorMessage();
       },
       success: function (response) {
-        console.log(response);
         hideLoader();
         if (response.errors) {
           var errorContainer = $("#error-toast .toast-body");
@@ -59,7 +57,6 @@ $(document).ready(function () {
               }
             });
           }
-          console.log("AJAX request initiated");
         }
       },
     });
